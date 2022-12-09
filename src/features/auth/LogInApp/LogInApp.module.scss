@@ -1,0 +1,40 @@
+.loginContainer {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid black;
+  width: 431px;
+  height: 528px;
+  align-self: center;
+  padding: 30px;
+
+  &__title {
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 32px;
+    text-align: center;
+    &::first-letter {
+      text-transform: uppercase;
+    }
+  }
+
+  &__blockRemember {
+  }
+
+  &__forgotPassword {
+    display: inline-block;
+    text-transform: capitalize;
+  }
+
+  &__text {
+    &::first-letter {
+      text-transform: uppercase;
+    }
+  }
+
+  &__signUp {
+    text-transform: capitalize;
+  }
+}
+
+.checkbox {
+}

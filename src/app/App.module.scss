@@ -1,0 +1,12 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+.mainContent {
+  display: flex;
+  align-self: center;
+  justify-content: center;
+  flex: 1 1 auto;
+  border: 1px solid red;
+}
