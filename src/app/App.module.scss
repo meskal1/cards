@@ -5,8 +5,11 @@
 }
 .mainContent {
   display: flex;
-  align-self: center;
+  flex-grow: 1;
   justify-content: center;
-  flex: 1 1 auto;
-  border: 1px solid red;
+
+  width: 100%;
+  max-width: 1050px;
+  margin: 0 auto;
+  padding: 0 15px;
 }

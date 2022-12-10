@@ -1,14 +1,14 @@
 import { Route, Routes } from 'react-router-dom'
 
+import { PATH } from '../constants/routePaths.enum'
+import { Page404 } from '../features/404/Page404'
 import { CheckEmail } from '../features/auth/CheckEmail/CheckEmail'
 import { LogInApp } from '../features/auth/LogInApp/LogInApp'
 import { NewPassword } from '../features/auth/NewPassword/NewPassword'
-import { PATH } from '../constants/routePaths.enum'
-import { Packs } from '../features/packs/Packs'
-import { Page404 } from '../features/404/Page404'
-import { Profile } from '../features/profile/Profile'
 import { Recovery } from '../features/auth/Recovery/Recovery'
 import { Registration } from '../features/auth/Registration/Registration'
+import { Packs } from '../features/packs/Packs'
+import { Profile } from '../features/profile/Profile'
 
 export const AppRoutes = () => {
   return (
@@ -21,7 +21,7 @@ export const AppRoutes = () => {
         <Route path={PATH.CHECK_EMAIL} element={<CheckEmail />} />
         <Route path={PATH.NEW_PASSWORD} element={<NewPassword />} />
         <Route path={PATH.PROFILE} element={<Profile />} />
-        <Route path='*' element={<Page404 />} />
+        <Route path="*" element={<Page404 />} />
       </Routes>
     </>
   )

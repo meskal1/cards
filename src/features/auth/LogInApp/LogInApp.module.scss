@@ -1,38 +1,78 @@
 .loginContainer {
   display: flex;
+  flex: 0 1 400px;
   flex-direction: column;
-  border: 1px solid black;
-  width: 431px;
-  height: 528px;
   align-self: center;
+
   padding: 30px;
 
-  &__title {
-    font-size: 26px;
-    font-weight: 600;
-    line-height: 32px;
-    text-align: center;
+  text-align: center;
+
+  background: rgb(240, 240, 240);
+  border-radius: 20px;
+
+  & > * {
     &::first-letter {
       text-transform: uppercase;
     }
+  }
+
+  &__title {
+    margin: 0px 0px 15px 0px;
+
+    font-size: 26px;
+    font-weight: 600;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+
+    margin: 0px 0px 25px 0px;
   }
 
   &__blockRemember {
-  }
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 20px;
+    align-items: center;
+    justify-content: space-between;
 
-  &__forgotPassword {
-    display: inline-block;
-    text-transform: capitalize;
-  }
+    font-weight: 500;
 
-  &__text {
-    &::first-letter {
-      text-transform: uppercase;
+    @media (max-width: 390px) {
+      justify-content: center;
     }
   }
 
-  &__signUp {
+  &__forgotPassword {
+    color: blue;
     text-transform: capitalize;
+  }
+
+  &__signUpBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    & > * {
+      &::first-letter {
+        text-transform: uppercase;
+      }
+    }
+  }
+
+  &__text {
+    font-weight: 500;
+    color: grey;
+  }
+
+  &__signUp {
+    font-size: 16px;
+    font-weight: 500;
+    color: blue;
+    text-decoration: underline;
   }
 }
 

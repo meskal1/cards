@@ -9,4 +9,3 @@ export const Recovery: React.FC<RecoveryType> = ({}) => {
     </>
   )
 }
-

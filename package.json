@@ -42,7 +42,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -63,8 +65,28 @@
     ]
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.33.1",
+    "@typescript-eslint/parser": "^5.33.1",
     "babel-plugin-named-exports-order": "^0.0.2",
+    "eslint": "8.22.0",
+    "eslint-config-it-incubator": "^1.0.10",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-import-resolver-node": "^0.3.6",
+    "eslint-import-resolver-typescript": "^3.5.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.6.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-react": "^7.30.1",
     "group-css-media-queries-loader": "^4.3.0",
-    "serve": "^14.1.2"
+    "prettier": "^2.7.1",
+    "prettier-config-it-incubator": "^1.0.1",
+    "prettier-stylelint": "^0.4.2",
+    "serve": "^14.1.2",
+    "stylelint": "^14.10.0",
+    "stylelint-config-clean-order": "^0.9.0",
+    "stylelint-config-css-modules": "^4.1.0",
+    "stylelint-prettier": "^2.0.0"
   }
 }

@@ -1,5 +1,7 @@
-import Button from '@mui/material/Button'
 import React from 'react'
+
+import Button from '@mui/material/Button'
+
 import s from './ButtonStyled.module.scss'
 
 type ButtonStyledType = {
@@ -10,7 +12,7 @@ type ButtonStyledType = {
 export const ButtonStyled: React.FC<ButtonStyledType> = ({ name, onClick }) => {
   return (
     <>
-      <Button variant='contained' className={s.button} onClick={onClick}>
+      <Button type={'submit'} variant="contained" className={s.button} onClick={onClick}>
         {name}
       </Button>
     </>

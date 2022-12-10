@@ -1,12 +1,16 @@
-import { AppDispatchType } from '../../app/store'
 import { AxiosError } from 'axios'
+
+import { AppDispatchType } from '../../app/store'
 import { LoginParamsType } from '../../services/authApi'
 
 const initialState = {
   isLoggedIn: false,
 }
 
-export const authReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
+export const authReducer = (
+  state: InitialStateType = initialState,
+  action: ActionsType
+): InitialStateType => {
   switch (action.type) {
     case 'auth/SET_IS_LOGGED_IN': {
       return { ...state, isLoggedIn: action.payload.isLoggedIn }
@@ -15,6 +19,7 @@ export const authReducer = (state: InitialStateType = initialState, action: Acti
       return state
   }
 }
+
 // ACTIONS
 export const setIsLoggedInAC = (isLoggedIn: boolean) => {
   return {
@@ -28,6 +33,7 @@ export const setIsLoggedInAC = (isLoggedIn: boolean) => {
 // THUNKS
 export const logInTC = (data: LoginParamsType) => async (dispatch: AppDispatchType) => {
   try {
+    ;() => alert(1) //plug
   } catch (e) {
     const error = e as Error | AxiosError
   }
@@ -35,6 +41,7 @@ export const logInTC = (data: LoginParamsType) => async (dispatch: AppDispatchTy
 
 export const logOutTC = () => async (dispatch: AppDispatchType) => {
   try {
+    ;() => alert(1) //plug
   } catch (e) {
     const error = e as Error | AxiosError
   }
