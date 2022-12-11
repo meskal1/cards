@@ -33,6 +33,7 @@ package-lock.json
 .vscode
 
 # My own
+.env
 webpack.config.js
 deploy.sh
 craco.config.js
