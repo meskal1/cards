@@ -1,8 +1,10 @@
 import axios, { AxiosResponse } from 'axios'
+import * as dotenv from 'dotenv'
+dotenv.config()
 
 // API
 const instance = axios.create({
-  //   baseURL: 'https://social-network.samuraijs.com/api/1.1/',
+  baseURL: process.env.REACT_APP_BASE_URL,
   withCredentials: true,
 })
 
