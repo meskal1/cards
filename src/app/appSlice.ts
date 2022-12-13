@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { AxiosError } from 'axios'
 
 import { setIsLoggedInAC } from '../features/auth/authSlice'
 import { authAPI } from '../services/authApi'
@@ -7,20 +6,23 @@ import { authAPI } from '../services/authApi'
 import { AppDispatchType } from './store'
 
 const initialState = {
-  status: 'loading' as RequestStatusType,
-  error: '',
+  status: 'idle' as RequestStatusType,
+  alertMessage: {
+    messageType: 'error' as AlertMessageType,
+    messageText: null as AppAlertMessageTextType,
+  },
   isInitialized: false,
 }
 
-const slice = createSlice({
+const appSlice = createSlice({
   name: 'app',
   initialState,
   reducers: {
-    setAppStatusAC(state, action: PayloadAction<{ status: RequestStatusType }>) {
+    setAppStatusAC(state, action: PayloadAction<SetRequestStatusPayloadType>) {
       state.status = action.payload.status
     },
-    setAppErrorAC(state, action: PayloadAction<{ error: string }>) {
-      state.error = action.payload.error
+    setAppAlertMessage(state, action: PayloadAction<SetAppMessagePayloadType>) {
+      state.alertMessage = action.payload
     },
     setIsInitializedAC(state, action: PayloadAction<{ isInitialized: boolean }>) {
       state.isInitialized = action.payload.isInitialized
@@ -28,10 +30,10 @@ const slice = createSlice({
   },
 })
 
-export const appReducer = slice.reducer
+export const appReducer = appSlice.reducer
 
 // ACTIONS
-export const { setAppStatusAC, setAppErrorAC, setIsInitializedAC } = slice.actions
+export const { setAppStatusAC, setAppAlertMessage, setIsInitializedAC } = slice.actions
 
 // THUNKS
 export const initializeAppTC =
@@ -45,13 +47,18 @@ export const initializeAppTC =
       dispatch(setIsInitializedAC({ isInitialized: true }))
       dispatch(setIsLoggedInAC({ isLoggedIn: true }))
     } catch (e) {
-      const error = e as Error | AxiosError
-
       navigateToLogin()
     } finally {
       setIsAppLoaded()
     }
   }
 
-// TYPES
-export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
+// Types
+export type RequestStatusType = 'idle' | 'loading'
+export type AlertMessageType = 'success' | 'error'
+export type AppAlertMessageTextType = string | null
+type SetAppMessagePayloadType = {
+  messageType: AlertMessageType
+  messageText: AppAlertMessageTextType
+}
+export type SetRequestStatusPayloadType = { status: RequestStatusType }

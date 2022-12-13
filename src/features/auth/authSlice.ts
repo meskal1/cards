@@ -1,29 +1,36 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { AxiosError } from 'axios'
+import axios, { AxiosError } from 'axios'
 
-import { setAppStatusAC, setIsInitializedAC } from '../../app/appSlice'
+import {
+  setAppStatusAC,
+  setIsInitializedAC,
+  RequestStatusType,
+  setAppAlertMessage,
+  SetRequestStatusPayloadType, } from '../../app/appSlice'
 import { AppDispatchType } from '../../app/store'
-import { LoginParamsType, authAPI } from '../../services/authApi'
+import { LoginParamsType, authAPI, RegisterParamsType, RegisterFailResponseType } from '../../services/authApi'
 import { handleServerNetworkError } from '../../utils/errorUtils'
 
 const initialState = {
   isLoggedIn: false,
+  status: 'idle' as RequestStatusType,
 }
 
-const slice = createSlice({
+const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
     setIsLoggedInAC(state, action: PayloadAction<{ isLoggedIn: boolean }>) {
       state.isLoggedIn = action.payload.isLoggedIn
     },
-  },
-})
-
-export const authReducer = slice.reducer
+    setAuthStatus(state, action: PayloadAction<SetRequestStatusPayloadType>) {
+      state.status = action.payload.status
+    },
+  }})
+export const authReducer = authSlice.reducer
 
 // ACTIONS
-export const { setIsLoggedInAC } = slice.actions
+export const { setIsLoggedInAC, setAuthStatus } = authSlice.actions
 
 // THUNKS
 export const logInTC = (data: LoginParamsType) => async (dispatch: AppDispatchType) => {
@@ -53,5 +60,29 @@ export const logOutTC = () => async (dispatch: AppDispatchType) => {
     const error = e as Error | AxiosError
 
     handleServerNetworkError(dispatch, error)
+  }
+}
+
+export const registerTC = (data: RegisterParamsType) => async (dispatch: AppDispatchType) => {
+  try {
+    dispatch(setAuthStatus({ status: 'loading' }))
+    const res = await authAPI.register(data)
+
+    dispatch(
+      setAppAlertMessage({
+        messageType: 'success',
+        messageText: 'Congratulations, your account has been successfully registered',
+      })
+    )
+
+    return true
+  } catch (e) {
+    if (axios.isAxiosError<RegisterFailResponseType>(e)) {
+      const error = e.response ? e.response.data.error : 'Some error'
+
+      dispatch(setAppAlertMessage({ messageType: 'error', messageText: error }))
+    }
+  } finally {
+    dispatch(setAuthStatus({ status: 'idle' }))
   }
 }

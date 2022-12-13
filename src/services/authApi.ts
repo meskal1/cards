@@ -16,6 +16,9 @@ export const authAPI = {
   me() {
     return instance.post<ResponseType>('auth/me', {})
   },
+  register(data: RegisterParamsType) {
+    return instance.post<RegisterResponseType>('/auth/register', data)
+  },
 }
 
 // TYPES
@@ -24,6 +27,33 @@ export type LoginParamsType = {
   password: string
   rememberMe: boolean
 }
+
+export type UserType = {
+  _id: string
+  email: string
+  rememberMe: boolean
+  name: string
+  publicCardPacksCount: number
+  created: string
+  updated: string
+  avatar: string
+}
+
+export type RegisterParamsType = Omit<LoginParamsType, 'rememberMe'>
+
+export type RegisterResponseType = RegisterSuccessResponseType
+
+export type RegisterSuccessResponseType = {
+  addedUser: AddedUserType
+}
+
+export type RegisterFailResponseType = {
+  error: string
+  email: string
+  in: string
+}
+
+export type AddedUserType = Omit<UserType, 'avatar'>
 
 export type ResponseType = {
   _id: string

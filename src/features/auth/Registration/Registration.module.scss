@@ -1,0 +1,69 @@
+.registration {
+  align-self: center;
+
+  width: 100%;
+  max-width: 413px;
+  padding: 25px 33px 42px;
+
+  background-color: #fff;
+  border-radius: 20px;
+  box-shadow: 1px 1px 2px rgb(0 0 0 / 10%), -1px -1px 2px rgb(0 0 0 / 10%);
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    .title {
+      margin-bottom: 41px;
+
+      font-size: 26px;
+      font-weight: 600;
+      line-height: 31.5px;
+      text-transform: capitalize;
+    }
+
+    .input {
+      &:not(:last-of-type) {
+        margin-bottom: 25px;
+      }
+
+      &:last-of-type {
+        margin-bottom: 60px;
+      }
+
+      & input {
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 24px;
+      }
+    }
+
+    .button {
+      align-self: stretch;
+
+      margin-bottom: 31px;
+
+      text-transform: capitalize !important;
+    }
+
+    .signInQuestion {
+      margin-bottom: 11px;
+
+      font-weight: 600;
+      line-height: 24px;
+
+      opacity: 0.5;
+    }
+
+    .signInLink {
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 24px;
+      color: #366eff;
+      text-decoration: underline;
+      text-transform: capitalize;
+    }
+  }
+}

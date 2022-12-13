@@ -6,5 +6,5 @@ import { appReducer } from './appSlice'
 
 export const rootReducer = combineReducers({
   app: appReducer,
-  isLoggedIn: authReducer,
+  auth: authReducer,
 })
