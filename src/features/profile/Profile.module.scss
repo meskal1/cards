@@ -1,4 +1,4 @@
-@mixin fontSettings($space, $family, $weight, $size, $height){
+@mixin fontSettings($space, $family, $weight, $size, $height) {
   margin-top: $space;
   font-family: $family;
   font-weight: $weight;
@@ -6,10 +6,12 @@
   line-height: $height;
 }
 
-.ProfileContainer{
+.ProfileContainer {
+  clear: left;
   display: flex;
   flex-direction: column;
-  align-self: center;
+  justify-self: center;
+  justify-content: center;
   align-items: center;
   text-align: center;
 
@@ -21,10 +23,23 @@
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1), -1px -1px 2px rgba(0, 0, 0, 0.1);
   border-radius: 2px;
 
+  &__addPhoto {
+    background-color: aqua;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    float: right;
+  }
+
   &__title {
     @include fontSettings(15px, 'Montserrat', 600, 22px, 27px);
   }
-  &__image{
+
+  &__image {
     margin-top: 30px;
     width: 96px;
     height: 96px;
@@ -34,17 +49,61 @@
     padding-top: 40px;
   }
 
-  &__name{
-    @include fontSettings(17px, 'Montserrat', 500, 20px, 24px);
+  &__image img {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%
   }
 
-  &__email{
+  .nameContainer {
+    display: flex;
+    justify-content: center;
+  }
+
+  &__name {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    @include fontSettings(17px, 'Montserrat', 500, 20px, 24px);
+    display: inline;
+  }
+
+  &__name h2 {
+    float: left;
+    margin-right: 10px;
+  }
+
+  &__edit {
+    float: left;
+  }
+
+  &__email {
     @include fontSettings(14px, 'Montserrat', 400, 14px, 24px);
     margin-bottom: 29px;
   }
 
+  &__arrow {
+    margin-top: 3px;
+    float: left;
+  }
 
 
+}
 
+.backToPacks {
+  margin-top: 20px;
+  width: 160px;
+  height: 40px;
+  float: left;
 
+  &__PacksLink {
+    float: left;
+    @include fontSettings(0px, 'Montserrat', 400px, 14px, 24px)
+  }
+}
+
+.ProfileBox {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
