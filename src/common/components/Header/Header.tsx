@@ -10,95 +10,93 @@ import MenuItem from '@mui/material/MenuItem'
 import Toolbar from '@mui/material/Toolbar'
 import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
+import { useNavigate } from 'react-router-dom'
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout']
+import { PATH } from '../../../constants/routePaths.enum'
+import { logOutTC } from '../../../features/auth/authSlice'
+import { useAppDispatch } from '../../../hooks/reduxHooks'
+
+import s from './Header.module.scss'
+
+const settings = ['Profile', 'Logout']
 
 type HeaderType = {}
 
 export const Header: React.FC<HeaderType> = ({}) => {
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null)
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget)
   }
 
-  const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = (item: string) => {
     setAnchorElUser(null)
+
+    if (item === 'Profile') {
+      navigate(PATH.PROFILE)
+    }
+
+    if (item === 'Logout') {
+      dispatch(logOutTC())
+    }
   }
 
+  const menuItems = settings.map(item => {
+    return (
+      <MenuItem key={item} onClick={() => handleCloseUserMenu(item)}>
+        <Typography textAlign="center">{item}</Typography>
+      </MenuItem>
+    )
+  })
+
   return (
-    <AppBar position="static">
-      <Container maxWidth={false} sx={{ maxWidth: '1050px' }}>
-        <Toolbar disableGutters>
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              flexGrow: 1,
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            LOGO
-          </Typography>
+    <>
+      <AppBar className={s.headerContainer}>
+        <Container className={s.header}>
+          <Toolbar disableGutters>
+            <div className={s.header__logoTypography}>
+              <Typography variant="h5" component="a" href="/">
+                LOGO
+              </Typography>
+            </div>
 
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href=""
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            LOGO
-          </Typography>
-
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map(setting => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-        </Toolbar>
-      </Container>
-    </AppBar>
+            <Box className={s.header__profileBlock}>
+              <div className={s.header__userName} onClick={handleOpenUserMenu}>
+                {'ДОБАВИТЬ СЮДА ИМЯ КОТОРОЕ ПРИХОДИТ С СЕРВЕРА'}
+              </div>
+              <div>
+                <Tooltip title="">
+                  <IconButton onClick={handleOpenUserMenu} className={s.header__profileIcon}>
+                    <Avatar
+                      alt="Remy Sharp"
+                      src="https://avatars.mds.yandex.net/get-kino-vod-films-gallery/28788/47e2fd514411e18b76af786d7417062d/100x64_3"
+                    />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  className={s.header__menu}
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  {menuItems}
+                </Menu>
+              </div>
+            </Box>
+          </Toolbar>
+        </Container>
+      </AppBar>
+    </>
   )
 }

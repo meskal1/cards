@@ -10,20 +10,23 @@ import IconButton from '@mui/material/IconButton'
 import InputAdornment from '@mui/material/InputAdornment'
 import TextField from '@mui/material/TextField'
 import { useFormik } from 'formik'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { ButtonStyled } from '../../../common/components/ButtonStyled/ButtonStyled'
 import { PATH } from '../../../constants/routePaths.enum'
-import { useAppSelector } from '../../../hooks/reduxHooks'
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { validationSchemaLogin } from '../../../utils/validationSchema'
+import { logInTC } from '../authSlice'
 
 import s from './LogInApp.module.scss'
 
 type LogInAppType = {}
 
 export const LogInApp: React.FC<LogInAppType> = ({}) => {
-  const isLoggedIn = useAppSelector(state => state.isLoggedIn.isLoggedIn)
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+  const isLoggedIn = useAppSelector(state => state.isLoggedIn.isLoggedIn)
+  const appStatus = useAppSelector(state => state.app.status)
   const [showPassword, setShowPassword] = React.useState(false)
 
   const formik = useFormik({
@@ -34,10 +37,7 @@ export const LogInApp: React.FC<LogInAppType> = ({}) => {
     },
     validationSchema: validationSchemaLogin,
     onSubmit: values => {
-      alert(JSON.stringify(values, null, 2))
-      // if (appStatus !== 'loading') {
-      //   dispatch(loginTC(values))
-      // }
+      dispatch(logInTC(values))
     },
   })
 
@@ -48,7 +48,7 @@ export const LogInApp: React.FC<LogInAppType> = ({}) => {
   React.useEffect(() => {
     if (isLoggedIn) {
       formik.resetForm()
-      navigate(PATH.PACKS)
+      navigate(PATH.PROFILE)
     }
   }, [isLoggedIn])
 
@@ -101,9 +101,9 @@ export const LogInApp: React.FC<LogInAppType> = ({}) => {
                 />
               }
             />
-            <a className={s.login__forgotPassword} href={PATH.RECOVERY}>
+            <Link className={s.login__forgotPassword} to={PATH.RECOVERY}>
               forgot password?
-            </a>
+            </Link>
           </div>
 
           <ButtonStyled name={'Sign in'} />
@@ -111,9 +111,9 @@ export const LogInApp: React.FC<LogInAppType> = ({}) => {
 
         <div className={s.login__signUpBlock}>
           <p className={s.login__text}>already have an account?</p>
-          <a className={s.login__signUp} href={PATH.REGISTRATION}>
+          <Link className={s.login__signUp} to={PATH.REGISTRATION}>
             sign up
-          </a>
+          </Link>
         </div>
       </div>
     </>
