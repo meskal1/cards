@@ -11,7 +11,7 @@ export const CustomButton: React.FC<ButtonCustomType> = ({ className, ...props }
 
   return (
     <>
-      <Button type={'submit'} variant="contained" className={finalClass}>
+      <Button type={'submit'} variant="contained" className={finalClass} {...props}>
         {props.children}
       </Button>
     </>
