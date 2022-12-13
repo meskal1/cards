@@ -4,7 +4,7 @@ import { AppDispatchType } from '../../app/store'
 import { LoginParamsType } from '../../services/authApi'
 
 const initialState = {
-  isLoggedIn: false,
+  isLoggedIn: true,
 }
 
 export const authReducer = (

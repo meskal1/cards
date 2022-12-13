@@ -11,8 +11,8 @@ const root = ReactDOMClient.createRoot(document.getElementById('root') as HTMLEl
 
 root.render(
   <Provider store={store}>
-    <HashRouter>
+    <BrowserRouter>
       <App />
-    </HashRouter>
+    </BrowserRouter>
   </Provider>
 )

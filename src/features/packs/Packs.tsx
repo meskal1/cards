@@ -5,7 +5,7 @@ type PacksType = {}
 export const Packs: React.FC<PacksType> = ({}) => {
   return (
     <>
-      <div>Packs</div>
+      <div>Packs1</div>
     </>
   )
 }

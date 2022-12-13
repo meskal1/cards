@@ -22,7 +22,7 @@ function App() {
   return (
     <>
       <div className={s.app}>
-        {isLoggedIn && <Header />}
+        {/*{isLoggedIn && <Header />}*/}
         <Header />
         <main className={s.mainContent}>
           <AppRoutes />
