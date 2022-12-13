@@ -1,19 +1,28 @@
-import { createSlice, Dispatch } from '@reduxjs/toolkit'
+import { createSlice, Dispatch, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 
+import { RequestStatusType, setAppError, SetRequestStatusPayloadType } from '../../app/appSlice'
 import { authAPI, RegisterFailResponseType, RegisterParamsType } from '../../services/authApi'
 
-const initialState = {}
+const initialState = {
+  isLoggedIn: false,
+  status: 'idle' as RequestStatusType,
+}
 
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    setAuthStatus(state, action: PayloadAction<SetRequestStatusPayloadType>) {
+      state.status = action.payload.status
+    },
+  },
 })
 
 // Thunks
 export const registerTC = (data: RegisterParamsType) => async (dispatch: Dispatch) => {
   try {
+    dispatch(setAuthStatus({ status: 'loading' }))
     const res = await authAPI.register(data)
 
     return true
@@ -21,7 +30,15 @@ export const registerTC = (data: RegisterParamsType) => async (dispatch: Dispatc
     if (axios.isAxiosError<RegisterFailResponseType>(e)) {
       const error = e.response ? e.response.data.error : 'Some error'
 
-      alert(error)
+      dispatch(setAppError({ error }))
     }
+  } finally {
+    dispatch(setAuthStatus({ status: 'idle' }))
   }
 }
+
+export const { setAuthStatus } = authSlice.actions
+export const authReducer = authSlice.reducer
+
+// Types
+type InitialStateType = typeof initialState

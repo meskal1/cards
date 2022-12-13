@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 
+import { ErrorSnackBar } from '../common/components/ErrorSnackBar/ErrorSnackBar'
 import { Header } from '../common/components/Header/Header'
 import { PATH } from '../constants/routePaths.enum'
 import { useAppSelector } from '../hooks/reduxHooks'
@@ -10,7 +11,7 @@ import { AppRoutes } from '../routes/routes'
 import s from './App.module.scss'
 
 function App() {
-  const isLoggedIn = useAppSelector(state => state.isLoggedIn.isLoggedIn)
+  const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -26,6 +27,7 @@ function App() {
         <Header />
         <main className={s.mainContent}>
           <AppRoutes />
+          <ErrorSnackBar />
         </main>
       </div>
     </>

@@ -4,10 +4,11 @@ import { TextField } from '@mui/material'
 import { useFormik } from 'formik'
 import { Link, useNavigate } from 'react-router-dom'
 
+import { RequestStatusType } from '../../../app/appSlice'
 import { CustomButton } from '../../../common/components/CustomButton/CustomButton'
 import { CustomPasswordInput } from '../../../common/components/CustomPasswordInput/CustomPasswordInput'
 import { PATH } from '../../../constants/routePaths.enum'
-import { useAppDispatch } from '../../../hooks/reduxHooks'
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { validationSchemaRegistration } from '../../../utils/validationSchema'
 import { registerTC } from '../authSlice'
 
@@ -16,8 +17,10 @@ import s from './Registration.module.scss'
 type RegistrationType = {}
 
 export const Registration: React.FC<RegistrationType> = ({}) => {
+  const authStatus = useAppSelector<RequestStatusType>(state => state.auth.status)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+
   const { handleSubmit, getFieldProps, errors, touched } = useFormik({
     initialValues: {
       email: '',
@@ -26,8 +29,6 @@ export const Registration: React.FC<RegistrationType> = ({}) => {
     },
     validationSchema: validationSchemaRegistration,
     onSubmit: async values => {
-      console.log(values)
-
       const isRegisterSucceed = await dispatch(
         registerTC({ email: values.email, password: values.password })
       )
@@ -70,7 +71,9 @@ export const Registration: React.FC<RegistrationType> = ({}) => {
           helperText={touched.confirmPassword && errors.confirmPassword}
           {...getFieldProps('confirmPassword')}
         />
-        <CustomButton className={s.button}>sign up</CustomButton>
+        <CustomButton className={s.button} disabled={authStatus === 'loading'}>
+          sign up
+        </CustomButton>
         <p className={s.signInQuestion}>Already have an account?</p>
         <Link className={s.signInLink} to={PATH.LOGIN}>
           sign in
