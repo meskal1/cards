@@ -1,6 +1,4 @@
 import axios, { AxiosResponse } from 'axios'
-import * as dotenv from 'dotenv'
-dotenv.config()
 
 // API
 const instance = axios.create({
@@ -10,19 +8,41 @@ const instance = axios.create({
 
 export const authAPI = {
   login(data: LoginParamsType) {
-    return instance.post<LoginParamsType, AxiosResponse<ResponseType>>('', data)
+    return instance.post<LoginParamsType, AxiosResponse<ResponseType>>('auth/login', data)
   },
   logout() {
-    return instance.delete<ResponseType>('')
+    return instance.delete<DeleteResponseType>('auth/me', {})
   },
   me() {
-    return instance.get<ResponseType>('')
+    return instance.post<ResponseType>('auth/me', {})
   },
 }
 
 // TYPES
-export type LoginParamsType = {}
+export type LoginParamsType = {
+  email: string
+  password: string
+  rememberMe: boolean
+}
 
-export type AuthMeType = {}
+export type ResponseType = {
+  _id: string
+  email: string
+  name: string
+  avatar?: string
+  publicCardPacksCount: number
+  created: string
+  updated: string
+  isAdmin: boolean
+  verified: boolean
+  rememberMe: boolean
+  error?: string
+  token: string
+  tokenDeathTime: number
+  __v: number
+}
 
-export type ResponseType = {}
+type DeleteResponseType = {
+  info: string
+  error: string
+}
