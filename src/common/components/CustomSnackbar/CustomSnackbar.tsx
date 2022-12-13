@@ -23,9 +23,14 @@ export const CustomSnackbar: React.FC<CustomSnackbarPropsType> = ({}) => {
 
   return (
     <Snackbar open={isOpen} autoHideDuration={6000} onClose={handleClose}>
-      <Alert onClose={handleClose} severity={alertMessage.messageType}>
-        {alertMessage.messageText}
-      </Alert>
+      {/* Condition is required to get rid of showing empty alert before snackbar finish closing */}
+      {alertMessage.messageText ? (
+        <Alert onClose={handleClose} severity={alertMessage.messageType}>
+          {alertMessage.messageText}
+        </Alert>
+      ) : (
+        <div></div>
+      )}
     </Snackbar>
   )
 }
