@@ -6,7 +6,7 @@ import s from './ButtonStyled.module.scss'
 
 type ButtonStyledType = {
   name: string
-  onClick: () => void
+  onClick?: () => void
 }
 
 export const ButtonStyled: React.FC<ButtonStyledType> = ({ name, onClick }) => {
