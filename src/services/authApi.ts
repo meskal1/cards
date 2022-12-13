@@ -1,22 +1,32 @@
 import axios, { AxiosResponse } from 'axios'
-import * as dotenv from 'dotenv'
-dotenv.config()
 
 // API
+//process.env.REACT_APP_BASE_URL,
 const instance = axios.create({
-  baseURL: process.env.REACT_APP_BASE_URL,
+  baseURL: 'http://localhost:7542/2.0/',
   withCredentials: true,
 })
 
 export const authAPI = {
-  login(data: LoginParamsType) {
-    return instance.post<LoginParamsType, AxiosResponse<ResponseType>>('', data)
+  register() {
+    return instance.post('auth/register', {
+      email: 'project@test.com',
+      password: 'qwerty123',
+    })
+  },
+
+  login(data?: LoginParamsType) {
+    return instance.post<LoginParamsType, AxiosResponse<ResponseType>>('auth/login', {
+      email: 'project@test.com',
+      password: 'qwerty123',
+      rememberMe: false,
+    })
   },
   logout() {
     return instance.delete<ResponseType>('')
   },
   me() {
-    return instance.get<ResponseType>('')
+    return instance.post<ResponseType>('auth/me', {})
   },
 }
 
@@ -25,4 +35,23 @@ export type LoginParamsType = {}
 
 export type AuthMeType = {}
 
-export type ResponseType = {}
+type ErrorResponseType = {
+  error: string
+  in: string
+}
+
+export type ResponseType = {
+  _id: string
+  email: string
+  rememberMe: boolean
+  isAdmin: boolean
+  name: string
+  verified: boolean
+  publicCardPacksCount: number
+  created: string
+  updated: string
+  __v: number
+  token: string
+  tokenDeathTime: number
+  avatar: string
+}
