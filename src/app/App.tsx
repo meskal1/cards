@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 
-import { ErrorSnackBar } from '../common/components/ErrorSnackBar/ErrorSnackBar'
+import { CustomSnackbar } from '../common/components/CustomSnackbar/CustomSnackbar'
 import { Header } from '../common/components/Header/Header'
 import { PATH } from '../constants/routePaths.enum'
 import { useAppSelector } from '../hooks/reduxHooks'
@@ -27,7 +27,7 @@ function App() {
         <Header />
         <main className={s.mainContent}>
           <AppRoutes />
-          <ErrorSnackBar />
+          <CustomSnackbar />
         </main>
       </div>
     </>

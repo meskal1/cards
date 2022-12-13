@@ -1,7 +1,11 @@
 import { createSlice, Dispatch, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 
-import { RequestStatusType, setAppError, SetRequestStatusPayloadType } from '../../app/appSlice'
+import {
+  RequestStatusType,
+  setAppAlertMessage,
+  SetRequestStatusPayloadType,
+} from '../../app/appSlice'
 import { authAPI, RegisterFailResponseType, RegisterParamsType } from '../../services/authApi'
 
 const initialState = {
@@ -30,7 +34,7 @@ export const registerTC = (data: RegisterParamsType) => async (dispatch: Dispatc
     if (axios.isAxiosError<RegisterFailResponseType>(e)) {
       const error = e.response ? e.response.data.error : 'Some error'
 
-      dispatch(setAppError({ error }))
+      dispatch(setAppAlertMessage({ messageType: 'error', messageText: error }))
     }
   } finally {
     dispatch(setAuthStatus({ status: 'idle' }))
