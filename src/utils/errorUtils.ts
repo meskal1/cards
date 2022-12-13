@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios'
 
-import { setAppErrorAC, setAppStatusAC } from '../app/appSlice'
+import { setAppAlertMessage, setAppStatusAC } from '../app/appSlice'
 import { AppDispatchType } from '../app/store'
 
 export const handleServerNetworkError = (dispatch: AppDispatchType, error: Error | AxiosError) => {
@@ -9,9 +9,9 @@ export const handleServerNetworkError = (dispatch: AppDispatchType, error: Error
       ? (error.response.data as { error: 'string' }).error
       : error.message
 
-    dispatch(setAppErrorAC({ error: err }))
+    dispatch(setAppAlertMessage({ messageType: 'error', messageText: err }))
   }
-  dispatch(setAppStatusAC({ status: 'failed' }))
+  dispatch(setAppStatusAC({ status: 'idle' }))
 }
 
 export const handleServerAppError = <D>(dispatch: AppDispatchType, data: boolean) => {

@@ -12,7 +12,7 @@ import { Profile } from '../features/profile/Profile'
 import { useAppSelector } from '../hooks/reduxHooks'
 
 export const AppRoutes = () => {
-  const isLoggedIn = useAppSelector(state => state.isLoggedIn.isLoggedIn)
+  const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
 
   const PrivateRoutes = () => {
     return isLoggedIn ? <Outlet /> : <Navigate to={PATH.LOGIN} />

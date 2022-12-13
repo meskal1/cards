@@ -6,9 +6,15 @@ import {
   setIsInitializedAC,
   RequestStatusType,
   setAppAlertMessage,
-  SetRequestStatusPayloadType, } from '../../app/appSlice'
+  SetRequestStatusPayloadType,
+} from '../../app/appSlice'
 import { AppDispatchType } from '../../app/store'
-import { LoginParamsType, authAPI, RegisterParamsType, RegisterFailResponseType } from '../../services/authApi'
+import {
+  LoginParamsType,
+  authAPI,
+  RegisterParamsType,
+  RegisterFailResponseType,
+} from '../../services/authApi'
 import { handleServerNetworkError } from '../../utils/errorUtils'
 
 const initialState = {
@@ -26,7 +32,9 @@ const authSlice = createSlice({
     setAuthStatus(state, action: PayloadAction<SetRequestStatusPayloadType>) {
       state.status = action.payload.status
     },
-  }})
+  },
+})
+
 export const authReducer = authSlice.reducer
 
 // ACTIONS
@@ -41,12 +49,12 @@ export const logInTC = (data: LoginParamsType) => async (dispatch: AppDispatchTy
     console.log(response.data.name)
     // Задиспатчить имя Юзера которое пришло с сервера
     dispatch(setIsLoggedInAC({ isLoggedIn: true }))
-    dispatch(setAppStatusAC({ status: 'succeeded' }))
   } catch (e) {
     const error = e as Error | AxiosError
 
     handleServerNetworkError(dispatch, error)
-    dispatch(setAppStatusAC({ status: 'failed' }))
+  } finally {
+    dispatch(setAppStatusAC({ status: 'idle' }))
   }
 }
 

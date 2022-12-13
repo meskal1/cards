@@ -25,7 +25,7 @@ type LogInAppType = {}
 export const LogInApp: React.FC<LogInAppType> = ({}) => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const isLoggedIn = useAppSelector(state => state.isLoggedIn.isLoggedIn)
+  const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
   const appStatus = useAppSelector(state => state.app.status)
   const [showPassword, setShowPassword] = React.useState(false)
 

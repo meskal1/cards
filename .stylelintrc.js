@@ -5,5 +5,6 @@ module.exports = {
       '^[a-z][a-zA-Z0-9]+$',
       '^([a-z][a-z0-9]*)(_[a-z0-9]+)*$',
     ],
+    'property-no-vendor-prefix': false
   },
 }

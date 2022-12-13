@@ -33,7 +33,7 @@ const appSlice = createSlice({
 export const appReducer = appSlice.reducer
 
 // ACTIONS
-export const { setAppStatusAC, setAppAlertMessage, setIsInitializedAC } = slice.actions
+export const { setAppStatusAC, setAppAlertMessage, setIsInitializedAC } = appSlice.actions
 
 // THUNKS
 export const initializeAppTC =
