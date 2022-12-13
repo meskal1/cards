@@ -29,6 +29,13 @@ export const registerTC = (data: RegisterParamsType) => async (dispatch: Dispatc
     dispatch(setAuthStatus({ status: 'loading' }))
     const res = await authAPI.register(data)
 
+    dispatch(
+      setAppAlertMessage({
+        messageType: 'success',
+        messageText: 'Congratulations, your account has been successfully registered',
+      })
+    )
+
     return true
   } catch (e) {
     if (axios.isAxiosError<RegisterFailResponseType>(e)) {
