@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { TextField } from '@mui/material'
 import { useFormik } from 'formik'
 import { Link, useNavigate } from 'react-router-dom'
 
@@ -66,7 +65,7 @@ export const Registration: React.FC<RegistrationType> = ({}) => {
           helperText={touched.confirmPassword && errors.confirmPassword}
           {...getFieldProps('confirmPassword')}
         />
-        <CustomButton className={s.button} disabled={authStatus === 'loading'}>
+        <CustomButton className={s.button} fullWidth disabled={authStatus === 'loading'}>
           sign up
         </CustomButton>
         <p className={s.signInQuestion}>Already have an account?</p>

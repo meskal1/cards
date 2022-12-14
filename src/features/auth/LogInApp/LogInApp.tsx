@@ -7,7 +7,7 @@ import Checkbox from '@mui/material/Checkbox'
 import { useFormik } from 'formik'
 import { Link, useNavigate } from 'react-router-dom'
 
-import { ButtonStyled } from '../../../common/components/ButtonStyled/ButtonStyled'
+import { CustomButton } from '../../../common/components/CustomButton/CustomButton'
 import { CustomInput } from '../../../common/components/CustomInput/CustomInput'
 import { CustomPasswordInput } from '../../../common/components/CustomPasswordInput/CustomPasswordInput'
 import { PATH } from '../../../constants/routePaths.enum'
@@ -86,7 +86,7 @@ export const LogInApp: React.FC<LogInAppType> = ({}) => {
             </Link>
           </div>
 
-          <ButtonStyled name={'Sign in'} />
+          <CustomButton>sign in</CustomButton>
         </form>
 
         <div className={s.login__signUpBlock}>
