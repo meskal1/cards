@@ -85,3 +85,6 @@ export const registerTC = (data: RegisterParamsType) => async (dispatch: AppDisp
     dispatch(setAuthStatus({ status: 'idle' }))
   }
 }
+
+// TYPES
+export type AuthStateType = typeof initialState
