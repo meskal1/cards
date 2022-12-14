@@ -54,6 +54,7 @@ export const initializeAppTC =
   }
 
 // Types
+export type AppStateType = typeof initialState
 export type RequestStatusType = 'idle' | 'loading'
 export type AlertMessageType = 'success' | 'error'
 export type AppAlertMessageTextType = string | null
