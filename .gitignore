@@ -35,6 +35,7 @@ package-lock.json
 # My own
 .stylelintrc.js
 .env
+.env.production
 webpack.config.js
 deploy.sh
 craco.config.js
