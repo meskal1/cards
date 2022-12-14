@@ -91,5 +91,8 @@
     "stylelint-config-css-modules": "^4.1.0",
     "stylelint-config-standard-scss": "^6.1.0",
     "stylelint-prettier": "^2.0.0"
+  },
+  "jest": {
+    "transformIgnorePatterns": ["node_modules/(?!axios)/"]
   }
 }
