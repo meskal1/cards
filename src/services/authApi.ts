@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from 'axios'
 
 // API
 const instance = axios.create({
-  baseURL: process.env.REACT_APP_BASE_URL,
+  baseURL: 'https://123.ru',
   withCredentials: true,
 })
 

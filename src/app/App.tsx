@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import * as React from 'react'
 
 import { CircularProgress, Box } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
@@ -27,10 +27,10 @@ function App() {
     setIsAppLoaded(true)
   }
 
+  console.log(process.env.REACT_APP_BASE_URL)
+
   React.useEffect(() => {
-    if (!isLoggedIn) {
-      dispatch(initializeAppTC(navigateToLogin, stopLoadingPreview))
-    }
+    dispatch(initializeAppTC(navigateToLogin, stopLoadingPreview))
   }, [])
 
   return (
