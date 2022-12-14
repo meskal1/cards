@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom'
 
 import { RequestStatusType } from '../../../app/appSlice'
 import { CustomButton } from '../../../common/components/CustomButton/CustomButton'
+import { CustomInput } from '../../../common/components/CustomInput/CustomInput'
 import { CustomPasswordInput } from '../../../common/components/CustomPasswordInput/CustomPasswordInput'
 import { PATH } from '../../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
@@ -43,10 +44,8 @@ export const Registration: React.FC<RegistrationType> = ({}) => {
     <div className={s.registration}>
       <form className={s.form} onSubmit={handleSubmit}>
         <h3 className={s.title}>sign up</h3>
-        <TextField
-          className={s.input}
-          label={'Email'}
-          variant={'standard'}
+        <CustomInput
+          label={'email'}
           fullWidth
           autoComplete={'new-password'}
           error={!!errors.email && touched.email}
@@ -54,18 +53,14 @@ export const Registration: React.FC<RegistrationType> = ({}) => {
           {...getFieldProps('email')}
         />
         <CustomPasswordInput
-          className={s.input}
           label={'Password'}
-          fullWidth
           autoComplete={'new-password'}
           error={!!errors.password && touched.password}
           helperText={touched.password && errors.password}
           {...getFieldProps('password')}
         />
         <CustomPasswordInput
-          className={s.input}
           label={'Confirm password'}
-          fullWidth
           autoComplete={'new-password'}
           error={!!errors.confirmPassword && touched.confirmPassword}
           helperText={touched.confirmPassword && errors.confirmPassword}

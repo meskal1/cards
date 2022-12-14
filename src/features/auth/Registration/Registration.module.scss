@@ -16,7 +16,7 @@
     justify-content: flex-start;
 
     .title {
-      margin-bottom: 41px;
+      margin-bottom: 20px;
 
       font-size: 26px;
       font-weight: 600;
@@ -24,25 +24,10 @@
       text-transform: capitalize;
     }
 
-    .input {
-      &:not(:last-of-type) {
-        margin-bottom: 25px;
-      }
-
-      &:last-of-type {
-        margin-bottom: 60px;
-      }
-
-      & input {
-        font-size: 16px;
-        font-weight: 500;
-        line-height: 24px;
-      }
-    }
-
     .button {
       align-self: stretch;
 
+      margin-top: 30px;
       margin-bottom: 31px;
 
       text-transform: capitalize !important;

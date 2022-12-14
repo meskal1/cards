@@ -2,17 +2,14 @@ import * as React from 'react'
 
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked'
 import TaskAltIcon from '@mui/icons-material/TaskAlt'
-import VisibilityIcon from '@mui/icons-material/Visibility'
-import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import { FormControlLabel, Typography } from '@mui/material'
 import Checkbox from '@mui/material/Checkbox'
-import IconButton from '@mui/material/IconButton'
-import InputAdornment from '@mui/material/InputAdornment'
-import TextField from '@mui/material/TextField'
 import { useFormik } from 'formik'
 import { Link, useNavigate } from 'react-router-dom'
 
 import { ButtonStyled } from '../../../common/components/ButtonStyled/ButtonStyled'
+import { CustomInput } from '../../../common/components/CustomInput/CustomInput'
+import { CustomPasswordInput } from '../../../common/components/CustomPasswordInput/CustomPasswordInput'
 import { PATH } from '../../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { validationSchemaLogin } from '../../../utils/validationSchema'
@@ -27,7 +24,6 @@ export const LogInApp: React.FC<LogInAppType> = ({}) => {
   const dispatch = useAppDispatch()
   const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
   const appStatus = useAppSelector(state => state.app.status)
-  const [showPassword, setShowPassword] = React.useState(false)
 
   const formik = useFormik({
     initialValues: {
@@ -41,10 +37,6 @@ export const LogInApp: React.FC<LogInAppType> = ({}) => {
     },
   })
 
-  const onClickShowPassword = () => {
-    setShowPassword(!showPassword)
-  }
-
   React.useEffect(() => {
     if (isLoggedIn) {
       formik.resetForm()
@@ -57,33 +49,21 @@ export const LogInApp: React.FC<LogInAppType> = ({}) => {
       <div className={s.loginContainer}>
         <h2 className={s.login__title}>sign in</h2>
         <form className={s.login__form} onSubmit={formik.handleSubmit}>
-          <TextField
+          <CustomInput
             className={s.login__field}
             label="email"
-            variant="standard"
+            error={formik.touched.email && !!formik.errors.email}
+            helperText={formik.touched.email && formik.errors.email}
             {...formik.getFieldProps('email')}
           />
-          <div className={s.login__errorBlock}>{formik.touched.email && formik.errors.email}</div>
 
-          <TextField
+          <CustomPasswordInput
             className={s.login__field}
-            type={showPassword ? 'text' : 'password'}
             label="password"
-            variant="standard"
+            error={formik.touched.password && !!formik.errors.password}
+            helperText={formik.touched.password && formik.errors.password}
             {...formik.getFieldProps('password')}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton onClick={onClickShowPassword}>
-                    {showPassword ? <VisibilityOff /> : <VisibilityIcon />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
           />
-          <div className={s.login__errorBlock}>
-            {formik.touched.password && formik.errors.password}
-          </div>
 
           <div className={s.login__blockRemember}>
             <FormControlLabel
