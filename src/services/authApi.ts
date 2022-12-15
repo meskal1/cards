@@ -11,13 +11,19 @@ export const authAPI = {
     return instance.post<LoginParamsType, AxiosResponse<ResponseType>>('auth/login', data)
   },
   logout() {
-    return instance.delete<DeleteResponseType>('auth/me', {})
+    return instance.delete<LogOutResponseType>('auth/me', {})
   },
   me() {
     return instance.post<ResponseType>('auth/me', {})
   },
   register(data: RegisterParamsType) {
-    return instance.post<RegisterResponseType>('/auth/register', data)
+    return instance.post<RegisterResponseType>('auth/register', data)
+  },
+  newPassword(data: CreatePasswordParamsType) {
+    return instance.post<CreatePasswordParamsType, CreatePasswordResponseType>(
+      'auth/set-new-password',
+      data
+    )
   },
 }
 
@@ -72,7 +78,23 @@ export type ResponseType = {
   __v: number
 }
 
-type DeleteResponseType = {
+type LogOutResponseType = {
+  info: string
+}
+
+export type LoginFailResponseType = RegisterFailResponseType
+
+export type AuthMeFailResponseType = {
+  in: string
+  error: string
+}
+
+export type CreatePasswordParamsType = {
+  password: string
+  resetPasswordToken: string
+}
+
+type CreatePasswordResponseType = {
   info: string
   error: string
 }
