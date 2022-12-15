@@ -34,6 +34,7 @@ package-lock.json
 
 # My own
 .env
+.env.production
 webpack.config.js
 deploy.sh
 craco.config.js
