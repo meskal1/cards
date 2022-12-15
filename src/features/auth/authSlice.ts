@@ -46,7 +46,7 @@ export const logInTC = (data: LoginParamsType) => async (dispatch: AppDispatchTy
     dispatch(setAppStatusAC({ status: 'loading' }))
     const response = await authAPI.login(data)
 
-    console.log(response.data.name)
+    console.log('User name from server: ', response.data.name)
     // Задиспатчить имя Юзера которое пришло с сервера
     dispatch(setIsLoggedInAC({ isLoggedIn: true }))
   } catch (e) {
