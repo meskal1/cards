@@ -1,8 +1,15 @@
 import axios, { AxiosResponse } from 'axios'
 
+import { PATH } from '../constants/routePaths.enum'
+
 // API
 const instance = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
+  withCredentials: true,
+})
+
+const onlyProdInstance = axios.create({
+  baseURL: 'https://neko-back.herokuapp.com/2.0',
   withCredentials: true,
 })
 
@@ -18,6 +25,15 @@ export const authAPI = {
   },
   register(data: RegisterParamsType) {
     return instance.post<RegisterResponseType>('/auth/register', data)
+  },
+  forgot(email: string) {
+    return onlyProdInstance.post<{ info: string }>('auth/forgot', {
+      email,
+      message: `<div style="background-color: lime; padding: 15px">
+                    password recovery link: 
+                    <a href='${process.env.REACT_APP_NEW_PASSWORD_URL}#${PATH.NEW_PASSWORD}/$token$'>link</a>
+                  </div>`,
+    })
   },
 }
 
