@@ -1,8 +1,9 @@
 @mixin fontSettings($space, $family, $weight, $size, $height) {
   margin-top: $space;
+
   font-family: $family;
-  font-weight: $weight;
   font-size: $size;
+  font-weight: $weight;
   line-height: $height;
 }
 
@@ -10,48 +11,52 @@
   clear: left;
   display: flex;
   flex-direction: column;
-  justify-self: center;
-  justify-content: center;
   align-items: center;
-  text-align: center;
-
-  background: rgb(240, 240, 240);
+  justify-content: center;
+  justify-self: center;
 
   width: 413px;
   height: 360px;
 
-  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1), -1px -1px 2px rgba(0, 0, 0, 0.1);
+  text-align: center;
+
+  background: rgb(240, 240, 240);
   border-radius: 2px;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1), -1px -1px 2px rgba(0, 0, 0, 0.1);
 
   &__addPhoto {
-    background-color: aqua;
+    float: right;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     width: 40px;
     height: 40px;
-    border-radius: 50%;
+
+    background-color: aqua;
     border: 1px solid white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    float: right;
+    border-radius: 50%;
   }
 
   &__title {
+
     @include fontSettings(15px, 'Montserrat', 600, 22px, 27px);
   }
 
   &__image {
-    margin-top: 30px;
     width: 96px;
     height: 96px;
-    border-radius: 50%;
-    background-color: cornflowerblue;
-
+    margin-top: 30px;
     padding-top: 40px;
+
+    background-color: cornflowerblue;
+    border-radius: 50%;
   }
 
   &__image img {
     width: 96px;
     height: 96px;
+
     border-radius: 50%
   }
 
@@ -61,15 +66,19 @@
   }
 
   &__name {
-    width: 100%;
-    display: flex;
-    justify-content: center;
+
     @include fontSettings(17px, 'Montserrat', 500, 20px, 24px);
+
+    display: flex;
     display: inline;
+    justify-content: center;
+
+    width: 100%;
   }
 
   &__name h2 {
     float: left;
+
     margin-right: 10px;
   }
 
@@ -78,13 +87,16 @@
   }
 
   &__email {
+
     @include fontSettings(14px, 'Montserrat', 400, 14px, 24px);
+
     margin-bottom: 29px;
   }
 
   &__arrow {
-    margin-top: 3px;
     float: left;
+
+    margin-top: 3px;
   }
 
   &__logOutBtn {
@@ -94,19 +106,23 @@
 }
 
 .backToPacks {
-  margin-top: 20px;
-  width: 160px;
-  height: 40px;
   float: left;
 
+  width: 160px;
+  height: 40px;
+  margin-top: 20px;
+
   &__PacksLink {
-    float: left;
+
     @include fontSettings(0px, 'Montserrat', 400px, 14px, 24px)
-  }
+  ;
+
+    float: left;}
 }
 
 .ProfileBox {
-  width: 100%;
   display: flex;
   justify-content: center;
+
+  width: 100%;
 }
