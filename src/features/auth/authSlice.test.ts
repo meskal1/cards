@@ -9,6 +9,7 @@ describe('auth reducer tests', () => {
     initialState = {
       isLoggedIn: false,
       status: 'idle' as RequestStatusType,
+      passwordIsChanged: false,
     }
   })
 
