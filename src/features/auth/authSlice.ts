@@ -9,13 +9,19 @@ import {
   SetRequestStatusPayloadType,
 } from '../../app/appSlice'
 import { AppDispatchType } from '../../app/store'
-import { authAPI, LoginParamsType, RegisterParamsType } from '../../services/authApi'
+import {
+  authAPI,
+  CreatePasswordParamsType,
+  LoginParamsType,
+  RegisterParamsType,
+} from '../../services/authApi'
 import { handleServerNetworkError } from '../../utils/errorUtils'
 import { setProfile } from '../profile/profileReducer'
 
 const initialState = {
   isLoggedIn: false,
   status: 'idle' as RequestStatusType,
+  passwordIsChanged: false,
 }
 
 const authSlice = createSlice({
@@ -28,22 +34,22 @@ const authSlice = createSlice({
     setAuthStatus(state, action: PayloadAction<SetRequestStatusPayloadType>) {
       state.status = action.payload.status
     },
+    setPasswordStatusAC(state, action: PayloadAction<SetPasswordStatusType>) {
+      state.passwordIsChanged = action.payload.passwordIsChanged
+    },
   },
 })
 
 export const authReducer = authSlice.reducer
 
 // ACTIONS
-export const { setIsLoggedInAC, setAuthStatus } = authSlice.actions
+export const { setIsLoggedInAC, setAuthStatus, setPasswordStatusAC } = authSlice.actions
 
 // THUNKS
 export const logInTC = (data: LoginParamsType) => async (dispatch: AppDispatchType) => {
   try {
     dispatch(setAppStatusAC({ status: 'loading' }))
     const response = await authAPI.login(data)
-
-    console.log(response.data.name)
-    // Задиспатчить имя Юзера которое пришло с сервера
     const { name, email, avatar } = response.data
 
     dispatch(setProfile({ name, email, avatar }))
@@ -74,7 +80,7 @@ export const logOutTC = () => async (dispatch: AppDispatchType) => {
 export const registerTC = (data: RegisterParamsType) => async (dispatch: AppDispatchType) => {
   try {
     dispatch(setAuthStatus({ status: 'loading' }))
-    const res = await authAPI.register(data)
+    await authAPI.register(data)
 
     dispatch(
       setAppAlertMessage({
@@ -91,5 +97,19 @@ export const registerTC = (data: RegisterParamsType) => async (dispatch: AppDisp
   }
 }
 
+export const createPasswordTC =
+  (data: CreatePasswordParamsType) => async (dispatch: AppDispatchType) => {
+    try {
+      await authAPI.newPassword(data)
+      dispatch(setPasswordStatusAC({ passwordIsChanged: true }))
+    } catch (e) {
+      const error = e as Error | AxiosError
+
+      handleServerNetworkError(dispatch, error)
+    }
+  }
+
 // TYPES
 export type AuthStateType = typeof initialState
+
+type SetPasswordStatusType = { passwordIsChanged: boolean }
