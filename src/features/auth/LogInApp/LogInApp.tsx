@@ -64,7 +64,6 @@ export const LogInApp: React.FC<LogInAppType> = ({}) => {
             helperText={formik.touched.password && formik.errors.password}
             {...formik.getFieldProps('password')}
           />
-
           <div className={s.login__blockRemember}>
             <FormControlLabel
               className={s.login__checkBoxBlock}

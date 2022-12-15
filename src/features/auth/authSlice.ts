@@ -11,6 +11,7 @@ import {
 import { AppDispatchType } from '../../app/store'
 import { authAPI, LoginParamsType, RegisterParamsType } from '../../services/authApi'
 import { handleServerNetworkError } from '../../utils/errorUtils'
+import { setProfile } from '../profile/profileReducer'
 
 const initialState = {
   isLoggedIn: false,
@@ -43,6 +44,9 @@ export const logInTC = (data: LoginParamsType) => async (dispatch: AppDispatchTy
 
     console.log(response.data.name)
     // Задиспатчить имя Юзера которое пришло с сервера
+    const { name, email, avatar } = response.data
+
+    dispatch(setProfile({ name, email, avatar }))
     dispatch(setIsLoggedInAC({ isLoggedIn: true }))
   } catch (e) {
     const error = e as Error | AxiosError
@@ -58,6 +62,7 @@ export const logOutTC = () => async (dispatch: AppDispatchType) => {
     dispatch(setAppStatusAC({ status: 'loading' }))
     await authAPI.logout()
     dispatch(setIsInitializedAC({ isInitialized: false }))
+    dispatch(setProfile({ name: '', email: '', avatar: undefined }))
     dispatch(setIsLoggedInAC({ isLoggedIn: false }))
   } catch (e) {
     const error = e as Error | AxiosError

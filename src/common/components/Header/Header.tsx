@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { PATH } from '../../../constants/routePaths.enum'
 import { logOutTC } from '../../../features/auth/authSlice'
-import { useAppDispatch } from '../../../hooks/reduxHooks'
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 
 import s from './Header.module.scss'
 
@@ -26,6 +26,8 @@ export const Header: React.FC<HeaderType> = ({}) => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null)
+
+  const name = useAppSelector(state => state.profile.name)
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget)
@@ -64,7 +66,7 @@ export const Header: React.FC<HeaderType> = ({}) => {
 
             <Box className={s.header__profileBlock}>
               <div className={s.header__userName} onClick={handleOpenUserMenu}>
-                {'ДОБАВИТЬ СЮДА ИМЯ КОТОРОЕ ПРИХОДИТ С СЕРВЕРА'}
+                {name ? name : ''}
               </div>
               <div>
                 <Tooltip title="">

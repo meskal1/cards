@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import { setIsLoggedInAC } from '../features/auth/authSlice'
+import { setProfile } from '../features/profile/profileReducer'
 import { authAPI } from '../services/authApi'
 
 import { AppDispatchType } from './store'
@@ -45,6 +46,9 @@ export const initializeAppTC =
       console.log(response.data.name)
       // Задиспатчить имя Юзера которое пришло с сервера
       dispatch(setIsInitializedAC({ isInitialized: true }))
+      const { name, email, avatar } = response.data
+
+      dispatch(setProfile({ name, email, avatar }))
       dispatch(setIsLoggedInAC({ isLoggedIn: true }))
     } catch (e) {
       navigateToLogin()
