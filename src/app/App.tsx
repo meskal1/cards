@@ -27,8 +27,6 @@ function App() {
     setIsAppLoaded(true)
   }
 
-  console.log(process.env.REACT_APP_BASE_URL)
-
   React.useEffect(() => {
     dispatch(initializeAppTC(navigateToLogin, stopLoadingPreview))
   }, [])
