@@ -3,9 +3,11 @@
   flex-direction: column;
   flex-grow: 1;
 }
+
 .mainContent {
   display: flex;
   flex-grow: 1;
+  align-items: center;
   justify-content: center;
 
   width: 100%;
@@ -13,6 +15,7 @@
   margin: 0 auto;
   padding: 0 15px;
 }
+
 .circularProgress {
   display: flex;
   flex-grow: 1;
