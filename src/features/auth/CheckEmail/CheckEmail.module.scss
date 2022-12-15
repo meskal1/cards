@@ -1,0 +1,37 @@
+.checkEmailContainer {
+  display: flex;
+  flex: 0 1 400px;
+  flex-direction: column;
+  gap: 20px;
+  align-self: center;
+
+  padding: 30px;
+
+  text-align: center;
+
+  background: rgb(240 240 240);
+  border-radius: 20px;
+
+  & > * {
+    &::first-letter {
+      text-transform: uppercase !important;
+    }
+  }
+}
+.checkEmail {
+  &__title {
+    font-size: 26px;
+    font-weight: 600;
+  }
+  &__img {
+    align-self: center;
+
+    width: 108px;
+    height: 108px;
+  }
+  &__text {
+    font-weight: 500;
+    line-height: 25px;
+    color: grey;
+  }
+}
