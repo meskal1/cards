@@ -1,25 +1,40 @@
 import * as React from 'react'
-import { authMe, InitialProfileType } from './profileReducer'
+
+import { BorderColor, CameraAlt, KeyboardBackspace } from '@mui/icons-material'
+import { Link, useNavigate } from 'react-router-dom'
+
+import { CustomButton } from '../../common/components/CustomButton/CustomButton'
+import { PATH } from '../../constants/routePaths.enum'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+import { logOutTC } from '../auth/authSlice'
+
+import s from './Profile.module.scss'
+import { InitialProfileType } from './profileReducer'
 
 type ProfileType = {}
 
 export const Profile: React.FC<ProfileType> = ({}) => {
   const dispatch = useAppDispatch()
+  const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
+  const navigate = useNavigate()
 
   const profile = useAppSelector<InitialProfileType>(state => state.profile)
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [avatar, setAvatar] = useState('')
+  const [name, setName] = React.useState('')
+  const [email, setEmail] = React.useState('')
+  const [avatar, setAvatar] = React.useState('')
 
-  useEffect(() => {
-    dispatch(authMe())
-  }, [])
-  const onLogOutHandler = () => alert('Log Out')
+  const onLogOutHandler = () => {
+    dispatch(logOutTC())
+  }
   const addPhotoHandler = () => alert('add photo')
   const editNameHandler = () => alert('edit name')
-  const backToPacsHandler = () => alert('bac to packs')
+  const backToPacsHandler = () => {
+    navigate(PATH.PACKS)
+  }
 
-  console.log(profile)
+  if (!isLoggedIn) {
+    navigate(PATH.LOGIN)
+  }
 
   return (
     <div
@@ -27,13 +42,11 @@ export const Profile: React.FC<ProfileType> = ({}) => {
         width: '100%',
       }}
     >
-      <div className={s.backToPacks}>
+      <div className={s.backToPacks} onClick={backToPacsHandler}>
         <div className={s.ProfileContainer__arrow}>
           <KeyboardBackspace />
         </div>
-        <div className={s.backToPacks__PacksLink} onClick={backToPacsHandler}>
-          Back to Pacs List
-        </div>
+        <div className={s.backToPacks__PacksLink}>Back to Pacs List</div>
       </div>
       <div className={s.ProfileBox}>
         <div className={s.ProfileContainer}>
@@ -53,7 +66,9 @@ export const Profile: React.FC<ProfileType> = ({}) => {
             </div>
           </div>
           <p className={s.ProfileContainer__email}>{profile.email}</p>
-          <ButtonStyled name={'Log Out'} onClick={onLogOutHandler} color={'white'} />
+          <CustomButton onClick={onLogOutHandler} className={s.ProfileContainer__logOutBtn}>
+            Log Out
+          </CustomButton>
         </div>
       </div>
     </div>
