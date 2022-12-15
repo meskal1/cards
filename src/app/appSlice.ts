@@ -1,8 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import axios, { AxiosError } from 'axios'
 
 import { setIsLoggedInAC } from '../features/auth/authSlice'
 import { setProfile } from '../features/profile/profileReducer'
-import { authAPI } from '../services/authApi'
+import { authAPI, AuthMeFailResponseType } from '../services/authApi'
+import { handleServerNetworkError } from '../utils/errorUtils'
 
 import { AppDispatchType } from './store'
 
@@ -37,33 +39,40 @@ export const appReducer = appSlice.reducer
 export const { setAppStatusAC, setAppAlertMessage, setIsInitializedAC } = appSlice.actions
 
 // THUNKS
-export const initializeAppTC =
-  (navigateToLogin: () => void, setIsAppLoaded: () => void) =>
-  async (dispatch: AppDispatchType) => {
-    try {
-      const response = await authAPI.me()
+export const initializeAppTC = () => async (dispatch: AppDispatchType) => {
+  try {
+    const response = await authAPI.me()
+    const { name, email, avatar } = response.data
 
-      console.log(response.data.name)
-      // Задиспатчить имя Юзера которое пришло с сервера
-      dispatch(setIsInitializedAC({ isInitialized: true }))
-      const { name, email, avatar } = response.data
+    dispatch(setProfile({ name, email, avatar }))
+    dispatch(setIsLoggedInAC({ isLoggedIn: true }))
+  } catch (e) {
+    const error = e as Error | AxiosError
 
-      dispatch(setProfile({ name, email, avatar }))
-      dispatch(setIsLoggedInAC({ isLoggedIn: true }))
-    } catch (e) {
-      navigateToLogin()
-    } finally {
-      setIsAppLoaded()
+    if (axios.isAxiosError(error)) {
+      const err = error.response?.data
+        ? (error.response.data as { error: 'string' }).error
+        : error.message
+
+      console.log(err)
     }
+  } finally {
+    dispatch(setIsInitializedAC({ isInitialized: true }))
   }
+}
 
 // Types
 export type AppStateType = typeof initialState
+
 export type RequestStatusType = 'idle' | 'loading'
+
 export type AlertMessageType = 'success' | 'error'
+
 export type AppAlertMessageTextType = string | null
+
 type SetAppMessagePayloadType = {
   messageType: AlertMessageType
   messageText: AppAlertMessageTextType
 }
+
 export type SetRequestStatusPayloadType = { status: RequestStatusType }
