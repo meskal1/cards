@@ -24,7 +24,7 @@ const appSlice = createSlice({
     setAppAlertMessage(state, action: PayloadAction<SetAppMessagePayloadType>) {
       state.alertMessage = action.payload
     },
-    setIsInitializedAC(state, action: PayloadAction<{ isInitialized: boolean }>) {
+    setIsInitializedAC(state, action: PayloadAction<SetAppInitializedPayloadType>) {
       state.isInitialized = action.payload.isInitialized
     },
   },
@@ -42,7 +42,7 @@ export const initializeAppTC =
     try {
       const response = await authAPI.me()
 
-      console.log(response.data.name)
+      console.log('User name from server: ', response.data.name)
       // Задиспатчить имя Юзера которое пришло с сервера
       dispatch(setIsInitializedAC({ isInitialized: true }))
       dispatch(setIsLoggedInAC({ isLoggedIn: true }))
@@ -53,12 +53,18 @@ export const initializeAppTC =
     }
   }
 
-// Types
+// TYPES
 export type RequestStatusType = 'idle' | 'loading'
+
 export type AlertMessageType = 'success' | 'error'
+
 export type AppAlertMessageTextType = string | null
+
 type SetAppMessagePayloadType = {
   messageType: AlertMessageType
   messageText: AppAlertMessageTextType
 }
+
 export type SetRequestStatusPayloadType = { status: RequestStatusType }
+
+export type SetAppInitializedPayloadType = { isInitialized: boolean }
