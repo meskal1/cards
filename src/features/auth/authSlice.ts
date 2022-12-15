@@ -15,6 +15,7 @@ import { setProfile } from '../profile/profileReducer'
 
 const initialState = {
   isLoggedIn: false,
+  recoveryEmail: '',
   status: 'idle' as RequestStatusType,
 }
 
@@ -28,13 +29,16 @@ const authSlice = createSlice({
     setAuthStatus(state, action: PayloadAction<SetRequestStatusPayloadType>) {
       state.status = action.payload.status
     },
+    setRecoveryEmail(state, action: PayloadAction<{ recoveryEmail: string }>) {
+      state.recoveryEmail = action.payload.recoveryEmail
+    },
   },
 })
 
 export const authReducer = authSlice.reducer
 
 // ACTIONS
-export const { setIsLoggedInAC, setAuthStatus } = authSlice.actions
+export const { setIsLoggedInAC, setAuthStatus, setRecoveryEmail } = authSlice.actions
 
 // THUNKS
 export const logInTC = (data: LoginParamsType) => async (dispatch: AppDispatchType) => {
@@ -80,6 +84,27 @@ export const registerTC = (data: RegisterParamsType) => async (dispatch: AppDisp
       setAppAlertMessage({
         messageType: 'success',
         messageText: 'Congratulations, your account has been successfully registered',
+      })
+    )
+
+    return true
+  } catch (e) {
+    handleServerNetworkError(dispatch, e as Error | AxiosError)
+  } finally {
+    dispatch(setAuthStatus({ status: 'idle' }))
+  }
+}
+
+export const forgotPasswordTC = (email: string) => async (dispatch: AppDispatchType) => {
+  try {
+    setAuthStatus({ status: 'loading' })
+    const res = await authAPI.forgot(email)
+
+    dispatch(setRecoveryEmail({ recoveryEmail: email }))
+    dispatch(
+      setAppAlertMessage({
+        messageType: 'success',
+        messageText: res.data.info,
       })
     )
 
