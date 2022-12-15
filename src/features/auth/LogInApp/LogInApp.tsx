@@ -85,7 +85,7 @@ export const LogInApp: React.FC<LogInAppType> = ({}) => {
             </Link>
           </div>
 
-          <CustomButton>sign in</CustomButton>
+          <CustomButton>Sign in</CustomButton>
         </form>
 
         <div className={s.login__signUpBlock}>
