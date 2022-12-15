@@ -1,11 +1,9 @@
 import * as React from 'react'
 
 import { CircularProgress, Box } from '@mui/material'
-import { useNavigate } from 'react-router-dom'
 
 import { CustomSnackbar } from '../common/components/CustomSnackbar/CustomSnackbar'
 import { Header } from '../common/components/Header/Header'
-import { PATH } from '../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks'
 import { AppRoutes } from '../routes/routes'
 
@@ -14,26 +12,16 @@ import { initializeAppTC } from './appSlice'
 
 function App() {
   const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
-  const navigate = useNavigate()
+  const isInitialized = useAppSelector(state => state.app.isInitialized)
   const dispatch = useAppDispatch()
-  const [isAppLoaded, setIsAppLoaded] = React.useState(false)
-
-  const navigateToLogin = () => {
-    setIsAppLoaded(true)
-    navigate(PATH.LOGIN)
-  }
-
-  const stopLoadingPreview = () => {
-    setIsAppLoaded(true)
-  }
 
   React.useEffect(() => {
-    dispatch(initializeAppTC(navigateToLogin, stopLoadingPreview))
+    dispatch(initializeAppTC())
   }, [])
 
   return (
     <>
-      {isAppLoaded ? (
+      {isInitialized ? (
         <>
           <div className={s.app}>
             {isLoggedIn && <Header />}
