@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import * as React from 'react'
 
 import { CircularProgress, Box } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
@@ -28,9 +28,7 @@ function App() {
   }
 
   React.useEffect(() => {
-    if (!isLoggedIn) {
-      dispatch(initializeAppTC(navigateToLogin, stopLoadingPreview))
-    }
+    dispatch(initializeAppTC(navigateToLogin, stopLoadingPreview))
   }, [])
 
   return (
