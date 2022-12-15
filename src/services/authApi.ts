@@ -1,57 +1,78 @@
 import axios, { AxiosResponse } from 'axios'
 
 // API
-//process.env.REACT_APP_BASE_URL,
 const instance = axios.create({
-  baseURL: 'http://localhost:7542/2.0/',
+  baseURL: process.env.REACT_APP_BASE_URL,
   withCredentials: true,
 })
 
 export const authAPI = {
-  register() {
-    return instance.post('auth/register', {
-      email: 'project@test.com',
-      password: 'qwerty123',
-    })
-  },
-
-  login(data?: LoginParamsType) {
-    return instance.post<LoginParamsType, AxiosResponse<ResponseType>>('auth/login', {
-      email: 'project@test.com',
-      password: 'qwerty123',
-      rememberMe: false,
-    })
+  login(data: LoginParamsType) {
+    return instance.post<LoginParamsType, AxiosResponse<ResponseType>>('auth/login', data)
   },
   logout() {
-    return instance.delete<ResponseType>('')
+    return instance.delete<DeleteResponseType>('auth/me', {})
   },
   me() {
     return instance.post<ResponseType>('auth/me', {})
   },
+  register(data: RegisterParamsType) {
+    return instance.post<RegisterResponseType>('/auth/register', data)
+  },
 }
 
 // TYPES
-export type LoginParamsType = {}
+export type LoginParamsType = {
+  email: string
+  password: string
+  rememberMe: boolean
+}
 
-export type AuthMeType = {}
+export type UserType = {
+  _id: string
+  email: string
+  rememberMe: boolean
+  name: string
+  publicCardPacksCount: number
+  created: string
+  updated: string
+  avatar: string
+}
 
-type ErrorResponseType = {
+export type RegisterParamsType = Omit<LoginParamsType, 'rememberMe'>
+
+export type RegisterResponseType = RegisterSuccessResponseType
+
+export type RegisterSuccessResponseType = {
+  addedUser: AddedUserType
+}
+
+export type RegisterFailResponseType = {
   error: string
+  email: string
   in: string
 }
+
+export type AddedUserType = Omit<UserType, 'avatar'>
 
 export type ResponseType = {
   _id: string
   email: string
-  rememberMe: boolean
-  isAdmin: boolean
   name: string
-  verified: boolean
+  avatar?: string
   publicCardPacksCount: number
   created: string
   updated: string
-  __v: number
+  isAdmin: boolean
+  verified: boolean
+  rememberMe: boolean
+  error?: string
   token: string
   tokenDeathTime: number
-  avatar: string
+  __v: number
+}
+
+type DeleteResponseType = {
+  info: string
+  error: string
 }

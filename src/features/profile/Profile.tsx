@@ -1,12 +1,4 @@
-import React, { useEffect, useState } from 'react'
-
-import { BorderColor, CameraAlt, KeyboardBackspace } from '@mui/icons-material'
-
-import { ButtonStyled } from '../../common/components/ButtonStyled/ButtonStyled'
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
-import { authAPI } from '../../services/authApi'
-
-import s from './Profile.module.scss'
+import * as React from 'react'
 import { authMe, InitialProfileType } from './profileReducer'
 
 type ProfileType = {}

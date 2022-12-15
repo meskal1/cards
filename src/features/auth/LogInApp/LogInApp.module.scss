@@ -8,17 +8,19 @@
 
   text-align: center;
 
-  background: rgb(240, 240, 240);
+  background: rgb(240 240 240);
   border-radius: 20px;
 
   & > * {
     &::first-letter {
-      text-transform: uppercase;
+      text-transform: uppercase !important;
     }
   }
+}
 
+.login {
   &__title {
-    margin: 0px 0px 15px 0px;
+    margin: 0 0 15px;
 
     font-size: 26px;
     font-weight: 600;
@@ -27,22 +29,67 @@
   &__form {
     display: flex;
     flex-direction: column;
-    row-gap: 15px;
 
-    margin: 0px 0px 25px 0px;
+    margin: 0 0 25px;
+  }
+
+  &__field {
+    & > * {
+      font-family: inherit !important;
+      letter-spacing: inherit !important;
+
+      &::first-letter {
+        text-transform: uppercase !important;
+      }
+    }
+  }
+
+  &__errorBlock {
+    height: 15px;
+    margin: 5px 0 0;
+
+    font-size: 11px;
+    color: red;
+    text-align: start;
+
+    &::first-letter {
+      text-transform: uppercase;
+    }
   }
 
   &__blockRemember {
     display: flex;
     flex-wrap: wrap;
+    row-gap: 10px;
     column-gap: 20px;
     align-items: center;
     justify-content: space-between;
+
+    margin: 0 0 15px;
 
     font-weight: 500;
 
     @media (max-width: 390px) {
       justify-content: center;
+    }
+  }
+
+  &__checkBoxBlock {
+    margin-right: 0 !important;
+    margin-left: -2px !important;
+  }
+
+  &__typography {
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    user-select: none;
+
+    font-family: inherit !important;
+    font-weight: 500 !important;
+    letter-spacing: inherit !important;
+
+    &::first-letter {
+      text-transform: uppercase;
     }
   }
 
@@ -77,4 +124,6 @@
 }
 
 .checkbox {
+  margin: 0 9px 0 0 !important;
+  padding: 0 !important;
 }

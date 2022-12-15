@@ -2,127 +2,98 @@ import * as React from 'react'
 
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked'
 import TaskAltIcon from '@mui/icons-material/TaskAlt'
-import Visibility from '@mui/icons-material/Visibility'
-import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import { FormControlLabel, Typography } from '@mui/material'
 import Checkbox from '@mui/material/Checkbox'
-import FormControl from '@mui/material/FormControl'
-import IconButton from '@mui/material/IconButton'
-import Input from '@mui/material/Input'
-import InputAdornment from '@mui/material/InputAdornment'
-import InputLabel from '@mui/material/InputLabel'
-import TextField from '@mui/material/TextField'
+import { useFormik } from 'formik'
+import { Link, useNavigate } from 'react-router-dom'
 
-import { ButtonStyled } from '../../../common/components/ButtonStyled/ButtonStyled'
+import { CustomButton } from '../../../common/components/CustomButton/CustomButton'
+import { CustomInput } from '../../../common/components/CustomInput/CustomInput'
+import { CustomPasswordInput } from '../../../common/components/CustomPasswordInput/CustomPasswordInput'
 import { PATH } from '../../../constants/routePaths.enum'
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
+import { validationSchemaLogin } from '../../../utils/validationSchema'
+import { logInTC } from '../authSlice'
 
 import s from './LogInApp.module.scss'
 
 type LogInAppType = {}
 
-interface State {
-  amount: string
-  password: string
-  weight: string
-  weightRange: string
-  showPassword: boolean
-}
-
 export const LogInApp: React.FC<LogInAppType> = ({}) => {
-  const [values, setValues] = React.useState<State>({
-    amount: '',
-    password: '',
-    weight: '',
-    weightRange: '',
-    showPassword: false,
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+  const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
+  const appStatus = useAppSelector(state => state.app.status)
+
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+      rememberMe: false,
+    },
+    validationSchema: validationSchemaLogin,
+    onSubmit: values => {
+      dispatch(logInTC(values))
+    },
   })
 
-  const onChangePassword = (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValues({ ...values, [prop]: event.target.value })
-  }
-
-  const onClickShowPassword = () => {
-    setValues({
-      ...values,
-      showPassword: !values.showPassword,
-    })
-  }
-
-  const onMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault()
-  }
+  React.useEffect(() => {
+    if (isLoggedIn) {
+      formik.resetForm()
+      navigate(PATH.PROFILE)
+    }
+  }, [isLoggedIn])
 
   return (
     <>
       <div className={s.loginContainer}>
-        <h2 className={s.loginContainer__title}>sign in</h2>
-        <form className={s.loginContainer__form} onSubmit={() => alert('сабмит формы')}>
-          <FormControl variant="standard">
-            {/* <InputLabel htmlFor='standard-adornment-email'>email</InputLabel> */}
-            <TextField id="standard-adornment-email" label="Email" variant="standard" />
-          </FormControl>
-          <FormControl variant="standard">
-            <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
-            <Input
-              id="standard-adornment-password"
-              type={values.showPassword ? 'text' : 'password'}
-              value={values.password}
-              onChange={onChangePassword('password')}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={onClickShowPassword}
-                    onMouseDown={onMouseDownPassword}
-                  >
-                    {values.showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-          </FormControl>
+        <h2 className={s.login__title}>sign in</h2>
+        <form className={s.login__form} onSubmit={formik.handleSubmit}>
+          <CustomInput
+            className={s.login__field}
+            label="email"
+            error={formik.touched.email && !!formik.errors.email}
+            helperText={formik.touched.email && formik.errors.email}
+            {...formik.getFieldProps('email')}
+          />
 
-          <div className={s.loginContainer__blockRemember}>
+          <CustomPasswordInput
+            className={s.login__field}
+            label="password"
+            error={formik.touched.password && !!formik.errors.password}
+            helperText={formik.touched.password && formik.errors.password}
+            {...formik.getFieldProps('password')}
+          />
+
+          <div className={s.login__blockRemember}>
             <FormControlLabel
-              sx={{
-                mr: 0,
-              }}
-              label={
-                <Typography
-                  sx={{
-                    marginRight: 0,
-                    fontFamily: 'inherit',
-                    letterSpacing: 'inherit',
-                    userSelect: 'none',
-                    MozUserSelect: 'none',
-                    KhtmlUserSelect: 'none',
-                  }}
-                >
-                  Remember me
-                </Typography>
-              }
+              className={s.login__checkBoxBlock}
+              label={<Typography className={s.login__typography}>remember me</Typography>}
               control={
                 <Checkbox
+                  {...formik.getFieldProps('rememberMe')}
                   className={s.checkbox}
-                  checked={true} // change hardcoded
+                  checked={formik.values.rememberMe}
                   size="medium"
-                  style={true ? { color: '#1B79CE ' } : { color: 'grey ' }} // eslint-disable-line
+                  style={formik.values.rememberMe ? { color: '#1B79CE ' } : { color: 'grey ' }}
                   icon={<RadioButtonUncheckedIcon />}
                   checkedIcon={<TaskAltIcon />}
                 />
               }
             />
-            <a className={s.loginContainer__forgotPassword} href={PATH.RECOVERY}>
+            <Link className={s.login__forgotPassword} to={PATH.RECOVERY}>
               forgot password?
-            </a>
+            </Link>
           </div>
-          <ButtonStyled name={'Sign in'} onClick={() => alert('нажал на кнопку')} />
+
+          <CustomButton>sign in</CustomButton>
         </form>
-        <div className={s.loginContainer__signUpBlock}>
-          <p className={s.loginContainer__text}>already have an account?</p>
-          <a className={s.loginContainer__signUp} href={PATH.REGISTRATION}>
+
+        <div className={s.login__signUpBlock}>
+          <p className={s.login__text}>already have an account?</p>
+          <Link className={s.login__signUp} to={PATH.REGISTRATION}>
             sign up
-          </a>
+          </Link>
         </div>
       </div>
     </>

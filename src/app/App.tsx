@@ -1,33 +1,55 @@
-import React, { useEffect } from 'react'
+import * as React from 'react'
 
+import { CircularProgress, Box } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 
+import { CustomSnackbar } from '../common/components/CustomSnackbar/CustomSnackbar'
 import { Header } from '../common/components/Header/Header'
 import { PATH } from '../constants/routePaths.enum'
-import { useAppSelector } from '../hooks/reduxHooks'
+import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks'
 import { AppRoutes } from '../routes/routes'
 
 import s from './App.module.scss'
+import { initializeAppTC } from './appSlice'
 
 function App() {
-  const isLoggedIn = useAppSelector(state => state.isLoggedIn.isLoggedIn)
+  const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+  const [isAppLoaded, setIsAppLoaded] = React.useState(false)
 
-  useEffect(() => {
-    if (!isLoggedIn) {
-      navigate(PATH.LOGIN)
-    }
+  const navigateToLogin = () => {
+    setIsAppLoaded(true)
+    navigate(PATH.LOGIN)
+  }
+
+  const stopLoadingPreview = () => {
+    setIsAppLoaded(true)
+  }
+
+  React.useEffect(() => {
+    dispatch(initializeAppTC(navigateToLogin, stopLoadingPreview))
   }, [])
 
   return (
     <>
-      <div className={s.app}>
-        {/*{isLoggedIn && <Header />}*/}
-        <Header />
-        <main className={s.mainContent}>
-          <AppRoutes />
-        </main>
-      </div>
+      {isAppLoaded ? (
+        <>
+          <div className={s.app}>
+            {isLoggedIn && <Header />}
+            <main className={s.mainContent}>
+              <AppRoutes />
+            </main>
+          </div>
+          <Box position={'absolute'}>
+            <CustomSnackbar />
+          </Box>
+        </>
+      ) : (
+        <Box className={s.circularProgress}>
+          <CircularProgress />
+        </Box>
+      )}
     </>
   )
 }
