@@ -12,12 +12,10 @@ import { createPasswordTC } from '../authSlice'
 
 import s from './NewPassword.module.scss'
 
-type NewPasswordType = {}
-
-export const NewPassword: React.FC<NewPasswordType> = ({}) => {
+export const NewPassword = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const { token } = useParams<{ token: string }>()
+  const { token } = useParams()
   const passwordIsChanged = useAppSelector(state => state.auth.passwordIsChanged)
 
   const formik = useFormik({
@@ -26,6 +24,7 @@ export const NewPassword: React.FC<NewPasswordType> = ({}) => {
     },
     validationSchema: validationSchemaNewPassword,
     onSubmit: values => {
+      console.log(token)
       dispatch(createPasswordTC({ password: values.password, resetPasswordToken: token! }))
     },
   })
@@ -40,18 +39,20 @@ export const NewPassword: React.FC<NewPasswordType> = ({}) => {
   return (
     <>
       <div className={s.setPasswordContainer}>
-        <h2 className={s.setPassword__title}>create new password</h2>
-        <CustomPasswordInput
-          className={s.setPassword__field}
-          label="password"
-          error={formik.touched.password && !!formik.errors.password}
-          helperText={formik.touched.password && formik.errors.password}
-          {...formik.getFieldProps('password')}
-        />
-        <p className={s.setPassword__text}>
-          create new password and we will send you further instructions to email
-        </p>
-        <CustomButton>Create new password</CustomButton>
+        <form className={s.login__form} onSubmit={formik.handleSubmit}>
+          <h2 className={s.setPassword__title}>create new password</h2>
+          <CustomPasswordInput
+            className={s.setPassword__field}
+            label="password"
+            error={formik.touched.password && !!formik.errors.password}
+            helperText={formik.touched.password && formik.errors.password}
+            {...formik.getFieldProps('password')}
+          />
+          <p className={s.setPassword__text}>
+            create new password and we will send you further instructions to email
+          </p>
+          <CustomButton>Create new password</CustomButton>
+        </form>
       </div>
     </>
   )

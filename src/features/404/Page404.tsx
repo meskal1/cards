@@ -1,5 +1,3 @@
-import * as React from 'react'
-
 import { useNavigate } from 'react-router'
 
 import image404 from '../../assets/img/404.svg'

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useFormik } from 'formik'
 import { Link, useNavigate } from 'react-router-dom'
 
@@ -12,10 +10,7 @@ import { forgotPasswordTC } from '../authSlice'
 
 import s from './Recovery.module.scss'
 
-type RecoveryType = {}
-
-export const Recovery: React.FC<RecoveryType> = ({}) => {
-  console.log(process.env)
+export const Recovery = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 

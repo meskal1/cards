@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useFormik } from 'formik'
 import { Link, useNavigate } from 'react-router-dom'
 
@@ -14,9 +12,7 @@ import { registerTC } from '../authSlice'
 
 import s from './Registration.module.scss'
 
-type RegistrationType = {}
-
-export const Registration: React.FC<RegistrationType> = ({}) => {
+export const Registration = () => {
   const authStatus = useAppSelector<RequestStatusType>(state => state.auth.status)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
