@@ -1,5 +1,3 @@
-import * as React from 'react'
-
 import { BorderColor, CameraAlt, KeyboardBackspace } from '@mui/icons-material'
 import LogoutIcon from '@mui/icons-material/Logout'
 import { Link, useNavigate } from 'react-router-dom'
@@ -10,17 +8,15 @@ import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { logOutTC } from '../auth/authSlice'
 
 import s from './Profile.module.scss'
-import { InitialProfileType } from './profileReducer'
 
 export const Profile = () => {
   const dispatch = useAppDispatch()
   const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
   const navigate = useNavigate()
 
-  const profile = useAppSelector<InitialProfileType>(state => state.profile)
-  const [name, setName] = React.useState('')
-  const [email, setEmail] = React.useState('')
-  const [avatar, setAvatar] = React.useState('')
+  const name = useAppSelector(state => state.profile.name)
+  const email = useAppSelector(state => state.profile.email)
+  const avatar = useAppSelector(state => state.profile.avatar)
 
   const onLogOutHandler = () => {
     dispatch(logOutTC())
@@ -55,10 +51,10 @@ export const Profile = () => {
             <CameraAlt className={s.profile__avatarIcon} />
           </div>
           <p className={s.profile__userName}>
-            {profile.name}
+            {name}
             <BorderColor className={s.profile__marker} onClick={editNameHandler} />
           </p>
-          <p className={s.profile__userEmail}>{profile.email}</p>
+          <p className={s.profile__userEmail}>{email}</p>
           <CustomButton className={s.profile__button} onClick={onLogOutHandler}>
             <LogoutIcon className={s.profile__buttonIcon} />
             Log out
