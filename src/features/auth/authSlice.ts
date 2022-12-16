@@ -47,7 +47,8 @@ const authSlice = createSlice({
 export const authReducer = authSlice.reducer
 
 // ACTIONS
-export const { setIsLoggedInAC, setAuthStatus, setRecoveryEmail, setPasswordStatusAC } = authSlice.actions
+export const { setIsLoggedInAC, setAuthStatus, setRecoveryEmail, setPasswordStatusAC } =
+  authSlice.actions
 
 // THUNKS
 export const logInTC = (data: LoginParamsType) => async (dispatch: AppDispatchType) => {
