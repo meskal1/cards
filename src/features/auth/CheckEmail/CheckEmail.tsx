@@ -13,7 +13,7 @@ type CheckEmailType = {}
 
 export const CheckEmail: React.FC<CheckEmailType> = ({}) => {
   const navigate = useNavigate()
-  //   const recoveryEmail = useAppSelector(state => state.auth.recoveryEmail)
+  const recoveryEmail = useAppSelector(state => state.auth.recoveryEmail)
 
   const onClickNavigate = () => {
     navigate(PATH.LOGIN)
@@ -25,7 +25,7 @@ export const CheckEmail: React.FC<CheckEmailType> = ({}) => {
         <h2 className={s.checkEmail__title}>check email</h2>
         <img className={s.checkEmail__img} src={emailIcon} alt="emailIcon" />
         <p className={s.checkEmail__text}>
-          {`we've sent an Email with instructions to ${'recoveryEmail'}`}
+          {`we've sent an Email with instructions to ${recoveryEmail}`}
         </p>
         <CustomButton onClick={onClickNavigate}>Back to login</CustomButton>
       </div>
