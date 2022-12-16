@@ -20,9 +20,7 @@ import s from './Header.module.scss'
 
 const settings = ['Profile', 'Logout']
 
-type HeaderType = {}
-
-export const Header: React.FC<HeaderType> = ({}) => {
+export const Header = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null)
@@ -59,7 +57,7 @@ export const Header: React.FC<HeaderType> = ({}) => {
         <Container className={s.header}>
           <Toolbar disableGutters>
             <div className={s.header__logoTypography}>
-              <Typography variant="h5" component="a" href="/">
+              <Typography variant="h5" component="a" href={PATH.PROFILE}>
                 LOGO
               </Typography>
             </div>
