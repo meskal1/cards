@@ -1,6 +1,7 @@
 .checkEmailContainer {
   display: flex;
-  flex: 0 1 400px;
+  width: 100%;
+  max-width: 400px;
   flex-direction: column;
   gap: 20px;
   align-self: center;
