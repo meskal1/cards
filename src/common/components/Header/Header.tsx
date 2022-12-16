@@ -25,7 +25,7 @@ export const Header = () => {
   const dispatch = useAppDispatch()
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null)
 
-  const name = useAppSelector(state => state.profile.name)
+  const name = useAppSelector(state => state.profile.userData.name)
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget)

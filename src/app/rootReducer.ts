@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux'
 
 import { authReducer } from '../features/auth/authSlice'
-import { profileReducer } from '../features/profile/profileReducer'
+import { profileReducer } from '../features/profile/profileSlice'
 
 import { appReducer } from './appSlice'
 
