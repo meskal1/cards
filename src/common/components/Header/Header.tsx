@@ -10,7 +10,7 @@ import MenuItem from '@mui/material/MenuItem'
 import Toolbar from '@mui/material/Toolbar'
 import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { PATH } from '../../../constants/routePaths.enum'
 import { logOutTC } from '../../../features/auth/authSlice'
@@ -56,10 +56,10 @@ export const Header = () => {
       <AppBar className={s.headerContainer}>
         <Container className={s.header}>
           <Toolbar disableGutters>
-            <div className={s.header__logoTypography}>
-              <Typography variant="h5" component="a" href={PATH.PROFILE}>
+            <div className={s.header__logoContainer}>
+              <Link className={s.header__logo} to={PATH.PROFILE}>
                 LOGO
-              </Typography>
+              </Link>
             </div>
 
             <Box className={s.header__profileBlock}>
