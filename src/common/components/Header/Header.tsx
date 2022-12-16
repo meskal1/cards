@@ -12,6 +12,7 @@ import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
 import { Link, useNavigate } from 'react-router-dom'
 
+import avatarLocal from '../../../assets/img/avatar.jpg'
 import { PATH } from '../../../constants/routePaths.enum'
 import { logOutTC } from '../../../features/auth/authSlice'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
@@ -69,10 +70,7 @@ export const Header = () => {
               <div>
                 <Tooltip title="">
                   <IconButton onClick={handleOpenUserMenu} className={s.header__profileIcon}>
-                    <Avatar
-                      alt="Remy Sharp"
-                      src="https://avatars.mds.yandex.net/get-kino-vod-films-gallery/28788/47e2fd514411e18b76af786d7417062d/100x64_3"
-                    />
+                    <Avatar alt="Remy Sharp" src={avatarLocal} />
                   </IconButton>
                 </Tooltip>
                 <Menu

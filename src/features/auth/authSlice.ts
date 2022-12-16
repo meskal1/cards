@@ -4,7 +4,7 @@ import { AxiosError } from 'axios'
 import {
   RequestStatusType,
   setAppAlertMessage,
-  setAppStatusAC,
+  setAppStatus,
   SetRequestStatusPayloadType,
 } from '../../app/appSlice'
 import { AppDispatchType } from '../../app/store'
@@ -28,7 +28,7 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setIsLoggedInAC(state, action: PayloadAction<{ isLoggedIn: boolean }>) {
+    setIsLoggedIn(state, action: PayloadAction<{ isLoggedIn: boolean }>) {
       state.isLoggedIn = action.payload.isLoggedIn
     },
     setAuthStatus(state, action: PayloadAction<SetRequestStatusPayloadType>) {
@@ -37,7 +37,7 @@ const authSlice = createSlice({
     setRecoveryEmail(state, action: PayloadAction<{ recoveryEmail: string }>) {
       state.recoveryEmail = action.payload.recoveryEmail
     },
-    setPasswordStatusAC(state, action: PayloadAction<SetPasswordStatusType>) {
+    setPasswordStatus(state, action: PayloadAction<SetPasswordStatusType>) {
       state.passwordIsChanged = action.payload.passwordIsChanged
     },
   },
@@ -46,7 +46,7 @@ const authSlice = createSlice({
 export const authReducer = authSlice.reducer
 
 // ACTIONS
-export const { setIsLoggedInAC, setAuthStatus, setRecoveryEmail, setPasswordStatusAC } =
+export const { setIsLoggedIn, setAuthStatus, setRecoveryEmail, setPasswordStatus } =
   authSlice.actions
 
 // THUNKS
@@ -57,7 +57,7 @@ export const logInTC = (data: LoginParamsType) => async (dispatch: AppDispatchTy
     const { name, email, avatar } = response.data
 
     dispatch(setUserData({ userData: { name, email, avatar } }))
-    dispatch(setIsLoggedInAC({ isLoggedIn: true }))
+    dispatch(setIsLoggedIn({ isLoggedIn: true }))
 
     return true
   } catch (e) {
@@ -69,10 +69,10 @@ export const logInTC = (data: LoginParamsType) => async (dispatch: AppDispatchTy
 
 export const logOutTC = () => async (dispatch: AppDispatchType) => {
   try {
-    dispatch(setAppStatusAC({ status: 'loading' }))
+    dispatch(setAppStatus({ status: 'loading' }))
     await authAPI.logout()
     dispatch(setUserData({ userData: { name: '', email: '', avatar: undefined } }))
-    dispatch(setIsLoggedInAC({ isLoggedIn: false }))
+    dispatch(setIsLoggedIn({ isLoggedIn: false }))
   } catch (e) {
     const error = e as Error | AxiosError
 
@@ -125,7 +125,7 @@ export const createPasswordTC =
   (data: CreatePasswordParamsType) => async (dispatch: AppDispatchType) => {
     try {
       await authAPI.newPassword(data)
-      dispatch(setPasswordStatusAC({ passwordIsChanged: true }))
+      dispatch(setPasswordStatus({ passwordIsChanged: true }))
     } catch (e) {
       const error = e as Error | AxiosError
 

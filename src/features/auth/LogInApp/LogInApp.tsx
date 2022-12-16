@@ -32,7 +32,6 @@ export const LogInApp = () => {
       const isLoginSucceed = await dispatch(logInTC(values))
 
       if (isLoginSucceed) {
-        formik.resetForm()
         navigate(PATH.PROFILE)
       }
     },

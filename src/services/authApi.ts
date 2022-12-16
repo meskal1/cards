@@ -41,6 +41,9 @@ export const authAPI = {
                   </div>`,
     })
   },
+  newUserData(data: ProfileDataType) {
+    return instance.put<ProfileDataType, ProfileDataResponseType>('auth/me', data)
+  },
 }
 
 // TYPES
@@ -114,3 +117,10 @@ type CreatePasswordResponseType = {
   info: string
   error: string
 }
+
+export type ProfileDataType = {
+  name: string
+  avatar: string | undefined
+}
+
+type ProfileDataResponseType = any

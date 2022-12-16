@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios, { AxiosError } from 'axios'
 
-import { setIsLoggedInAC } from '../features/auth/authSlice'
+import { setIsLoggedIn } from '../features/auth/authSlice'
 import { setUserData } from '../features/profile/profileSlice'
 import { authAPI } from '../services/authApi'
 
@@ -20,13 +20,13 @@ const appSlice = createSlice({
   name: 'app',
   initialState,
   reducers: {
-    setAppStatusAC(state, action: PayloadAction<SetRequestStatusPayloadType>) {
+    setAppStatus(state, action: PayloadAction<SetRequestStatusPayloadType>) {
       state.status = action.payload.status
     },
     setAppAlertMessage(state, action: PayloadAction<SetAppMessagePayloadType>) {
       state.alertMessage = action.payload
     },
-    setIsInitializedAC(state, action: PayloadAction<SetAppInitializedPayloadType>) {
+    setIsInitialized(state, action: PayloadAction<SetAppInitializedPayloadType>) {
       state.isInitialized = action.payload.isInitialized
     },
   },
@@ -35,7 +35,7 @@ const appSlice = createSlice({
 export const appReducer = appSlice.reducer
 
 // ACTIONS
-export const { setAppStatusAC, setAppAlertMessage, setIsInitializedAC } = appSlice.actions
+export const { setAppStatus, setAppAlertMessage, setIsInitialized } = appSlice.actions
 
 // THUNKS
 export const initializeAppTC = () => async (dispatch: AppDispatchType) => {
@@ -44,7 +44,7 @@ export const initializeAppTC = () => async (dispatch: AppDispatchType) => {
     const { name, email, avatar } = response.data
 
     dispatch(setUserData({ userData: { name, email, avatar } }))
-    dispatch(setIsLoggedInAC({ isLoggedIn: true }))
+    dispatch(setIsLoggedIn({ isLoggedIn: true }))
   } catch (e) {
     const error = e as Error | AxiosError
 
@@ -56,7 +56,7 @@ export const initializeAppTC = () => async (dispatch: AppDispatchType) => {
       console.log(err)
     }
   } finally {
-    dispatch(setIsInitializedAC({ isInitialized: true }))
+    dispatch(setIsInitialized({ isInitialized: true }))
   }
 }
 
