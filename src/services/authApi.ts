@@ -19,9 +19,17 @@ export const authAPI = {
   register(data: RegisterParamsType) {
     return instance.post<RegisterResponseType>('/auth/register', data)
   },
+  editProfile(profile: editProfileType) {
+    return instance.put<ResponseType>('auth/me', profile)
+  },
 }
 
 // TYPES
+export type editProfileType = {
+  name: string
+  avatar: string | undefined
+}
+
 export type LoginParamsType = {
   email: string
   password: string
