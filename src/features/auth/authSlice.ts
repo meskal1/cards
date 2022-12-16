@@ -53,18 +53,18 @@ export const { setIsLoggedInAC, setAuthStatus, setRecoveryEmail, setPasswordStat
 // THUNKS
 export const logInTC = (data: LoginParamsType) => async (dispatch: AppDispatchType) => {
   try {
-    dispatch(setAppStatusAC({ status: 'loading' }))
+    dispatch(setAuthStatus({ status: 'loading' }))
     const response = await authAPI.login(data)
     const { name, email, avatar } = response.data
 
     dispatch(setProfile({ name, email, avatar }))
     dispatch(setIsLoggedInAC({ isLoggedIn: true }))
-  } catch (e) {
-    const error = e as Error | AxiosError
 
-    handleServerNetworkError(dispatch, error)
+    return true
+  } catch (e) {
+    handleServerNetworkError(dispatch, e as Error | AxiosError)
   } finally {
-    dispatch(setAppStatusAC({ status: 'idle' }))
+    dispatch(setAuthStatus({ status: 'idle' }))
   }
 }
 
@@ -72,7 +72,6 @@ export const logOutTC = () => async (dispatch: AppDispatchType) => {
   try {
     dispatch(setAppStatusAC({ status: 'loading' }))
     await authAPI.logout()
-    dispatch(setIsInitializedAC({ isInitialized: false }))
     dispatch(setProfile({ name: '', email: '', avatar: undefined }))
     dispatch(setIsLoggedInAC({ isLoggedIn: false }))
   } catch (e) {
