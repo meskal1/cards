@@ -4,7 +4,7 @@ const initialState = {
   userData: {
     name: '',
     email: '',
-    avatar: '',
+    avatar: undefined,
   } as UserDataType,
 }
 
@@ -27,6 +27,7 @@ export const { setUserData } = profileSlice.actions
 export const profileReducer = profileSlice.reducer
 
 // TYPES
+export type ProfileStateType = typeof initialState
 export type UserDataType = {
   name: string
   email: string
