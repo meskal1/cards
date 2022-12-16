@@ -5,7 +5,6 @@ import {
   RequestStatusType,
   setAppAlertMessage,
   setAppStatusAC,
-  setIsInitializedAC,
   SetRequestStatusPayloadType,
 } from '../../app/appSlice'
 import { AppDispatchType } from '../../app/store'
@@ -16,7 +15,7 @@ import {
   RegisterParamsType,
 } from '../../services/authApi'
 import { handleServerNetworkError } from '../../utils/errorUtils'
-import { setProfile } from '../profile/profileReducer'
+import { setUserData } from '../profile/profileSlice'
 
 const initialState = {
   isLoggedIn: false,
@@ -57,7 +56,7 @@ export const logInTC = (data: LoginParamsType) => async (dispatch: AppDispatchTy
     const response = await authAPI.login(data)
     const { name, email, avatar } = response.data
 
-    dispatch(setProfile({ name, email, avatar }))
+    dispatch(setUserData({ userData: { name, email, avatar } }))
     dispatch(setIsLoggedInAC({ isLoggedIn: true }))
 
     return true
@@ -72,7 +71,7 @@ export const logOutTC = () => async (dispatch: AppDispatchType) => {
   try {
     dispatch(setAppStatusAC({ status: 'loading' }))
     await authAPI.logout()
-    dispatch(setProfile({ name: '', email: '', avatar: undefined }))
+    dispatch(setUserData({ userData: { name: '', email: '', avatar: undefined } }))
     dispatch(setIsLoggedInAC({ isLoggedIn: false }))
   } catch (e) {
     const error = e as Error | AxiosError

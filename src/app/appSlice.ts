@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios, { AxiosError } from 'axios'
 
 import { setIsLoggedInAC } from '../features/auth/authSlice'
-import { setProfile } from '../features/profile/profileReducer'
+import { setUserData } from '../features/profile/profileSlice'
 import { authAPI } from '../services/authApi'
 
 import { AppDispatchType } from './store'
@@ -43,7 +43,7 @@ export const initializeAppTC = () => async (dispatch: AppDispatchType) => {
     const response = await authAPI.me()
     const { name, email, avatar } = response.data
 
-    dispatch(setProfile({ name, email, avatar }))
+    dispatch(setUserData({ userData: { name, email, avatar } }))
     dispatch(setIsLoggedInAC({ isLoggedIn: true }))
   } catch (e) {
     const error = e as Error | AxiosError

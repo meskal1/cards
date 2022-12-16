@@ -8,15 +8,16 @@ import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { logOutTC } from '../auth/authSlice'
 
 import s from './Profile.module.scss'
+import { UserDataType } from './profileSlice'
 
 export const Profile = () => {
   const dispatch = useAppDispatch()
   const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
   const navigate = useNavigate()
 
-  const name = useAppSelector(state => state.profile.name)
-  const email = useAppSelector(state => state.profile.email)
-  const avatar = useAppSelector(state => state.profile.avatar)
+  const name = useAppSelector(state => state.profile.userData.name)
+  const email = useAppSelector(state => state.profile.userData.email)
+  const avatar = useAppSelector(state => state.profile.userData.avatar)
 
   const onLogOutHandler = () => {
     dispatch(logOutTC())
