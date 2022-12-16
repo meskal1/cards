@@ -27,7 +27,7 @@ const appSlice = createSlice({
     setAppAlertMessage(state, action: PayloadAction<SetAppMessagePayloadType>) {
       state.alertMessage = action.payload
     },
-    setIsInitializedAC(state, action: PayloadAction<{ isInitialized: boolean }>) {
+    setIsInitializedAC(state, action: PayloadAction<SetAppInitializedPayloadType>) {
       state.isInitialized = action.payload.isInitialized
     },
   },
@@ -61,7 +61,7 @@ export const initializeAppTC = () => async (dispatch: AppDispatchType) => {
   }
 }
 
-// Types
+// TYPES
 export type AppStateType = typeof initialState
 
 export type RequestStatusType = 'idle' | 'loading'
@@ -76,3 +76,5 @@ type SetAppMessagePayloadType = {
 }
 
 export type SetRequestStatusPayloadType = { status: RequestStatusType }
+
+export type SetAppInitializedPayloadType = { isInitialized: boolean }
