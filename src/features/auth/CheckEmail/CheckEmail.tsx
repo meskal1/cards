@@ -24,7 +24,7 @@ export const CheckEmail = () => {
       dispatch(setRecoveryEmail({ recoveryEmail: '' }))
     }
 
-    return setEmail()
+    return setEmail
   }, [])
 
   return (
