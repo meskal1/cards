@@ -19,3 +19,5 @@ export const validationSchemaRegistration = yup.object({ email, password, confir
 export const validationSchemaProfile = yup.object({ name })
 
 export const validationSchemaNewPassword = yup.object({ password })
+
+export const validationSchemaForgotPassword = yup.object({ email })

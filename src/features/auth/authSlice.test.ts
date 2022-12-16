@@ -8,6 +8,7 @@ describe('auth reducer tests', () => {
   beforeEach(() => {
     initialState = {
       isLoggedIn: false,
+      recoveryEmail: '',
       status: 'idle' as RequestStatusType,
       passwordIsChanged: false,
     }
