@@ -5,19 +5,27 @@ import { useNavigate } from 'react-router'
 import emailIcon from '../../../assets/img/icons/check_email.svg'
 import { CustomButton } from '../../../common/components/CustomButton/CustomButton'
 import { PATH } from '../../../constants/routePaths.enum'
-import { useAppSelector } from '../../../hooks/reduxHooks'
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
+import { setRecoveryEmail } from '../authSlice'
 
 import s from './CheckEmail.module.scss'
 
-type CheckEmailType = {}
-
-export const CheckEmail: React.FC<CheckEmailType> = ({}) => {
+export const CheckEmail = () => {
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
   const recoveryEmail = useAppSelector(state => state.auth.recoveryEmail)
 
   const onClickNavigate = () => {
     navigate(PATH.LOGIN)
   }
+
+  React.useEffect(() => {
+    const setEmail = () => {
+      dispatch(setRecoveryEmail({ recoveryEmail: '' }))
+    }
+
+    return setEmail()
+  }, [])
 
   return (
     <>
