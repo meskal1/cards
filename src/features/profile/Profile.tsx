@@ -1,6 +1,7 @@
 import * as React from 'react'
 
 import { BorderColor, CameraAlt, KeyboardBackspace } from '@mui/icons-material'
+import LogoutIcon from '@mui/icons-material/Logout'
 import { Link, useNavigate } from 'react-router-dom'
 
 import { CustomButton } from '../../common/components/CustomButton/CustomButton'
@@ -11,9 +12,7 @@ import { logOutTC } from '../auth/authSlice'
 import s from './Profile.module.scss'
 import { InitialProfileType } from './profileReducer'
 
-type ProfileType = {}
-
-export const Profile: React.FC<ProfileType> = ({}) => {
+export const Profile = () => {
   const dispatch = useAppDispatch()
   const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
   const navigate = useNavigate()
@@ -28,49 +27,44 @@ export const Profile: React.FC<ProfileType> = ({}) => {
   }
   const addPhotoHandler = () => alert('add photo')
   const editNameHandler = () => alert('edit name')
-  const backToPacsHandler = () => {
-    navigate(PATH.PACKS)
-  }
 
   if (!isLoggedIn) {
     navigate(PATH.LOGIN)
   }
 
   return (
-    <div
-      style={{
-        width: '100%',
-      }}
-    >
-      <div className={s.backToPacks} onClick={backToPacsHandler}>
-        <div className={s.ProfileContainer__arrow}>
-          <KeyboardBackspace />
-        </div>
-        <div className={s.backToPacks__PacksLink}>Back to Pacs List</div>
-      </div>
-      <div className={s.ProfileBox}>
-        <div className={s.ProfileContainer}>
-          <h1 className={s.ProfileContainer__title}>Personal Information</h1>
-          <div className={s.ProfileContainer__image}>
-            <img src={avatar} alt="avatar" />
-            <div className={s.ProfileContainer__addPhoto} onClick={addPhotoHandler}>
-              <CameraAlt />
+    <>
+      <div className={s.profileContainer}>
+        <Link className={s.profile__linkPacks} to={PATH.PACKS}>
+          <KeyboardBackspace className={s.profile__arrow} />
+          Back to pacs list
+        </Link>
+        <div className={s.profile__content}>
+          <h2 className={s.profile__title}>personal information</h2>
+          <div className={s.profile__avatarBlock} onClick={addPhotoHandler}>
+            <div className={s.profile__pic}>
+              <img
+                className={s.profile__img}
+                src={
+                  avatar ||
+                  `https://avatars.mds.yandex.net/get-kino-vod-films-gallery/28788/47e2fd514411e18b76af786d7417062d/100x64_3`
+                }
+                alt="avatar"
+              />
             </div>
+            <CameraAlt className={s.profile__avatarIcon} />
           </div>
-          <div className={s.nameContainer}>
-            <div className={s.ProfileContainer__name}>
-              <h2>{profile.name}</h2>
-              <span className={s.ProfileContainer__edit} onClick={editNameHandler}>
-                <BorderColor />
-              </span>
-            </div>
-          </div>
-          <p className={s.ProfileContainer__email}>{profile.email}</p>
-          <CustomButton onClick={onLogOutHandler} className={s.ProfileContainer__logOutBtn}>
-            Log Out
+          <p className={s.profile__userName}>
+            {profile.name}
+            <BorderColor className={s.profile__marker} onClick={editNameHandler} />
+          </p>
+          <p className={s.profile__userEmail}>{profile.email}</p>
+          <CustomButton className={s.profile__button} onClick={onLogOutHandler}>
+            <LogoutIcon className={s.profile__buttonIcon} />
+            Log out
           </CustomButton>
         </div>
       </div>
-    </div>
+    </>
   )
 }
