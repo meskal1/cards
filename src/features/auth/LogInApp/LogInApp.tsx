@@ -79,7 +79,9 @@ export const LogInApp = () => {
             </Link>
           </div>
 
-          <CustomButton disabled={authStatus === 'loading'}>Sign in</CustomButton>
+          <CustomButton className={s.button} disabled={authStatus === 'loading'}>
+            Sign in
+          </CustomButton>
         </form>
 
         <div className={s.login__signUpBlock}>
