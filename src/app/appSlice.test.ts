@@ -5,8 +5,8 @@ import {
   AppStateType,
   RequestStatusType,
   setAppAlertMessage,
-  setAppStatusAC,
-  setIsInitializedAC,
+  setAppStatus,
+  setIsInitialized,
 } from './appSlice'
 
 describe('app reducer tests', () => {
@@ -28,12 +28,12 @@ describe('app reducer tests', () => {
   })
 
   test('should set status to loading', () => {
-    expect(appReducer(initialState, setAppStatusAC({ status: 'loading' })).status).toBe('loading')
+    expect(appReducer(initialState, setAppStatus({ status: 'loading' })).status).toBe('loading')
   })
 
   test('should set status to idle', () => {
     initialState.status = 'loading'
-    expect(appReducer(initialState, setAppStatusAC({ status: 'idle' })).status).toBe('idle')
+    expect(appReducer(initialState, setAppStatus({ status: 'idle' })).status).toBe('idle')
   })
 
   test('should set error alert message', () => {
@@ -66,13 +66,13 @@ describe('app reducer tests', () => {
     initialState.isInitialized = true
 
     expect(
-      appReducer(initialState, setIsInitializedAC({ isInitialized: false })).isInitialized
+      appReducer(initialState, setIsInitialized({ isInitialized: false })).isInitialized
     ).toBeFalsy()
   })
 
   test('should set isInitialized to true', () => {
     expect(
-      appReducer(initialState, setIsInitializedAC({ isInitialized: true })).isInitialized
+      appReducer(initialState, setIsInitialized({ isInitialized: true })).isInitialized
     ).toBeTruthy()
   })
 })
