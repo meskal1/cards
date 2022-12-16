@@ -3,8 +3,7 @@ import axios, { AxiosError } from 'axios'
 
 import { setIsLoggedInAC } from '../features/auth/authSlice'
 import { setProfile } from '../features/profile/profileReducer'
-import { authAPI, AuthMeFailResponseType } from '../services/authApi'
-import { handleServerNetworkError } from '../utils/errorUtils'
+import { authAPI } from '../services/authApi'
 
 import { AppDispatchType } from './store'
 
