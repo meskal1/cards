@@ -1,0 +1,42 @@
+.Container{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.NameContainer{
+  width: 100%;
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+}
+.InputContainer{
+  width: 70%
+}
+
+.Marker {
+  cursor: pointer;
+
+  margin: 0px 0px 0px 10px !important;
+
+  color: grey;
+
+  width: 20px;
+  height: 20px;
+
+}
+
+.SendMarker{
+  margin-top: 15px
+}
+
+.InputField{
+  & > * {
+    font-family: inherit !important;
+    letter-spacing: inherit !important;
+
+    &::first-letter {
+      text-transform: uppercase !important;
+    }
+  }
+}
