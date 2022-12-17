@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import axios, { AxiosError } from 'axios'
 
-import { setIsLoggedInAC } from '../features/auth/authSlice'
-import { setProfile } from '../features/profile/profileReducer'
+import { setIsLoggedIn } from '../features/auth/authSlice'
+import { setUserData } from '../features/profile/profileSlice'
 import { authAPI } from '../services/authApi'
 
 import { AppDispatchType } from './store'
@@ -19,13 +20,13 @@ const appSlice = createSlice({
   name: 'app',
   initialState,
   reducers: {
-    setAppStatusAC(state, action: PayloadAction<SetRequestStatusPayloadType>) {
+    setAppStatus(state, action: PayloadAction<SetRequestStatusPayloadType>) {
       state.status = action.payload.status
     },
     setAppAlertMessage(state, action: PayloadAction<SetAppMessagePayloadType>) {
       state.alertMessage = action.payload
     },
-    setIsInitializedAC(state, action: PayloadAction<{ isInitialized: boolean }>) {
+    setIsInitialized(state, action: PayloadAction<SetAppInitializedPayloadType>) {
       state.isInitialized = action.payload.isInitialized
     },
   },
@@ -34,36 +35,45 @@ const appSlice = createSlice({
 export const appReducer = appSlice.reducer
 
 // ACTIONS
-export const { setAppStatusAC, setAppAlertMessage, setIsInitializedAC } = appSlice.actions
+export const { setAppStatus, setAppAlertMessage, setIsInitialized } = appSlice.actions
 
 // THUNKS
-export const initializeAppTC =
-  (navigateToLogin: () => void, setIsAppLoaded: () => void) =>
-  async (dispatch: AppDispatchType) => {
-    try {
-      const response = await authAPI.me()
+export const initializeAppTC = () => async (dispatch: AppDispatchType) => {
+  try {
+    const response = await authAPI.me()
+    const { name, email, avatar } = response.data
 
-      console.log(response.data.name)
-      // Задиспатчить имя Юзера которое пришло с сервера
-      dispatch(setIsInitializedAC({ isInitialized: true }))
-      const { name, email, avatar } = response.data
+    dispatch(setUserData({ userData: { name, email, avatar } }))
+    dispatch(setIsLoggedIn({ isLoggedIn: true }))
+  } catch (e) {
+    const error = e as Error | AxiosError
 
-      dispatch(setProfile({ name, email, avatar }))
-      dispatch(setIsLoggedInAC({ isLoggedIn: true }))
-    } catch (e) {
-      navigateToLogin()
-    } finally {
-      setIsAppLoaded()
+    if (axios.isAxiosError(error)) {
+      const err = error.response?.data
+        ? (error.response.data as { error: 'string' }).error
+        : error.message
+
+      console.log(err)
     }
+  } finally {
+    dispatch(setIsInitialized({ isInitialized: true }))
   }
+}
 
-// Types
+// TYPES
 export type AppStateType = typeof initialState
+
 export type RequestStatusType = 'idle' | 'loading'
+
 export type AlertMessageType = 'success' | 'error'
+
 export type AppAlertMessageTextType = string | null
+
 type SetAppMessagePayloadType = {
   messageType: AlertMessageType
   messageText: AppAlertMessageTextType
 }
+
 export type SetRequestStatusPayloadType = { status: RequestStatusType }
+
+export type SetAppInitializedPayloadType = { isInitialized: boolean }

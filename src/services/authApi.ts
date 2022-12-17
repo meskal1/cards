@@ -1,8 +1,15 @@
 import axios, { AxiosResponse } from 'axios'
 
+import { PATH } from '../constants/routePaths.enum'
+
 // API
 const instance = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
+  withCredentials: true,
+})
+
+const onlyProdInstance = axios.create({
+  baseURL: 'https://neko-back.herokuapp.com/2.0/',
   withCredentials: true,
 })
 
@@ -11,13 +18,31 @@ export const authAPI = {
     return instance.post<LoginParamsType, AxiosResponse<ResponseType>>('auth/login', data)
   },
   logout() {
-    return instance.delete<DeleteResponseType>('auth/me', {})
+    return instance.delete<LogOutResponseType>('auth/me', {})
   },
   me() {
     return instance.post<ResponseType>('auth/me', {})
   },
   register(data: RegisterParamsType) {
-    return instance.post<RegisterResponseType>('/auth/register', data)
+    return instance.post<RegisterResponseType>('auth/register', data)
+  },
+  newPassword(data: CreatePasswordParamsType) {
+    return instance.post<CreatePasswordParamsType, CreatePasswordResponseType>(
+      'auth/set-new-password',
+      data
+    )
+  },
+  forgot(email: string) {
+    return onlyProdInstance.post<{ info: string }>('auth/forgot', {
+      email,
+      message: `<div style="background-color: lime; padding: 15px">
+                    password recovery link: 
+                    <a href='${process.env.REACT_APP_NEW_PASSWORD_URL}#${PATH.NEW_PASSWORD}/$token$'>link</a>
+                  </div>`,
+    })
+  },
+  newUserData(data: ProfileDataType) {
+    return instance.put<ProfileDataType, ProfileDataResponseType>('auth/me', data)
   },
   editProfile(profile: editProfileType) {
     return instance.put<ResponseType>('auth/me', profile)
@@ -80,7 +105,30 @@ export type ResponseType = {
   __v: number
 }
 
-type DeleteResponseType = {
+type LogOutResponseType = {
+  info: string
+}
+
+export type LoginFailResponseType = RegisterFailResponseType
+
+export type AuthMeFailResponseType = {
+  in: string
+  error: string
+}
+
+export type CreatePasswordParamsType = {
+  password: string
+  resetPasswordToken: string
+}
+
+type CreatePasswordResponseType = {
   info: string
   error: string
 }
+
+export type ProfileDataType = {
+  name: string
+  avatar: string | undefined
+}
+
+type ProfileDataResponseType = any

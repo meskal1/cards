@@ -1,5 +1,3 @@
-import * as React from 'react'
-
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked'
 import TaskAltIcon from '@mui/icons-material/TaskAlt'
 import { FormControlLabel, Typography } from '@mui/material'
@@ -7,6 +5,7 @@ import Checkbox from '@mui/material/Checkbox'
 import { useFormik } from 'formik'
 import { Link, useNavigate } from 'react-router-dom'
 
+import { RequestStatusType } from '../../../app/appSlice'
 import { CustomButton } from '../../../common/components/CustomButton/CustomButton'
 import { CustomInput } from '../../../common/components/CustomInput/CustomInput'
 import { CustomPasswordInput } from '../../../common/components/CustomPasswordInput/CustomPasswordInput'
@@ -17,13 +16,10 @@ import { logInTC } from '../authSlice'
 
 import s from './LogInApp.module.scss'
 
-type LogInAppType = {}
-
-export const LogInApp: React.FC<LogInAppType> = ({}) => {
+export const LogInApp = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
-  const appStatus = useAppSelector(state => state.app.status)
+  const authStatus = useAppSelector<RequestStatusType>(state => state.auth.status)
 
   const formik = useFormik({
     initialValues: {
@@ -32,17 +28,14 @@ export const LogInApp: React.FC<LogInAppType> = ({}) => {
       rememberMe: false,
     },
     validationSchema: validationSchemaLogin,
-    onSubmit: values => {
-      dispatch(logInTC(values))
+    onSubmit: async values => {
+      const isLoginSucceed = await dispatch(logInTC(values))
+
+      if (isLoginSucceed) {
+        navigate(PATH.PROFILE)
+      }
     },
   })
-
-  React.useEffect(() => {
-    if (isLoggedIn) {
-      formik.resetForm()
-      navigate(PATH.PROFILE)
-    }
-  }, [isLoggedIn])
 
   return (
     <>
@@ -85,7 +78,9 @@ export const LogInApp: React.FC<LogInAppType> = ({}) => {
             </Link>
           </div>
 
-          <CustomButton>sign in</CustomButton>
+          <CustomButton className={s.button} disabled={authStatus === 'loading'}>
+            Sign in
+          </CustomButton>
         </form>
 
         <div className={s.login__signUpBlock}>

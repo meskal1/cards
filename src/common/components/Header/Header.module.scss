@@ -3,7 +3,7 @@
 }
 .header {
   max-width: 1050px !important;
-  &__logoTypography {
+  &__logoContainer {
     display: flex;
     flex-grow: 1;
 
@@ -17,6 +17,9 @@
       color: inherit;
       text-decoration: none;
     }
+  }
+  &__logo {
+    font-size: 30px;
   }
   &__profileBlock {
     display: flex;

@@ -1,6 +1,7 @@
 import * as yup from 'yup'
 
 const name = yup.string().required('required')
+const avatar = name
 const email = yup.string().email('enter a valid email').required('email is required')
 const password = yup
   .string()
@@ -16,4 +17,8 @@ export const validationSchemaLogin = yup.object({ email, password, rememberMe })
 
 export const validationSchemaRegistration = yup.object({ email, password, confirmPassword })
 
-export const validationSchemaProfile = yup.object({ name })
+export const validationSchemaProfile = yup.object({ name, avatar })
+
+export const validationSchemaNewPassword = yup.object({ password })
+
+export const validationSchemaForgotPassword = yup.object({ email })

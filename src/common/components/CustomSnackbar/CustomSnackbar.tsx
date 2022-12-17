@@ -5,9 +5,7 @@ import { Alert, Snackbar } from '@mui/material'
 import { setAppAlertMessage } from '../../../app/appSlice'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 
-type CustomSnackbarPropsType = {}
-
-export const CustomSnackbar: React.FC<CustomSnackbarPropsType> = ({}) => {
+export const CustomSnackbar = () => {
   const alertMessage = useAppSelector(state => state.app.alertMessage)
   const isOpen = alertMessage.messageText !== null
 

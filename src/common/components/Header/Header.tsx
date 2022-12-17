@@ -10,8 +10,9 @@ import MenuItem from '@mui/material/MenuItem'
 import Toolbar from '@mui/material/Toolbar'
 import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
+import avatarLocal from '../../../assets/img/avatar.jpg'
 import { PATH } from '../../../constants/routePaths.enum'
 import { logOutTC } from '../../../features/auth/authSlice'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
@@ -20,14 +21,12 @@ import s from './Header.module.scss'
 
 const settings = ['Profile', 'Logout']
 
-type HeaderType = {}
-
-export const Header: React.FC<HeaderType> = ({}) => {
+export const Header = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null)
 
-  const name = useAppSelector(state => state.profile.name)
+  const name = useAppSelector(state => state.profile.userData.name)
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget)
@@ -58,10 +57,10 @@ export const Header: React.FC<HeaderType> = ({}) => {
       <AppBar className={s.headerContainer}>
         <Container className={s.header}>
           <Toolbar disableGutters>
-            <div className={s.header__logoTypography}>
-              <Typography variant="h5" component="a" href="/">
+            <div className={s.header__logoContainer}>
+              <Link className={s.header__logo} to={PATH.PROFILE}>
                 LOGO
-              </Typography>
+              </Link>
             </div>
 
             <Box className={s.header__profileBlock}>
@@ -71,10 +70,7 @@ export const Header: React.FC<HeaderType> = ({}) => {
               <div>
                 <Tooltip title="">
                   <IconButton onClick={handleOpenUserMenu} className={s.header__profileIcon}>
-                    <Avatar
-                      alt="Remy Sharp"
-                      src="https://avatars.mds.yandex.net/get-kino-vod-films-gallery/28788/47e2fd514411e18b76af786d7417062d/100x64_3"
-                    />
+                    <Avatar alt="Remy Sharp" src={avatarLocal} />
                   </IconButton>
                 </Tooltip>
                 <Menu

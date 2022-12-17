@@ -29,7 +29,7 @@ export const AppRoutes = () => {
         <Route path={PATH.RECOVERY} element={<Recovery />} />
         <Route path={PATH.REGISTRATION} element={<Registration />} />
         <Route path={PATH.CHECK_EMAIL} element={<CheckEmail />} />
-        <Route path={PATH.NEW_PASSWORD} element={<NewPassword />} />
+        <Route path={PATH.NEW_PASSWORD_TOKEN} element={<NewPassword />} />
         <Route path="*" element={<Page404 />} />
       </Routes>
     </>

@@ -1,35 +1,50 @@
-import * as React from 'react'
+import { useState } from 'react'
 
 import { BorderColor, CameraAlt, KeyboardBackspace } from '@mui/icons-material'
+import LogoutIcon from '@mui/icons-material/Logout'
+import { useFormik } from 'formik'
 import { Link, useNavigate } from 'react-router-dom'
 
+import avatarLocal from '../../assets/img/avatar.jpg'
 import { CustomButton } from '../../common/components/CustomButton/CustomButton'
+import { CustomInput } from '../../common/components/CustomInput/CustomInput'
 import { PATH } from '../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+import { validationSchemaProfile } from '../../utils/validationSchema'
 import { logOutTC } from '../auth/authSlice'
 
 import s from './Profile.module.scss'
-import { InitialProfileType } from './profileReducer'
+import { newUserDataTC } from './profileSlice'
 
-type ProfileType = {}
-
-export const Profile: React.FC<ProfileType> = ({}) => {
+export const Profile = () => {
   const dispatch = useAppDispatch()
   const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
   const navigate = useNavigate()
+  const [isNameEditable, setIsNameEditable] = useState(false)
 
-  const profile = useAppSelector<InitialProfileType>(state => state.profile)
-  const [name, setName] = React.useState('')
-  const [email, setEmail] = React.useState('')
-  const [avatar, setAvatar] = React.useState('')
+  const name = useAppSelector(state => state.profile.userData.name)
+  const email = useAppSelector(state => state.profile.userData.email)
+  const avatar = useAppSelector(state => state.profile.userData.avatar)
+
+  const formik = useFormik({
+    initialValues: {
+      name,
+      avatar,
+    },
+    validationSchema: validationSchemaProfile,
+    onSubmit: values => {
+      dispatch(newUserDataTC(values))
+    },
+  })
 
   const onLogOutHandler = () => {
     dispatch(logOutTC())
   }
-  const addPhotoHandler = () => alert('add photo')
-  const editNameHandler = () => alert('edit name')
-  const backToPacsHandler = () => {
-    navigate(PATH.PACKS)
+
+  const setNewAvatar = () => alert('add photo')
+
+  const setNewName = () => {
+    isNameEditable ? setIsNameEditable(false) : setIsNameEditable(true)
   }
 
   if (!isLoggedIn) {
@@ -37,40 +52,43 @@ export const Profile: React.FC<ProfileType> = ({}) => {
   }
 
   return (
-    <div
-      style={{
-        width: '100%',
-      }}
-    >
-      <div className={s.backToPacks} onClick={backToPacsHandler}>
-        <div className={s.ProfileContainer__arrow}>
-          <KeyboardBackspace />
-        </div>
-        <div className={s.backToPacks__PacksLink}>Back to Pacs List</div>
-      </div>
-      <div className={s.ProfileBox}>
-        <div className={s.ProfileContainer}>
-          <h1 className={s.ProfileContainer__title}>Personal Information</h1>
-          <div className={s.ProfileContainer__image}>
-            <img src={avatar} alt="avatar" />
-            <div className={s.ProfileContainer__addPhoto} onClick={addPhotoHandler}>
-              <CameraAlt />
+    <>
+      <div className={s.profileContainer}>
+        <Link className={s.profile__linkPacks} to={PATH.PACKS}>
+          <KeyboardBackspace className={s.profile__arrow} />
+          Back to pacs list
+        </Link>
+        <div className={s.profile__content}>
+          <h2 className={s.profile__title}>personal information</h2>
+          <form className={s.profile__form} onSubmit={formik.handleSubmit}>
+            <div className={s.profile__avatarBlock} onClick={setNewAvatar}>
+              <div className={s.profile__pic}>
+                <img className={s.profile__img} src={avatarLocal || avatar} alt="avatar" />
+              </div>
+              <CameraAlt className={s.profile__avatarIcon} />
             </div>
-          </div>
-          <div className={s.nameContainer}>
-            <div className={s.ProfileContainer__name}>
-              <h2>{profile.name}</h2>
-              <span className={s.ProfileContainer__edit} onClick={editNameHandler}>
-                <BorderColor />
-              </span>
-            </div>
-          </div>
-          <p className={s.ProfileContainer__email}>{profile.email}</p>
-          <CustomButton onClick={onLogOutHandler} className={s.ProfileContainer__logOutBtn}>
-            Log Out
+            <p className={s.profile__userName} onBlur={setNewName}>
+              {isNameEditable ? (
+                <CustomInput
+                  className={s.profile__field}
+                  label="name"
+                  error={formik.touched.name && !!formik.errors.name}
+                  helperText={formik.touched.name && formik.errors.name}
+                  {...formik.getFieldProps('name')}
+                />
+              ) : (
+                name
+              )}
+              <BorderColor className={s.profile__marker} onClick={setNewName} />
+            </p>
+          </form>
+          <p className={s.profile__userEmail}>{email}</p>
+          <CustomButton className={s.profile__button} onClick={onLogOutHandler}>
+            <LogoutIcon className={s.profile__buttonIcon} />
+            Log out
           </CustomButton>
         </div>
       </div>
-    </div>
+    </>
   )
 }

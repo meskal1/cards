@@ -1,9 +1,10 @@
 .loginContainer {
   display: flex;
-  flex: 0 1 400px;
   flex-direction: column;
   align-self: center;
 
+  width: 100%;
+  max-width: 400px;
   padding: 30px;
 
   text-align: center;
@@ -126,4 +127,6 @@
 .checkbox {
   margin: 0 9px 0 0 !important;
   padding: 0 !important;
+}
+.button {
 }

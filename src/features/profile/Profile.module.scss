@@ -1,128 +1,157 @@
-@mixin fontSettings($space, $family, $weight, $size, $height) {
-  margin-top: $space;
+.profileContainer {
+  position: relative;
 
-  font-family: $family;
-  font-size: $size;
-  font-weight: $weight;
-  line-height: $height;
-}
-
-.ProfileContainer {
-  clear: left;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  justify-self: center;
-
-  width: 413px;
-  height: 360px;
-
-  text-align: center;
-
-  background: rgb(240, 240, 240);
-  border-radius: 2px;
-  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1), -1px -1px 2px rgba(0, 0, 0, 0.1);
-
-  &__addPhoto {
-    float: right;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    width: 40px;
-    height: 40px;
-
-    background-color: aqua;
-    border: 1px solid white;
-    border-radius: 50%;
-  }
-
-  &__title {
-
-    @include fontSettings(15px, 'Montserrat', 600, 22px, 27px);
-  }
-
-  &__image {
-    width: 96px;
-    height: 96px;
-    margin-top: 30px;
-    padding-top: 40px;
-
-    background-color: cornflowerblue;
-    border-radius: 50%;
-  }
-
-  &__image img {
-    width: 96px;
-    height: 96px;
-
-    border-radius: 50%
-  }
-
-  .nameContainer {
-    display: flex;
-    justify-content: center;
-  }
-
-  &__name {
-
-    @include fontSettings(17px, 'Montserrat', 500, 20px, 24px);
-
-    display: flex;
-    display: inline;
-    justify-content: center;
-
-    width: 100%;
-  }
-
-  &__name h2 {
-    float: left;
-
-    margin-right: 10px;
-  }
-
-  &__edit {
-    float: left;
-  }
-
-  &__email {
-
-    @include fontSettings(14px, 'Montserrat', 400, 14px, 24px);
-
-    margin-bottom: 29px;
-  }
-
-  &__arrow {
-    float: left;
-
-    margin-top: 3px;
-  }
-
-  &__logOutBtn {
-    background-color: white;
-  }
-
-}
-
-.backToPacks {
-  float: left;
-
-  width: 160px;
-  height: 40px;
-  margin-top: 20px;
-
-  &__PacksLink {
-
-    @include fontSettings(0px, 'Montserrat', 400px, 14px, 24px)
-  ;
-
-    float: left;}
-}
-
-.ProfileBox {
-  display: flex;
-  justify-content: center;
+  flex-grow: 1;
+  align-self: flex-start;
 
   width: 100%;
+  height: 100%;
+  padding: 60px 0px 0px 0px;
+
+  text-align: center;
+}
+.profile {
+  &__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-self: center;
+
+    padding: 30px 40px;
+
+    background: rgb(240 240 240);
+    border-radius: 20px;
+  }
+  &__linkPacks {
+    position: absolute;
+    top: 24px;
+    left: 0;
+
+    display: flex;
+    align-items: center;
+
+    font-weight: 500;
+    line-height: 24px;
+    color: inherit;
+
+    transition: all 0.2s ease;
+    &:hover {
+      color: white;
+    }
+  }
+  &__arrow {
+    margin: 0px 10px 0px 0px;
+  }
+  &__title {
+    margin: 0px 0px 30px 0px;
+
+    font-size: 26px;
+    font-weight: 600;
+    &::first-letter {
+      text-transform: uppercase;
+    }
+  }
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+  &__avatarBlock {
+    position: relative;
+  }
+  &__pic {
+    cursor: pointer;
+
+    position: relative;
+
+    overflow: hidden;
+
+    width: 110px;
+    height: 110px;
+
+    border-radius: 100%;
+  }
+  &__img {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+  }
+  &__avatarIcon {
+    cursor: pointer;
+
+    position: absolute;
+    right: 0;
+    bottom: 0;
+
+    width: 30px !important;
+    height: 30px !important;
+    padding: 4px;
+
+    color: grey;
+
+    background: white;
+    border: 1px solid grey;
+    border-radius: 30px !important;
+  }
+  &__userName {
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    user-select: none;
+
+    display: flex;
+    align-items: center;
+
+    height: 68.42px;
+
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 24px;
+    text-transform: capitalize;
+  }
+  &__field {
+    & > * {
+      font-family: inherit !important;
+      letter-spacing: inherit !important;
+
+      &::first-letter {
+        text-transform: uppercase !important;
+      }
+    }
+  }
+  &__marker {
+    cursor: pointer;
+
+    margin: 0px 0px 0px 10px !important;
+
+    color: grey;
+  }
+  &__userEmail {
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    user-select: none;
+
+    margin: 0px 0px 20px 0px;
+
+    color: grey;
+  }
+  &__button {
+    align-self: center;
+
+    padding: 5px 20px !important;
+
+    color: black !important;
+
+    background: white !important;
+  }
+  &__buttonIcon {
+    margin: 0px 10px 0px 0px;
+  }
 }

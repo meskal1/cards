@@ -4,29 +4,41 @@ import { AxiosError } from 'axios'
 import {
   RequestStatusType,
   setAppAlertMessage,
-  setAppStatusAC,
-  setIsInitializedAC,
+  setAppStatus,
   SetRequestStatusPayloadType,
 } from '../../app/appSlice'
 import { AppDispatchType } from '../../app/store'
-import { authAPI, LoginParamsType, RegisterParamsType } from '../../services/authApi'
+import {
+  authAPI,
+  CreatePasswordParamsType,
+  LoginParamsType,
+  RegisterParamsType,
+} from '../../services/authApi'
 import { handleServerNetworkError } from '../../utils/errorUtils'
-import { setProfile } from '../profile/profileReducer'
+import { setUserData } from '../profile/profileSlice'
 
 const initialState = {
   isLoggedIn: false,
+  recoveryEmail: '',
   status: 'idle' as RequestStatusType,
+  passwordIsChanged: false,
 }
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setIsLoggedInAC(state, action: PayloadAction<{ isLoggedIn: boolean }>) {
+    setIsLoggedIn(state, action: PayloadAction<{ isLoggedIn: boolean }>) {
       state.isLoggedIn = action.payload.isLoggedIn
     },
     setAuthStatus(state, action: PayloadAction<SetRequestStatusPayloadType>) {
       state.status = action.payload.status
+    },
+    setRecoveryEmail(state, action: PayloadAction<{ recoveryEmail: string }>) {
+      state.recoveryEmail = action.payload.recoveryEmail
+    },
+    setPasswordStatus(state, action: PayloadAction<SetPasswordStatusType>) {
+      state.passwordIsChanged = action.payload.passwordIsChanged
     },
   },
 })
@@ -34,36 +46,33 @@ const authSlice = createSlice({
 export const authReducer = authSlice.reducer
 
 // ACTIONS
-export const { setIsLoggedInAC, setAuthStatus } = authSlice.actions
+export const { setIsLoggedIn, setAuthStatus, setRecoveryEmail, setPasswordStatus } =
+  authSlice.actions
 
 // THUNKS
 export const logInTC = (data: LoginParamsType) => async (dispatch: AppDispatchType) => {
   try {
-    dispatch(setAppStatusAC({ status: 'loading' }))
+    dispatch(setAuthStatus({ status: 'loading' }))
     const response = await authAPI.login(data)
-
-    console.log(response.data.name)
-    // Задиспатчить имя Юзера которое пришло с сервера
     const { name, email, avatar } = response.data
 
-    dispatch(setProfile({ name, email, avatar }))
-    dispatch(setIsLoggedInAC({ isLoggedIn: true }))
-  } catch (e) {
-    const error = e as Error | AxiosError
+    dispatch(setUserData({ userData: { name, email, avatar } }))
+    dispatch(setIsLoggedIn({ isLoggedIn: true }))
 
-    handleServerNetworkError(dispatch, error)
+    return true
+  } catch (e) {
+    handleServerNetworkError(dispatch, e as Error | AxiosError)
   } finally {
-    dispatch(setAppStatusAC({ status: 'idle' }))
+    dispatch(setAuthStatus({ status: 'idle' }))
   }
 }
 
 export const logOutTC = () => async (dispatch: AppDispatchType) => {
   try {
-    dispatch(setAppStatusAC({ status: 'loading' }))
+    dispatch(setAppStatus({ status: 'loading' }))
     await authAPI.logout()
-    dispatch(setIsInitializedAC({ isInitialized: false }))
-    dispatch(setProfile({ name: '', email: '', avatar: undefined }))
-    dispatch(setIsLoggedInAC({ isLoggedIn: false }))
+    dispatch(setUserData({ userData: { name: '', email: '', avatar: undefined } }))
+    dispatch(setIsLoggedIn({ isLoggedIn: false }))
   } catch (e) {
     const error = e as Error | AxiosError
 
@@ -74,7 +83,7 @@ export const logOutTC = () => async (dispatch: AppDispatchType) => {
 export const registerTC = (data: RegisterParamsType) => async (dispatch: AppDispatchType) => {
   try {
     dispatch(setAuthStatus({ status: 'loading' }))
-    const res = await authAPI.register(data)
+    await authAPI.register(data)
 
     dispatch(
       setAppAlertMessage({
@@ -91,5 +100,40 @@ export const registerTC = (data: RegisterParamsType) => async (dispatch: AppDisp
   }
 }
 
+export const forgotPasswordTC = (email: string) => async (dispatch: AppDispatchType) => {
+  try {
+    setAuthStatus({ status: 'loading' })
+    const res = await authAPI.forgot(email)
+
+    dispatch(setRecoveryEmail({ recoveryEmail: email }))
+    dispatch(
+      setAppAlertMessage({
+        messageType: 'success',
+        messageText: res.data.info,
+      })
+    )
+
+    return true
+  } catch (e) {
+    handleServerNetworkError(dispatch, e as Error | AxiosError)
+  } finally {
+    dispatch(setAuthStatus({ status: 'idle' }))
+  }
+}
+
+export const createPasswordTC =
+  (data: CreatePasswordParamsType) => async (dispatch: AppDispatchType) => {
+    try {
+      await authAPI.newPassword(data)
+      dispatch(setPasswordStatus({ passwordIsChanged: true }))
+    } catch (e) {
+      const error = e as Error | AxiosError
+
+      handleServerNetworkError(dispatch, error)
+    }
+  }
+
 // TYPES
 export type AuthStateType = typeof initialState
+
+type SetPasswordStatusType = { passwordIsChanged: boolean }
