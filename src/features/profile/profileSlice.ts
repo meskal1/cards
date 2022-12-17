@@ -32,8 +32,9 @@ export const { setUserData } = profileSlice.actions
 export const newUserDataTC = (data: UserDataType) => async (dispatch: AppDispatchType) => {
   try {
     const response = await authAPI.newUserData(data)
+    const { name, email, avatar } = response.data.updatedUser
 
-    console.log(response)
+    dispatch(setUserData({ userData: { name, email, avatar } }))
   } catch (e) {
     handleServerNetworkError(dispatch, e as Error | AxiosError)
   }

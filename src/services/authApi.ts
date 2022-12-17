@@ -42,7 +42,7 @@ export const authAPI = {
     })
   },
   newUserData(data: ProfileDataType) {
-    return instance.put<ProfileDataType, ProfileDataResponseType>('auth/me', data)
+    return instance.put<ProfileDataResponseType>('auth/me', data)
   },
   editProfile(profile: editProfileType) {
     return instance.put<ResponseType>('auth/me', profile)
@@ -131,4 +131,8 @@ export type ProfileDataType = {
   avatar: string | undefined
 }
 
-type ProfileDataResponseType = any
+type ProfileDataResponseType = {
+  token: string
+  tokenDeathTime: number
+  updatedUser: ResponseType
+}
