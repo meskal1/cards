@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import { BorderColor, CameraAlt, KeyboardBackspace } from '@mui/icons-material'
 import LogoutIcon from '@mui/icons-material/Logout'
@@ -7,7 +7,7 @@ import { Link, useNavigate } from 'react-router-dom'
 
 import avatarLocal from '../../assets/img/avatar.jpg'
 import { CustomButton } from '../../common/components/CustomButton/CustomButton'
-import { CustomInput } from '../../common/components/CustomInput/CustomInput'
+// eslint-disable-next-line import/namespace
 import { EditableSpan } from '../../common/components/EditableSpan/EditableSpan'
 import { PATH } from '../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
@@ -48,9 +48,12 @@ export const Profile = () => {
     isNameEditable ? setIsNameEditable(false) : setIsNameEditable(true)
   }
 
-  const changeName = (newName: string) => {
-    dispatch(newUserDataTC({ name: newName, avatar }))
-  }
+  const changeName = useCallback(
+    (newName: string) => {
+      dispatch(newUserDataTC({ name: newName, avatar }))
+    },
+    [dispatch]
+  )
 
   if (!isLoggedIn) {
     navigate(PATH.LOGIN)
