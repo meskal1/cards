@@ -5,18 +5,26 @@
   margin: 0;
   padding: 0;
 
+  font-family: Montserrat, sans-serif !important;
+  letter-spacing: 0.5px !important;
+
   border: 0;
 }
+
+*::first-letter {
+  text-transform: uppercase !important;
+}
+
 li {
   list-style: none;
 }
+
 a,
-a:visited {
-  text-decoration: none;
-}
+a:visited,
 a:hover {
   text-decoration: none;
 }
+
 h1,
 h2,
 h3,
@@ -26,27 +34,29 @@ h6 {
   font-size: inherit;
   font-weight: inherit;
 }
+
 img {
   vertical-align: top;
 }
+
 html,
 body {
   height: 100%;
 
-  font-family: 'Montserrat', sans-serif;
   line-height: 1;
-  letter-spacing: 0.5px;
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
   /* When you tap, it removes the background rectangles */
   -webkit-tap-highlight-color: transparent;
 }
+
 html {
   font-size: 14px;
   color: black;
 
-  background: rgb(140, 140, 140);
+  background: rgb(140 140 140);
 }
 
 code {
