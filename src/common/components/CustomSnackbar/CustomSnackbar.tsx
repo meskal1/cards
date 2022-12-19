@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Alert, Snackbar } from '@mui/material'
+import { Alert, Box, Snackbar } from '@mui/material'
 
 import { setAppAlertMessage } from '../../../app/appSlice'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
@@ -20,15 +20,19 @@ export const CustomSnackbar = () => {
   }
 
   return (
-    <Snackbar open={isOpen} autoHideDuration={6000} onClose={handleClose}>
-      {/* Condition is required to get rid of showing empty alert before snackbar finish closing */}
-      {alertMessage.messageText ? (
-        <Alert onClose={handleClose} severity={alertMessage.messageType}>
-          {alertMessage.messageText}
-        </Alert>
-      ) : (
-        <div></div>
-      )}
-    </Snackbar>
+    <>
+      <Box position={'absolute'}>
+        <Snackbar open={isOpen} autoHideDuration={6000} onClose={handleClose}>
+          {/* Condition is required to get rid of showing empty alert before snackbar finish closing */}
+          {alertMessage.messageText ? (
+            <Alert onClose={handleClose} severity={alertMessage.messageType}>
+              {alertMessage.messageText}
+            </Alert>
+          ) : (
+            <div></div>
+          )}
+        </Snackbar>
+      </Box>
+    </>
   )
 }
