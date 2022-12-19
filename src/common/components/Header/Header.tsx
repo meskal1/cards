@@ -1,60 +1,39 @@
 import * as React from 'react'
 
+import { Toolbar } from '@mui/material'
 import AppBar from '@mui/material/AppBar'
-import Avatar from '@mui/material/Avatar'
-import Box from '@mui/material/Box'
-import Container from '@mui/material/Container'
-import IconButton from '@mui/material/IconButton'
-import Menu from '@mui/material/Menu'
-import MenuItem from '@mui/material/MenuItem'
-import Toolbar from '@mui/material/Toolbar'
-import Tooltip from '@mui/material/Tooltip'
-import Typography from '@mui/material/Typography'
-import { Link, useNavigate } from 'react-router-dom'
+import { Container } from '@mui/system'
+import { Link } from 'react-router-dom'
 
 import avatarLocal from '../../../assets/img/avatar.jpg'
 import { PATH } from '../../../constants/routePaths.enum'
-import { logOutTC } from '../../../features/auth/authSlice'
-import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
+import { useAppSelector } from '../../../hooks/reduxHooks'
+import { Menu } from '../Header/Menu/Menu'
 
 import s from './Header.module.scss'
 
-const settings = ['Profile', 'Logout']
-
 export const Header = () => {
-  const navigate = useNavigate()
-  const dispatch = useAppDispatch()
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null)
-
   const name = useAppSelector(state => state.profile.userData.name)
+  const avatar = useAppSelector(state => state.profile.userData.avatar)
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false)
 
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget)
+  const onClickHandleMenu = () => {
+    isMenuOpen ? setIsMenuOpen(false) : setIsMenuOpen(true)
   }
 
-  const handleCloseUserMenu = (item: string) => {
-    setAnchorElUser(null)
-
-    if (item === 'Profile') {
-      navigate(PATH.PROFILE)
-    }
-
-    if (item === 'Logout') {
-      dispatch(logOutTC())
+  const onMouseDownOutOffMenu = (e: React.MouseEvent) => {
+    if ((e.target as Element).id === 'header' && isMenuOpen !== false) {
+      setIsMenuOpen(false)
     }
   }
-
-  const menuItems = settings.map(item => {
-    return (
-      <MenuItem key={item} onClick={() => handleCloseUserMenu(item)}>
-        <Typography textAlign="center">{item}</Typography>
-      </MenuItem>
-    )
-  })
 
   return (
     <>
-      <AppBar className={s.headerContainer}>
+      <AppBar
+        id="header"
+        className={`${s.headerContainer} ${isMenuOpen ? s.beforeElement : ''}`}
+        onMouseDown={onMouseDownOutOffMenu}
+      >
         <Container className={s.header}>
           <Toolbar disableGutters>
             <div className={s.header__logoContainer}>
@@ -63,35 +42,22 @@ export const Header = () => {
               </Link>
             </div>
 
-            <Box className={s.header__profileBlock}>
-              <div className={s.header__userName} onClick={handleOpenUserMenu}>
+            <div className={s.header__avatarContainer}>
+              <div className={s.header__userName} onClick={onClickHandleMenu}>
                 {name ? name : ''}
               </div>
-              <div>
-                <Tooltip title="">
-                  <IconButton onClick={handleOpenUserMenu} className={s.header__profileIcon}>
-                    <Avatar alt="Remy Sharp" src={avatarLocal} />
-                  </IconButton>
-                </Tooltip>
-                <Menu
-                  className={s.header__menu}
-                  anchorEl={anchorElUser}
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  open={Boolean(anchorElUser)}
-                  onClose={handleCloseUserMenu}
-                >
-                  {menuItems}
-                </Menu>
+
+              {isMenuOpen && <Menu closeMenu={onClickHandleMenu} />}
+
+              <div className={s.header__pic}>
+                <img
+                  className={s.header__img}
+                  src={avatarLocal || avatar}
+                  alt="avatar"
+                  onClick={onClickHandleMenu}
+                />
               </div>
-            </Box>
+            </div>
           </Toolbar>
         </Container>
       </AppBar>
