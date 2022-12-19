@@ -1,9 +1,8 @@
 import * as React from 'react'
 
-import { CircularProgress, Box } from '@mui/material'
-
 import { CustomSnackbar } from '../common/components/CustomSnackbar/CustomSnackbar'
 import { Header } from '../common/components/Header/Header'
+import { LoadingProgress } from '../common/components/LoadingProgress/LoadingProgress'
 import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks'
 import { AppRoutes } from '../routes/routes'
 
@@ -29,14 +28,10 @@ function App() {
               <AppRoutes />
             </main>
           </div>
-          <Box position={'absolute'}>
-            <CustomSnackbar />
-          </Box>
+          <CustomSnackbar />
         </>
       ) : (
-        <Box className={s.circularProgress}>
-          <CircularProgress />
-        </Box>
+        <LoadingProgress />
       )}
     </>
   )

@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AxiosError } from 'axios'
 
 import { AppDispatchType } from '../../app/store'
-import { ProfileDataType, authAPI } from '../../services/authApi'
+import { authAPI } from '../../services/authApi'
 import { handleServerNetworkError } from '../../utils/errorUtils'
 
 const initialState = {

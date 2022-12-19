@@ -35,7 +35,9 @@ export const CheckEmail = () => {
         <p className={s.checkEmail__text}>
           {`we've sent an Email with instructions to ${recoveryEmail}`}
         </p>
-        <CustomButton onClick={onClickNavigate}>Back to login</CustomButton>
+        <CustomButton onClick={onClickNavigate}>
+          <p>back to login</p>
+        </CustomButton>
       </div>
     </>
   )

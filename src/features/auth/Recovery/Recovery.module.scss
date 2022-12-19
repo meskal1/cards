@@ -1,61 +1,50 @@
+@import '../../../app/mixinCommon';
+
 .forgotPassword {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+
   width: 100%;
-  max-width: 413px;
-  padding: 35px 33px 42px;
+  max-width: 400px;
+  padding: 30px;
 
-  background-color: #fff;
+  text-align: center;
+
+  background: white;
   border-radius: 20px;
-  box-shadow: 1px 1px 2px rgb(0 0 0 / 10%), -1px -1px 2px rgb(0 0 0 / 10%);
+}
 
-  .form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
+.form {
+  display: flex;
+  flex-direction: column;
 
-    .title {
-      margin-bottom: 20px;
+  margin: 0px 0px 25px 0px;
+}
 
-      font-size: 26px;
-      font-weight: 600;
-      line-height: 31.5px;
-    }
+.help {
+  margin: 0px 0px 25px 0px;
 
-    .input {
-      margin-bottom: 10px;
-    }
+  font-weight: 500;
+  line-height: 25px;
+  color: grey;
+  text-align: start;
+}
 
-    .help {
-      margin-bottom: 20px;
+.title {
+  @include auth_title_style;
+}
 
-      line-height: 24px;
+.forgotQuestion {
+  margin: 0px 0px 10px 0px;
 
-      opacity: 0.5;
-    }
+  font-weight: 500;
+  color: grey;
+}
 
-    .button {
-      margin-top: 30px;
-      margin-bottom: 31px;
-
-      text-transform: capitalize !important;
-    }
-
-    .forgotQuestion {
-      margin-bottom: 11px;
-
-      font-weight: 600;
-      line-height: 24px;
-
-      opacity: 0.5;
-    }
-
-    .forgotLink {
-      font-size: 16px;
-      font-weight: 600;
-      line-height: 24px;
-      color: #366eff;
-      text-decoration: underline;
-      text-transform: capitalize;
-    }
-  }
+.forgotLink {
+  font-size: 16px;
+  font-weight: 500;
+  color: blue;
+  text-decoration: underline;
 }

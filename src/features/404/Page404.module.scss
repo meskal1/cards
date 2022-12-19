@@ -1,27 +1,27 @@
-@import '../../app/mixin.scss';
+@import '../../app/mixinAdaptive';
+
 .page404Container {
   display: flex;
   flex-direction: column;
   gap: 15px;
   align-items: center;
-  & > *::first-letter {
-    text-transform: capitalize !important;
-  }
 }
+
 .page404 {
   &__title {
     @include adaptiveValue('font-size', 40, 25, 480, 280, 1);
 
-    margin: 0px 0px 10px 0px;
+    margin: 0 0 10px;
 
     font-weight: 600;
   }
+
   &__img {
     width: 100%;
     height: 100%;
   }
 }
+
 .button {
   @include adaptiveValueImportant('font-size', 18, 12, 480, 280, 1);
 }
-
