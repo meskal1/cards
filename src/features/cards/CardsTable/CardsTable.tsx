@@ -1,5 +1,6 @@
 import React, { MouseEvent } from 'react'
 
+import { Rating } from '@mui/material'
 import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
@@ -40,8 +41,9 @@ export const CardsTable: React.FC<CardsTablePropsType> = ({ isMine }) => {
       cardsPack_id: '63319bd2ef99210257c3d013',
       user_id: '63272e99d38dbc8a0103935d',
       answer: 'gfhj',
-      question: 'update',
-      grade: 0,
+      question:
+        'updateupdateupdateupdateupdateupdateupdateupdateupdateupdateupdateupdateupdateupdateupdateupdateupdateupdateupdateupdateupdateupdateupdate',
+      grade: 5,
       shots: 0,
       questionImg: 'url or base 64',
       answerImg: 'url or base 64',
@@ -59,8 +61,9 @@ export const CardsTable: React.FC<CardsTablePropsType> = ({ isMine }) => {
       _id: '633c7ff21147012426bae92e',
       cardsPack_id: '63319bd2ef99210257c3d013',
       user_id: '63272e99d38dbc8a0103935d',
-      answer: 'vbnm',
-      question: 'update',
+      answer:
+        'vbnmvbnmvbnmvbn mvbnmvbnmvbnmvbnmvbnmvbnmvbnmv bnmvbnmvbnmvbnmvbnmvbnmvbnm bnmvbnmvbnmvbnmvbnmvbnmvbnm',
+      question: 'updateupdateupdateupdateupda',
       grade: 0,
       shots: 0,
       questionImg: 'url or base 64',
@@ -81,7 +84,7 @@ export const CardsTable: React.FC<CardsTablePropsType> = ({ isMine }) => {
       user_id: '63272e99d38dbc8a0103935d',
       answer: 'no answer',
       question: 'map',
-      grade: 0,
+      grade: 3,
       shots: 0,
       questionImg: 'url or base 64',
       answerImg: 'url or base 64',
@@ -101,7 +104,7 @@ export const CardsTable: React.FC<CardsTablePropsType> = ({ isMine }) => {
       user_id: '63272e99d38dbc8a0103935d',
       answer: 'no answer',
       question: 'map',
-      grade: 0,
+      grade: 2,
       shots: 0,
       questionImg: 'url or base 64',
       answerImg: 'url or base 64',
@@ -159,10 +162,18 @@ export const CardsTable: React.FC<CardsTablePropsType> = ({ isMine }) => {
                     className={s.row}
                     onClick={e => openCardHandler(e, row._id)}
                   >
-                    <TableCell>{row.question}</TableCell>
-                    <TableCell>{row.answer}</TableCell>
-                    <TableCell>{dayjs(row.updated).format('DD.MM.YYYY')}</TableCell>
-                    <TableCell>{row.grade}</TableCell>
+                    <TableCell>
+                      <p className={s.tableCellText}>{row.question}</p>
+                    </TableCell>
+                    <TableCell>
+                      <p className={s.tableCellText}>{row.answer}</p>
+                    </TableCell>
+                    <TableCell>
+                      <p className={s.tableCellText}> {dayjs(row.updated).format('DD.MM.YYYY')}</p>
+                    </TableCell>
+                    <TableCell className={s.tableCell}>
+                      <Rating value={row.grade} readOnly />
+                    </TableCell>
                     {isMine && (
                       <CardsActionCell editCard={editCardHandler} deleteCard={deleteCardHandler} />
                     )}

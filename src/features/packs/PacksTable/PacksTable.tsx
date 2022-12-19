@@ -45,7 +45,7 @@ export function PacksTable({}: PacksTablePropsType) {
       user_id: '639df1359aa32653302bd565',
       user_name: 'Ivan',
       private: false,
-      name: 'new name',
+      name: 'new name new name new name new name new name new name new name new name new name new name new name new name new name new name new name ',
       path: '/def',
       grade: 0,
       shots: 0,
@@ -155,10 +155,18 @@ export function PacksTable({}: PacksTablePropsType) {
                     hover
                     onClick={e => openCardPackHandler(e, row._id)}
                   >
-                    <TableCell>{row.name}</TableCell>
-                    <TableCell>{row.cardsCount}</TableCell>
-                    <TableCell>{dayjs(row.updated).format('DD.MM.YYYY')}</TableCell>
-                    <TableCell>{row.user_name}</TableCell>
+                    <TableCell>
+                      <p className={s.tableCellText}>{row.name}</p>
+                    </TableCell>
+                    <TableCell>
+                      <p className={s.tableCellText}>{row.cardsCount}</p>
+                    </TableCell>
+                    <TableCell>
+                      <p className={s.tableCellText}>{dayjs(row.updated).format('DD.MM.YYYY')}</p>
+                    </TableCell>
+                    <TableCell>
+                      <p className={s.tableCellText}>{row.user_name}</p>
+                    </TableCell>
                     <PacksActionCell
                       isMine={row.user_id === userId}
                       studyCard={studyCardPackHandler}
