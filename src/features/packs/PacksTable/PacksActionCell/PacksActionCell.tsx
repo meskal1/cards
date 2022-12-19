@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { MouseEvent } from 'react'
 
 import { IconButton } from '@mui/material'
 import TableCell from '@mui/material/TableCell'
@@ -20,18 +20,23 @@ export const PacksActionCell: React.FC<PacksActionCellPropsType> = ({
   editCard,
   deleteCard,
 }) => {
+  const createHandlerWithoutPropagation = (e: MouseEvent<HTMLButtonElement>, func: () => void) => {
+    e.stopPropagation()
+    func()
+  }
+
   return (
     <TableCell>
-      <IconButton onClick={() => studyCard()}>
+      <IconButton onClick={e => createHandlerWithoutPropagation(e, studyCard)}>
         <img src={studyIcon} alt={'Study icon'} />
       </IconButton>
       {isMine && (
-        <IconButton onClick={() => editCard()}>
+        <IconButton onClick={e => createHandlerWithoutPropagation(e, editCard)}>
           <img src={editIcon} alt={'Edit icon'} />
         </IconButton>
       )}
       {isMine && (
-        <IconButton onClick={() => deleteCard()}>
+        <IconButton onClick={e => createHandlerWithoutPropagation(e, deleteCard)}>
           <img src={deleteIcon} alt={'Delete icon'} />
         </IconButton>
       )}

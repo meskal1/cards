@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { MouseEvent } from 'react'
 
 import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
@@ -9,8 +10,13 @@ import TableContainer from '@mui/material/TableContainer'
 import TableRow from '@mui/material/TableRow'
 import dayjs from 'dayjs'
 
+import {
+  CustomTableHead,
+  HeadType,
+} from '../../../common/components/CustomTableHead/CustomTableHead'
+
 import { PacksActionCell } from './PacksActionCell/PacksActionCell'
-import { PacksTableHead } from './PacksTableHead/PacksTableHead'
+import s from './PacksTable.module.scss'
 
 export type PacksOrderByType = 'name' | 'cardsCount' | 'updated' | 'user_name'
 export type ServerOrderType = '0' | '1'
@@ -20,6 +26,14 @@ export enum TableOrder {
   desc = '1',
 }
 export type TableOrderType = 'asc' | 'desc'
+
+const heads: HeadType<PacksOrderByType | 'actions'>[] = [
+  { id: 'name', label: 'Name' },
+  { id: 'cardsCount', label: 'Cards' },
+  { id: 'updated', label: 'Last Updated' },
+  { id: 'user_name', label: 'Created by' },
+  { id: 'actions', label: 'Actions' },
+]
 
 type PacksTablePropsType = {}
 
@@ -100,6 +114,10 @@ export function PacksTable({}: PacksTablePropsType) {
   const serverSort: ServerSortType = '0updated' // Replace to value from redux
   const setServerSort = (serverSort: ServerSortType) => alert(JSON.stringify({ serverSort })) // Replace to dispatch
 
+  const openCardPackHandler = (e: MouseEvent<HTMLTableRowElement>, id: string) => {
+    alert('Open card pack - ' + id)
+  }
+
   // Check current order
   const serverOrder = serverSort.slice(0, 1) as ServerOrderType
   const tableOrderBy = serverSort.slice(1) as PacksOrderByType
@@ -113,16 +131,17 @@ export function PacksTable({}: PacksTablePropsType) {
 
     setServerSort(newServerOrder)
   }
-  const studyCardHandler = () => alert('study card')
-  const editCardHandler = () => alert('edit card')
-  const deleteCardHandler = () => alert('delete card')
+  const studyCardPackHandler = () => alert('study card')
+  const editCardPackHandler = () => alert('edit card')
+  const deleteCardPackHandler = () => alert('delete card')
 
   return (
     <Box>
       <Paper>
         <TableContainer>
           <Table>
-            <PacksTableHead
+            <CustomTableHead
+              heads={heads}
               order={tableOrder}
               orderBy={tableOrderBy}
               setSortHandler={setSortHandler}
@@ -130,16 +149,21 @@ export function PacksTable({}: PacksTablePropsType) {
             <TableBody>
               {serverData.map(row => {
                 return (
-                  <TableRow key={row._id} hover>
+                  <TableRow
+                    className={s.row}
+                    key={row._id}
+                    hover
+                    onClick={e => openCardPackHandler(e, row._id)}
+                  >
                     <TableCell>{row.name}</TableCell>
                     <TableCell>{row.cardsCount}</TableCell>
                     <TableCell>{dayjs(row.updated).format('DD.MM.YYYY')}</TableCell>
                     <TableCell>{row.user_name}</TableCell>
                     <PacksActionCell
                       isMine={row.user_id === userId}
-                      studyCard={studyCardHandler}
-                      editCard={editCardHandler}
-                      deleteCard={deleteCardHandler}
+                      studyCard={studyCardPackHandler}
+                      editCard={editCardPackHandler}
+                      deleteCard={deleteCardPackHandler}
                     />
                   </TableRow>
                 )
