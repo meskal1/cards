@@ -1,0 +1,24 @@
+.backToPacks {
+  &__linkPacks {
+    position: absolute;
+    top: 24px;
+    left: 0;
+
+    display: flex;
+    align-items: center;
+
+    font-weight: 500;
+    line-height: 24px;
+    color: inherit;
+
+    transition: all 0.2s ease;
+
+    &:hover {
+      color: white;
+    }
+  }
+
+  &__arrow {
+    margin: 0px 10px 0px 0px;
+  }
+}
