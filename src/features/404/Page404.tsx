@@ -19,7 +19,7 @@ export const Page404 = () => {
         <img className={s.page404__img} src={image404} alt="error404" />
         <h1 className={s.page404__title}>page not found!</h1>
         <CustomButton className={s.button} onClick={onClickNavigate}>
-          Back to home page
+          <p>back to home page</p>
         </CustomButton>
       </div>
     </>

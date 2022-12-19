@@ -1,3 +1,5 @@
+@import '../../app/mixinCommon';
+
 .profileContainer {
   position: relative;
 
@@ -12,6 +14,7 @@
 
   text-align: center;
 }
+
 .profile {
   &__content {
     display: flex;
@@ -24,6 +27,7 @@
     background: rgb(240 240 240);
     border-radius: 20px;
   }
+
   &__linkPacks {
     position: absolute;
     top: 24px;
@@ -37,31 +41,34 @@
     color: inherit;
 
     transition: all 0.2s ease;
+
     &:hover {
       color: white;
     }
   }
+
   &__arrow {
     margin: 0px 10px 0px 0px;
   }
+
   &__title {
     margin: 0px 0px 30px 0px;
 
     font-size: 26px;
     font-weight: 600;
-    &::first-letter {
-      text-transform: uppercase;
-    }
   }
+
   &__form {
     display: flex;
     flex-direction: column;
     gap: 10px;
     align-items: center;
   }
+
   &__avatarBlock {
     position: relative;
   }
+
   &__pic {
     cursor: pointer;
 
@@ -74,6 +81,7 @@
 
     border-radius: 100%;
   }
+
   &__img {
     position: absolute;
     top: 0;
@@ -84,6 +92,7 @@
 
     object-fit: cover;
   }
+
   &__avatarIcon {
     cursor: pointer;
 
@@ -101,10 +110,9 @@
     border: 1px solid grey;
     border-radius: 30px !important;
   }
+
   &__userName {
-    -moz-user-select: none;
-    -khtml-user-select: none;
-    user-select: none;
+    @include user_select_none;
 
     display: flex;
     align-items: center;
@@ -114,25 +122,31 @@
     line-height: 24px;
     text-transform: capitalize;
   }
-  &__field {
-    & > * {
-      font-family: inherit !important;
-      letter-spacing: inherit !important;
 
+<<<<<<< HEAD
       &::first-letter {
         text-transform: uppercase !important;
       }
     }
   }
+=======
+  &__marker {
+    cursor: pointer;
+
+    margin: 0px 0px 0px 10px !important;
+
+    color: grey;
+  }
+
+>>>>>>> feet/newPassword
   &__userEmail {
-    -moz-user-select: none;
-    -khtml-user-select: none;
-    user-select: none;
+    @include user_select_none;
 
     margin: 0px 0px 20px 0px;
 
     color: grey;
   }
+
   &__button {
     align-self: center;
 
@@ -142,6 +156,7 @@
 
     background: white !important;
   }
+
   &__buttonIcon {
     margin: 0px 10px 0px 0px;
   }

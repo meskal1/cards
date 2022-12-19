@@ -2,37 +2,42 @@
 
 // Минимальная ширина страницы
 $minWidth: 320;
+
 // Минимальная высота страницы
-$minHeight: 350; //301
+$minHeight: 350; // 301
 // Ширина полотна (макета)
 $maxWidth: 1920;
+
 // Высота въюпорта максимальная (макета)
 // $maxHeight: 1080;
 // Ширина ограничивающего контейнера (0 = нет ограничения)
 $maxWidthContainer: 1050;
+
 // Общий отступ у контейнера
 // (30 = по 15px слева и справа, 0 = нет отступа)
 $containerPadding: 30;
+
 // Ширина страбатывания первого брейкпоинта
 $containerWidth: $maxWidthContainer + $containerPadding;
 
-//Адаптивное свойство
-//Percent
+// Адаптивное свойство
+// Percent
 @function percent($px, $from) {
   $result: math.div($px, $from) * 100%;
   @return $result;
 }
-//REM
+
+// REM
 @function rem($px) {
   $result: math.div($px, 16) + rem;
   @return $result;
 }
-//EM
+
+// EM
 @function em($px, $current: 16) {
   $result: math.div($px, $current) + em;
   @return $result;
 }
-
 @mixin adaptiveValueMaxHeight(
   $property,
   $startSize,
@@ -42,9 +47,10 @@ $containerWidth: $maxWidthContainer + $containerPadding;
   $maxHeight,
   $keepSize: 0
 ) {
-  @if ($widthFrom == $containerWidth and $maxWidthContainer == 0) {
+  @if $widthFrom == $containerWidth and $maxWidthContainer == 0 {
     $widthFrom: $maxWidth;
   }
+
   // Брейк-поинты в EM
   $widthFromMedia: em($widthFrom);
   $widthToMedia: em($widthTo);
@@ -54,9 +60,7 @@ $containerWidth: $maxWidthContainer + $containerPadding;
   $slope: math.div(($startSize - $minSize), ($widthFrom - $widthTo));
   $yIntersection: -$widthTo * $slope + $minSize;
   $flyValue: #{rem($yIntersection)}' + ' #{$slope * 100}vw;
-
   $propertyValue: #{'clamp(' rem($minSize) ',' $flyValue ',' rem($startSize) ')'};
-
   @if $widthFrom == $containerWidth or $widthFrom == $maxWidth or $keepSize == 1 or $keepSize == 2 {
     @media (min-width: $widthFromMedia) and (max-height: em($maxHeight)) {
       #{$property}: rem($startSize);
@@ -71,7 +75,6 @@ $containerWidth: $maxWidthContainer + $containerPadding;
     }
   }
 }
-
 @mixin adaptiveValue(
   $property,
   $startSize,
@@ -80,9 +83,10 @@ $containerWidth: $maxWidthContainer + $containerPadding;
   $widthTo: $minWidth,
   $keepSize: 0
 ) {
-  @if ($widthFrom == $containerWidth and $maxWidthContainer == 0) {
+  @if $widthFrom == $containerWidth and $maxWidthContainer == 0 {
     $widthFrom: $maxWidth;
   }
+
   // Брейк-поинты в EM
   $widthFromMedia: em($widthFrom);
   $widthToMedia: em($widthTo);
@@ -92,13 +96,12 @@ $containerWidth: $maxWidthContainer + $containerPadding;
   $slope: math.div(($startSize - $minSize), ($widthFrom - $widthTo));
   $yIntersection: -$widthTo * $slope + $minSize;
   $flyValue: #{rem($yIntersection)}' + ' #{$slope * 100}vw;
-
   $propertyValue: #{'clamp(' rem($minSize) ',' $flyValue ',' rem($startSize) ')'};
+
   // Если работаем с отрицательными значениями, например $startSize меньше $minSize
-  @if $minSize>$startSize {
+  @if $minSize > $startSize {
     $propertyValue: #{'clamp(' rem($startSize) ',' $flyValue ',' rem($minSize) ')'};
   }
-
   @if $widthFrom == $containerWidth or $widthFrom == $maxWidth or $keepSize == 1 or $keepSize == 2 {
     @media (min-width: $widthFromMedia) {
       #{$property}: rem($startSize);
@@ -113,7 +116,6 @@ $containerWidth: $maxWidthContainer + $containerPadding;
     }
   }
 }
-
 @mixin adaptiveValueImportant(
   $property,
   $startSize,
@@ -122,9 +124,10 @@ $containerWidth: $maxWidthContainer + $containerPadding;
   $widthTo: $minWidth,
   $keepSize: 0
 ) {
-  @if ($widthFrom == $containerWidth and $maxWidthContainer == 0) {
+  @if $widthFrom == $containerWidth and $maxWidthContainer == 0 {
     $widthFrom: $maxWidth;
   }
+
   // Брейк-поинты в EM
   $widthFromMedia: em($widthFrom);
   $widthToMedia: em($widthTo);
@@ -134,13 +137,12 @@ $containerWidth: $maxWidthContainer + $containerPadding;
   $slope: math.div(($startSize - $minSize), ($widthFrom - $widthTo));
   $yIntersection: -$widthTo * $slope + $minSize;
   $flyValue: #{rem($yIntersection)}' + ' #{$slope * 100}vw;
-
   $propertyValue: #{'clamp(' rem($minSize) ',' $flyValue ',' rem($startSize) ')'};
+
   // Если работаем с отрицательными значениями, например $startSize меньше $minSize
-  @if $minSize>$startSize {
+  @if $minSize > $startSize {
     $propertyValue: #{'clamp(' rem($startSize) ',' $flyValue ',' rem($minSize) ')'};
   }
-
   @if $widthFrom == $containerWidth or $widthFrom == $maxWidth or $keepSize == 1 or $keepSize == 2 {
     @media (min-width: $widthFromMedia) {
       #{$property}: rem($startSize) !important;

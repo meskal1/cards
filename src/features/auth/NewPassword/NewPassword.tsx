@@ -39,10 +39,9 @@ export const NewPassword = () => {
   return (
     <>
       <div className={s.setPasswordContainer}>
-        <form className={s.login__form} onSubmit={formik.handleSubmit}>
-          <h2 className={s.setPassword__title}>create new password</h2>
+        <h2 className={s.setPassword__title}>create new password</h2>
+        <form className={s.setPassword__form} onSubmit={formik.handleSubmit}>
           <CustomPasswordInput
-            className={s.setPassword__field}
             label="password"
             error={formik.touched.password && !!formik.errors.password}
             helperText={formik.touched.password && formik.errors.password}
@@ -51,7 +50,9 @@ export const NewPassword = () => {
           <p className={s.setPassword__text}>
             create new password and we will send you further instructions to email
           </p>
-          <CustomButton>Create new password</CustomButton>
+          <CustomButton>
+            <p>create new password</p>
+          </CustomButton>
         </form>
       </div>
     </>
