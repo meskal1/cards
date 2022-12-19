@@ -1,3 +1,5 @@
+@import '../../../app/mixinCommon';
+
 .loginContainer {
   display: flex;
   flex-direction: column;
@@ -9,53 +11,20 @@
 
   text-align: center;
 
-  background: rgb(240 240 240);
+  background: white;
   border-radius: 20px;
-
-  & > * {
-    &::first-letter {
-      text-transform: uppercase !important;
-    }
-  }
 }
 
 .login {
   &__title {
-    margin: 0 0 15px;
-
-    font-size: 26px;
-    font-weight: 600;
+    @include auth_title_style;
   }
 
   &__form {
     display: flex;
     flex-direction: column;
 
-    margin: 0 0 25px;
-  }
-
-  &__field {
-    & > * {
-      font-family: inherit !important;
-      letter-spacing: inherit !important;
-
-      &::first-letter {
-        text-transform: uppercase !important;
-      }
-    }
-  }
-
-  &__errorBlock {
-    height: 15px;
-    margin: 5px 0 0;
-
-    font-size: 11px;
-    color: red;
-    text-align: start;
-
-    &::first-letter {
-      text-transform: uppercase;
-    }
+    margin: 0px 0px 25px 0px;
   }
 
   &__blockRemember {
@@ -66,10 +35,9 @@
     align-items: center;
     justify-content: space-between;
 
-    margin: 0 0 15px;
+    margin: 0px 0px 15px 0px;
 
     font-weight: 500;
-
     @media (max-width: 390px) {
       justify-content: center;
     }
@@ -81,34 +49,19 @@
   }
 
   &__typography {
-    -moz-user-select: none;
-    -khtml-user-select: none;
-    user-select: none;
+    @include user_select_none;
 
-    font-family: inherit !important;
     font-weight: 500 !important;
-    letter-spacing: inherit !important;
-
-    &::first-letter {
-      text-transform: uppercase;
-    }
   }
 
   &__forgotPassword {
     color: blue;
-    text-transform: capitalize;
   }
 
   &__signUpBlock {
     display: flex;
     flex-direction: column;
     gap: 10px;
-
-    & > * {
-      &::first-letter {
-        text-transform: uppercase;
-      }
-    }
   }
 
   &__text {
@@ -127,6 +80,4 @@
 .checkbox {
   margin: 0 9px 0 0 !important;
   padding: 0 !important;
-}
-.button {
 }
