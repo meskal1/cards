@@ -37,8 +37,8 @@ export const Registration = () => {
 
   return (
     <div className={s.registration}>
+      <h2 className={s.title}>sign up</h2>
       <form className={s.form} onSubmit={handleSubmit}>
-        <h3 className={s.title}>sign up</h3>
         <CustomInput
           label={'email'}
           fullWidth
@@ -48,27 +48,27 @@ export const Registration = () => {
           {...getFieldProps('email')}
         />
         <CustomPasswordInput
-          label={'Password'}
+          label={'password'}
           autoComplete={'new-password'}
           error={!!errors.password && touched.password}
           helperText={touched.password && errors.password}
           {...getFieldProps('password')}
         />
         <CustomPasswordInput
-          label={'Confirm password'}
+          label={'confirm password'}
           autoComplete={'new-password'}
           error={!!errors.confirmPassword && touched.confirmPassword}
           helperText={touched.confirmPassword && errors.confirmPassword}
           {...getFieldProps('confirmPassword')}
         />
         <CustomButton className={s.button} fullWidth disabled={authStatus === 'loading'}>
-          sign up
+          <p>sign up</p>
         </CustomButton>
-        <p className={s.signInQuestion}>Already have an account?</p>
-        <Link className={s.signInLink} to={PATH.LOGIN}>
-          sign in
-        </Link>
       </form>
+      <p className={s.signInQuestion}>already have an account?</p>
+      <Link className={s.signInLink} to={PATH.LOGIN}>
+        sign in
+      </Link>
     </div>
   )
 }

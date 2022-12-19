@@ -43,7 +43,6 @@ export const LogInApp = () => {
         <h2 className={s.login__title}>sign in</h2>
         <form className={s.login__form} onSubmit={formik.handleSubmit}>
           <CustomInput
-            className={s.login__field}
             label="email"
             error={formik.touched.email && !!formik.errors.email}
             helperText={formik.touched.email && formik.errors.email}
@@ -51,12 +50,12 @@ export const LogInApp = () => {
           />
 
           <CustomPasswordInput
-            className={s.login__field}
             label="password"
             error={formik.touched.password && !!formik.errors.password}
             helperText={formik.touched.password && formik.errors.password}
             {...formik.getFieldProps('password')}
           />
+
           <div className={s.login__blockRemember}>
             <FormControlLabel
               className={s.login__checkBoxBlock}
@@ -73,13 +72,14 @@ export const LogInApp = () => {
                 />
               }
             />
+
             <Link className={s.login__forgotPassword} to={PATH.RECOVERY}>
               forgot password?
             </Link>
           </div>
 
-          <CustomButton className={s.button} disabled={authStatus === 'loading'}>
-            Sign in
+          <CustomButton disabled={authStatus === 'loading'}>
+            <p>sign in</p>
           </CustomButton>
         </form>
 

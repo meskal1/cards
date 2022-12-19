@@ -30,24 +30,23 @@ export const Recovery = () => {
 
   return (
     <div className={s.forgotPassword}>
+      <h2 className={s.title}>forgot your password?</h2>
       <form className={s.form} onSubmit={handleSubmit}>
-        <h3 className={s.title}>Forgot your password?</h3>
         <CustomInput
-          className={s.input}
           label={'email'}
           error={!!errors.email && touched.email}
           helperText={touched.email && errors.email}
           {...getFieldProps('email')}
         />
-        <p className={s.help}>Enter your email address and we will send you further instructions</p>
-        <CustomButton className={s.button} fullWidth>
-          Send instructions
+        <p className={s.help}>enter your email address and we will send you further instructions</p>
+        <CustomButton fullWidth>
+          <p>send instructions</p>
         </CustomButton>
-        <p className={s.forgotQuestion}>Have you remembered your password?</p>
-        <Link className={s.forgotLink} to={PATH.LOGIN}>
-          Try logging in
-        </Link>
       </form>
+      <p className={s.forgotQuestion}>have you remembered your password?</p>
+      <Link className={s.forgotLink} to={PATH.LOGIN}>
+        try logging in
+      </Link>
     </div>
   )
 }
