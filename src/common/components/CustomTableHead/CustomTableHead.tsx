@@ -7,38 +7,38 @@ import TableRow from '@mui/material/TableRow'
 import TableSortLabel from '@mui/material/TableSortLabel'
 import { visuallyHidden } from '@mui/utils'
 
-import { PacksOrderByType, TableOrderType } from '../PacksTable'
+import { TableOrderType } from '../../../features/packs/PacksTable/PacksTable'
 
-import s from './PacksTableHead.module.scss'
+import s from './CustomTableHead.module.scss'
 
-export type PacksHeadType = {
-  id: PacksOrderByType | 'actions'
+export type HeadType<T> = {
+  id: T
   label: string
 }
 
-const heads: PacksHeadType[] = [
-  { id: 'name', label: 'Name' },
-  { id: 'cardsCount', label: 'Cards' },
-  { id: 'updated', label: 'Last Updated' },
-  { id: 'user_name', label: 'Created by' },
-  { id: 'actions', label: 'Actions' },
-]
-
-type EnhancedTableProps = {
+type CustomTableHeadPropsType<T> = {
+  heads: HeadType<T>[]
   order: TableOrderType
-  orderBy: PacksOrderByType
+  orderBy: T
   setSortHandler: (property: any) => void
 }
 
-export function PacksTableHead({ order, orderBy, setSortHandler }: EnhancedTableProps) {
+export const CustomTableHead = <T extends string>({
+  order,
+  orderBy,
+  heads,
+  setSortHandler,
+}: CustomTableHeadPropsType<T>) => {
   return (
     <TableHead className={s.tableHead}>
       <TableRow>
         {heads.map(h =>
           h.id === 'actions' ? (
-            <TableCell key={h.id}>{h.label}</TableCell>
+            <TableCell key={h.id} size={'small'}>
+              {h.label}
+            </TableCell>
           ) : (
-            <TableCell key={h.id} sortDirection={orderBy === h.id ? order : false}>
+            <TableCell key={h.id}>
               <TableSortLabel
                 active={orderBy === h.id}
                 direction={orderBy === h.id ? order : 'asc'}
