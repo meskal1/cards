@@ -1,17 +1,13 @@
 import * as React from 'react'
 
-import { BorderColor, CameraAlt } from '@mui/icons-material'
-import LogoutIcon from '@mui/icons-material/Logout'
-import { useFormik } from 'formik'
+import { CameraAlt } from '@mui/icons-material'
 
 import avatarLocal from '../../assets/img/avatar.jpg'
+import logout from '../../assets/img/icons/logout.svg'
 import { BackToPacks } from '../../common/components/BackToPacks/BackToPacks'
 import { CustomButton } from '../../common/components/CustomButton/CustomButton'
-// eslint-disable-next-line import/namespace
 import { EditableSpan } from '../../common/components/EditableSpan/EditableSpan'
-import { PATH } from '../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
-import { validationSchemaProfile } from '../../utils/validationSchema'
 import { logOutTC } from '../auth/authSlice'
 
 import s from './Profile.module.scss'
@@ -19,22 +15,8 @@ import { newUserDataTC } from './profileSlice'
 
 export const Profile = () => {
   const dispatch = useAppDispatch()
-  const [isNameEditable, setIsNameEditable] = React.useState(false)
-
-  const name = useAppSelector(state => state.profile.userData.name)
   const email = useAppSelector(state => state.profile.userData.email)
   const avatar = useAppSelector(state => state.profile.userData.avatar)
-
-  const formik = useFormik({
-    initialValues: {
-      name,
-      avatar,
-    },
-    validationSchema: validationSchemaProfile,
-    onSubmit: values => {
-      dispatch(newUserDataTC(values))
-    },
-  })
 
   const onLogOutHandler = () => {
     dispatch(logOutTC())
@@ -42,11 +24,7 @@ export const Profile = () => {
 
   const setNewAvatar = () => alert('add photo')
 
-  const setNewName = () => {
-    isNameEditable ? setIsNameEditable(false) : setIsNameEditable(true)
-  }
-
-  const changeName = React.useCallback(
+  const changeUserName = React.useCallback(
     (newName: string) => {
       dispatch(newUserDataTC({ name: newName, avatar }))
     },
@@ -65,12 +43,12 @@ export const Profile = () => {
             </div>
             <CameraAlt className={s.profile__avatarIcon} />
           </div>
-          <div className={s.profile__userName} onBlur={setNewName}>
-            <EditableSpan name={name} changeProfile={changeName} />
+          <div className={s.profile__userName}>
+            <EditableSpan changeName={changeUserName} />
           </div>
           <p className={s.profile__userEmail}>{email}</p>
           <CustomButton className={s.profile__button} onClick={onLogOutHandler}>
-            <LogoutIcon className={s.profile__buttonIcon} />
+            <img className={s.profile__buttonIcon} src={logout} alt="logout" />
             <p>log out</p>
           </CustomButton>
         </div>
