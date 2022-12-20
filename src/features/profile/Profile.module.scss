@@ -116,20 +116,14 @@
 
     display: flex;
     align-items: center;
+
     height: 68.42px;
+
     font-size: 20px;
     font-weight: 500;
     line-height: 24px;
-    text-transform: capitalize;
   }
 
-<<<<<<< HEAD
-      &::first-letter {
-        text-transform: uppercase !important;
-      }
-    }
-  }
-=======
   &__marker {
     cursor: pointer;
 
@@ -138,7 +132,6 @@
     color: grey;
   }
 
->>>>>>> feet/newPassword
   &__userEmail {
     @include user_select_none;
 
