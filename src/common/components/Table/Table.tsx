@@ -24,9 +24,10 @@ const rows = [
 
 type BasicTableType = {
   head: JSX.Element[]
+  rows: JSX.Element[]
 }
 
-export const BasicTable: React.FC<BasicTableType> = ({ head }) => {
+export const BasicTable: React.FC<BasicTableType> = ({ head, rows }) => {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -34,7 +35,7 @@ export const BasicTable: React.FC<BasicTableType> = ({ head }) => {
           <TableRow>{head}</TableRow>
         </TableHead>
         <TableBody>
-          {rows.map(row => (
+          {/*{rows.map(row => (
             <TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
               <TableCell component="th" scope="row">
                 {row.name}
@@ -44,7 +45,8 @@ export const BasicTable: React.FC<BasicTableType> = ({ head }) => {
               <TableCell align="right">{row.carbs}</TableCell>
               <TableCell align="right">{row.protein}</TableCell>
             </TableRow>
-          ))}
+          ))}*/}
+          {rows}
         </TableBody>
       </Table>
     </TableContainer>
