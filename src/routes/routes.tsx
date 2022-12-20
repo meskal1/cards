@@ -37,7 +37,7 @@ export const AppRoutes = () => {
   const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
   const location = useLocation()
 
-  let blockAuthLinks: boolean
+  let preventAuthLinks: boolean
 
   const SuspenseLayout = () => {
     if (isLoggedIn) {
@@ -47,11 +47,11 @@ export const AppRoutes = () => {
         case PATH.NEW_PASSWORD_TOKEN:
         case PATH.RECOVERY:
         case PATH.REGISTRATION:
-          blockAuthLinks = true
+          preventAuthLinks = true
       }
     }
 
-    return blockAuthLinks ? (
+    return preventAuthLinks ? (
       <Navigate to={PATH.PROFILE} />
     ) : (
       <React.Suspense fallback={<LoadingProgress />}>
