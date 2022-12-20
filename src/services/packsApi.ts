@@ -24,7 +24,7 @@ export const packsApi = {
 
 //types
 
-type ResponseType = {
+export type ResponseType = {
   cardPacks: Pack[]
   page: number
   pageCount: number
@@ -35,7 +35,7 @@ type ResponseType = {
   tokenDeathTime: number
 }
 
-type Pack = {
+export type Pack = {
   _id: string
   user_id: string
   user_name: string
