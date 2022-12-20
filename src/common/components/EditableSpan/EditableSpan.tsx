@@ -1,89 +1,111 @@
 import * as React from 'react'
-import { MutableRefObject, useEffect, useRef } from 'react'
 
 import { BorderColor, Send } from '@mui/icons-material'
 
-import { setAppAlertMessage } from '../../../app/appSlice'
-import { useAppDispatch } from '../../../hooks/reduxHooks'
+import { useAppSelector } from '../../../hooks/reduxHooks'
 import { CustomInput } from '../CustomInput/CustomInput'
 
 import s from './EditableSpan.module.scss'
 
 type EditableSpanType = {
-  name: string
-  changeProfile: (name: string) => void
+  changeName: (name: string) => void
 }
 
-export const EditableSpan = React.memo((props: EditableSpanType) => {
-  const { name, changeProfile } = props
-  const inputRef = React.createRef() as MutableRefObject<HTMLDivElement>
-  const submitRef = React.createRef() as MutableRefObject<SVGSVGElement>
-
-  useEffect(() => {
-    const onMouseDownHandler = (e: MouseEvent) => {
-      console.log('e: ', e.currentTarget)
-      console.log('EvenetListener: ', e.target)
-      if (e.target !== inputRef.current) {
-        setEdit(false)
-      }
-      if (e.target == submitRef.current) {
-        debugger
-        submitNewNameHandler()
-      }
-    }
-
-    document.addEventListener('mousedown', onMouseDownHandler)
-
-    return () => {
-      document.removeEventListener('mousedown', onMouseDownHandler)
-    }
-  }, [])
+export const EditableSpan: React.FC<EditableSpanType> = React.memo(({ changeName }) => {
+  const name = useAppSelector(state => state.profile.userData.name)
   const [inputValue, setInputValue] = React.useState(name)
-  const [edit, setEdit] = React.useState(false)
+  const [isInEditMode, setIsInEditMode] = React.useState(false)
+  const [errorEmptyField, setErrorEmptyField] = React.useState(false)
+  const [errorStyleButton, setErrorStyleButton] = React.useState('')
 
-  const dispatch = useAppDispatch()
-
-  const changeEditHandler = () => {
-    setEdit(!edit)
+  const handleAnimationEndError = () => {
+    setErrorStyleButton('')
   }
 
-  const submitNewNameHandler = () => {
-    const trimmedValue = inputValue.trim()
+  const handleErrorSetNewName = () => {
+    if (errorEmptyField) {
+      setErrorStyleButton(s.errorButton)
+    }
+  }
 
-    if (!trimmedValue) {
-      dispatch(setAppAlertMessage({ messageType: 'error', messageText: 'name is required! ' }))
+  const handleEditMode = () => {
+    setInputValue(inputValue.trim())
+    setIsInEditMode(true)
+  }
+
+  const handleSetNewName = () => {
+    if (inputValue.trim() === '') {
+      setErrorEmptyField(true)
 
       return
     }
-    changeProfile(trimmedValue)
-    setEdit(false)
+
+    if (inputValue.trim() !== name) {
+      changeName(inputValue.trim())
+    }
+
+    setIsInEditMode(false)
   }
-  const changeInputValueHandler = (newTitle: string) => setInputValue(newTitle)
+
+  const onChangeInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.currentTarget.value.trim() !== '') {
+      setErrorEmptyField(false)
+    }
+    setInputValue(e.currentTarget.value)
+  }
+
+  const onBlurInput = (e?: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    if (inputValue.trim() === '') {
+      e?.preventDefault()
+      setErrorEmptyField(true)
+
+      return
+    }
+
+    setInputValue(name)
+    setIsInEditMode(false)
+    setErrorEmptyField(false)
+  }
+
+  const onKeyDownInputHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSetNewName()
+    }
+
+    if (e.key === 'Escape') {
+      onBlurInput()
+    }
+  }
 
   return (
-    <div className={s.Container}>
-      {edit ? (
-        <div className={s.NameContainer}>
-          <div className={s.InputContainer}>
-            <CustomInput
-              ref={inputRef}
-              value={inputValue}
-              onChange={event => changeInputValueHandler(event.currentTarget.value)}
-              className={s.InputField}
-              autoFocus={true}
-            />
-          </div>
-
-          <div className={s.SendMarker}>
-            <Send className={s.Marker} onClick={submitNewNameHandler} ref={submitRef} />
-          </div>
+    <>
+      {isInEditMode ? (
+        <div className={s.inputContainer}>
+          <CustomInput
+            value={inputValue}
+            onBlur={onBlurInput}
+            onKeyDown={onKeyDownInputHandler}
+            onChange={onChangeInputHandler}
+            autoFocus={true}
+            autoComplete={'new-password'}
+            error={errorEmptyField}
+            InputProps={{
+              inputProps: { style: { textAlign: 'center' } },
+            }}
+          />
+          <Send
+            className={`${s.sendButton} ${errorStyleButton}`}
+            onMouseDown={handleSetNewName}
+            onClick={handleErrorSetNewName}
+            onAnimationEnd={handleAnimationEndError}
+          />
         </div>
       ) : (
-        <p>
-          <span className={s.InputContainer}>{name}</span>
-          <BorderColor className={s.Marker} onClick={changeEditHandler} />
-        </p>
+        <span className={s.userName}>
+          {name}
+          <BorderColor className={s.marker} onClick={handleEditMode} />
+        </span>
       )}
-    </div>
+    </>
   )
 })
