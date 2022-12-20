@@ -67,7 +67,7 @@ export function PacksTable({}: PacksTablePropsType) {
       path: '/def',
       grade: 0,
       shots: 0,
-      cardsCount: 0,
+      cardsCount: 3,
       type: 'pack',
       rating: 0,
       created: '2022-12-18T16:57:20.385Z',
@@ -102,7 +102,7 @@ export function PacksTable({}: PacksTablePropsType) {
       path: '/def',
       grade: 0,
       shots: 0,
-      cardsCount: 0,
+      cardsCount: 2,
       type: 'pack',
       rating: 0,
       created: '2022-12-18T16:57:08.509Z',
@@ -169,6 +169,7 @@ export function PacksTable({}: PacksTablePropsType) {
                     </TableCell>
                     <PacksActionCell
                       isMine={row.user_id === userId}
+                      isStudyDisabled={row.cardsCount === 0}
                       studyCard={studyCardPackHandler}
                       editCard={editCardPackHandler}
                       deleteCard={deleteCardPackHandler}
