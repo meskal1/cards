@@ -1,12 +1,10 @@
-import React, { MouseEvent } from 'react'
+import React from 'react'
 
-import { IconButton, Tooltip } from '@mui/material'
 import TableCell from '@mui/material/TableCell'
 
-import deleteIcon from '../../../../assets/img/icons/deletePack.svg'
-import editIcon from '../../../../assets/img/icons/editPack.svg'
-import studyIcon from '../../../../assets/img/icons/studyPack.svg'
-import { CustomButton } from '../../../../common/components/CustomButton/CustomButton'
+import { CustomDeleteIconButton } from '../../../../common/components/CustomIconButtons/CustomDeleteIconButton'
+import { CustomEditIconButton } from '../../../../common/components/CustomIconButtons/CustomEditIconButton'
+import { CustomStudyIconButton } from '../../../../common/components/CustomIconButtons/CustomStudyIconButton'
 
 import s from './PacksActionCell.module.scss'
 
@@ -28,25 +26,13 @@ export const PacksActionCell: React.FC<PacksActionCellPropsType> = ({
   return (
     <TableCell>
       <span className={s.span} onClick={e => e.stopPropagation()}>
-        <Tooltip title={'Study'}>
-          <IconButton className={s.btn} disabled={isStudyDisabled} onClick={e => studyCard()}>
-            <img src={studyIcon} alt={'Study icon'} />
-          </IconButton>
-        </Tooltip>
-        {isMine && (
-          <Tooltip title={'Edit'}>
-            <IconButton className={s.btn} onClick={e => editCard()}>
-              <img src={editIcon} alt={'Edit icon'} />
-            </IconButton>
-          </Tooltip>
-        )}
-        {isMine && (
-          <Tooltip title={'Delete'}>
-            <IconButton className={s.btn} onClick={e => deleteCard()}>
-              <img src={deleteIcon} alt={'Delete icon'} />
-            </IconButton>
-          </Tooltip>
-        )}
+        <CustomStudyIconButton
+          onClick={() => studyCard()}
+          disabled={isStudyDisabled}
+          tooltip={'Study'}
+        />
+        {isMine && <CustomEditIconButton onClick={() => editCard()} tooltip={'Edit'} />}
+        {isMine && <CustomDeleteIconButton onClick={() => deleteCard()} tooltip={'Delete'} />}
       </span>
     </TableCell>
   )
