@@ -23,9 +23,9 @@ export const Menu: React.FC<MenuType> = ({ closeMenu }) => {
     dispatch(logOutTC())
   }
 
-  const onClickNavigate = () => {
+  const onClickNavigate = (path: string) => {
     closeMenu()
-    navigate(PATH.PROFILE)
+    navigate(path)
   }
 
   return (
@@ -34,7 +34,7 @@ export const Menu: React.FC<MenuType> = ({ closeMenu }) => {
         <ul className={s.menu__itemsList}>
           <li
             className={s.menu__item}
-            onClick={onClickNavigate}
+            onClick={() => onClickNavigate(PATH.PROFILE)}
             style={{ animationDelay: '0.275s' }}
           >
             <img src={user} alt="user" />
@@ -43,6 +43,14 @@ export const Menu: React.FC<MenuType> = ({ closeMenu }) => {
           <li className={s.menu__item} onClick={onClickLogOut} style={{ animationDelay: '0.2s' }}>
             <img src={logout} alt="log out" />
             <p>log out</p>
+          </li>
+          <li
+            className={s.menu__item}
+            onClick={() => onClickNavigate(PATH.PACKS)}
+            style={{ animationDelay: '0.2s' }}
+          >
+            <img src={logout} alt="all Packs" />
+            <p>Packs</p>
           </li>
         </ul>
       </nav>
