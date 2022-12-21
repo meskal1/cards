@@ -54,9 +54,9 @@ export const logInTC = (data: LoginParamsType) => async (dispatch: AppDispatchTy
   try {
     dispatch(setAuthStatus({ status: 'loading' }))
     const response = await authAPI.login(data)
-    const { name, email, avatar } = response.data
+    const { name, email, avatar, _id } = response.data
 
-    dispatch(setUserData({ userData: { name, email, avatar } }))
+    dispatch(setUserData({ userData: { id: _id, name, email, avatar } }))
     dispatch(setIsLoggedIn({ isLoggedIn: true }))
 
     return true
@@ -71,7 +71,7 @@ export const logOutTC = () => async (dispatch: AppDispatchType) => {
   try {
     dispatch(setAppStatus({ status: 'loading' }))
     await authAPI.logout()
-    dispatch(setUserData({ userData: { name: '', email: '', avatar: undefined } }))
+    dispatch(setUserData({ userData: { id: '', name: '', email: '', avatar: undefined } }))
     dispatch(setIsLoggedIn({ isLoggedIn: false }))
   } catch (e) {
     const error = e as Error | AxiosError

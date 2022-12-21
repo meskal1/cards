@@ -6,6 +6,7 @@ describe('profile reducer tests', () => {
   beforeEach(() => {
     initialState = {
       userData: {
+        id: '',
         name: '',
         email: '',
         avatar: undefined,
@@ -18,7 +19,12 @@ describe('profile reducer tests', () => {
   })
 
   test('should set userData correctly', () => {
-    const userData: UserDataType = { name: 'Petya', email: 'petya@mail.ru', avatar: 'petyaAva.jpg' }
+    const userData: UserDataType = {
+      id: '1',
+      name: 'Petya',
+      email: 'petya@mail.ru',
+      avatar: 'petyaAva.jpg',
+    }
 
     const endState = profileReducer(initialState, setUserData({ userData: userData }))
 
@@ -26,7 +32,12 @@ describe('profile reducer tests', () => {
   })
 
   test('should initialize userData correctly', () => {
-    const userData: UserDataType = { name: '', email: '', avatar: undefined }
+    const userData: UserDataType = {
+      id: '1',
+      name: '',
+      email: '',
+      avatar: undefined,
+    }
 
     const endState = profileReducer(initialState, setUserData({ userData: userData }))
 
