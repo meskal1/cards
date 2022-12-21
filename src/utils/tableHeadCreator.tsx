@@ -1,9 +1,13 @@
 import * as React from 'react'
 
 import { BorderColor, Delete, School } from '@mui/icons-material'
+import { Box, Slider } from '@mui/material'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
+import { useSelector } from 'react-redux'
 
+import { RootStateType } from '../app/store'
+import { FormDialog } from '../common/components/ModalDialog/ModalDialog'
 import { Pack } from '../services/packsApi'
 
 export const tableHeadCreator = (data: Array<string>) =>
@@ -17,22 +21,38 @@ export const tableHeadCreator = (data: Array<string>) =>
     )
   )
 
-export const cretePacksTableBody = (data: Array<Pack>) => {
-  const rows = data.map(row => (
-    <TableRow key={row._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-      <TableCell component="th" scope="row">
-        {row.name}
-      </TableCell>
-      <TableCell align="right">{row.cardsCount}</TableCell>
-      <TableCell align="right">{row.updated}</TableCell>
-      <TableCell align="right">{row.user_name}</TableCell>
-      <TableCell align="right">
-        <School />
-        <BorderColor />
-        <Delete />
-      </TableCell>
-    </TableRow>
-  ))
+export const cretePacksTableBody = (
+  data: Array<Pack>,
+  opened: boolean,
+  openModal: () => void,
+  closeModal: () => void,
+  selectPackId: (id: string) => void
+) => {
+  const userId = useSelector<RootStateType, string>(state => state.profile.userData.id)
+
+  const handleOnEditClick = (id: string) => {
+    selectPackId(id)
+    openModal()
+  }
+
+  const rows = data.map(row => {
+    return (
+      <TableRow key={row._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+        <TableCell component="th" scope="row">
+          {row.name}
+        </TableCell>
+        <TableCell align="right">{row.cardsCount}</TableCell>
+        <TableCell align="right">{row.updated}</TableCell>
+        <TableCell align="right">{row.user_name}</TableCell>
+        <TableCell align="right">
+          <School />
+
+          {userId === row.user_id ? <BorderColor onClick={() => handleOnEditClick(row._id)} /> : ''}
+          {userId === row.user_id ? <Delete /> : ''}
+        </TableCell>
+      </TableRow>
+    )
+  })
 
   return rows
 }
