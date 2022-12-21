@@ -2,6 +2,8 @@ import React from 'react'
 
 import { Dispatch } from 'redux'
 
+import { setAppAlertMessage, setAppStatus } from '../../app/appSlice'
+import { AppDispatchType } from '../../app/store'
 import { Pack, packsApi, ResponseType } from '../../services/packsApi'
 
 const initialState: InitialStateType = {
@@ -52,7 +54,28 @@ export const getAllPacks = () => async (dispatch: Dispatch) => {
   }
 }
 
+export const addPack = (data: newPackData) => async (dispatch: AppDispatchType) => {
+  debugger
+  dispatch(setAppStatus({ status: 'loading' }))
+  try {
+    let response = await packsApi.addPack(data)
+
+    if (!response.data.newCardsPack._id) {
+      dispatch(setAppAlertMessage({ messageType: 'error', messageText: 'failed to add the pack' }))
+    }
+    dispatch(getAllPacks())
+  } catch (e) {
+    console.log(e)
+  }
+}
+
 //types
+
+type newPackData = {
+  name: string
+  private: boolean
+  deckCover?: string
+}
 type InitialStateType = {
   cardPacks: Pack[]
   page: number

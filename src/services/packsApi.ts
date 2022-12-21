@@ -13,12 +13,16 @@ export const packsApi = {
     return instance.get<ResponseType>('cards/pack')
   },
 
-  getMyPacs(id: string) {
+  getMyPacks(id: string) {
     return instance.get<ResponseType>(`cards/pack?user_id=${id}`)
   },
 
   findPacksByName(name: string) {
     return instance.get<ResponseType>(`cards/pack?packName=${name}`)
+  },
+
+  addPack(data: { name: string; deckCover?: string; private: boolean }) {
+    return instance.post<addPackResponse>('cards/pack', { cardsPack: data })
   },
 }
 
@@ -52,4 +56,10 @@ export type Pack = {
   more_id: string
   __v: number
   deckCover: string | null
+}
+
+type addPackResponse = {
+  newCardsPack: Pack
+  token: string
+  tokenDeathTime: number
 }
