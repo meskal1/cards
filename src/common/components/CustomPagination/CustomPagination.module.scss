@@ -1,0 +1,17 @@
+.paginationContainer {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.paginationTable {
+  & > div {
+    padding-left: 0px;
+
+    & > *:nth-child(3) {
+      margin-right: 8px;
+
+      border: 1px solid #c4c4c4;
+    }
+  }
+}
