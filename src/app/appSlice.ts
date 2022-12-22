@@ -41,9 +41,9 @@ export const { setAppStatus, setAppAlertMessage, setIsInitialized } = appSlice.a
 export const initializeAppTC = () => async (dispatch: AppDispatchType) => {
   try {
     const response = await authAPI.me()
-    const { name, email, avatar } = response.data
+    const { _id, name, email, avatar } = response.data
 
-    dispatch(setUserData({ userData: { name, email, avatar } }))
+    dispatch(setUserData({ userData: { id: _id, name, email, avatar } }))
     dispatch(setIsLoggedIn({ isLoggedIn: true }))
   } catch (e) {
     const error = e as Error | AxiosError

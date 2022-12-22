@@ -7,6 +7,7 @@ import { handleServerNetworkError } from '../../utils/errorUtils'
 
 const initialState = {
   userData: {
+    id: '',
     name: '',
     email: '',
     avatar: undefined,
@@ -44,6 +45,7 @@ export const newUserDataTC = (data: UserDataType) => async (dispatch: AppDispatc
 export type ProfileStateType = typeof initialState
 
 export type UserDataType = {
+  id?: string
   name: string
   email?: string
   avatar: string | undefined
