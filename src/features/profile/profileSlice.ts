@@ -30,23 +30,22 @@ export const profileReducer = profileSlice.reducer
 export const { setUserData } = profileSlice.actions
 
 // THUNKS
-export const newUserDataTC =
-  (data: Omit<UserDataType, 'id'>) => async (dispatch: AppDispatchType) => {
-    try {
-      const response = await authAPI.newUserData(data)
-      const { _id, name, email, avatar } = response.data.updatedUser
+export const newUserDataTC = (data: UserDataType) => async (dispatch: AppDispatchType) => {
+  try {
+    const response = await authAPI.newUserData(data)
+    const { name, email, avatar } = response.data.updatedUser
 
-      dispatch(setUserData({ userData: { id: _id, name, email, avatar } }))
-    } catch (e) {
-      handleServerNetworkError(dispatch, e as Error | AxiosError)
-    }
+    dispatch(setUserData({ userData: { name, email, avatar } }))
+  } catch (e) {
+    handleServerNetworkError(dispatch, e as Error | AxiosError)
   }
+}
 
 // TYPES
 export type ProfileStateType = typeof initialState
 
 export type UserDataType = {
-  id: string
+  id?: string
   name: string
   email?: string
   avatar: string | undefined

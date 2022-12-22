@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios'
+import axios from 'axios'
 
 import { PATH } from '../constants/routePaths.enum'
 
@@ -15,7 +15,7 @@ const onlyProdInstance = axios.create({
 
 export const authAPI = {
   login(data: LoginParamsType) {
-    return instance.post<LoginParamsType, AxiosResponse<ResponseType>>('auth/login', data)
+    return instance.post<ResponseType>('auth/login', data)
   },
   logout() {
     return instance.delete<LogOutResponseType>('auth/me', {})
@@ -27,10 +27,7 @@ export const authAPI = {
     return instance.post<RegisterResponseType>('auth/register', data)
   },
   newPassword(data: CreatePasswordParamsType) {
-    return instance.post<CreatePasswordParamsType, CreatePasswordResponseType>(
-      'auth/set-new-password',
-      data
-    )
+    return instance.post<CreatePasswordResponseType>('auth/set-new-password', data)
   },
   forgot(email: string) {
     return onlyProdInstance.post<{ info: string }>('auth/forgot', {
@@ -44,13 +41,13 @@ export const authAPI = {
   newUserData(data: ProfileDataType) {
     return instance.put<ProfileDataResponseType>('auth/me', data)
   },
-  editProfile(profile: editProfileType) {
+  editProfile(profile: EditProfileType) {
     return instance.put<ResponseType>('auth/me', profile)
   },
 }
 
 // TYPES
-export type editProfileType = {
+export type EditProfileType = {
   name: string
   avatar: string | undefined
 }

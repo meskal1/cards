@@ -19,9 +19,9 @@ export const CustomInput: React.FC<CustomInputPropsType> = ({
   return (
     <TextField
       className={finalClass}
-      variant={'standard'}
-      type={'text'}
-      fullWidth
+      variant={props.variant || 'standard'}
+      type={props.type || 'text'}
+      fullWidth={props.fullWidth || true}
       {...props}
       helperText={errorText}
     />

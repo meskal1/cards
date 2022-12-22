@@ -1,15 +1,13 @@
 import * as React from 'react'
 
-import { BorderColor, CameraAlt } from '@mui/icons-material'
-import LogoutIcon from '@mui/icons-material/Logout'
-import { useFormik } from 'formik'
+import { CameraAlt } from '@mui/icons-material'
 
 import avatarLocal from '../../assets/img/avatar.jpg'
+import logout from '../../assets/img/icons/logout.svg'
 import { BackToPacks } from '../../common/components/BackToPacks/BackToPacks'
 import { CustomButton } from '../../common/components/CustomButton/CustomButton'
-import { CustomInput } from '../../common/components/CustomInput/CustomInput'
+import { EditableSpan } from '../../common/components/EditableSpan/EditableSpan'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
-import { validationSchemaProfile } from '../../utils/validationSchema'
 import { logOutTC } from '../auth/authSlice'
 
 import s from './Profile.module.scss'
@@ -17,22 +15,8 @@ import { newUserDataTC } from './profileSlice'
 
 export const Profile = () => {
   const dispatch = useAppDispatch()
-  const [isNameEditable, setIsNameEditable] = React.useState(false)
-
-  const name = useAppSelector(state => state.profile.userData.name)
   const email = useAppSelector(state => state.profile.userData.email)
   const avatar = useAppSelector(state => state.profile.userData.avatar)
-
-  const formik = useFormik({
-    initialValues: {
-      name,
-      avatar,
-    },
-    validationSchema: validationSchemaProfile,
-    onSubmit: values => {
-      dispatch(newUserDataTC(values))
-    },
-  })
 
   const onLogOutHandler = () => {
     dispatch(logOutTC())
@@ -40,9 +24,12 @@ export const Profile = () => {
 
   const setNewAvatar = () => alert('add photo')
 
-  const setNewName = () => {
-    isNameEditable ? setIsNameEditable(false) : setIsNameEditable(true)
-  }
+  const changeUserName = React.useCallback(
+    (newName: string) => {
+      dispatch(newUserDataTC({ name: newName, avatar }))
+    },
+    [dispatch]
+  )
 
   return (
     <>
@@ -50,31 +37,18 @@ export const Profile = () => {
         <BackToPacks />
         <div className={s.profile__content}>
           <h2 className={s.profile__title}>personal information</h2>
-          <form className={s.profile__form} onSubmit={formik.handleSubmit}>
-            <div className={s.profile__avatarBlock} onClick={setNewAvatar}>
-              <div className={s.profile__pic}>
-                <img className={s.profile__img} src={avatarLocal || avatar} alt="avatar" />
-              </div>
-              <CameraAlt className={s.profile__avatarIcon} />
+          <div className={s.profile__avatarBlock} onClick={setNewAvatar}>
+            <div className={s.profile__pic}>
+              <img className={s.profile__img} src={avatarLocal || avatar} alt="avatar" />
             </div>
-            <p className={s.profile__userName} onBlur={setNewName}>
-              {isNameEditable ? (
-                <CustomInput
-                  label="name"
-                  error={formik.touched.name && !!formik.errors.name}
-                  helperText={formik.touched.name && formik.errors.name}
-                  {...formik.getFieldProps('name')}
-                />
-              ) : (
-                name
-              )}
-              <BorderColor className={s.profile__marker} onClick={setNewName} />
-            </p>
-          </form>
-
+            <CameraAlt className={s.profile__avatarIcon} />
+          </div>
+          <div className={s.profile__userName}>
+            <EditableSpan changeName={changeUserName} />
+          </div>
           <p className={s.profile__userEmail}>{email}</p>
           <CustomButton className={s.profile__button} onClick={onLogOutHandler}>
-            <LogoutIcon className={s.profile__buttonIcon} />
+            <img className={s.profile__buttonIcon} src={logout} alt="logout" />
             <p>log out</p>
           </CustomButton>
         </div>

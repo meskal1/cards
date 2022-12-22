@@ -1,42 +1,82 @@
-.Container{
-  width: 100%;
+.inputContainer {
+  position: relative;
+  top: 12px;
+
   display: flex;
-  justify-content: center;
+  align-items: center;
 }
 
-.NameContainer{
-  width: 100%;
-  margin-top: 15px;
-  display: flex;
-  justify-content: center;
-}
-.InputContainer{
-  width: 70%
+.sendButton {
+  cursor: pointer;
+
+  position: absolute;
+  top: 7px;
+  right: -25px;
+
+  color: grey;
 }
 
-.Marker {
+.userName {
+  text-transform: capitalize;
+}
+
+.marker {
   cursor: pointer;
 
   margin: 0px 0px 0px 10px !important;
 
   color: grey;
-
-  width: 20px;
-  height: 20px;
-
 }
 
-.SendMarker{
-  margin-top: 15px
+.errorButton {
+  animation: animateErrorButton 0.4s ease forwards;
 }
+@keyframes animateErrorButton {
+  0% {
+    transform: translate(3px, 0px);
 
-.InputField{
-  & > * {
-    font-family: inherit !important;
-    letter-spacing: inherit !important;
+    color: red;
+  }
 
-    &::first-letter {
-      text-transform: uppercase !important;
-    }
+  10% {
+    transform: translate(-3px, 0px);
+  }
+
+  20% {
+    transform: translate(3px, 0px);
+  }
+
+  30% {
+    transform: translate(-3px, 0px);
+  }
+
+  40% {
+    transform: translate(3px, 0px);
+  }
+
+  50% {
+    transform: translate(-3px, 0px);
+  }
+
+  60% {
+    transform: translate(3px, 0px);
+  }
+
+  70% {
+    transform: translate(-3px, 0px);
+  }
+
+  80% {
+    transform: translate(3px, 0px);
+  }
+
+  90% {
+    transform: translate(-3px, 0px);
+  }
+
+  100% {
+    transform: translate(3px, 0px);
+
+    color: red;
   }
 }

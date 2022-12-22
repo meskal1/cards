@@ -17,8 +17,8 @@ export const Header = () => {
   const avatar = useAppSelector(state => state.profile.userData.avatar)
   const [isMenuOpen, setIsMenuOpen] = React.useState(false)
 
-  const onClickHandleMenu = () => {
-    isMenuOpen ? setIsMenuOpen(false) : setIsMenuOpen(true)
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen)
   }
 
   const onMouseDownOutOffMenu = (e: React.MouseEvent) => {
@@ -43,18 +43,18 @@ export const Header = () => {
             </div>
 
             <div className={s.header__avatarContainer}>
-              <div className={s.header__userName} onClick={onClickHandleMenu}>
+              <div className={s.header__userName} onClick={toggleMenu}>
                 {name ? name : ''}
               </div>
 
-              {isMenuOpen && <Menu closeMenu={onClickHandleMenu} />}
+              {isMenuOpen && <Menu closeMenu={toggleMenu} />}
 
               <div className={s.header__pic}>
                 <img
                   className={s.header__img}
                   src={avatarLocal || avatar}
                   alt="avatar"
-                  onClick={onClickHandleMenu}
+                  onClick={toggleMenu}
                 />
               </div>
             </div>

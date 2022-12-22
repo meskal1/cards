@@ -54,7 +54,7 @@ export const logInTC = (data: LoginParamsType) => async (dispatch: AppDispatchTy
   try {
     dispatch(setAuthStatus({ status: 'loading' }))
     const response = await authAPI.login(data)
-    const { name, email, avatar, _id } = response.data
+    const { _id, name, email, avatar } = response.data
 
     dispatch(setUserData({ userData: { id: _id, name, email, avatar } }))
     dispatch(setIsLoggedIn({ isLoggedIn: true }))

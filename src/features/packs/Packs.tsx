@@ -1,187 +1,52 @@
-import React, { useEffect, useState } from 'react'
+import * as React from 'react'
 
-import { Search } from '@mui/icons-material'
-import { Box, InputAdornment, Slider, TextField } from '@mui/material'
-import Button from '@mui/material/Button'
-import { useSelector } from 'react-redux'
+import { useSearchParams } from 'react-router-dom'
 
-import { RootStateType } from '../../app/store'
-import { CustomModalDialog } from '../../common/components/ModalDialog/CustomModalDialog'
-import { FormDialog } from '../../common/components/ModalDialog/ModalDialog'
-import { BasicTable } from '../../common/components/Table/Table'
-import { packsTable } from '../../constants/tableData'
-import { useAppDispatch } from '../../hooks/reduxHooks'
-// eslint-disable-next-line import/namespace
-import { DataType, Pack } from '../../services/packsApi'
-import { cretePacksTableBody, tableHeadCreator } from '../../utils/tableHeadCreator'
+import { CustomPagination } from '../../common/components/CustomPagination/CustomPagination'
+import { CustomSearch } from '../../common/components/CustomSearch/CustomSearch'
+import { PageTitleBlock } from '../../common/components/PageTitleBlock/PageTitleBlock'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 
-import { AddPack } from './addPack/AddPack'
+import { PackOwnerSwitcher } from './PackOwnerSwitcher/PackOwnerSwitcher'
 import s from './Packs.module.scss'
-// eslint-disable-next-line import/namespace
-import { getAllPacks, getMyPacks, getPacks } from './packsReducer'
+import { PackSlider } from './PackSlider/PackSlider'
+import { PacksResetFilter } from './PacksResetFilter/PacksResetFilter'
+import { getPacksTC } from './packsSlice'
 
 type PacksType = {}
 
-export type dialogModeType = 'edit' | 'add' | ''
-
 export const Packs: React.FC<PacksType> = ({}) => {
-  //control Panel state
-  const [open, setOpen] = React.useState(false)
-  const [packId, setPackId] = React.useState('')
-  const [packs, setPacks] = React.useState('all')
-  const [dialogMode, setDialogMode] = React.useState<dialogModeType>('add')
-
-  const [openCustomModal, setOpenCustomModal] = React.useState(true)
-
-  // open close Modal callbacks
-  const openModal = () => setOpen(true)
-  const closeModal = () => setOpen(false)
-
-  //change dialogMode callback
-  const handleDialogMode = (mode: dialogModeType) => setDialogMode(mode)
-
-  //packId to appear at Modal dialog
-  const selectPackId = (id: string) => setPackId(id)
-
-  //cardPacks from state
-  const cardPacks = useSelector<RootStateType, Array<Pack>>(state => state.packs.cardPacks)
-
-  //take data about card for Modal Dialog
-  const data = cardPacks.find(pack => pack._id === packId)
-  const modalData = data ? { id: data._id, name: data.name } : { id: null, name: null }
-
-  //personal id for requesting my packs
-  const my_id = useSelector<RootStateType, string>(state => state.profile.userData.id)
-
   const dispatch = useAppDispatch()
+  //   const isInitialized = useAppSelector(state => state.app.isInitialized)
+  //   const [searchParams, setSearchParams] = useSearchParams()
 
-  //head for basic table
-  const head = tableHeadCreator(packsTable)
-
-  //rows of packs into basic table
-  const rows = cretePacksTableBody(
-    cardPacks,
-    open,
-    openModal,
-    closeModal,
-    selectPackId,
-    handleDialogMode
-  )
-
-  //all & my packs handlers
-  const handleAllPacks = async () => {
-    await dispatch(getAllPacks())
-    setPacks('all')
+  const handleTitleButton = () => {
+    // dispatch() Add new pack
   }
 
-  const handleMyPacks = async () => {
-    await dispatch(getMyPacks(my_id))
-    setPacks('my')
-  }
-
-  //double range slider
-  function valuetext(value: number) {
-    return `${value}°C`
-  }
-
-  const [cardsAmount, setCardsAmount] = React.useState<number[]>([0, 37])
-
-  const handleChange = (event: Event, newValue: number | number[]) => {
-    setCardsAmount(newValue as number[])
-  }
-
-  const handleAddPack = () => {
-    handleDialogMode('add')
-    //openModal()
-    setOpenCustomModal(true)
-  }
-
-  useEffect(() => {
-    const data: DataType = {
-      page: 1,
-      pageCount: 10,
-    }
-
-    dispatch(getPacks(data))
+  React.useEffect(() => {
+    dispatch(getPacksTC())
   }, [])
 
   return (
     <>
-      <div className={s.Head}>
-        <h1>Packs List</h1>
-        <Button
-          variant="contained"
-          size={'small'}
-          style={{ borderRadius: '20px' }}
-          onClick={handleAddPack}
-        >
-          Add new Pack
-        </Button>
-      </div>
-      <div className={s.ControlPanel}>
-        <div>
-          <h3>Search</h3>
-          <TextField
-            size={'small'}
-            className={s.Search}
-            id="outlined-basic"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Search />
-                </InputAdornment>
-              ),
-            }}
-            variant="outlined"
+      <div className={s.packsContainer}>
+        <div className={s.packs__controlBlock}>
+          <PageTitleBlock
+            title={'packs list'}
+            button={'add new pack'}
+            buttonClick={handleTitleButton}
           />
-        </div>
-        <div>
-          <h3>Show packs cards</h3>
-          <Button
-            variant={packs === 'all' ? 'contained' : 'outlined'}
-            size={'small'}
-            onClick={handleAllPacks}
-          >
-            All
-          </Button>
-          <Button
-            variant={packs === 'my' ? 'contained' : 'outlined'}
-            size={'small'}
-            onClick={handleMyPacks}
-          >
-            My
-          </Button>
-        </div>
-        <div>
-          <h3>Number of cards</h3>
-          <div className={s.SliderContainer}>
-            <div className={s.CardsNumber}>{cardsAmount[0]}</div>
-            <Box sx={{ width: 120 }} className={s.Slider}>
-              <Slider
-                getAriaLabel={() => 'Temperature range'}
-                value={cardsAmount}
-                onChange={handleChange}
-                valueLabelDisplay="auto"
-                getAriaValueText={valuetext}
-                size={'small'}
-              />
-            </Box>
-            <div className={s.CardsNumber}>{cardsAmount[1]}</div>
+          <div className={s.packs__controlPanel}>
+            <CustomSearch />
+            <PackOwnerSwitcher />
+            <PackSlider />
+            <PacksResetFilter />
           </div>
         </div>
+        <div className={s.packs__table}>packs table</div>
+        <CustomPagination />
       </div>
-      <BasicTable head={head} rows={rows} />
-      <FormDialog
-        key={packId}
-        data={modalData}
-        opened={open}
-        closeModal={closeModal}
-        dialogMode={dialogMode}
-      />
-      <CustomModalDialog active={openCustomModal} setActive={setOpenCustomModal}>
-        <AddPack active={openCustomModal} />
-      </CustomModalDialog>
-      <div className={s.Pagination}></div>
     </>
   )
 }
