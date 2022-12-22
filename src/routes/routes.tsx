@@ -5,6 +5,7 @@ import { Navigate, Outlet, Route, Routes, useLocation } from 'react-router-dom'
 import { LoadingProgress } from '../common/components/LoadingProgress/LoadingProgress'
 import { PATH } from '../constants/routePaths.enum'
 import { Page404 } from '../features/404/Page404'
+import { Cards } from '../features/cards/Cards'
 import { useAppSelector } from '../hooks/reduxHooks'
 
 const Profile = React.lazy(() =>
@@ -76,6 +77,7 @@ export const AppRoutes = () => {
         <Route element={<PrivateRoutes />}>
           <Route path={PATH.PROFILE} element={<Profile />} />
           <Route path={PATH.PACKS} element={<Packs />} />
+          <Route path={PATH.CARDS} element={<Cards />} />
         </Route>
         <Route element={<SuspenseLayout />}>
           <Route path={PATH.LOGIN} element={<LogInApp />} />
