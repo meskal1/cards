@@ -1,0 +1,19 @@
+.pageTitleBlockContainer {
+  display: flex;
+  flex-direction: column;
+
+  margin: 0px 0px 22px 0px;
+}
+
+.pageTitleBlock {
+  &__titleBlock {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__title {
+    font-size: 22px;
+    font-weight: 600;
+  }
+}
