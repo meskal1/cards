@@ -1,8 +1,8 @@
 import React, { MouseEvent } from 'react'
 
-import { Rating } from '@mui/material'
 import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
+import Rating from '@mui/material/Rating'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
@@ -19,15 +19,15 @@ import { ServerOrderType, TableOrder, TableOrderType } from '../../packs/PacksTa
 import { CardsActionCell } from './CardsActionCell/CardsActionCell'
 import s from './CardsTable.module.scss'
 
-const heads: HeadType<CardsOrderByType | 'actions'>[] = [
+export type CardsOrderByType = 'question' | 'answer' | 'updated' | 'grade'
+
+const heads: HeadType<CardsOrderByType>[] = [
   { id: 'question', label: 'Question' },
   { id: 'answer', label: 'Answer' },
   { id: 'updated', label: 'Last updated' },
   { id: 'grade', label: 'Grade' },
-  { id: 'actions', label: 'Actions' },
 ]
 
-export type CardsOrderByType = 'question' | 'answer' | 'updated' | 'grade'
 type ServerSortType = `${ServerOrderType}${CardsOrderByType}`
 
 type CardsTablePropsType = {
@@ -139,8 +139,8 @@ export const CardsTable: React.FC<CardsTablePropsType> = ({ isMine }) => {
 
     setServerSort(newServerOrder)
   }
-  const editCardHandler = () => alert('edit card')
-  const deleteCardHandler = () => alert('delete card')
+  const handleEditCard = () => alert('edit card')
+  const handleDeleteCard = () => alert('delete card')
 
   return (
     <Box>
@@ -151,7 +151,7 @@ export const CardsTable: React.FC<CardsTablePropsType> = ({ isMine }) => {
               heads={heads}
               order={tableOrder}
               orderBy={tableOrderBy}
-              setSortHandler={setSortHandler}
+              onSetSort={setSortHandler}
             />
             <TableBody>
               {serverData.map(row => {
@@ -162,20 +162,23 @@ export const CardsTable: React.FC<CardsTablePropsType> = ({ isMine }) => {
                     className={s.row}
                     onClick={e => openCardHandler(e, row._id)}
                   >
-                    <TableCell>
-                      <p className={s.tableCellText}>{row.question}</p>
-                    </TableCell>
-                    <TableCell>
-                      <p className={s.tableCellText}>{row.answer}</p>
-                    </TableCell>
-                    <TableCell>
-                      <p className={s.tableCellText}> {dayjs(row.updated).format('DD.MM.YYYY')}</p>
-                    </TableCell>
-                    <TableCell className={s.tableCell}>
-                      <Rating value={row.grade} readOnly />
-                    </TableCell>
+                    {heads.map(h => {
+                      return (
+                        <TableCell key={h.id}>
+                          {h.id === 'grade' ? (
+                            <Rating value={row[h.id]} readOnly />
+                          ) : (
+                            <p className={s.tableCellText}>
+                              {h.id === 'updated'
+                                ? dayjs(row[h.id]).format('DD.MM.YYYY')
+                                : row[h.id]}
+                            </p>
+                          )}
+                        </TableCell>
+                      )
+                    })}
                     {isMine && (
-                      <CardsActionCell editCard={editCardHandler} deleteCard={deleteCardHandler} />
+                      <CardsActionCell onEdit={handleEditCard} onDelete={handleDeleteCard} />
                     )}
                   </TableRow>
                 )
