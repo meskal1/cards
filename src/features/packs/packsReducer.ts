@@ -4,7 +4,9 @@ import { Dispatch } from 'redux'
 
 import { setAppAlertMessage, setAppStatus } from '../../app/appSlice'
 import { AppDispatchType } from '../../app/store'
-import { Pack, packsApi, ResponseType } from '../../services/packsApi'
+import { authAPI } from '../../services/authApi'
+// eslint-disable-next-line import/namespace
+import { DataType, Pack, packsApi, ResponseType } from '../../services/packsApi'
 
 const initialState: InitialStateType = {
   cardPacks: [],
@@ -38,6 +40,7 @@ export const setPacks = (data: CardsData) =>
 //thunks
 
 export const getAllPacks = () => async (dispatch: Dispatch) => {
+  setAppStatus({ status: 'loading' })
   try {
     const response = await packsApi.getAllPacks()
 
@@ -51,11 +54,34 @@ export const getAllPacks = () => async (dispatch: Dispatch) => {
     }
   } catch (e) {
     console.log(e)
+  } finally {
+    dispatch(setAppStatus({ status: 'idle' }))
+  }
+}
+
+//test
+
+export const getPacks = (data: DataType) => async (dispatch: Dispatch) => {
+  dispatch(setAppStatus({ status: 'loading' }))
+  try {
+    const response = await packsApi.getPacks(data)
+
+    if (response.data.token) {
+      const { cardPacks, page, pageCount, cardPacksTotalCount, minCardsCount, maxCardsCount } =
+        response.data
+
+      dispatch(
+        setPacks({ cardPacks, page, pageCount, cardPacksTotalCount, minCardsCount, maxCardsCount })
+      )
+    }
+  } catch (e) {
+    console.log(e)
+  } finally {
+    dispatch(setAppStatus({ status: 'idle' }))
   }
 }
 
 export const addPack = (data: newPackData) => async (dispatch: AppDispatchType) => {
-  debugger
   dispatch(setAppStatus({ status: 'loading' }))
   try {
     let response = await packsApi.addPack(data)
@@ -66,6 +92,28 @@ export const addPack = (data: newPackData) => async (dispatch: AppDispatchType) 
     dispatch(getAllPacks())
   } catch (e) {
     console.log(e)
+  } finally {
+    dispatch(setAppStatus({ status: 'idle' }))
+  }
+}
+
+export const getMyPacks = (id: string) => async (dispatch: Dispatch) => {
+  dispatch(setAppStatus({ status: 'loading' }))
+  try {
+    const response = await packsApi.getMyPacks(id)
+
+    if (response.data.token) {
+      const { cardPacks, page, pageCount, cardPacksTotalCount, minCardsCount, maxCardsCount } =
+        response.data
+
+      dispatch(
+        setPacks({ cardPacks, page, pageCount, cardPacksTotalCount, minCardsCount, maxCardsCount })
+      )
+    }
+  } catch (e) {
+    console.log(e)
+  } finally {
+    dispatch(setAppStatus({ status: 'idle' }))
   }
 }
 

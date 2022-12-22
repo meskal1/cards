@@ -6,16 +6,19 @@ import Button from '@mui/material/Button'
 import { useSelector } from 'react-redux'
 
 import { RootStateType } from '../../app/store'
+import { CustomModalDialog } from '../../common/components/ModalDialog/CustomModalDialog'
 import { FormDialog } from '../../common/components/ModalDialog/ModalDialog'
 import { BasicTable } from '../../common/components/Table/Table'
 import { packsTable } from '../../constants/tableData'
 import { useAppDispatch } from '../../hooks/reduxHooks'
-import { Pack } from '../../services/packsApi'
+// eslint-disable-next-line import/namespace
+import { DataType, Pack } from '../../services/packsApi'
 import { cretePacksTableBody, tableHeadCreator } from '../../utils/tableHeadCreator'
 
+import { AddPack } from './addPack/AddPack'
 import s from './Packs.module.scss'
 // eslint-disable-next-line import/namespace
-import { getAllPacks } from './packsReducer'
+import { getAllPacks, getMyPacks, getPacks } from './packsReducer'
 
 type PacksType = {}
 
@@ -23,10 +26,12 @@ export type dialogModeType = 'edit' | 'add' | ''
 
 export const Packs: React.FC<PacksType> = ({}) => {
   //control Panel state
-  const [open, setOpen] = React.useState(true)
+  const [open, setOpen] = React.useState(false)
   const [packId, setPackId] = React.useState('')
   const [packs, setPacks] = React.useState('all')
   const [dialogMode, setDialogMode] = React.useState<dialogModeType>('add')
+
+  const [openCustomModal, setOpenCustomModal] = React.useState(true)
 
   // open close Modal callbacks
   const openModal = () => setOpen(true)
@@ -35,10 +40,10 @@ export const Packs: React.FC<PacksType> = ({}) => {
   //change dialogMode callback
   const handleDialogMode = (mode: dialogModeType) => setDialogMode(mode)
 
-  // packId to appear at Modal dialog
+  //packId to appear at Modal dialog
   const selectPackId = (id: string) => setPackId(id)
 
-  // cardPacks from state
+  //cardPacks from state
   const cardPacks = useSelector<RootStateType, Array<Pack>>(state => state.packs.cardPacks)
 
   //take data about card for Modal Dialog
@@ -54,12 +59,24 @@ export const Packs: React.FC<PacksType> = ({}) => {
   const head = tableHeadCreator(packsTable)
 
   //rows of packs into basic table
-  const rows = cretePacksTableBody(cardPacks, open, openModal, closeModal, selectPackId)
+  const rows = cretePacksTableBody(
+    cardPacks,
+    open,
+    openModal,
+    closeModal,
+    selectPackId,
+    handleDialogMode
+  )
 
   //all & my packs handlers
-  const handleAllPacks = () => {
-    dispatch(getAllPacks())
+  const handleAllPacks = async () => {
+    await dispatch(getAllPacks())
     setPacks('all')
+  }
+
+  const handleMyPacks = async () => {
+    await dispatch(getMyPacks(my_id))
+    setPacks('my')
   }
 
   //double range slider
@@ -75,11 +92,17 @@ export const Packs: React.FC<PacksType> = ({}) => {
 
   const handleAddPack = () => {
     handleDialogMode('add')
-    openModal()
+    //openModal()
+    setOpenCustomModal(true)
   }
 
   useEffect(() => {
-    dispatch(getAllPacks())
+    const data: DataType = {
+      page: 1,
+      pageCount: 10,
+    }
+
+    dispatch(getPacks(data))
   }, [])
 
   return (
@@ -114,10 +137,18 @@ export const Packs: React.FC<PacksType> = ({}) => {
         </div>
         <div>
           <h3>Show packs cards</h3>
-          <Button variant={packs === 'all' ? 'contained' : 'outlined'} size={'small'}>
+          <Button
+            variant={packs === 'all' ? 'contained' : 'outlined'}
+            size={'small'}
+            onClick={handleAllPacks}
+          >
             All
           </Button>
-          <Button variant={packs === 'my' ? 'contained' : 'outlined'} size={'small'}>
+          <Button
+            variant={packs === 'my' ? 'contained' : 'outlined'}
+            size={'small'}
+            onClick={handleMyPacks}
+          >
             My
           </Button>
         </div>
@@ -147,6 +178,9 @@ export const Packs: React.FC<PacksType> = ({}) => {
         closeModal={closeModal}
         dialogMode={dialogMode}
       />
+      <CustomModalDialog active={openCustomModal} setActive={setOpenCustomModal}>
+        <AddPack active={openCustomModal} />
+      </CustomModalDialog>
       <div className={s.Pagination}></div>
     </>
   )

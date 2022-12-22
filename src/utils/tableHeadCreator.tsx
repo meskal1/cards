@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux'
 
 import { RootStateType } from '../app/store'
 import { FormDialog } from '../common/components/ModalDialog/ModalDialog'
+import { dialogModeType } from '../features/packs/Packs'
 import { Pack } from '../services/packsApi'
 
 export const tableHeadCreator = (data: Array<string>) =>
@@ -26,11 +27,13 @@ export const cretePacksTableBody = (
   opened: boolean,
   openModal: () => void,
   closeModal: () => void,
-  selectPackId: (id: string) => void
+  selectPackId: (id: string) => void,
+  changeDialogMode: (mode: dialogModeType) => void
 ) => {
   const userId = useSelector<RootStateType, string>(state => state.profile.userData.id)
 
   const handleOnEditClick = (id: string) => {
+    changeDialogMode('edit')
     selectPackId(id)
     openModal()
   }

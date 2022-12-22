@@ -8,9 +8,23 @@ const instance = axios.create({
   withCredentials: true,
 })
 
+export type DataType = {
+  packName?: string
+  min?: number
+  max?: number
+  sortPacks?: string
+  page?: number
+  pageCount?: number
+  user_id?: string
+}
+
 export const packsApi = {
   getAllPacks() {
     return instance.get<ResponseType>('cards/pack')
+  },
+
+  getPacks(data: DataType) {
+    return instance.get<ResponseType>('cards/pack', { params: data })
   },
 
   getMyPacks(id: string) {
