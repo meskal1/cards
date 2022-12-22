@@ -1,20 +1,18 @@
 .backToPacks {
   &__linkPacks {
-    position: absolute;
-    top: 24px;
-    left: 0;
-
     display: flex;
     align-items: center;
+    align-self: flex-start;
+
+    margin: 0px 0px 22px 0px;
 
     font-weight: 500;
-    line-height: 24px;
     color: inherit;
 
     transition: all 0.2s ease;
 
     &:hover {
-      color: white;
+      color: #1b79ce;
     }
   }
 
