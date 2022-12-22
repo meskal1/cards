@@ -1,0 +1,29 @@
+.cardsContainer {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  row-gap: 22px;
+
+  width: 100%;
+  padding: 26px 0px;
+}
+
+.cards {
+  &__controlBlock {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__controlPanel {
+    display: flex;
+    column-gap: 30px;
+    align-items: flex-end;
+  }
+
+  &__table {
+    display: flex;
+    flex: 1 1 auto;
+
+    border: 1px solid green;
+  }
+}
