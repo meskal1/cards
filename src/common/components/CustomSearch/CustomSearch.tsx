@@ -35,15 +35,15 @@ export const CustomSearch: React.FC<CustomSearchType> = React.memo(({ cards }) =
       }
     }
 
-    if (cards) {
-      search()
-      dispatch(setSearchCards({ cardQuestion: debouncedValue }))
-      dispatch(getCardsTC())
-    } else {
-      search()
-      dispatch(setSearchPacks({ search: debouncedValue }))
-      dispatch(getPacksTC())
-    }
+    //  if (cards) {
+    //    search()
+    //    dispatch(setSearchCards({ cardQuestion: debouncedValue }))
+    //    dispatch(getCardsTC())
+    //  } else {
+    //    search()
+    //    dispatch(setSearchPacks({ search: debouncedValue }))
+    //    dispatch(getPacksTC())
+    //  }
   }, [debouncedValue])
 
   return (
