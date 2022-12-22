@@ -27,12 +27,11 @@ export enum TableOrder {
 }
 export type TableOrderType = 'asc' | 'desc'
 
-const heads: HeadType<PacksOrderByType | 'actions'>[] = [
+const heads: HeadType<PacksOrderByType>[] = [
   { id: 'name', label: 'Name' },
   { id: 'cardsCount', label: 'Cards' },
   { id: 'updated', label: 'Last Updated' },
   { id: 'user_name', label: 'Created by' },
-  { id: 'actions', label: 'Actions' },
 ]
 
 type PacksTablePropsType = {}
@@ -123,17 +122,16 @@ export function PacksTable({}: PacksTablePropsType) {
   const tableOrderBy = serverSort.slice(1) as PacksOrderByType
   const tableOrder: TableOrderType = serverOrder === TableOrder.asc ? 'asc' : 'desc'
 
-  const setSortHandler = (property: PacksOrderByType) => {
+  const handleSetSort = (property: PacksOrderByType) => {
     const isAsc = tableOrderBy === property && tableOrder === 'asc'
     const newOrder = isAsc ? 'desc' : 'asc'
-
     const newServerOrder: ServerSortType = `${TableOrder[newOrder]}${property}`
 
     setServerSort(newServerOrder)
   }
-  const studyCardPackHandler = () => alert('study card')
-  const editCardPackHandler = () => alert('edit card')
-  const deleteCardPackHandler = () => alert('delete card')
+  const handleStudyCardPack = () => alert('study card')
+  const handleEditCardPack = () => alert('edit card')
+  const handleDeleteCardPack = () => alert('delete card')
 
   return (
     <Box>
@@ -144,7 +142,7 @@ export function PacksTable({}: PacksTablePropsType) {
               heads={heads}
               order={tableOrder}
               orderBy={tableOrderBy}
-              setSortHandler={setSortHandler}
+              onSetSort={handleSetSort}
             />
             <TableBody>
               {serverData.map(row => {
@@ -155,24 +153,21 @@ export function PacksTable({}: PacksTablePropsType) {
                     hover
                     onClick={e => openCardPackHandler(e, row._id)}
                   >
-                    <TableCell>
-                      <p className={s.tableCellText}>{row.name}</p>
-                    </TableCell>
-                    <TableCell>
-                      <p className={s.tableCellText}>{row.cardsCount}</p>
-                    </TableCell>
-                    <TableCell>
-                      <p className={s.tableCellText}>{dayjs(row.updated).format('DD.MM.YYYY')}</p>
-                    </TableCell>
-                    <TableCell>
-                      <p className={s.tableCellText}>{row.user_name}</p>
-                    </TableCell>
+                    {heads.map(h => {
+                      return (
+                        <TableCell key={h.id}>
+                          <p className={s.tableCellText}>
+                            {h.id === 'updated' ? dayjs(row[h.id]).format('DD.MM.YYYY') : row[h.id]}
+                          </p>
+                        </TableCell>
+                      )
+                    })}
                     <PacksActionCell
                       isMine={row.user_id === userId}
                       isStudyDisabled={row.cardsCount === 0}
-                      studyCard={studyCardPackHandler}
-                      editCard={editCardPackHandler}
-                      deleteCard={deleteCardPackHandler}
+                      onStudy={handleStudyCardPack}
+                      onEdit={handleEditCardPack}
+                      onDelete={handleDeleteCardPack}
                     />
                   </TableRow>
                 )

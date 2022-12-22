@@ -20,40 +20,35 @@ type CustomTableHeadPropsType<T> = {
   heads: HeadType<T>[]
   order: TableOrderType
   orderBy: T
-  setSortHandler: (property: any) => void
+  onSetSort: (property: T) => void
 }
 
 export const CustomTableHead = <T extends string>({
   order,
   orderBy,
   heads,
-  setSortHandler,
+  onSetSort,
 }: CustomTableHeadPropsType<T>) => {
   return (
     <TableHead className={s.tableHead}>
       <TableRow>
-        {heads.map(h =>
-          h.id === 'actions' ? (
-            <TableCell key={h.id} size={'small'}>
+        {heads.map(h => (
+          <TableCell key={h.id}>
+            <TableSortLabel
+              active={orderBy === h.id}
+              direction={orderBy === h.id ? order : 'asc'}
+              onClick={() => onSetSort(h.id)}
+            >
               {h.label}
-            </TableCell>
-          ) : (
-            <TableCell key={h.id}>
-              <TableSortLabel
-                active={orderBy === h.id}
-                direction={orderBy === h.id ? order : 'asc'}
-                onClick={() => setSortHandler(h.id)}
-              >
-                {h.label}
-                {orderBy === h.id ? (
-                  <Box component="span" sx={visuallyHidden}>
-                    {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                  </Box>
-                ) : null}
-              </TableSortLabel>
-            </TableCell>
-          )
-        )}
+              {orderBy === h.id ? (
+                <Box component="span" sx={visuallyHidden}>
+                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                </Box>
+              ) : null}
+            </TableSortLabel>
+          </TableCell>
+        ))}
+        <TableCell>Actions</TableCell>
       </TableRow>
     </TableHead>
   )

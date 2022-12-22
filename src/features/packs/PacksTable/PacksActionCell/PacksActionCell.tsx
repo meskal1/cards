@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { MouseEvent } from 'react'
 
 import TableCell from '@mui/material/TableCell'
 
@@ -11,28 +11,33 @@ import s from './PacksActionCell.module.scss'
 type PacksActionCellPropsType = {
   isMine: boolean
   isStudyDisabled: boolean
-  studyCard: () => void
-  editCard: () => void
-  deleteCard: () => void
+  onStudy: () => void
+  onEdit: () => void
+  onDelete: () => void
 }
 
 export const PacksActionCell: React.FC<PacksActionCellPropsType> = ({
   isMine,
   isStudyDisabled,
-  studyCard,
-  editCard,
-  deleteCard,
+  onStudy,
+  onEdit,
+  onDelete,
 }) => {
+  const handleSpanClick = (e: MouseEvent<HTMLSpanElement>) => e.stopPropagation()
+  const handleStudyClick = () => onStudy()
+  const handleEditClick = () => onEdit()
+  const handleDeleteClick = () => onDelete()
+
   return (
     <TableCell>
-      <span className={s.span} onClick={e => e.stopPropagation()}>
+      <span className={s.span} onClick={handleSpanClick}>
         <CustomStudyIconButton
-          onClick={() => studyCard()}
+          onClick={handleStudyClick}
           disabled={isStudyDisabled}
           tooltip={'Study'}
         />
-        {isMine && <CustomEditIconButton onClick={() => editCard()} tooltip={'Edit'} />}
-        {isMine && <CustomDeleteIconButton onClick={() => deleteCard()} tooltip={'Delete'} />}
+        {isMine && <CustomEditIconButton onClick={handleEditClick} tooltip={'Edit'} />}
+        {isMine && <CustomDeleteIconButton onClick={handleDeleteClick} tooltip={'Delete'} />}
       </span>
     </TableCell>
   )
