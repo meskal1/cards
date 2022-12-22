@@ -75,9 +75,9 @@ export const getPacksTC =
         pageCount,
         user_id: isMyPacks ? getState().profile.userData.id : '',
         // block,
-      }
+      } as QueryPackParamsType
 
-      //  const response = await packsAPI.getPacks(data: QueryPackParamsType)
+      //  const response = await packsAPI.getPacks(data)
       dispatch(clearPacksTableData())
       //  dispatch(setPacksTableData( response.data.cardPacks ))
     } catch (e) {
@@ -149,11 +149,11 @@ type IsMyPacksPayloadType = { isMyPacks: boolean }
 
 type QueryPackParamsType = {
   packName?: string
-  min?: string
-  max?: string
+  min?: number
+  max?: number
   sortPacks?: SortValuesType
-  page?: string
-  pageCount?: string
+  page?: number
+  pageCount?: number
   user_id?: string
   block?: string
 }

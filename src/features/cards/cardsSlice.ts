@@ -146,11 +146,11 @@ type CardsPackIdPayloadType = { cardsPack_id: string }
 //////////////////// REQUEST/RESPONSE TYPES ////////////////////////
 
 type QueryCardParamsType = {
-  min?: string
-  max?: string
+  min?: number
+  max?: number
   sortCards?: SortValuesCardsType
-  page?: string
-  pageCount?: string
+  page?: number
+  pageCount?: number
   cardsPack_id?: string
   cardQuestion?: string
   cardAnswer?: string
