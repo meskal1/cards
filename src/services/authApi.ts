@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios'
+import axios from 'axios'
 
 import { PATH } from '../constants/routePaths.enum'
 
@@ -41,13 +41,13 @@ export const authAPI = {
   newUserData(data: ProfileDataType) {
     return instance.put<ProfileDataResponseType>('auth/me', data)
   },
-  editProfile(profile: editProfileType) {
+  editProfile(profile: EditProfileType) {
     return instance.put<ResponseType>('auth/me', profile)
   },
 }
 
 // TYPES
-export type editProfileType = {
+export type EditProfileType = {
   name: string
   avatar: string | undefined
 }
