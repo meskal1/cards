@@ -19,24 +19,20 @@ export type DataType = {
 }
 
 export const packsApi = {
-  getAllPacks() {
-    return instance.get<ResponseType>('cards/pack')
-  },
-
   getPacks(data: DataType) {
     return instance.get<ResponseType>('cards/pack', { params: data })
   },
 
-  getMyPacks(id: string) {
-    return instance.get<ResponseType>(`cards/pack?user_id=${id}`)
-  },
-
-  findPacksByName(name: string) {
-    return instance.get<ResponseType>(`cards/pack?packName=${name}`)
-  },
-
-  addPack(data: { name: string; deckCover?: string; private: boolean }) {
+  addPack(data: PacksDataType) {
     return instance.post<addPackResponse>('cards/pack', { cardsPack: data })
+  },
+
+  deletePack(id: string) {
+    return instance.delete<deleteResponse>(`cards/pack?id=${id}`)
+  },
+
+  updatePack(data: UpdatePackType) {
+    return instance.put<UpdateResponse>('cards/pack', { cardsPack: data })
   },
 }
 
@@ -76,4 +72,29 @@ type addPackResponse = {
   newCardsPack: Pack
   token: string
   tokenDeathTime: number
+}
+
+type deleteResponse = {
+  deletedCardsPack: Pack
+  token: string
+  tokenDeathTime: number
+}
+
+type UpdateResponse = {
+  updatedCardsPack: Pack
+  token: string
+  tokenDeathTime: number
+}
+
+export type PacksDataType = {
+  name: string
+  deckCover?: string
+  private: boolean
+}
+
+export type UpdatePackType = {
+  _id: string
+  name?: string
+  deckCover?: string
+  private?: boolean
 }

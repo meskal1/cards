@@ -7,8 +7,7 @@ import TextField from '@mui/material/TextField'
 import { useFormik } from 'formik'
 
 import { useAppDispatch } from '../../../hooks/reduxHooks'
-// eslint-disable-next-line import/namespace
-import { addPack } from '../packsReducer'
+import { addPackTC } from '../packsSlice'
 
 import s from './AddPack.module.scss'
 
@@ -55,9 +54,8 @@ export const AddPack = (props: AddPackType) => {
       return errors
     },
     onSubmit: async values => {
-      await dispatch(addPack({ ...formik.values }))
+      await dispatch(addPackTC({ ...formik.values }))
       formik.resetForm()
-      //props.closeModal()
     },
   })
 
