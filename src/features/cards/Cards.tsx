@@ -1,15 +1,16 @@
 import * as React from 'react'
 
-import { useSearchParams } from 'react-router-dom'
+import { Navigate, useSearchParams } from 'react-router-dom'
 
 import { CustomPagination } from '../../common/components/CustomPagination/CustomPagination'
 import { CustomSearch } from '../../common/components/CustomSearch/CustomSearch'
 import { PageTitleBlock } from '../../common/components/PageTitleBlock/PageTitleBlock'
+import { PATH } from '../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { CardType } from '../../services/cardsApi'
 
 import s from './Cards.module.scss'
-import { getCardsTC, setCardsPackId } from './cardsSlice'
+import { CardsErrorType, clearCardsState, getCardsTC, setCardsPackId } from './cardsSlice'
 import { CardsTable } from './CardsTable/CardsTable'
 
 type CardsType = {}
@@ -18,16 +19,24 @@ export const Cards: React.FC<CardsType> = React.memo(({}) => {
   const dispatch = useAppDispatch()
   const [searchParams, setSearchParams] = useSearchParams()
   const tableData = useAppSelector<CardType[]>(state => state.cards.tableData)
+  const cardsError = useAppSelector<CardsErrorType>(state => state.cards.error)
 
   const handleTitleButton = () => {
     // dispatch() Add new card
   }
 
   React.useEffect(() => {
-    console.log(searchParams.get('cardsPack_id'))
     dispatch(setCardsPackId({ cardsPack_id: searchParams.get('cardsPack_id') as string }))
     dispatch(getCardsTC())
+
+    return () => {
+      dispatch(clearCardsState())
+    }
   }, [])
+
+  if (cardsError === 'WRONG_ID') {
+    return <Navigate to={PATH.PAGE_NOT_FOUND} replace />
+  }
 
   return (
     <>

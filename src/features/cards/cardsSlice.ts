@@ -18,6 +18,7 @@ const initialState = {
     cardAnswer: '',
   },
   tableData: [] as CardType[],
+  error: null as CardsErrorType,
 }
 
 const cardsSlice = createSlice({
@@ -44,8 +45,14 @@ const cardsSlice = createSlice({
     setSortValue(state, action: PayloadAction<SortCardsPayloadType>) {
       state.queryParams.sortCards = action.payload.sortCards
     },
+    setError(state, action: PayloadAction<CardsErrorPayloadType>) {
+      state.error = action.payload.error
+    },
     clearCardsTableData(state) {
       state.tableData = []
+    },
+    clearCardsState() {
+      return initialState
     },
   },
 })
@@ -59,7 +66,9 @@ export const {
   setCardsPackId,
   setPaginationCardsData,
   setSortValue,
+  setError,
   clearCardsTableData,
+  clearCardsState,
 } = cardsSlice.actions
 
 // THUNKS
@@ -84,6 +93,15 @@ export const getCardsTC =
       dispatch(clearCardsTableData())
       dispatch(setCardsTableData(response.data.cards))
     } catch (e) {
+      // Подумать можно ли это вынести в handleServerNetworkError
+      if (axios.isAxiosError<{ in: string }>(e)) {
+        if (e.response?.data.in === 'getCards/CardsPack.findById') {
+          dispatch(setError({ error: 'WRONG_ID' }))
+
+          return
+        }
+      }
+
       handleServerNetworkError(dispatch, e as Error | AxiosError)
     }
   }
@@ -138,6 +156,8 @@ export type SortValuesCardsType =
   | '0question'
   | '1question'
 
+export type CardsErrorType = 'WRONG_ID' | null
+
 type SortCardsPayloadType = { sortCards: SortValuesCardsType }
 
 type CardsTablePayloadType = CardType[]
@@ -152,6 +172,10 @@ export type UpdateCardType = {
   id: string
   question: string
   answer: string
+}
+
+type CardsErrorPayloadType = {
+  error: CardsErrorType
 }
 
 //////////////////// REQUEST/RESPONSE TYPES ////////////////////////
