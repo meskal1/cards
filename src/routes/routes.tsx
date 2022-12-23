@@ -53,7 +53,7 @@ export const AppRoutes = () => {
     }
 
     return preventAuthLinks ? (
-      <Navigate to={PATH.PROFILE} />
+      <Navigate to={PATH.PACKS} />
     ) : (
       <React.Suspense fallback={<LoadingProgress />}>
         <Outlet />
