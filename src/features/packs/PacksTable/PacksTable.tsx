@@ -15,13 +15,13 @@ import {
   HeadType,
 } from '../../../common/components/CustomTableHead/CustomTableHead'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
+import { PackType } from '../../../services/packsApi'
 import {
-  CardPacksType,
   deletePackTC,
   setSortValue,
   SortValuesType,
   updatePackTC,
-  UpdatePackType,
+  UpdatePackDataType,
 } from '../packsSlice'
 
 import { PacksActionCell } from './PacksActionCell/PacksActionCell'
@@ -48,7 +48,7 @@ type PacksTablePropsType = {}
 
 export function PacksTable({}: PacksTablePropsType) {
   const userId = useAppSelector(state => state.profile.userData.id)
-  const serverData = useAppSelector<CardPacksType[]>(state => state.packs.tableData)
+  const serverData = useAppSelector<PackType[]>(state => state.packs.tableData)
   const serverSort = useAppSelector<SortValuesType>(state => state.packs.queryParams.sortPacks)
 
   const dispatch = useAppDispatch()
@@ -70,7 +70,7 @@ export function PacksTable({}: PacksTablePropsType) {
     dispatch(setSortValue({ sortPacks: newServerOrder }))
   }
   const handleStudyCardPack = () => alert('study card')
-  const handleEditCardPack = (data: UpdatePackType) => {
+  const handleEditCardPack = (data: UpdatePackDataType) => {
     dispatch(updatePackTC(data))
   }
   const handleDeleteCardPack = (id: string) => {

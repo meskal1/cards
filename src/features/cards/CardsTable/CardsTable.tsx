@@ -15,9 +15,9 @@ import {
   HeadType,
 } from '../../../common/components/CustomTableHead/CustomTableHead'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
+import { CardType } from '../../../services/cardsApi'
 import { ServerOrderType, TableOrder, TableOrderType } from '../../packs/PacksTable/PacksTable'
 import {
-  CardType,
   deleteCardTC,
   setSortValue,
   SortValuesCardsType,
