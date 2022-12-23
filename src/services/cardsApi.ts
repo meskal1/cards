@@ -1,76 +1,73 @@
-import axios from 'axios'
+import { SortValuesCardsType } from '../features/cards/cardsSlice'
+
+import { instance } from './instance'
 
 // API
-const instance = axios.create({
-  baseURL: process.env.REACT_APP_BASE_URL,
-  withCredentials: true,
-})
-
-export const cardsApi = {
-  getCards(data: cardsGetDateType) {
-    return instance.get<ResponseType>('cards/card', { params: data })
+export const cardsAPI = {
+  getCards(data: QueryCardParamsType) {
+    return instance.get<CardsResponseType>('cards/card', { params: data })
   },
 
-  addCard(data: addCardType) {
-    return instance.post<AddCardResponse>('cards/card', { card: data })
+  addCard(data: CreateCardType) {
+    return instance.post<AddCardResponseType>('cards/card', { card: data })
   },
 
   deleteCard(id: string) {
-    return instance.delete<DeleteCardResponse>(`cards/card?id=${id}`)
+    return instance.delete<DeleteCardResponseType>('cards/card', { params: id })
   },
 
-  updateCard(data: updateCardType) {
-    return instance.put('cards/card', { card: data })
+  updateCard(data: CardType) {
+    return instance.put<any>('cards/card', { card: data })
   },
 }
 
-//types
-
-type cardsGetDateType = {
-  cardAnswer?: string
-  cardQuestion?: string
-  cardsPack_id: string
+//TYPES
+export type QueryCardParamsType = {
   min?: number
   max?: number
-  sortCards?: string
+  sortCards?: SortValuesCardsType
   page?: number
   pageCount?: number
+  cardsPack_id?: string
+  cardQuestion?: string
+  cardAnswer?: string
 }
 
-type ResponseType = {
+export type CardsResponseType = {
   cards: CardType[]
-  cardsTotalCount: number
-  maxGrade: number
-  minGrade: number
-  packCreated: string
+  packUserId: string
   packName: string
   packPrivate: boolean
+  packDeckCover: string
+  packCreated: string
   packUpdated: string
-  packUserId: string
   page: number
   pageCount: number
+  cardsTotalCount: number
+  minGrade: number
+  maxGrade: number
   token: string
   tokenDeathTime: number
 }
 
-type CardType = {
-  answer: string
-  cardsPack_id: string
-  comments: string
-  created: string
-  grade: number
-  more_id: string
-  question: string
-  rating: number
-  shots: number
-  type: string
-  updated: string
-  user_id: string
-  __v: number
+export type CardType = {
   _id: string
+  cardsPack_id: string
+  user_id: string
+  answer: string
+  question: string
+  grade: number
+  shots: number
+  comments: string
+  type: string
+  rating: number
+  more_id: string
+  created: string
+  updated: string
+  __v: number
 }
 
-type addCardType = {
+export type CreateCardType = {
   cardsPack_id: string
   question?: string
   answer?: string
@@ -82,25 +79,13 @@ type addCardType = {
   answerVideo?: string
 }
 
-type updateCardType = {
-  _id: string
-  question: string
-  answer?: string
-  grade?: number
-  shots?: number
-  answerImg?: string
-  questionImg?: string
-  questionVideo?: string
-  answerVideo?: string
-}
-
-type AddCardResponse = {
+type AddCardResponseType = {
   newCard: CardType
   token: string
   tokenDeathTime: number
 }
 
-type DeleteCardResponse = {
+type DeleteCardResponseType = {
   deletedCard: CardType
   token: string
   tokenDeathTime: number

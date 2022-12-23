@@ -1,14 +1,26 @@
-import React from 'react'
-
-import axios from 'axios'
+import { instance } from './instance'
 
 // API
-const instance = axios.create({
-  baseURL: process.env.REACT_APP_BASE_URL,
-  withCredentials: true,
-})
+export const packsAPI = {
+  getPacks(data: QueryPackParamsType) {
+    return instance.get<PacksResponseType>('cards/pack', { params: data })
+  },
 
-export type DataType = {
+  addPack(data: CreatePackType) {
+    return instance.post<AddPackResponseType>('cards/pack', { cardsPack: data })
+  },
+
+  deletePack(id: string) {
+    return instance.delete<DeletePackResponseType>('cards/pack', { params: id })
+  },
+
+  updatePack(data: PackType) {
+    return instance.put<UpdatePackResponseType>('cards/pack', { cardsPack: data })
+  },
+}
+
+//TYPES
+export type QueryPackParamsType = {
   packName?: string
   min?: number
   max?: number
@@ -16,30 +28,11 @@ export type DataType = {
   page?: number
   pageCount?: number
   user_id?: string
+  block?: string
 }
 
-export const packsApi = {
-  getPacks(data: DataType) {
-    return instance.get<ResponseType>('cards/pack', { params: data })
-  },
-
-  addPack(data: PacksDataType) {
-    return instance.post<addPackResponse>('cards/pack', { cardsPack: data })
-  },
-
-  deletePack(id: string) {
-    return instance.delete<deleteResponse>(`cards/pack?id=${id}`)
-  },
-
-  updatePack(data: UpdatePackType) {
-    return instance.put<UpdateResponse>('cards/pack', { cardsPack: data })
-  },
-}
-
-//types
-
-export type ResponseType = {
-  cardPacks: Pack[]
+export type PacksResponseType = {
+  cardPacks: PackType[]
   page: number
   pageCount: number
   cardPacksTotalCount: number
@@ -49,7 +42,7 @@ export type ResponseType = {
   tokenDeathTime: number
 }
 
-export type Pack = {
+export type PackType = {
   _id: string
   user_id: string
   user_name: string
@@ -58,6 +51,7 @@ export type Pack = {
   path: string
   grade: number
   shots: number
+  deckCover: string | null
   cardsCount: number
   type: string
   rating: number
@@ -65,36 +59,28 @@ export type Pack = {
   updated: string
   more_id: string
   __v: number
-  deckCover: string | null
 }
 
-type addPackResponse = {
-  newCardsPack: Pack
+type AddPackResponseType = {
+  newCardsPack: PackType
   token: string
   tokenDeathTime: number
 }
 
-type deleteResponse = {
-  deletedCardsPack: Pack
+type DeletePackResponseType = {
+  deletedCardsPack: PackType
   token: string
   tokenDeathTime: number
 }
 
-type UpdateResponse = {
-  updatedCardsPack: Pack
+type UpdatePackResponseType = {
+  updatedCardsPack: PackType
   token: string
   tokenDeathTime: number
 }
 
-export type PacksDataType = {
+export type CreatePackType = {
   name: string
   deckCover?: string
   private: boolean
-}
-
-export type UpdatePackType = {
-  _id: string
-  name?: string
-  deckCover?: string
-  private?: boolean
 }
