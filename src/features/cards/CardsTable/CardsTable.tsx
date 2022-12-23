@@ -14,7 +14,16 @@ import {
   CustomTableHead,
   HeadType,
 } from '../../../common/components/CustomTableHead/CustomTableHead'
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { ServerOrderType, TableOrder, TableOrderType } from '../../packs/PacksTable/PacksTable'
+import {
+  CardType,
+  deleteCardTC,
+  setSortValue,
+  SortValuesCardsType,
+  updateCardTC,
+  UpdateCardType,
+} from '../cardsSlice'
 
 import { CardsActionCell } from './CardsActionCell/CardsActionCell'
 import s from './CardsTable.module.scss'
@@ -28,99 +37,15 @@ const heads: HeadType<CardsOrderByType>[] = [
   { id: 'grade', label: 'Grade' },
 ]
 
-type ServerSortType = `${ServerOrderType}${CardsOrderByType}`
-
 type CardsTablePropsType = {
   isMine: boolean
 }
 
 export const CardsTable: React.FC<CardsTablePropsType> = ({ isMine }) => {
-  const serverData = [
-    {
-      _id: '6335dcb6110be402f8c1ca46',
-      cardsPack_id: '63319bd2ef99210257c3d013',
-      user_id: '63272e99d38dbc8a0103935d',
-      answer: 'gfhj',
-      question:
-        'updateupdateupdateupdateupdateupdateupdateupdateupdateupdateupdateupdateupdateupdateupdateupdateupdateupdateupdateupdateupdateupdateupdate',
-      grade: 5,
-      shots: 0,
-      questionImg: 'url or base 64',
-      answerImg: 'url or base 64',
-      answerVideo: 'url or base 64',
-      questionVideo: 'url or base 64',
-      comments: '',
-      type: 'card',
-      rating: 0,
-      more_id: '63272e99d38dbc8a0103935d',
-      created: '2022-09-29T17:58:14.743Z',
-      updated: '2022-10-04T18:48:37.898Z',
-      __v: 0,
-    },
-    {
-      _id: '633c7ff21147012426bae92e',
-      cardsPack_id: '63319bd2ef99210257c3d013',
-      user_id: '63272e99d38dbc8a0103935d',
-      answer:
-        'vbnmvbnmvbnmvbn mvbnmvbnmvbnmvbnmvbnmvbnmvbnmv bnmvbnmvbnmvbnmvbnmvbnmvbnm bnmvbnmvbnmvbnmvbnmvbnmvbnm',
-      question: 'updateupdateupdateupdateupda',
-      grade: 0,
-      shots: 0,
-      questionImg: 'url or base 64',
-      answerImg: 'url or base 64',
-      answerVideo: 'url or base 64',
-      questionVideo: 'url or base 64',
-      comments: '',
-      type: 'card',
-      rating: 0,
-      more_id: '63272e99d38dbc8a0103935d',
-      created: '2022-10-04T18:48:18.396Z',
-      updated: '2022-10-04T18:48:29.506Z',
-      __v: 0,
-    },
-    {
-      _id: '63358fd50691ba092c5ffa4d',
-      cardsPack_id: '63319bd2ef99210257c3d013',
-      user_id: '63272e99d38dbc8a0103935d',
-      answer: 'no answer',
-      question: 'map',
-      grade: 3,
-      shots: 0,
-      questionImg: 'url or base 64',
-      answerImg: 'url or base 64',
-      answerVideo: 'url or base 64',
-      questionVideo: 'url or base 64',
-      comments: '',
-      type: 'card',
-      rating: 0,
-      more_id: '63272e99d38dbc8a0103935d',
-      created: '2022-09-29T12:30:13.992Z',
-      updated: '2022-09-29T12:30:13.992Z',
-      __v: 0,
-    },
-    {
-      _id: '6335855c0691ba092c5ffa4c',
-      cardsPack_id: '63319bd2ef99210257c3d013',
-      user_id: '63272e99d38dbc8a0103935d',
-      answer: 'no answer',
-      question: 'map',
-      grade: 2,
-      shots: 0,
-      questionImg: 'url or base 64',
-      answerImg: 'url or base 64',
-      answerVideo: 'url or base 64',
-      questionVideo: 'url or base 64',
-      comments: '',
-      type: 'card',
-      rating: 0,
-      more_id: '63272e99d38dbc8a0103935d',
-      created: '2022-09-29T11:45:32.807Z',
-      updated: '2022-09-29T11:45:32.807Z',
-      __v: 0,
-    },
-  ] // Replace to value from redux
-  const serverSort: ServerSortType = '0updated' // Replace to value from redux
-  const setServerSort = (serverSort: ServerSortType) => alert(JSON.stringify({ serverSort })) // Replace to dispatch
+  const serverData = useAppSelector<CardType[]>(state => state.cards.tableData) // Replace to value from redux
+  const serverSort = useAppSelector<SortValuesCardsType>(state => state.cards.queryParams.sortCards)
+
+  const dispatch = useAppDispatch()
 
   const openCardHandler = (e: MouseEvent<HTMLTableRowElement>, id: string) => {
     alert('Open card - ' + id)
@@ -131,16 +56,20 @@ export const CardsTable: React.FC<CardsTablePropsType> = ({ isMine }) => {
   const tableOrderBy = serverSort.slice(1) as CardsOrderByType
   const tableOrder: TableOrderType = serverOrder === TableOrder.asc ? 'asc' : 'desc'
 
-  const setSortHandler = (property: CardsOrderByType) => {
+  const handleSetSort = (property: CardsOrderByType) => {
     const isAsc = tableOrderBy === property && tableOrder === 'asc'
     const newOrder = isAsc ? 'desc' : 'asc'
 
-    const newServerOrder: ServerSortType = `${TableOrder[newOrder]}${property}`
+    const newServerOrder: SortValuesCardsType = `${TableOrder[newOrder]}${property}`
 
-    setServerSort(newServerOrder)
+    dispatch(setSortValue({ sortCards: newServerOrder }))
   }
-  const handleEditCard = () => alert('edit card')
-  const handleDeleteCard = () => alert('delete card')
+  const handleEditCard = (data: UpdateCardType) => {
+    dispatch(updateCardTC(data))
+  }
+  const handleDeleteCard = (id: string) => {
+    dispatch(deleteCardTC(id))
+  }
 
   return (
     <Box>
@@ -151,7 +80,7 @@ export const CardsTable: React.FC<CardsTablePropsType> = ({ isMine }) => {
               heads={heads}
               order={tableOrder}
               orderBy={tableOrderBy}
-              onSetSort={setSortHandler}
+              onSetSort={handleSetSort}
             />
             <TableBody>
               {serverData.map(row => {
@@ -178,7 +107,12 @@ export const CardsTable: React.FC<CardsTablePropsType> = ({ isMine }) => {
                       )
                     })}
                     {isMine && (
-                      <CardsActionCell onEdit={handleEditCard} onDelete={handleDeleteCard} />
+                      <CardsActionCell
+                        onEdit={() =>
+                          handleEditCard({ id: row._id, question: 'updated', answer: 'updates' })
+                        }
+                        onDelete={() => handleDeleteCard(row._id)}
+                      />
                     )}
                   </TableRow>
                 )

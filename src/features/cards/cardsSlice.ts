@@ -11,7 +11,7 @@ const initialState = {
     max: 10,
     page: 1,
     pageCount: 10,
-    sortCards: '0grade',
+    sortCards: '0grade' as SortValuesCardsType,
     cardsPack_id: '',
     cardQuestion: '',
     cardAnswer: '',
@@ -121,7 +121,7 @@ export const updateCardTC =
 // TYPES
 export type CardsStateType = typeof initialState
 
-type SortValuesCardsType =
+export type SortValuesCardsType =
   | '0grade'
   | '1grade'
   | '0updated'
@@ -156,7 +156,7 @@ type QueryCardParamsType = {
   cardAnswer?: string
 }
 
-type CardType = {
+export type CardType = {
   _id: string
   cardsPack_id: string
   user_id: string
@@ -202,7 +202,7 @@ type CreateCardType = {
   answerVideo?: string
 }
 
-type UpdateCardType = {
+export type UpdateCardType = {
   id: string
   question?: string
   answer?: string

@@ -7,6 +7,7 @@ import { useAppDispatch } from '../../hooks/reduxHooks'
 
 import s from './Cards.module.scss'
 import { getCardsTC } from './cardsSlice'
+import { CardsTable } from './CardsTable/CardsTable'
 
 type CardsType = {}
 
@@ -35,7 +36,7 @@ export const Cards: React.FC<CardsType> = React.memo(({}) => {
             <CustomSearch cards />
           </div>
         </div>
-        <div className={s.cards__table}>packs table</div>
+        <CardsTable isMine={true} />
         <CustomPagination cards />
       </div>
     </>

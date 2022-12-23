@@ -10,7 +10,7 @@ const initialState = {
     max: 10,
     page: 1,
     pageCount: 10,
-    sortPacks: '0updated',
+    sortPacks: '0updated' as SortValuesType,
     search: '',
     isMyPacks: false,
   },
@@ -121,7 +121,7 @@ export const updatePackTC =
 // TYPES
 export type PacksStateType = typeof initialState
 
-type SortValuesType =
+export type SortValuesType =
   | '0cardsCount'
   | '1cardsCount'
   | '0updated'
@@ -158,7 +158,7 @@ type QueryPackParamsType = {
   block?: string
 }
 
-type CardPacksType = {
+export type CardPacksType = {
   _id: string
   user_id: string
   user_name: string
@@ -194,7 +194,7 @@ type CreatePackType = {
   private?: boolean
 }
 
-type UpdatePackType = {
+export type UpdatePackType = {
   id: string
   name: string
 }
