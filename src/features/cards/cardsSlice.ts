@@ -56,6 +56,7 @@ export const cardsReducer = cardsSlice.reducer
 export const {
   setSearchCards,
   setCardsTableData,
+  setCardsPackId,
   setPaginationCardsData,
   setSortValue,
   clearCardsTableData,

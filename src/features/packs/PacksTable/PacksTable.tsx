@@ -9,13 +9,16 @@ import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TableRow from '@mui/material/TableRow'
 import dayjs from 'dayjs'
+import { createSearchParams, useNavigate } from 'react-router-dom'
 
 import {
   CustomTableHead,
   HeadType,
 } from '../../../common/components/CustomTableHead/CustomTableHead'
+import { PATH } from '../../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { PackType } from '../../../services/packsApi'
+import { setCardsPackId } from '../../cards/cardsSlice'
 import {
   deletePackTC,
   setSortValue,
@@ -51,10 +54,15 @@ export function PacksTable({}: PacksTablePropsType) {
   const serverData = useAppSelector<PackType[]>(state => state.packs.tableData)
   const serverSort = useAppSelector<SortValuesType>(state => state.packs.queryParams.sortPacks)
 
+  const navigate = useNavigate()
+
   const dispatch = useAppDispatch()
 
   const handleOpenCardPack = (e: MouseEvent<HTMLTableRowElement>, id: string) => {
-    alert('Open card pack - ' + id)
+    navigate({
+      pathname: PATH.CARDS,
+      search: createSearchParams({ cardsPack_id: id }).toString(),
+    })
   }
 
   // Check current order

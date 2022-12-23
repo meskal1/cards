@@ -1,24 +1,31 @@
 import * as React from 'react'
 
+import { useSearchParams } from 'react-router-dom'
+
 import { CustomPagination } from '../../common/components/CustomPagination/CustomPagination'
 import { CustomSearch } from '../../common/components/CustomSearch/CustomSearch'
 import { PageTitleBlock } from '../../common/components/PageTitleBlock/PageTitleBlock'
-import { useAppDispatch } from '../../hooks/reduxHooks'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+import { CardType } from '../../services/cardsApi'
 
 import s from './Cards.module.scss'
-import { getCardsTC } from './cardsSlice'
+import { getCardsTC, setCardsPackId } from './cardsSlice'
 import { CardsTable } from './CardsTable/CardsTable'
 
 type CardsType = {}
 
 export const Cards: React.FC<CardsType> = React.memo(({}) => {
   const dispatch = useAppDispatch()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const tableData = useAppSelector<CardType[]>(state => state.cards.tableData)
 
   const handleTitleButton = () => {
     // dispatch() Add new card
   }
 
   React.useEffect(() => {
+    console.log(searchParams.get('cardsPack_id'))
+    dispatch(setCardsPackId({ cardsPack_id: searchParams.get('cardsPack_id') as string }))
     dispatch(getCardsTC())
   }, [])
 
@@ -28,7 +35,7 @@ export const Cards: React.FC<CardsType> = React.memo(({}) => {
         <div className={s.cards__controlBlock}>
           <PageTitleBlock
             linkToPacks
-            title={'packs list'}
+            title={'cards list'}
             button={'add new pack'}
             buttonClick={handleTitleButton}
           />
@@ -36,7 +43,11 @@ export const Cards: React.FC<CardsType> = React.memo(({}) => {
             <CustomSearch cards />
           </div>
         </div>
-        <CardsTable isMine={true} />
+        {tableData.length ? (
+          <CardsTable isMine={true} />
+        ) : (
+          <h1 style={{ fontSize: '64px' }}>Cards not found</h1>
+        )}
         <CustomPagination cards />
       </div>
     </>
