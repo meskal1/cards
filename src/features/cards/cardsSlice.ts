@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios, { AxiosError } from 'axios'
 
 import { AppDispatchType, RootStateType } from '../../app/store'
+import { cardsAPI, CardType, CreateCardType } from '../../services/cardsApi'
 import { handleServerNetworkError } from '../../utils/errorUtils'
 import { clearPacksTableData } from '../packs/packsSlice'
 
@@ -77,9 +78,10 @@ export const getCardsTC =
         cardAnswer,
       }
 
-      //  const response = await cardsAPI.getCards(data: QueryCardParamsType)
+      const response = await cardsAPI.getCards(data)
+
       dispatch(clearCardsTableData())
-      //  dispatch(setCardsTableData( response.data.cards ))
+      dispatch(setCardsTableData(response.data.cards))
     } catch (e) {
       handleServerNetworkError(dispatch, e as Error | AxiosError)
     }
@@ -87,7 +89,7 @@ export const getCardsTC =
 
 export const deleteCardTC = (id: string) => async (dispatch: AppDispatchType) => {
   try {
-    // await cardsAPI.deleteCard(id)
+    await cardsAPI.deleteCard(id)
     dispatch(clearCardsTableData())
     dispatch(getCardsTC())
   } catch (e) {
@@ -97,7 +99,7 @@ export const deleteCardTC = (id: string) => async (dispatch: AppDispatchType) =>
 
 export const addCardTC = (data: CreateCardType) => async (dispatch: AppDispatchType) => {
   try {
-    // await cardsAPI.addCard(card:data)
+    await cardsAPI.addCard(data)
     dispatch(clearCardsTableData())
     dispatch(getCardsTC())
   } catch (e) {
@@ -110,7 +112,11 @@ export const updateCardTC =
     try {
       const updatingCard = getState().cards.tableData.filter(card => data.id === card._id)
 
-      // await cardsAPI.updateCard(card: {...updatingCard, question:data.question, answer:data.answer})
+      await cardsAPI.updateCard({
+        ...updatingCard[0],
+        question: data.question,
+        answer: data.answer,
+      })
       dispatch(clearCardsTableData())
       dispatch(getCardsTC())
     } catch (e) {
@@ -131,9 +137,7 @@ export type SortValuesCardsType =
   | '0question'
   | '1question'
 
-type SortCardsPayloadType = {
-  sortCards: SortValuesCardsType
-}
+type SortCardsPayloadType = { sortCards: SortValuesCardsType }
 
 type CardsTablePayloadType = CardType[]
 
@@ -143,67 +147,56 @@ type PaginationCardsDataPayloadType = { page: number; pageCount: number }
 
 type CardsPackIdPayloadType = { cardsPack_id: string }
 
-//////////////////// REQUEST/RESPONSE TYPES ////////////////////////
-
-type QueryCardParamsType = {
-  min?: number
-  max?: number
-  sortCards?: SortValuesCardsType
-  page?: number
-  pageCount?: number
-  cardsPack_id?: string
-  cardQuestion?: string
-  cardAnswer?: string
-}
-
-export type CardType = {
-  _id: string
-  cardsPack_id: string
-  user_id: string
-  answer: string
-  question: string
-  grade: number
-  shots: number
-  comments: string
-  type: string
-  rating: number
-  more_id: string
-  created: string
-  updated: string
-  __v: number
-}
-
-type CardResponseType = {
-  cards: CardType[]
-  packUserId: string
-  packName: string
-  packPrivate: boolean
-  packDeckCover: string
-  packCreated: string
-  packUpdated: string
-  page: number
-  pageCount: number
-  cardsTotalCount: number
-  minGrade: number
-  maxGrade: number
-  token: string
-  tokenDeathTime: number
-}
-
-type CreateCardType = {
-  cardsPack_id: string
-  question: string
-  answer: string
-  grade?: number
-  shots?: number
-  answerImg?: string
-  questionImg?: string
-  questionVideo?: string
-  answerVideo?: string
-}
-
 export type UpdateCardType = {
   id: string
-  question?: string
-  answer?: string
+  question: string
+  answer: string
 }
+
+//////////////////// REQUEST/RESPONSE TYPES ////////////////////////
+
+// export type CardType = {
+//   _id: string
+//   cardsPack_id: string
+//   user_id: string
+//   answer: string
+//   question: string
+//   grade: number
+//   shots: number
+//   comments: string
+//   type: string
+//   rating: number
+//   more_id: string
+//   created: string
+//   updated: string
+//   __v: number
+// }
+
+// type CardResponseType = {
+//   cards: CardType[]
+//   packUserId: string
+//   packName: string
+//   packPrivate: boolean
+//   packDeckCover: string
+//   packCreated: string
+//   packUpdated: string
+//   page: number
+//   pageCount: number
+//   cardsTotalCount: number
+//   minGrade: number
+//   maxGrade: number
+//   token: string
+//   tokenDeathTime: number
+// }
+
+// type CreateCardType = {
+//   cardsPack_id: string
+//   question: string
+//   answer: string
+//   grade?: number
+//   shots?: number
+//   answerImg?: string
+//   questionImg?: string
+//   questionVideo?: string
+//   answerVideo?: string
+// }
