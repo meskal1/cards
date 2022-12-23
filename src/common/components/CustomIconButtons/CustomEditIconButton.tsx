@@ -20,9 +20,11 @@ export const CustomEditIconButton: React.FC<CustomStudyIconButtonPropsType> = ({
 
   return (
     <Tooltip title={tooltip}>
-      <IconButton className={finalClass} {...props}>
-        <img src={editIcon} alt={'Edit icon'} />
-      </IconButton>
+      <span>
+        <IconButton className={finalClass} {...props}>
+          <img src={editIcon} alt={'Edit icon'} />
+        </IconButton>
+      </span>
     </Tooltip>
   )
 }

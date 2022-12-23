@@ -20,9 +20,11 @@ export const CustomDeleteIconButton: React.FC<CustomStudyIconButtonPropsType> = 
 
   return (
     <Tooltip title={tooltip}>
-      <IconButton className={finalClass} {...props}>
-        <img src={deleteIcon} alt={'Delete icon'} />
-      </IconButton>
+      <span>
+        <IconButton className={finalClass} {...props}>
+          <img src={deleteIcon} alt={'Delete icon'} />
+        </IconButton>
+      </span>
     </Tooltip>
   )
 }
