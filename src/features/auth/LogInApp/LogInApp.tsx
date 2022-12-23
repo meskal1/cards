@@ -32,7 +32,7 @@ export const LogInApp = () => {
       const isLoginSucceed = await dispatch(logInTC(values))
 
       if (isLoginSucceed) {
-        navigate(PATH.PROFILE)
+        navigate(PATH.PACKS)
       }
     },
   })
