@@ -18,8 +18,6 @@ export const Cards: React.FC<CardsType> = React.memo(({}) => {
     // dispatch() Add new card
   }
 
-  const setQueryParams = () => {}
-
   React.useEffect(() => {
     dispatch(getCardsTC())
   }, [])
@@ -34,8 +32,9 @@ export const Cards: React.FC<CardsType> = React.memo(({}) => {
             button={'add new pack'}
             buttonClick={handleTitleButton}
           />
+
           <div className={s.cards__controlPanel}>
-            <CustomSearch customSearchParams={setQueryParams} cards />
+            <CustomSearch cards />
           </div>
         </div>
         <CardsTable isMine={true} />
