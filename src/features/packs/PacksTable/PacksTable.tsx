@@ -34,8 +34,8 @@ export type PacksOrderByType = 'name' | 'cardsCount' | 'updated' | 'user_name'
 export type ServerOrderType = '0' | '1'
 
 export enum TableOrder {
-  asc = '0',
-  desc = '1',
+  desc = '0',
+  asc = '1',
 }
 
 export type TableOrderType = 'asc' | 'desc'
