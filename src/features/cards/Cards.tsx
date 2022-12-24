@@ -48,6 +48,7 @@ export const Cards: React.FC<CardsType> = React.memo(({}) => {
             button={'add new pack'}
             buttonClick={handleTitleButton}
           />
+
           <div className={s.cards__controlPanel}>
             <CustomSearch cards />
           </div>

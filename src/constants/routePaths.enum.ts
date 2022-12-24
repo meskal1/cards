@@ -1,5 +1,5 @@
 export enum PATH {
-  PACKS = '/',
+  PACKS = '/packs',
   CARDS = '/cards',
   PROFILE = '/profile',
   LOGIN = '/login',
