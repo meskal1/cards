@@ -1,12 +1,9 @@
 import * as React from 'react'
 
-import { useSearchParams } from 'react-router-dom'
-
 import { CustomPagination } from '../../common/components/CustomPagination/CustomPagination'
 import { CustomSearch } from '../../common/components/CustomSearch/CustomSearch'
 import { PageTitleBlock } from '../../common/components/PageTitleBlock/PageTitleBlock'
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
-import { getSearchParams } from '../../utils/getAllSearchParams'
+import { useAppDispatch } from '../../hooks/reduxHooks'
 
 import { PackOwnerSwitcher } from './PackOwnerSwitcher/PackOwnerSwitcher'
 import s from './Packs.module.scss'
@@ -17,18 +14,8 @@ import { PacksTable } from './PacksTable/PacksTable'
 
 type PacksType = {}
 
-export const Packs: React.FC<PacksType> = ({}) => {
-  console.log('render packs')
+export const Packs: React.FC<PacksType> = React.memo(({}) => {
   const dispatch = useAppDispatch()
-  const [searchParams, setSearchParams] = useSearchParams()
-  const allParams = getSearchParams(searchParams)
-
-  const setQueryParams = (param: string, value: string) => {
-    //  if (value) {
-    //    setSearchParams({ ...allParams, [param]: value })
-    //  } else {
-    //  }
-  }
 
   const handleTitleButton = () => {
     // dispatch() Add new pack
@@ -48,7 +35,7 @@ export const Packs: React.FC<PacksType> = ({}) => {
             buttonClick={handleTitleButton}
           />
           <div className={s.packs__controlPanel}>
-            <CustomSearch customSearchParams={setQueryParams} />
+            <CustomSearch />
             <PackOwnerSwitcher />
             <PackSlider />
             <PacksResetFilter />
@@ -59,4 +46,4 @@ export const Packs: React.FC<PacksType> = ({}) => {
       </div>
     </>
   )
-}
+})
