@@ -7,8 +7,8 @@ import { handleServerNetworkError } from '../../utils/errorUtils'
 
 const initialState = {
   queryParams: {
-    min: 0,
-    max: 10,
+    min: undefined as number | undefined, // Данные значения устанавливаются после ответа бэка и не должны быть установлены по умолчанию
+    max: undefined as number | undefined, // Данные значения устанавливаются после ответа бэка и не должны быть установлены по умолчанию
     page: 1,
     pageCount: 10,
     sortPacks: '0updated' as SortValuesType,
