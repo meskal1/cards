@@ -18,10 +18,11 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { PackType } from '../../../services/packsApi'
 import {
   deletePackTC,
-  setSortValue,
   SortValuesType,
   updatePackTC,
   UpdatePackDataType,
+  getPacksTC,
+  setSortValue,
 } from '../packsSlice'
 
 import { PacksActionCell } from './PacksActionCell/PacksActionCell'
@@ -68,6 +69,8 @@ export function PacksTable({}: PacksTablePropsType) {
     const newServerOrder: SortValuesType = `${TableOrder[newOrder]}${property}`
 
     dispatch(setSortValue({ sortPacks: newServerOrder }))
+    dispatch(getPacksTC())
+    //  dispatch(updateQueryParamsTC({ sortPacks: newServerOrder }))
   }
   const handleStudyCardPack = () => alert('study card')
   const handleEditCardPack = (data: UpdatePackDataType) => {
