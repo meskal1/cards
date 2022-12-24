@@ -10,7 +10,7 @@ export const Page404 = () => {
   const navigate = useNavigate()
 
   const onClickNavigate = () => {
-    navigate(PATH.PROFILE)
+    navigate(PATH.PACKS)
   }
 
   return (
