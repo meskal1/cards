@@ -1,21 +1,22 @@
 import * as React from 'react'
 
-import { Navigate, Outlet, Route, Routes, useLocation } from 'react-router-dom'
+import { Navigate, Outlet, Route, Routes, useLocation, useSearchParams } from 'react-router-dom'
 
 import { LoadingProgress } from '../common/components/LoadingProgress/LoadingProgress'
 import { PATH } from '../constants/routePaths.enum'
 import { Page404 } from '../features/404/Page404'
-import { Cards } from '../features/cards/Cards'
 import { useAppSelector } from '../hooks/reduxHooks'
 
-const Profile = React.lazy(() =>
-  import('../features/profile/Profile').then(module => ({ default: module.Profile }))
-)
-const Packs = React.lazy(() =>
-  import('../features/packs/Packs').then(module => ({ default: module.Packs }))
+const CheckEmail = React.lazy(() =>
+  import('../features/auth/CheckEmail/CheckEmail').then(module => ({ default: module.CheckEmail }))
 )
 const LogInApp = React.lazy(() =>
   import('../features/auth/LogInApp/LogInApp').then(module => ({ default: module.LogInApp }))
+)
+const NewPassword = React.lazy(() =>
+  import('../features/auth/NewPassword/NewPassword').then(module => ({
+    default: module.NewPassword,
+  }))
 )
 const Recovery = React.lazy(() =>
   import('../features/auth/Recovery/Recovery').then(module => ({ default: module.Recovery }))
@@ -25,68 +26,77 @@ const Registration = React.lazy(() =>
     default: module.Registration,
   }))
 )
-const CheckEmail = React.lazy(() =>
-  import('../features/auth/CheckEmail/CheckEmail').then(module => ({ default: module.CheckEmail }))
+const Cards = React.lazy(() =>
+  import('../features/cards/Cards').then(module => ({
+    default: module.Cards,
+  }))
 )
-const NewPassword = React.lazy(() =>
-  import('../features/auth/NewPassword/NewPassword').then(module => ({
-    default: module.NewPassword,
+const Packs = React.lazy(() =>
+  import('../features/packs/Packs').then(module => ({
+    default: module.Packs,
+  }))
+)
+const Profile = React.lazy(() =>
+  import('../features/profile/Profile').then(module => ({
+    default: module.Profile,
   }))
 )
 
-export const AppRoutes = () => {
+const PrivateRoutes = () => {
   const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
+
+  return isLoggedIn ? (
+    <React.Suspense fallback={null}>
+      <Outlet />
+    </React.Suspense>
+  ) : (
+    <Navigate to={PATH.LOGIN} replace />
+  )
+}
+
+const AuthRoutes = () => {
   const location = useLocation()
+  const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
+  let preventAuthLinks = false
 
-  let preventAuthLinks: boolean
-
-  const SuspenseLayout = () => {
-    if (isLoggedIn) {
-      switch (location.pathname) {
-        case PATH.LOGIN:
-        case PATH.CHECK_EMAIL:
-        case PATH.NEW_PASSWORD_TOKEN:
-        case PATH.RECOVERY:
-        case PATH.REGISTRATION:
-          preventAuthLinks = true
-      }
+  if (isLoggedIn) {
+    switch (location.pathname) {
+      case PATH.LOGIN:
+      case PATH.CHECK_EMAIL:
+      case PATH.NEW_PASSWORD_TOKEN:
+      case PATH.RECOVERY:
+      case PATH.REGISTRATION:
+        preventAuthLinks = true
     }
-
-    return preventAuthLinks ? (
-      <Navigate to={PATH.PACKS} />
-    ) : (
-      <React.Suspense fallback={<LoadingProgress />}>
-        <Outlet />
-      </React.Suspense>
-    )
   }
 
-  const PrivateRoutes = () => {
-    return isLoggedIn ? (
-      <React.Suspense fallback={null}>
-        <Outlet />
-      </React.Suspense>
-    ) : (
-      <Navigate to={PATH.LOGIN} />
-    )
-  }
+  return preventAuthLinks ? (
+    <Navigate to={PATH.PACKS} replace />
+  ) : (
+    <React.Suspense fallback={<LoadingProgress />}>
+      <Outlet />
+    </React.Suspense>
+  )
+}
 
+export const AppRoutes = () => {
   return (
     <>
       <Routes>
         <Route element={<PrivateRoutes />}>
-          <Route path={PATH.PROFILE} element={<Profile />} />
+          <Route path="/" element={<Navigate to={PATH.PACKS} replace />} />
           <Route path={PATH.PACKS} element={<Packs />} />
           <Route path={PATH.CARDS} element={<Cards />} />
+          <Route path={PATH.PROFILE} element={<Profile />} />
         </Route>
-        <Route element={<SuspenseLayout />}>
+        <Route element={<AuthRoutes />}>
           <Route path={PATH.LOGIN} element={<LogInApp />} />
           <Route path={PATH.RECOVERY} element={<Recovery />} />
-          <Route path={PATH.REGISTRATION} element={<Registration />} />
           <Route path={PATH.CHECK_EMAIL} element={<CheckEmail />} />
+          <Route path={PATH.REGISTRATION} element={<Registration />} />
           <Route path={PATH.NEW_PASSWORD_TOKEN} element={<NewPassword />} />
-          <Route path="*" element={<Page404 />} />
         </Route>
+        <Route path="*" element={<Page404 />} />
       </Routes>
     </>
   )
