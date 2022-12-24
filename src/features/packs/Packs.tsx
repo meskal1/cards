@@ -11,7 +11,7 @@ import { PackOwnerSwitcher } from './PackOwnerSwitcher/PackOwnerSwitcher'
 import s from './Packs.module.scss'
 import { PackSlider } from './PackSlider/PackSlider'
 import { PacksResetFilter } from './PacksResetFilter/PacksResetFilter'
-import { getPacksTC } from './packsSlice'
+import { addPackTC, getPacksTC } from './packsSlice'
 import { PacksTable } from './PacksTable/PacksTable'
 
 type PacksType = {}
@@ -23,6 +23,7 @@ export const Packs: React.FC<PacksType> = ({}) => {
 
   const handleTitleButton = () => {
     // dispatch() Add new pack
+    dispatch(addPackTC({ name: 'NEW PACK', private: false }))
   }
 
   React.useEffect(() => {

@@ -11,13 +11,14 @@ import TableRow from '@mui/material/TableRow'
 import dayjs from 'dayjs'
 import { createSearchParams, useNavigate } from 'react-router-dom'
 
+import { RequestStatusType } from '../../../app/appSlice'
 import {
   CustomTableHead,
   HeadType,
 } from '../../../common/components/CustomTableHead/CustomTableHead'
 import { PATH } from '../../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
-import { PackType } from '../../../services/packsApi'
+import { ServerPackType } from '../../../services/packsApi'
 import { setCardsPackId } from '../../cards/cardsSlice'
 import {
   deletePackTC,
@@ -25,6 +26,7 @@ import {
   SortValuesType,
   updatePackTC,
   UpdatePackDataType,
+  AppPackType,
 } from '../packsSlice'
 
 import { PacksActionCell } from './PacksActionCell/PacksActionCell'
@@ -51,14 +53,16 @@ type PacksTablePropsType = {}
 
 export function PacksTable({}: PacksTablePropsType) {
   const userId = useAppSelector(state => state.profile.userData.id)
-  const serverData = useAppSelector<PackType[]>(state => state.packs.tableData)
+  const tableData = useAppSelector<AppPackType[]>(state => state.packs.tableData)
   const serverSort = useAppSelector<SortValuesType>(state => state.packs.queryParams.sortPacks)
 
   const navigate = useNavigate()
 
   const dispatch = useAppDispatch()
 
-  const handleOpenCardPack = (e: MouseEvent<HTMLTableRowElement>, id: string) => {
+  const handleOpenCardPack = (id: string, requestStatus: RequestStatusType) => {
+    if (requestStatus === 'loading') return
+
     navigate({
       pathname: PATH.CARDS,
       search: createSearchParams({ cardsPack_id: id }).toString(),
@@ -97,13 +101,13 @@ export function PacksTable({}: PacksTablePropsType) {
               onSetSort={handleSetSort}
             />
             <TableBody>
-              {serverData.map(row => {
+              {tableData.map(row => {
                 return (
                   <TableRow
                     className={s.row}
                     key={row._id}
-                    hover
-                    onClick={e => handleOpenCardPack(e, row._id)}
+                    hover={row.requestStatus === 'idle'}
+                    onClick={e => handleOpenCardPack(row._id, row.requestStatus)}
                   >
                     {heads.map(h => {
                       return (
@@ -117,6 +121,7 @@ export function PacksTable({}: PacksTablePropsType) {
                     <PacksActionCell
                       isMine={row.user_id === userId}
                       isStudyDisabled={row.cardsCount === 0}
+                      isAllDisabled={row.requestStatus === 'loading'}
                       onStudy={handleStudyCardPack}
                       onEdit={() => handleEditCardPack({ id: row._id, name: 'updated name' })}
                       onDelete={() => handleDeleteCardPack(row._id)}

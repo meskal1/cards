@@ -8,11 +8,16 @@ import { CustomEditIconButton } from '../../../../common/components/CustomIconBu
 import s from './CardsActionCell.module.scss'
 
 type CardsTableActionCellType = {
+  isAllDisabled: boolean
   onEdit: () => void
   onDelete: () => void
 }
 
-export const CardsActionCell: React.FC<CardsTableActionCellType> = ({ onEdit, onDelete }) => {
+export const CardsActionCell: React.FC<CardsTableActionCellType> = ({
+  isAllDisabled,
+  onEdit,
+  onDelete,
+}) => {
   const handleSpanClick = (e: MouseEvent<HTMLSpanElement>) => e.stopPropagation()
   const handleEditCardClick = () => onEdit()
   const handleDeleteCardClick = () => onDelete()
@@ -20,8 +25,16 @@ export const CardsActionCell: React.FC<CardsTableActionCellType> = ({ onEdit, on
   return (
     <TableCell>
       <span className={s.span} onClick={handleSpanClick}>
-        <CustomEditIconButton onClick={handleEditCardClick} tooltip={'Edit'} />
-        <CustomDeleteIconButton onClick={handleDeleteCardClick} tooltip={'Delete'} />
+        <CustomEditIconButton
+          disabled={isAllDisabled}
+          onClick={handleEditCardClick}
+          tooltip={'Edit'}
+        />
+        <CustomDeleteIconButton
+          disabled={isAllDisabled}
+          onClick={handleDeleteCardClick}
+          tooltip={'Delete'}
+        />
       </span>
     </TableCell>
   )

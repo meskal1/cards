@@ -10,14 +10,16 @@ import TableContainer from '@mui/material/TableContainer'
 import TableRow from '@mui/material/TableRow'
 import dayjs from 'dayjs'
 
+import { RequestStatusType } from '../../../app/appSlice'
 import {
   CustomTableHead,
   HeadType,
 } from '../../../common/components/CustomTableHead/CustomTableHead'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
-import { CardType } from '../../../services/cardsApi'
+import { ServerCardType } from '../../../services/cardsApi'
 import { ServerOrderType, TableOrder, TableOrderType } from '../../packs/PacksTable/PacksTable'
 import {
+  AppCardType,
   deleteCardTC,
   setSortValue,
   SortValuesCardsType,
@@ -42,12 +44,14 @@ type CardsTablePropsType = {
 }
 
 export const CardsTable: React.FC<CardsTablePropsType> = ({ isMine }) => {
-  const serverData = useAppSelector<CardType[]>(state => state.cards.tableData) // Replace to value from redux
+  const tableData = useAppSelector<AppCardType[]>(state => state.cards.tableData) // Replace to value from redux
   const serverSort = useAppSelector<SortValuesCardsType>(state => state.cards.queryParams.sortCards)
 
   const dispatch = useAppDispatch()
 
-  const openCardHandler = (e: MouseEvent<HTMLTableRowElement>, id: string) => {
+  const openCardHandler = (id: string, requestStatus: RequestStatusType) => {
+    if (requestStatus === 'loading') return
+
     alert('Open card - ' + id)
   }
 
@@ -83,13 +87,13 @@ export const CardsTable: React.FC<CardsTablePropsType> = ({ isMine }) => {
               onSetSort={handleSetSort}
             />
             <TableBody>
-              {serverData.map(row => {
+              {tableData.map(row => {
                 return (
                   <TableRow
                     key={row._id}
-                    hover
+                    hover={row.requestStatus === 'idle'}
                     className={s.row}
-                    onClick={e => openCardHandler(e, row._id)}
+                    onClick={e => openCardHandler(row._id, row.requestStatus)}
                   >
                     {heads.map(h => {
                       return (
@@ -108,6 +112,7 @@ export const CardsTable: React.FC<CardsTablePropsType> = ({ isMine }) => {
                     })}
                     {isMine && (
                       <CardsActionCell
+                        isAllDisabled={row.requestStatus === 'loading'}
                         onEdit={() =>
                           handleEditCard({ id: row._id, question: 'updated', answer: 'updates' })
                         }

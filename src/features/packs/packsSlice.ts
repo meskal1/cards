@@ -1,8 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AxiosError } from 'axios'
 
+import { RequestStatusType } from '../../app/appSlice'
 import { AppDispatchType, RootStateType } from '../../app/store'
-import { CreatePackType, packsAPI, PackType, QueryPackParamsType } from '../../services/packsApi'
+import {
+  CreatePackType,
+  packsAPI,
+  ServerPackType,
+  QueryPackParamsType,
+} from '../../services/packsApi'
 import { handleServerNetworkError } from '../../utils/errorUtils'
 
 const initialState = {
@@ -15,7 +21,7 @@ const initialState = {
     search: '',
     isMyPacks: false,
   },
-  tableData: [] as PackType[],
+  tableData: [] as AppPackType[],
 }
 
 const packsSlice = createSlice({
@@ -29,7 +35,7 @@ const packsSlice = createSlice({
       state.queryParams.isMyPacks = action.payload.isMyPacks
     },
     setPacksTableData(state, action: PayloadAction<PacksTablePayloadType>) {
-      state.tableData = action.payload
+      state.tableData = action.payload.map(p => ({ ...p, requestStatus: 'idle' }))
     },
     setRangeCards(state, action: PayloadAction<RangeCardsPayloadType>) {
       state.queryParams.min = action.payload.min
@@ -41,6 +47,13 @@ const packsSlice = createSlice({
     },
     setSortValue(state, action: PayloadAction<SortPacksPayloadType>) {
       state.queryParams.sortPacks = action.payload.sortPacks
+    },
+    setPackRequestStatus(state, action: PayloadAction<PackRequestStatusPayloadType>) {
+      state.tableData.forEach(p => {
+        if (p._id === action.payload.packId) {
+          p.requestStatus = action.payload.requestStatus
+        }
+      })
     },
     clearPacksTableData(state) {
       state.tableData = []
@@ -58,6 +71,7 @@ export const {
   setRangeCards,
   setPaginationPacksData,
   setSortValue,
+  setPackRequestStatus,
   clearPacksTableData,
 } = packsSlice.actions
 
@@ -89,6 +103,7 @@ export const getPacksTC =
 
 export const deletePackTC = (id: string) => async (dispatch: AppDispatchType) => {
   try {
+    dispatch(setPackRequestStatus({ packId: id, requestStatus: 'loading' }))
     await packsAPI.deletePack(id)
     dispatch(clearPacksTableData())
     dispatch(getPacksTC())
@@ -111,6 +126,7 @@ export const updatePackTC =
   (data: UpdatePackDataType) =>
   async (dispatch: AppDispatchType, getState: () => RootStateType) => {
     try {
+      dispatch(setPackRequestStatus({ packId: data.id, requestStatus: 'loading' }))
       const updatingPack = getState().packs.tableData.filter(pack => data.id === pack._id)
 
       await packsAPI.updatePack({ ...updatingPack[0], name: data.name })
@@ -118,11 +134,14 @@ export const updatePackTC =
       dispatch(getPacksTC())
     } catch (e) {
       handleServerNetworkError(dispatch, e as Error | AxiosError)
+    } finally {
+      dispatch(setPackRequestStatus({ packId: data.id, requestStatus: 'idle' }))
     }
   }
 
 // TYPES
 export type PacksStateType = typeof initialState
+export type AppPackType = ServerPackType & { requestStatus: RequestStatusType }
 
 export type SortValuesType =
   | '0cardsCount'
@@ -134,9 +153,11 @@ export type SortValuesType =
   | '0user_name'
   | '1user_name'
 
+type PackRequestStatusPayloadType = { packId: string; requestStatus: RequestStatusType }
+
 type SortPacksPayloadType = { sortPacks: SortValuesType }
 
-type PacksTablePayloadType = PackType[]
+type PacksTablePayloadType = ServerPackType[]
 
 type RangeCardsPayloadType = { min: number; max: number }
 

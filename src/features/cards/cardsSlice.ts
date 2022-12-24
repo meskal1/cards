@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios, { AxiosError } from 'axios'
 
+import { RequestStatusType } from '../../app/appSlice'
 import { AppDispatchType, RootStateType } from '../../app/store'
-import { cardsAPI, CardType, CreateCardType } from '../../services/cardsApi'
+import { cardsAPI, ServerCardType, CreateCardType } from '../../services/cardsApi'
 import { handleServerNetworkError } from '../../utils/errorUtils'
 import { clearPacksTableData } from '../packs/packsSlice'
 
@@ -17,7 +18,7 @@ const initialState = {
     cardQuestion: '',
     cardAnswer: '',
   },
-  tableData: [] as CardType[],
+  tableData: [] as AppCardType[],
   error: null as CardsErrorType,
 }
 
@@ -33,7 +34,7 @@ const cardsSlice = createSlice({
       }
     },
     setCardsTableData(state, action: PayloadAction<CardsTablePayloadType>) {
-      state.tableData = action.payload
+      state.tableData = action.payload.map(c => ({ ...c, requestStatus: 'idle' }))
     },
     setCardsPackId(state, action: PayloadAction<CardsPackIdPayloadType>) {
       state.queryParams.cardsPack_id = action.payload.cardsPack_id
@@ -51,6 +52,13 @@ const cardsSlice = createSlice({
     clearCardsTableData(state) {
       state.tableData = []
     },
+    setCardRequestStatus(state, action: PayloadAction<CardRequestStatusPayloadType>) {
+      state.tableData.forEach(c => {
+        if (c._id === action.payload.cardId) {
+          c.requestStatus = action.payload.requestStatus
+        }
+      })
+    },
     clearCardsState() {
       return initialState
     },
@@ -67,6 +75,7 @@ export const {
   setPaginationCardsData,
   setSortValue,
   setError,
+  setCardRequestStatus,
   clearCardsTableData,
   clearCardsState,
 } = cardsSlice.actions
@@ -108,6 +117,7 @@ export const getCardsTC =
 
 export const deleteCardTC = (id: string) => async (dispatch: AppDispatchType) => {
   try {
+    dispatch(setCardRequestStatus({ cardId: id, requestStatus: 'loading' }))
     await cardsAPI.deleteCard(id)
     dispatch(clearCardsTableData())
     dispatch(getCardsTC())
@@ -129,6 +139,7 @@ export const addCardTC = (data: CreateCardType) => async (dispatch: AppDispatchT
 export const updateCardTC =
   (data: UpdateCardType) => async (dispatch: AppDispatchType, getState: () => RootStateType) => {
     try {
+      dispatch(setCardRequestStatus({ cardId: data.id, requestStatus: 'loading' }))
       const updatingCard = getState().cards.tableData.filter(card => data.id === card._id)
 
       await cardsAPI.updateCard({
@@ -140,11 +151,14 @@ export const updateCardTC =
       dispatch(getCardsTC())
     } catch (e) {
       handleServerNetworkError(dispatch, e as Error | AxiosError)
+    } finally {
+      dispatch(setCardRequestStatus({ cardId: data.id, requestStatus: 'idle' }))
     }
   }
 
 // TYPES
 export type CardsStateType = typeof initialState
+export type AppCardType = ServerCardType & { requestStatus: RequestStatusType }
 
 export type SortValuesCardsType =
   | '0grade'
@@ -160,7 +174,9 @@ export type CardsErrorType = 'WRONG_ID' | null
 
 type SortCardsPayloadType = { sortCards: SortValuesCardsType }
 
-type CardsTablePayloadType = CardType[]
+type CardRequestStatusPayloadType = { cardId: string; requestStatus: RequestStatusType }
+
+type CardsTablePayloadType = ServerCardType[]
 
 type SearchCardsPayloadType = { cardQuestion: string; cardAnswer?: string }
 
