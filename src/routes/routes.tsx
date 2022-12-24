@@ -95,9 +95,8 @@ export const AppRoutes = () => {
           <Route path={PATH.CHECK_EMAIL} element={<CheckEmail />} />
           <Route path={PATH.REGISTRATION} element={<Registration />} />
           <Route path={PATH.NEW_PASSWORD_TOKEN} element={<NewPassword />} />
-          <Route path={PATH.PAGE_NOT_FOUND} element={<Page404 />} />
-          <Route path="*" element={<Page404 />} />
         </Route>
+        <Route path={PATH.PAGE_NOT_FOUND} element={<Page404 />} />
         <Route path="*" element={<Page404 />} />
       </Routes>
     </>
