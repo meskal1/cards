@@ -8,9 +8,10 @@ import { PageTitleBlock } from '../../common/components/PageTitleBlock/PageTitle
 import { PATH } from '../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { CardType } from '../../services/cardsApi'
+import { getSearchParams } from '../../utils/getSearchParams'
 
 import s from './Cards.module.scss'
-import { CardsErrorType, clearCardsState, getCardsTC, setCardsPackId } from './cardsSlice'
+import { CardsErrorType, clearCardsState, updateCardsQueryParamsTC } from './cardsSlice'
 import { CardsTable } from './CardsTable/CardsTable'
 
 type CardsType = {}
@@ -18,6 +19,7 @@ type CardsType = {}
 export const Cards: React.FC<CardsType> = React.memo(({}) => {
   const dispatch = useAppDispatch()
   const [searchParams, setSearchParams] = useSearchParams()
+  const allParams = getSearchParams(searchParams)
   const tableData = useAppSelector<CardType[]>(state => state.cards.tableData)
   const cardsError = useAppSelector<CardsErrorType>(state => state.cards.error)
 
@@ -26,8 +28,7 @@ export const Cards: React.FC<CardsType> = React.memo(({}) => {
   }
 
   React.useEffect(() => {
-    dispatch(setCardsPackId({ cardsPack_id: searchParams.get('cardsPack_id') as string }))
-    dispatch(getCardsTC())
+    dispatch(updateCardsQueryParamsTC({ ...allParams }))
 
     return () => {
       dispatch(clearCardsState())
@@ -48,7 +49,6 @@ export const Cards: React.FC<CardsType> = React.memo(({}) => {
             button={'add new pack'}
             buttonClick={handleTitleButton}
           />
-
           <div className={s.cards__controlPanel}>
             <CustomSearch cards />
           </div>

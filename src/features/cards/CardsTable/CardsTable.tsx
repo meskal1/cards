@@ -19,8 +19,8 @@ import { CardType } from '../../../services/cardsApi'
 import { ServerOrderType, TableOrder, TableOrderType } from '../../packs/PacksTable/PacksTable'
 import {
   deleteCardTC,
-  setSortValue,
   SortValuesCardsType,
+  updateCardsQueryParamsTC,
   updateCardTC,
   UpdateCardType,
 } from '../cardsSlice'
@@ -62,7 +62,7 @@ export const CardsTable: React.FC<CardsTablePropsType> = ({ isMine }) => {
 
     const newServerOrder: SortValuesCardsType = `${TableOrder[newOrder]}${property}`
 
-    dispatch(setSortValue({ sortCards: newServerOrder }))
+    dispatch(updateCardsQueryParamsTC({ sortCards: newServerOrder }))
   }
   const handleEditCard = (data: UpdateCardType) => {
     dispatch(updateCardTC(data))

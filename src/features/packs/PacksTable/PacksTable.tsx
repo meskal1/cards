@@ -18,14 +18,12 @@ import {
 import { PATH } from '../../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { PackType } from '../../../services/packsApi'
-import { setCardsPackId } from '../../cards/cardsSlice'
 import {
   deletePackTC,
   SortValuesType,
   updatePackTC,
   UpdatePackDataType,
-  getPacksTC,
-  setSortValue,
+  updatePacksQueryParamsTC,
 } from '../packsSlice'
 
 import { PacksActionCell } from './PacksActionCell/PacksActionCell'
@@ -76,9 +74,7 @@ export function PacksTable({}: PacksTablePropsType) {
     const newOrder = isAsc ? 'desc' : 'asc'
     const newServerOrder: SortValuesType = `${TableOrder[newOrder]}${property}`
 
-    dispatch(setSortValue({ sortPacks: newServerOrder }))
-    dispatch(getPacksTC())
-    //  dispatch(updateQueryParamsTC({ sortPacks: newServerOrder }))
+    dispatch(updatePacksQueryParamsTC({ sortPacks: newServerOrder }))
   }
   const handleStudyCardPack = () => alert('study card')
   const handleEditCardPack = (data: UpdatePackDataType) => {
