@@ -5,34 +5,31 @@ import ButtonGroup from '@mui/material/ButtonGroup'
 import { useSearchParams } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
-import { setSearchCards, getCardsTC } from '../../cards/cardsSlice'
-import { setSearchPacks, getPacksTC, setIsMyPacks } from '../packsSlice'
+import { getSearchParams } from '../../../utils/getSearchParams'
+import { updatePacksQueryParamsTC } from '../packsSlice'
 
 import s from './PackOwnerSwitcher.module.scss'
 
-type PackOwnerSwitcherType = {}
-
-export const PackOwnerSwitcher: React.FC<PackOwnerSwitcherType> = React.memo(({}) => {
+export const PackOwnerSwitcher = () => {
   const dispatch = useAppDispatch()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const allParams = getSearchParams(searchParams)
   const isMyPacks = useAppSelector(state => state.packs.queryParams.isMyPacks)
-  //   const [searchParams, setSearchParams] = useSearchParams()
 
   const handleMyCards = () => {
-    //  setSearchParams(searchParams.append({ owner: 'my' }))
-    //  console.log([...searchParams])
-    dispatch(setIsMyPacks({ isMyPacks: true }))
-    dispatch(getPacksTC())
+    setSearchParams({ ...allParams, isMyPacks: 'yes' })
+    dispatch(updatePacksQueryParamsTC({ isMyPacks: 'yes' }))
   }
 
   const handleAllCards = () => {
-    //  setSearchParams({ owner: 'all' })
-    dispatch(setIsMyPacks({ isMyPacks: false }))
-    dispatch(getPacksTC())
+    searchParams.delete('isMyPacks')
+    setSearchParams(searchParams)
+    dispatch(updatePacksQueryParamsTC({ isMyPacks: '' }))
   }
 
   React.useEffect(() => {
     if (isMyPacks) {
-      // setSearchParams({ owner: 'my' })
+      setSearchParams({ ...allParams, isMyPacks: 'yes' })
     }
   }, [])
 
@@ -57,4 +54,4 @@ export const PackOwnerSwitcher: React.FC<PackOwnerSwitcherType> = React.memo(({}
       </div>
     </>
   )
-})
+}

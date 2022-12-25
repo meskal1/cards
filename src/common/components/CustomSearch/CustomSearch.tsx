@@ -1,12 +1,11 @@
 import * as React from 'react'
 
 import { TextField } from '@mui/material'
-import { createSearchParams, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 
-import { PATH } from '../../../constants/routePaths.enum'
-import { getCardsTC, setSearchCards } from '../../../features/cards/cardsSlice'
-import { getPacksTC, setSearchPacks } from '../../../features/packs/packsSlice'
-import { useAppDispatch } from '../../../hooks/reduxHooks'
+import { updateCardsQueryParamsTC } from '../../../features/cards/cardsSlice'
+import { updatePacksQueryParamsTC } from '../../../features/packs/packsSlice'
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { useDebounce } from '../../../hooks/useDebounce'
 import { getSearchParams } from '../../../utils/getSearchParams'
 
@@ -23,27 +22,35 @@ export const CustomSearch: React.FC<CustomSearchType> = ({ cards }) => {
   const inintInputValue = allParams.search || allParams.cardQuestion || ''
   const [inputValue, setInputValue] = React.useState(inintInputValue)
   const debouncedValue = useDebounce(inputValue)
+  const search = useAppSelector(state => state.packs.queryParams.search)
+  const cardQuestion = useAppSelector(state => state.cards.queryParams.cardQuestion)
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.currentTarget.value)
   }
 
   React.useEffect(() => {
-    if (debouncedValue) {
-      setSearchParams({ search: debouncedValue })
+    const isItWorthUpdating = () => {
+      if (cards) {
+        if (cardQuestion !== inputValue) {
+          dispatch(updateCardsQueryParamsTC({ cardQuestion: inputValue }))
+        }
+      } else {
+        if (search !== inputValue) {
+          dispatch(updatePacksQueryParamsTC({ search: inputValue }))
+        }
+      }
+    }
+
+    if (inputValue !== search) {
+      setSearchParams({ ...allParams, [`${cards ? 'cardQuestion' : 'search'}`]: inputValue })
+      isItWorthUpdating()
     }
 
     if (inputValue === '') {
       cards ? searchParams.delete('cardQuestion') : searchParams.delete('search')
       setSearchParams(searchParams)
-    }
-
-    if (cards) {
-      dispatch(setSearchCards({ cardQuestion: inputValue }))
-      dispatch(getCardsTC())
-    } else {
-      dispatch(setSearchPacks({ search: inputValue }))
-      dispatch(getPacksTC())
+      isItWorthUpdating()
     }
   }, [debouncedValue])
 
