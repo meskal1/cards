@@ -17,7 +17,7 @@ export const cardsAPI = {
   },
 
   updateCard(data: CardType) {
-    return instance.put<any>('cards/card', { card: data })
+    return instance.put<UpdateResponseType>('cards/card', { card: data })
   },
 }
 
@@ -86,6 +86,12 @@ type AddCardResponseType = {
 }
 
 type DeleteCardResponseType = {
+  deletedCard: CardType
+  token: string
+  tokenDeathTime: number
+}
+
+type UpdateResponseType = {
   deletedCard: CardType
   token: string
   tokenDeathTime: number
