@@ -4,7 +4,6 @@ import axios, { AxiosError } from 'axios'
 import { AppDispatchType, RootStateType } from '../../app/store'
 import { cardsAPI, CardType, CreateCardType } from '../../services/cardsApi'
 import { handleServerNetworkError } from '../../utils/errorUtils'
-import { clearPacksTableData } from '../packs/packsSlice'
 
 const initialState = {
   queryParams: {
@@ -25,31 +24,14 @@ const cardsSlice = createSlice({
   name: 'cards',
   initialState,
   reducers: {
-    setSearchCards(state, action: PayloadAction<SearchCardsPayloadType>) {
-      state.queryParams.cardQuestion = action.payload.cardQuestion
-
-      if (action.payload.cardAnswer) {
-        state.queryParams.cardAnswer = action.payload.cardAnswer
-      }
+    setCardsQueryParams(state, action: PayloadAction<SetCardsQueryParamsType>) {
+      state.queryParams = action.payload
     },
     setCardsTableData(state, action: PayloadAction<CardsTablePayloadType>) {
       state.tableData = action.payload
     },
-    setCardsPackId(state, action: PayloadAction<CardsPackIdPayloadType>) {
-      state.queryParams.cardsPack_id = action.payload.cardsPack_id
-    },
-    setPaginationCardsData(state, action: PayloadAction<PaginationCardsDataPayloadType>) {
-      state.queryParams.page = action.payload.page
-      state.queryParams.pageCount = action.payload.pageCount
-    },
-    setSortValue(state, action: PayloadAction<SortCardsPayloadType>) {
-      state.queryParams.sortCards = action.payload.sortCards
-    },
     setError(state, action: PayloadAction<CardsErrorPayloadType>) {
       state.error = action.payload.error
-    },
-    clearCardsTableData(state) {
-      state.tableData = []
     },
     clearCardsState() {
       return initialState
@@ -60,37 +42,29 @@ const cardsSlice = createSlice({
 export const cardsReducer = cardsSlice.reducer
 
 // ACTIONS
-export const {
-  setSearchCards,
-  setCardsTableData,
-  setCardsPackId,
-  setPaginationCardsData,
-  setSortValue,
-  setError,
-  clearCardsTableData,
-  clearCardsState,
-} = cardsSlice.actions
+export const { setCardsQueryParams, setCardsTableData, setError, clearCardsState } =
+  cardsSlice.actions
 
 // THUNKS
+export const updateCardsQueryParamsTC =
+  (queryProps: CardsQueryParamsType) =>
+  async (dispatch: AppDispatchType, getState: () => RootStateType) => {
+    try {
+      const queryParams = getState().cards.queryParams
+
+      dispatch(setCardsQueryParams({ ...queryParams, ...queryProps }))
+      await dispatch(getCardsTC())
+    } catch (e) {
+      handleServerNetworkError(dispatch, e as Error | AxiosError)
+    }
+  }
+
 export const getCardsTC =
   () => async (dispatch: AppDispatchType, getState: () => RootStateType) => {
     try {
-      const { min, max, page, pageCount, sortCards, cardsPack_id, cardQuestion, cardAnswer } =
-        getState().cards.queryParams
-      const data = {
-        min,
-        max,
-        page,
-        pageCount,
-        sortCards,
-        cardsPack_id,
-        cardQuestion,
-        cardAnswer,
-      }
-
+      const data = getState().cards.queryParams
       const response = await cardsAPI.getCards(data)
 
-      dispatch(clearCardsTableData())
       dispatch(setCardsTableData(response.data.cards))
     } catch (e) {
       // Подумать можно ли это вынести в handleServerNetworkError
@@ -101,7 +75,6 @@ export const getCardsTC =
           return
         }
       }
-
       handleServerNetworkError(dispatch, e as Error | AxiosError)
     }
   }
@@ -109,7 +82,6 @@ export const getCardsTC =
 export const deleteCardTC = (id: string) => async (dispatch: AppDispatchType) => {
   try {
     await cardsAPI.deleteCard(id)
-    dispatch(clearCardsTableData())
     dispatch(getCardsTC())
   } catch (e) {
     handleServerNetworkError(dispatch, e as Error | AxiosError)
@@ -119,7 +91,6 @@ export const deleteCardTC = (id: string) => async (dispatch: AppDispatchType) =>
 export const addCardTC = (data: CreateCardType) => async (dispatch: AppDispatchType) => {
   try {
     await cardsAPI.addCard(data)
-    dispatch(clearCardsTableData())
     dispatch(getCardsTC())
   } catch (e) {
     handleServerNetworkError(dispatch, e as Error | AxiosError)
@@ -136,7 +107,6 @@ export const updateCardTC =
         question: data.question,
         answer: data.answer,
       })
-      dispatch(clearCardsTableData())
       dispatch(getCardsTC())
     } catch (e) {
       handleServerNetworkError(dispatch, e as Error | AxiosError)
@@ -158,15 +128,20 @@ export type SortValuesCardsType =
 
 export type CardsErrorType = 'WRONG_ID' | null
 
-type SortCardsPayloadType = { sortCards: SortValuesCardsType }
+type SetCardsQueryParamsType = {
+  min: number
+  max: number
+  page: number
+  pageCount: number
+  sortCards: SortValuesCardsType
+  cardsPack_id: string
+  cardQuestion: string
+  cardAnswer: string
+}
+
+type CardsQueryParamsType = Partial<SetCardsQueryParamsType>
 
 type CardsTablePayloadType = CardType[]
-
-type SearchCardsPayloadType = { cardQuestion: string; cardAnswer?: string }
-
-type PaginationCardsDataPayloadType = { page: number; pageCount: number }
-
-type CardsPackIdPayloadType = { cardsPack_id: string }
 
 export type UpdateCardType = {
   id: string
@@ -177,51 +152,3 @@ export type UpdateCardType = {
 type CardsErrorPayloadType = {
   error: CardsErrorType
 }
-
-//////////////////// REQUEST/RESPONSE TYPES ////////////////////////
-
-// export type CardType = {
-//   _id: string
-//   cardsPack_id: string
-//   user_id: string
-//   answer: string
-//   question: string
-//   grade: number
-//   shots: number
-//   comments: string
-//   type: string
-//   rating: number
-//   more_id: string
-//   created: string
-//   updated: string
-//   __v: number
-// }
-
-// type CardResponseType = {
-//   cards: CardType[]
-//   packUserId: string
-//   packName: string
-//   packPrivate: boolean
-//   packDeckCover: string
-//   packCreated: string
-//   packUpdated: string
-//   page: number
-//   pageCount: number
-//   cardsTotalCount: number
-//   minGrade: number
-//   maxGrade: number
-//   token: string
-//   tokenDeathTime: number
-// }
-
-// type CreateCardType = {
-//   cardsPack_id: string
-//   question: string
-//   answer: string
-//   grade?: number
-//   shots?: number
-//   answerImg?: string
-//   questionImg?: string
-//   questionVideo?: string
-//   answerVideo?: string
-// }

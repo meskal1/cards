@@ -2,18 +2,18 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AxiosError } from 'axios'
 
 import { AppDispatchType, RootStateType } from '../../app/store'
-import { CreatePackType, packsAPI, PackType, QueryPackParamsType } from '../../services/packsApi'
+import { CreatePackType, packsAPI, PackType } from '../../services/packsApi'
 import { handleServerNetworkError } from '../../utils/errorUtils'
 
 const initialState = {
   queryParams: {
     min: 0,
-    max: 10,
+    max: 0,
     page: 1,
     pageCount: 10,
     sortPacks: '0updated' as SortValuesType,
     search: '',
-    isMyPacks: false,
+    isMyPacks: '' as 'yes' | '',
   },
   tableData: [] as PackType[],
 }
@@ -22,28 +22,11 @@ const packsSlice = createSlice({
   name: 'packs',
   initialState,
   reducers: {
-    setSearchPacks(state, action: PayloadAction<SearchPacksPayloadType>) {
-      state.queryParams.search = action.payload.search
-    },
-    setIsMyPacks(state, action: PayloadAction<IsMyPacksPayloadType>) {
-      state.queryParams.isMyPacks = action.payload.isMyPacks
+    setPacksQueryParams(state, action: PayloadAction<PacksQueryParamsType>) {
+      state.queryParams = { ...state.queryParams, ...action.payload }
     },
     setPacksTableData(state, action: PayloadAction<PacksTablePayloadType>) {
       state.tableData = action.payload
-    },
-    setRangeCards(state, action: PayloadAction<RangeCardsPayloadType>) {
-      state.queryParams.min = action.payload.min
-      state.queryParams.max = action.payload.max
-    },
-    setPaginationPacksData(state, action: PayloadAction<PaginationPacksDataPayloadType>) {
-      state.queryParams.page = action.payload.page
-      state.queryParams.pageCount = action.payload.pageCount
-    },
-    setSortValue(state, action: PayloadAction<SortPacksPayloadType>) {
-      state.queryParams.sortPacks = action.payload.sortPacks
-    },
-    clearPacksTableData(state) {
-      state.tableData = []
     },
   },
 })
@@ -51,17 +34,19 @@ const packsSlice = createSlice({
 export const packsReducer = packsSlice.reducer
 
 // ACTIONS
-export const {
-  setSearchPacks,
-  setIsMyPacks,
-  setPacksTableData,
-  setRangeCards,
-  setPaginationPacksData,
-  setSortValue,
-  clearPacksTableData,
-} = packsSlice.actions
+export const { setPacksQueryParams, setPacksTableData } = packsSlice.actions
 
 // THUNKS
+export const updatePacksQueryParamsTC =
+  (queryProps: PacksQueryParamsType) => async (dispatch: AppDispatchType) => {
+    try {
+      dispatch(setPacksQueryParams(queryProps))
+      await dispatch(getPacksTC())
+    } catch (e) {
+      handleServerNetworkError(dispatch, e as Error | AxiosError)
+    }
+  }
+
 export const getPacksTC =
   () => async (dispatch: AppDispatchType, getState: () => RootStateType) => {
     try {
@@ -79,9 +64,14 @@ export const getPacksTC =
       }
 
       const response = await packsAPI.getPacks(data)
+      const minCardsCount = response.data.minCardsCount
+      const maxCardsCount = response.data.maxCardsCount
 
-      dispatch(clearPacksTableData())
       dispatch(setPacksTableData(response.data.cardPacks))
+
+      // if (min && max) {
+      dispatch(setPacksQueryParams({ min: minCardsCount, max: maxCardsCount }))
+      // }
     } catch (e) {
       handleServerNetworkError(dispatch, e as Error | AxiosError)
     }
@@ -90,7 +80,6 @@ export const getPacksTC =
 export const deletePackTC = (id: string) => async (dispatch: AppDispatchType) => {
   try {
     await packsAPI.deletePack(id)
-    dispatch(clearPacksTableData())
     dispatch(getPacksTC())
   } catch (e) {
     handleServerNetworkError(dispatch, e as Error | AxiosError)
@@ -100,7 +89,6 @@ export const deletePackTC = (id: string) => async (dispatch: AppDispatchType) =>
 export const addPackTC = (data: CreatePackType) => async (dispatch: AppDispatchType) => {
   try {
     await packsAPI.addPack(data)
-    dispatch(clearPacksTableData())
     dispatch(getPacksTC())
   } catch (e) {
     handleServerNetworkError(dispatch, e as Error | AxiosError)
@@ -114,7 +102,6 @@ export const updatePackTC =
       const updatingPack = getState().packs.tableData.filter(pack => data.id === pack._id)
 
       await packsAPI.updatePack({ ...updatingPack[0], name: data.name })
-      dispatch(clearPacksTableData())
       dispatch(getPacksTC())
     } catch (e) {
       handleServerNetworkError(dispatch, e as Error | AxiosError)
@@ -134,17 +121,24 @@ export type SortValuesType =
   | '0user_name'
   | '1user_name'
 
-type SortPacksPayloadType = { sortPacks: SortValuesType }
-
 type PacksTablePayloadType = PackType[]
 
-type RangeCardsPayloadType = { min: number; max: number }
+type SetPacksQueryParamsType = {
+  min: number
+  max: number
+  page: number
+  pageCount: number
+  sortPacks: SortValuesType
+  search: string
+  isMyPacks: 'yes' | ''
+}
 
-type PaginationPacksDataPayloadType = { page: number; pageCount: number }
+type SetCardsCountPayloadType = {
+  maxCardsCount: number
+  minCardsCount: number
+}
 
-type SearchPacksPayloadType = { search: string }
-
-type IsMyPacksPayloadType = { isMyPacks: boolean }
+type PacksQueryParamsType = Partial<SetPacksQueryParamsType>
 
 export type UpdatePackDataType = {
   id: string
