@@ -50,8 +50,13 @@ const cardsSlice = createSlice({
 export const cardsReducer = cardsSlice.reducer
 
 // ACTIONS
-export const { setCardsQueryParams, setCardsTableData, setError, clearCardsState, setCardRequestStatus } =
-  cardsSlice.actions
+export const {
+  setCardsQueryParams,
+  setCardsTableData,
+  setError,
+  clearCardsState,
+  setCardRequestStatus,
+} = cardsSlice.actions
 
 // THUNKS
 export const updateCardsQueryParamsTC =
@@ -93,9 +98,8 @@ export const deleteCardTC = (id: string) => async (dispatch: AppDispatchType) =>
     await cardsAPI.deleteCard(id)
     dispatch(getCardsTC())
   } catch (e) {
-    handleServerNetworkError(dispatch, e as Error | AxiosError)
-  } finally {
     dispatch(setCardRequestStatus({ cardId: id, requestStatus: 'idle' }))
+    handleServerNetworkError(dispatch, e as Error | AxiosError)
   }
 }
 

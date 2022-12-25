@@ -91,9 +91,8 @@ export const deletePackTC = (id: string) => async (dispatch: AppDispatchType) =>
     await packsAPI.deletePack(id)
     dispatch(getPacksTC())
   } catch (e) {
-    handleServerNetworkError(dispatch, e as Error | AxiosError)
-  } finally {
     dispatch(setPackRequestStatus({ packId: id, requestStatus: 'idle' }))
+    handleServerNetworkError(dispatch, e as Error | AxiosError)
   }
 }
 
@@ -116,9 +115,8 @@ export const updatePackTC =
       await packsAPI.updatePack({ ...updatingPack[0], name: data.name })
       dispatch(getPacksTC())
     } catch (e) {
-      handleServerNetworkError(dispatch, e as Error | AxiosError)
-    } finally {
       dispatch(setPackRequestStatus({ packId: data.id, requestStatus: 'idle' }))
+      handleServerNetworkError(dispatch, e as Error | AxiosError)
     }
   }
 

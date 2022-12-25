@@ -23,6 +23,8 @@ export const Cards: React.FC<CardsType> = React.memo(({}) => {
   const tableData = useAppSelector<ServerCardType[]>(state => state.cards.tableData)
   const cardsError = useAppSelector<CardsErrorType>(state => state.cards.error)
 
+  console.log(searchParams)
+
   const handleTitleButton = () => {
     // dispatch() Add new card
   }
@@ -33,7 +35,7 @@ export const Cards: React.FC<CardsType> = React.memo(({}) => {
     return () => {
       dispatch(clearCardsState())
     }
-  }, [])
+  }, [searchParams])
 
   if (cardsError === 'WRONG_ID') {
     return <Navigate to={PATH.PAGE_NOT_FOUND} replace />
