@@ -44,14 +44,6 @@ export const Menu: React.FC<MenuType> = ({ closeMenu }) => {
             <img src={logout} alt="log out" />
             <p>log out</p>
           </li>
-          <li
-            className={s.menu__item}
-            onClick={() => onClickNavigate(PATH.PACKS)}
-            style={{ animationDelay: '0.2s' }}
-          >
-            <img src={logout} alt="all Packs" />
-            <p>Packs</p>
-          </li>
         </ul>
       </nav>
     </>
