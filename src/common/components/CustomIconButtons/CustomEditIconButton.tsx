@@ -3,8 +3,6 @@ import React from 'react'
 import { IconButton, Tooltip } from '@mui/material'
 import { IconButtonProps } from '@mui/material/IconButton/IconButton'
 
-import editIcon from '../../../assets/img/icons/editPack.svg'
-
 import s from './CustomIconButton.module.scss'
 
 type CustomStudyIconButtonPropsType = IconButtonProps & {
@@ -22,7 +20,7 @@ export const CustomEditIconButton: React.FC<CustomStudyIconButtonPropsType> = ({
     <Tooltip title={tooltip}>
       <span>
         <IconButton className={finalClass} {...props}>
-          <img src={editIcon} alt={'Edit icon'} />
+          <div className={s.editIcon} />
         </IconButton>
       </span>
     </Tooltip>

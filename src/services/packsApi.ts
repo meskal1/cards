@@ -11,10 +11,10 @@ export const packsAPI = {
   },
 
   deletePack(id: string) {
-    return instance.delete<DeletePackResponseType>('cards/pack', { params: id })
+    return instance.delete<DeletePackResponseType>('cards/pack', { params: { id } })
   },
 
-  updatePack(data: PackType) {
+  updatePack(data: ServerPackType) {
     return instance.put<UpdatePackResponseType>('cards/pack', { cardsPack: data })
   },
 }
@@ -32,7 +32,7 @@ export type QueryPackParamsType = {
 }
 
 export type PacksResponseType = {
-  cardPacks: PackType[]
+  cardPacks: ServerPackType[]
   page: number
   pageCount: number
   cardPacksTotalCount: number
@@ -42,7 +42,7 @@ export type PacksResponseType = {
   tokenDeathTime: number
 }
 
-export type PackType = {
+export type ServerPackType = {
   _id: string
   user_id: string
   user_name: string
@@ -62,19 +62,19 @@ export type PackType = {
 }
 
 type AddPackResponseType = {
-  newCardsPack: PackType
+  newCardsPack: ServerPackType
   token: string
   tokenDeathTime: number
 }
 
 type DeletePackResponseType = {
-  deletedCardsPack: PackType
+  deletedCardsPack: ServerPackType
   token: string
   tokenDeathTime: number
 }
 
 type UpdatePackResponseType = {
-  updatedCardsPack: PackType
+  updatedCardsPack: ServerPackType
   token: string
   tokenDeathTime: number
 }

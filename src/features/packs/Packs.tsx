@@ -12,7 +12,7 @@ import { PackOwnerSwitcher } from './PackOwnerSwitcher/PackOwnerSwitcher'
 import s from './Packs.module.scss'
 import { PackSlider } from './PackSlider/PackSlider'
 import { PacksResetFilter } from './PacksResetFilter/PacksResetFilter'
-import { updatePacksQueryParamsTC } from './packsSlice'
+import { updatePacksQueryParamsTC, addPackTC } from './packsSlice'
 import { PacksTable } from './PacksTable/PacksTable'
 
 export const Packs = () => {
@@ -23,7 +23,7 @@ export const Packs = () => {
   const [showChildren, setShowChildren] = React.useState(false)
 
   const handleTitleButton = () => {
-    // dispatch() Add new pack
+    dispatch(addPackTC({ name: 'NEW PACK', private: false }))
   }
 
   React.useEffect(() => {

@@ -7,7 +7,7 @@ import { CustomSearch } from '../../common/components/CustomSearch/CustomSearch'
 import { PageTitleBlock } from '../../common/components/PageTitleBlock/PageTitleBlock'
 import { PATH } from '../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
-import { CardType } from '../../services/cardsApi'
+import { ServerCardType } from '../../services/cardsApi'
 import { getSearchParams } from '../../utils/getSearchParams'
 
 import s from './Cards.module.scss'
@@ -20,7 +20,7 @@ export const Cards: React.FC<CardsType> = React.memo(({}) => {
   const dispatch = useAppDispatch()
   const [searchParams, setSearchParams] = useSearchParams()
   const allParams = getSearchParams(searchParams)
-  const tableData = useAppSelector<CardType[]>(state => state.cards.tableData)
+  const tableData = useAppSelector<ServerCardType[]>(state => state.cards.tableData)
   const cardsError = useAppSelector<CardsErrorType>(state => state.cards.error)
 
   const handleTitleButton = () => {

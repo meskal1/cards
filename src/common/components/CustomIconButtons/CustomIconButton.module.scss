@@ -1,4 +1,21 @@
 .iconBtn {
+  div {
+    width: 16px;
+    height: 16px;
+  }
+
+  .studyIcon {
+    background-image: url('../../../assets/img/icons/studyPack.svg');
+  }
+
+  .editIcon {
+    background-image: url('../../../assets/img/icons/editPack.svg');
+  }
+
+  .deleteIcon {
+    background-image: url('../../../assets/img/icons/deletePack.svg');
+  }
+
   &:disabled {
     opacity: 0.4;
   }

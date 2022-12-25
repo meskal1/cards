@@ -11,6 +11,7 @@ import s from './PacksActionCell.module.scss'
 type PacksActionCellPropsType = {
   isMine: boolean
   isStudyDisabled: boolean
+  isAllDisabled: boolean
   onStudy: () => void
   onEdit: () => void
   onDelete: () => void
@@ -19,6 +20,7 @@ type PacksActionCellPropsType = {
 export const PacksActionCell: React.FC<PacksActionCellPropsType> = ({
   isMine,
   isStudyDisabled,
+  isAllDisabled,
   onStudy,
   onEdit,
   onDelete,
@@ -33,11 +35,23 @@ export const PacksActionCell: React.FC<PacksActionCellPropsType> = ({
       <span className={s.span} onClick={handleSpanClick}>
         <CustomStudyIconButton
           onClick={handleStudyClick}
-          disabled={isStudyDisabled}
+          disabled={isStudyDisabled || isAllDisabled}
           tooltip={'Study'}
         />
-        {isMine && <CustomEditIconButton onClick={handleEditClick} tooltip={'Edit'} />}
-        {isMine && <CustomDeleteIconButton onClick={handleDeleteClick} tooltip={'Delete'} />}
+        {isMine && (
+          <CustomEditIconButton
+            onClick={handleEditClick}
+            disabled={isAllDisabled}
+            tooltip={'Edit'}
+          />
+        )}
+        {isMine && (
+          <CustomDeleteIconButton
+            onClick={handleDeleteClick}
+            disabled={isAllDisabled}
+            tooltip={'Delete'}
+          />
+        )}
       </span>
     </TableCell>
   )

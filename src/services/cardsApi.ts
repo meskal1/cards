@@ -13,10 +13,10 @@ export const cardsAPI = {
   },
 
   deleteCard(id: string) {
-    return instance.delete<DeleteCardResponseType>('cards/card', { params: id })
+    return instance.delete<DeleteCardResponseType>('cards/card', { params: { id } })
   },
 
-  updateCard(data: CardType) {
+  updateCard(data: ServerCardType) {
     return instance.put<UpdateResponseType>('cards/card', { card: data })
   },
 }
@@ -34,7 +34,7 @@ export type QueryCardParamsType = {
 }
 
 export type CardsResponseType = {
-  cards: CardType[]
+  cards: ServerCardType[]
   packUserId: string
   packName: string
   packPrivate: boolean
@@ -50,7 +50,7 @@ export type CardsResponseType = {
   tokenDeathTime: number
 }
 
-export type CardType = {
+export type ServerCardType = {
   _id: string
   cardsPack_id: string
   user_id: string
@@ -80,19 +80,19 @@ export type CreateCardType = {
 }
 
 type AddCardResponseType = {
-  newCard: CardType
+  newCard: ServerCardType
   token: string
   tokenDeathTime: number
 }
 
 type DeleteCardResponseType = {
-  deletedCard: CardType
+  deletedCard: ServerCardType
   token: string
   tokenDeathTime: number
 }
 
 type UpdateResponseType = {
-  deletedCard: CardType
+  deletedCard: ServerCardType
   token: string
   tokenDeathTime: number
 }
