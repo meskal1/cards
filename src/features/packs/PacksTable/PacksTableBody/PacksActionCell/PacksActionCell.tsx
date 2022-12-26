@@ -2,9 +2,9 @@ import React, { MouseEvent } from 'react'
 
 import TableCell from '@mui/material/TableCell'
 
-import { CustomDeleteIconButton } from '../../../../common/components/CustomIconButtons/CustomDeleteIconButton'
-import { CustomEditIconButton } from '../../../../common/components/CustomIconButtons/CustomEditIconButton'
-import { CustomStudyIconButton } from '../../../../common/components/CustomIconButtons/CustomStudyIconButton'
+import { CustomDeleteIconButton } from '../../../../../common/components/CustomIconButtons/CustomDeleteIconButton'
+import { CustomEditIconButton } from '../../../../../common/components/CustomIconButtons/CustomEditIconButton'
+import { CustomStudyIconButton } from '../../../../../common/components/CustomIconButtons/CustomStudyIconButton'
 
 import s from './PacksActionCell.module.scss'
 

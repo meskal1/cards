@@ -21,6 +21,7 @@ type CustomTableHeadPropsType<T> = {
   order: TableOrderType
   orderBy: T
   onSetSort: (property: T) => void
+  withActions?: boolean
 }
 
 export const CustomTableHead = <T extends string>({
@@ -28,6 +29,7 @@ export const CustomTableHead = <T extends string>({
   orderBy,
   heads,
   onSetSort,
+  withActions = false,
 }: CustomTableHeadPropsType<T>) => {
   return (
     <TableHead className={s.tableHead}>
@@ -48,7 +50,7 @@ export const CustomTableHead = <T extends string>({
             </TableSortLabel>
           </TableCell>
         ))}
-        <TableCell>Actions</TableCell>
+        {withActions && <TableCell>Actions</TableCell>}
       </TableRow>
     </TableHead>
   )
