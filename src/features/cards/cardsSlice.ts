@@ -19,6 +19,7 @@ const initialState = {
   },
   tableData: [] as AppCardType[],
   error: null as CardsErrorType,
+  status: 'idle' as RequestStatusType,
 }
 
 const cardsSlice = createSlice({
@@ -41,6 +42,9 @@ const cardsSlice = createSlice({
         }
       })
     },
+    setCardsStatus(state, action: PayloadAction<RequestStatusType>) {
+      state.status = action.payload
+    },
     clearCardsState() {
       return initialState
     },
@@ -55,6 +59,7 @@ export const {
   setCardsTableData,
   setError,
   clearCardsState,
+  setCardsStatus,
   setCardRequestStatus,
 } = cardsSlice.actions
 
@@ -62,6 +67,7 @@ export const {
 export const updateCardsQueryParamsTC =
   (queryProps: CardsQueryParamsType) =>
   async (dispatch: AppDispatchType, getState: () => RootStateType) => {
+    dispatch(setCardsStatus('loading'))
     try {
       const queryParams = getState().cards.queryParams
 
@@ -69,6 +75,8 @@ export const updateCardsQueryParamsTC =
       await dispatch(getCardsTC())
     } catch (e) {
       handleServerNetworkError(dispatch, e as Error | AxiosError)
+    } finally {
+      dispatch(setCardsStatus('idle'))
     }
   }
 
@@ -105,10 +113,13 @@ export const deleteCardTC = (id: string) => async (dispatch: AppDispatchType) =>
 
 export const addCardTC = (data: CreateCardType) => async (dispatch: AppDispatchType) => {
   try {
+    dispatch(setCardsStatus('loading'))
     await cardsAPI.addCard(data)
-    dispatch(getCardsTC())
+    await dispatch(getCardsTC())
   } catch (e) {
     handleServerNetworkError(dispatch, e as Error | AxiosError)
+  } finally {
+    dispatch(setCardsStatus('idle'))
   }
 }
 

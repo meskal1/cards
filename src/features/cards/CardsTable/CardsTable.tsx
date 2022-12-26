@@ -1,4 +1,4 @@
-import React, { MouseEvent } from 'react'
+import React from 'react'
 
 import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
@@ -11,12 +11,12 @@ import TableRow from '@mui/material/TableRow'
 import dayjs from 'dayjs'
 
 import { RequestStatusType } from '../../../app/appSlice'
+import { TableBodySkeleton } from '../../../common/components/CustomSkeletons/TableBodySkeleton/TableBodySkeleton'
 import {
   CustomTableHead,
   HeadType,
 } from '../../../common/components/CustomTableHead/CustomTableHead'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
-import { ServerCardType } from '../../../services/cardsApi'
 import { ServerOrderType, TableOrder, TableOrderType } from '../../packs/PacksTable/PacksTable'
 import {
   AppCardType,
@@ -44,6 +44,7 @@ type CardsTablePropsType = {
 }
 
 export const CardsTable: React.FC<CardsTablePropsType> = ({ isMine }) => {
+  const status = useAppSelector<RequestStatusType>(state => state.cards.status)
   const tableData = useAppSelector<AppCardType[]>(state => state.cards.tableData) // Replace to value from redux
   const serverSort = useAppSelector<SortValuesCardsType>(state => state.cards.queryParams.sortCards)
 
@@ -86,43 +87,47 @@ export const CardsTable: React.FC<CardsTablePropsType> = ({ isMine }) => {
               orderBy={tableOrderBy}
               onSetSort={handleSetSort}
             />
-            <TableBody>
-              {tableData.map(row => {
-                return (
-                  <TableRow
-                    key={row._id}
-                    hover={row.requestStatus === 'idle'}
-                    className={s.row}
-                    onClick={e => openCardHandler(row._id, row.requestStatus)}
-                  >
-                    {heads.map(h => {
-                      return (
-                        <TableCell key={h.id}>
-                          {h.id === 'grade' ? (
-                            <Rating value={row[h.id]} readOnly />
-                          ) : (
-                            <p className={s.tableCellText}>
-                              {h.id === 'updated'
-                                ? dayjs(row[h.id]).format('DD.MM.YYYY')
-                                : row[h.id]}
-                            </p>
-                          )}
-                        </TableCell>
-                      )
-                    })}
-                    {isMine && (
-                      <CardsActionCell
-                        isAllDisabled={row.requestStatus === 'loading'}
-                        onEdit={() =>
-                          handleEditCard({ id: row._id, question: 'updated', answer: 'updates' })
-                        }
-                        onDelete={() => handleDeleteCard(row._id)}
-                      />
-                    )}
-                  </TableRow>
-                )
-              })}
-            </TableBody>
+            {status === 'loading' ? (
+              <TableBodySkeleton columnsCount={heads.length + 1} rowsCount={10} />
+            ) : (
+              <TableBody>
+                {tableData.map(row => {
+                  return (
+                    <TableRow
+                      key={row._id}
+                      hover={row.requestStatus === 'idle'}
+                      className={s.row}
+                      onClick={() => openCardHandler(row._id, row.requestStatus)}
+                    >
+                      {heads.map(h => {
+                        return (
+                          <TableCell key={h.id}>
+                            {h.id === 'grade' ? (
+                              <Rating value={row[h.id]} readOnly />
+                            ) : (
+                              <p className={s.tableCellText}>
+                                {h.id === 'updated'
+                                  ? dayjs(row[h.id]).format('DD.MM.YYYY')
+                                  : row[h.id]}
+                              </p>
+                            )}
+                          </TableCell>
+                        )
+                      })}
+                      {isMine && (
+                        <CardsActionCell
+                          isAllDisabled={row.requestStatus === 'loading'}
+                          onEdit={() =>
+                            handleEditCard({ id: row._id, question: 'updated', answer: 'updates' })
+                          }
+                          onDelete={() => handleDeleteCard(row._id)}
+                        />
+                      )}
+                    </TableRow>
+                  )
+                })}
+              </TableBody>
+            )}
           </Table>
         </TableContainer>
       </Paper>

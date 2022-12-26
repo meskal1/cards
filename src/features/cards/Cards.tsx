@@ -7,7 +7,6 @@ import { CustomSearch } from '../../common/components/CustomSearch/CustomSearch'
 import { PageTitleBlock } from '../../common/components/PageTitleBlock/PageTitleBlock'
 import { PATH } from '../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
-import { ServerCardType } from '../../services/cardsApi'
 import { getSearchParams } from '../../utils/getSearchParams'
 
 import s from './Cards.module.scss'
@@ -18,12 +17,9 @@ type CardsType = {}
 
 export const Cards: React.FC<CardsType> = React.memo(({}) => {
   const dispatch = useAppDispatch()
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams] = useSearchParams()
   const allParams = getSearchParams(searchParams)
-  const tableData = useAppSelector<ServerCardType[]>(state => state.cards.tableData)
   const cardsError = useAppSelector<CardsErrorType>(state => state.cards.error)
-
-  console.log(searchParams)
 
   const handleTitleButton = () => {
     // dispatch() Add new card
@@ -55,11 +51,7 @@ export const Cards: React.FC<CardsType> = React.memo(({}) => {
             <CustomSearch cards />
           </div>
         </div>
-        {tableData.length ? (
-          <CardsTable isMine={true} />
-        ) : (
-          <h1 style={{ fontSize: '64px' }}>Cards not found</h1>
-        )}
+        <CardsTable isMine={true} />
         <CustomPagination cards />
       </div>
     </>

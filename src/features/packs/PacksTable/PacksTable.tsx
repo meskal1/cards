@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { MouseEvent } from 'react'
 
 import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
@@ -12,20 +11,20 @@ import dayjs from 'dayjs'
 import { createSearchParams, useNavigate } from 'react-router-dom'
 
 import { RequestStatusType } from '../../../app/appSlice'
+import { TableBodySkeleton } from '../../../common/components/CustomSkeletons/TableBodySkeleton/TableBodySkeleton'
 import {
   CustomTableHead,
   HeadType,
 } from '../../../common/components/CustomTableHead/CustomTableHead'
 import { PATH } from '../../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
-import { ServerPackType } from '../../../services/packsApi'
 import {
+  AppPackType,
   deletePackTC,
   SortValuesType,
-  updatePackTC,
   UpdatePackDataType,
   updatePacksQueryParamsTC,
-  AppPackType,
+  updatePackTC,
 } from '../packsSlice'
 
 import { PacksActionCell } from './PacksActionCell/PacksActionCell'
@@ -51,6 +50,7 @@ const heads: HeadType<PacksOrderByType>[] = [
 type PacksTablePropsType = {}
 
 export function PacksTable({}: PacksTablePropsType) {
+  const status = useAppSelector<RequestStatusType>(state => state.packs.status)
   const userId = useAppSelector(state => state.profile.userData.id)
   const tableData = useAppSelector<AppPackType[]>(state => state.packs.tableData)
   const serverSort = useAppSelector<SortValuesType>(state => state.packs.queryParams.sortPacks)
@@ -99,36 +99,42 @@ export function PacksTable({}: PacksTablePropsType) {
               orderBy={tableOrderBy}
               onSetSort={handleSetSort}
             />
-            <TableBody>
-              {tableData.map(row => {
-                return (
-                  <TableRow
-                    className={s.row}
-                    key={row._id}
-                    hover={row.requestStatus === 'idle'}
-                    onClick={e => handleOpenCardPack(row._id, row.requestStatus)}
-                  >
-                    {heads.map(h => {
-                      return (
-                        <TableCell key={h.id}>
-                          <p className={s.tableCellText}>
-                            {h.id === 'updated' ? dayjs(row[h.id]).format('DD.MM.YYYY') : row[h.id]}
-                          </p>
-                        </TableCell>
-                      )
-                    })}
-                    <PacksActionCell
-                      isMine={row.user_id === userId}
-                      isStudyDisabled={row.cardsCount === 0}
-                      isAllDisabled={row.requestStatus === 'loading'}
-                      onStudy={handleStudyCardPack}
-                      onEdit={() => handleEditCardPack({ id: row._id, name: 'updated name' })}
-                      onDelete={() => handleDeleteCardPack(row._id)}
-                    />
-                  </TableRow>
-                )
-              })}
-            </TableBody>
+            {status === 'loading' ? (
+              <TableBodySkeleton columnsCount={heads.length + 1} rowsCount={10} />
+            ) : (
+              <TableBody>
+                {tableData.map(row => {
+                  return (
+                    <TableRow
+                      className={s.row}
+                      key={row._id}
+                      hover={row.requestStatus === 'idle'}
+                      onClick={() => handleOpenCardPack(row._id, row.requestStatus)}
+                    >
+                      {heads.map(h => {
+                        return (
+                          <TableCell key={h.id}>
+                            <p className={s.tableCellText}>
+                              {h.id === 'updated'
+                                ? dayjs(row[h.id]).format('DD.MM.YYYY')
+                                : row[h.id]}
+                            </p>
+                          </TableCell>
+                        )
+                      })}
+                      <PacksActionCell
+                        isMine={row.user_id === userId}
+                        isStudyDisabled={row.cardsCount === 0}
+                        isAllDisabled={row.requestStatus === 'loading'}
+                        onStudy={handleStudyCardPack}
+                        onEdit={() => handleEditCardPack({ id: row._id, name: 'updated name' })}
+                        onDelete={() => handleDeleteCardPack(row._id)}
+                      />
+                    </TableRow>
+                  )
+                })}
+              </TableBody>
+            )}
           </Table>
         </TableContainer>
       </Paper>

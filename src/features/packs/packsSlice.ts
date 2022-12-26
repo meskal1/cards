@@ -17,6 +17,7 @@ const initialState = {
     isMyPacks: '' as 'yes' | '',
   },
   tableData: [] as AppPackType[],
+  status: 'idle' as RequestStatusType,
 }
 
 const packsSlice = createSlice({
@@ -36,22 +37,29 @@ const packsSlice = createSlice({
         }
       })
     },
+    setPacksStatus(state, action: PayloadAction<RequestStatusType>) {
+      state.status = action.payload
+    },
   },
 })
 
 export const packsReducer = packsSlice.reducer
 
 // ACTIONS
-export const { setPacksQueryParams, setPackRequestStatus, setPacksTableData } = packsSlice.actions
+export const { setPacksQueryParams, setPackRequestStatus, setPacksTableData, setPacksStatus } =
+  packsSlice.actions
 
 // THUNKS
 export const updatePacksQueryParamsTC =
   (queryProps: PacksQueryParamsType) => async (dispatch: AppDispatchType) => {
     try {
+      dispatch(setPacksStatus('loading'))
       dispatch(setPacksQueryParams(queryProps))
       await dispatch(getPacksTC())
     } catch (e) {
       handleServerNetworkError(dispatch, e as Error | AxiosError)
+    } finally {
+      dispatch(setPacksStatus('idle'))
     }
   }
 
@@ -98,10 +106,13 @@ export const deletePackTC = (id: string) => async (dispatch: AppDispatchType) =>
 
 export const addPackTC = (data: CreatePackType) => async (dispatch: AppDispatchType) => {
   try {
+    dispatch(setPacksStatus('loading'))
     await packsAPI.addPack(data)
-    dispatch(getPacksTC())
+    await dispatch(getPacksTC())
   } catch (e) {
     handleServerNetworkError(dispatch, e as Error | AxiosError)
+  } finally {
+    dispatch(setPacksStatus('idle'))
   }
 }
 
@@ -138,8 +149,6 @@ type PacksTablePayloadType = ServerPackType[]
 
 type PackRequestStatusPayloadType = { packId: string; requestStatus: RequestStatusType }
 
-type SortPacksPayloadType = { sortPacks: SortValuesType }
-
 type SetPacksQueryParamsPayloadType = {
   min: number
   max: number
@@ -148,11 +157,6 @@ type SetPacksQueryParamsPayloadType = {
   sortPacks: SortValuesType
   search: string
   isMyPacks: 'yes' | ''
-}
-
-type SetCardsCountPayloadType = {
-  maxCardsCount: number
-  minCardsCount: number
 }
 
 type PacksQueryParamsType = Partial<SetPacksQueryParamsPayloadType>
