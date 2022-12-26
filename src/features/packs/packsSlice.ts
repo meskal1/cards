@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AxiosError } from 'axios'
 
-import { RequestStatusType } from '../../app/appSlice'
+import { RequestStatusType, setAppStatus } from '../../app/appSlice'
 import { AppDispatchType, RootStateType } from '../../app/store'
 import { CreatePackType, packsAPI, ServerPackType } from '../../services/packsApi'
 import { handleServerNetworkError } from '../../utils/errorUtils'
@@ -95,23 +95,28 @@ export const getPacksTC =
 
 export const deletePackTC = (id: string) => async (dispatch: AppDispatchType) => {
   try {
+    dispatch(setAppStatus({ status: 'loading' }))
     dispatch(setPackRequestStatus({ packId: id, requestStatus: 'loading' }))
     await packsAPI.deletePack(id)
     dispatch(getPacksTC())
   } catch (e) {
     dispatch(setPackRequestStatus({ packId: id, requestStatus: 'idle' }))
     handleServerNetworkError(dispatch, e as Error | AxiosError)
+  } finally {
+    dispatch(setAppStatus({ status: 'idle' }))
   }
 }
 
 export const addPackTC = (data: CreatePackType) => async (dispatch: AppDispatchType) => {
   try {
+    dispatch(setAppStatus({ status: 'loading' }))
     dispatch(setPacksStatus('loading'))
     await packsAPI.addPack(data)
     await dispatch(getPacksTC())
   } catch (e) {
     handleServerNetworkError(dispatch, e as Error | AxiosError)
   } finally {
+    dispatch(setAppStatus({ status: 'idle' }))
     dispatch(setPacksStatus('idle'))
   }
 }
@@ -120,6 +125,7 @@ export const updatePackTC =
   (data: UpdatePackDataType) =>
   async (dispatch: AppDispatchType, getState: () => RootStateType) => {
     try {
+      dispatch(setAppStatus({ status: 'loading' }))
       dispatch(setPackRequestStatus({ packId: data.id, requestStatus: 'loading' }))
       const updatingPack = getState().packs.tableData.filter(pack => data.id === pack._id)
 
@@ -128,6 +134,8 @@ export const updatePackTC =
     } catch (e) {
       dispatch(setPackRequestStatus({ packId: data.id, requestStatus: 'idle' }))
       handleServerNetworkError(dispatch, e as Error | AxiosError)
+    } finally {
+      dispatch(setAppStatus({ status: 'idle' }))
     }
   }
 
