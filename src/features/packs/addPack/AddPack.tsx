@@ -12,7 +12,7 @@ import { addPackTC } from '../packsSlice'
 import s from './AddPack.module.scss'
 
 type AddPackType = {
-  closeModal?: () => void
+  closeModal: () => void
   active: boolean
 }
 
@@ -55,6 +55,7 @@ export const AddPack = (props: AddPackType) => {
     },
     onSubmit: async values => {
       await dispatch(addPackTC({ ...formik.values }))
+      props.closeModal()
       formik.resetForm()
     },
   })
