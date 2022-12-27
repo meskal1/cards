@@ -8,6 +8,8 @@ import { useDispatch } from 'react-redux'
 import { useAppDispatch } from '../../../hooks/reduxHooks'
 import { updatePackTC } from '../packsSlice'
 
+import s from './EditPack.module.scss'
+
 type EditPackType = {
   closeModal: () => void
   active: boolean
@@ -52,23 +54,33 @@ export const EditPack: React.FC<EditPackType> = ({ active, data, closeModal }) =
   })
 
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <div>
-        <h3>Edit Pack</h3>
-        <TextField
-          autoFocus
-          margin="dense"
-          label="Name"
-          size={'small'}
-          {...formik.getFieldProps('name')}
-        />
-        {formik.touched.name && errors.name && <div>{errors.name}</div>}
-      </div>
-      <div>
-        <Button type={'submit'} variant="contained">
-          Submit
-        </Button>
-      </div>
-    </form>
+    <div className={s.Container}>
+      <form onSubmit={formik.handleSubmit}>
+        <div className={s.PackDataBlock}>
+          <h3 className={s.Title}>Edit Pack</h3>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Name"
+            size={'small'}
+            {...formik.getFieldProps('name')}
+          />
+          {
+            <div
+              className={
+                formik.touched.name && errors.name ? `${s.Error} ${s.Error__active}` : `${s.Error}`
+              }
+            >
+              {errors.name}
+            </div>
+          }
+        </div>
+        <div className={s.Submit}>
+          <Button type={'submit'} variant="contained">
+            Submit
+          </Button>
+        </div>
+      </form>
+    </div>
   )
 }

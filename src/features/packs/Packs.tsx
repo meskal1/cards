@@ -10,6 +10,7 @@ import { useAppDispatch } from '../../hooks/reduxHooks'
 import { getSearchParams } from '../../utils/getSearchParams'
 
 import { AddPack } from './addPack/AddPack'
+// eslint-disable-next-line import/namespace
 import { EditPack } from './editPack/EditPack'
 import { PackOwnerSwitcher } from './PackOwnerSwitcher/PackOwnerSwitcher'
 import s from './Packs.module.scss'
