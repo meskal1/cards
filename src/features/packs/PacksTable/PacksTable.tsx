@@ -48,9 +48,12 @@ const heads: HeadType<PacksOrderByType>[] = [
   { id: 'user_name', label: 'Created by' },
 ]
 
-type PacksTablePropsType = {}
+type PacksTablePropsType = {
+  openEditModal: () => void
+  setEditData: (data: UpdatePackDataType) => void
+}
 
-export function PacksTable({}: PacksTablePropsType) {
+export function PacksTable({ openEditModal, setEditData }: PacksTablePropsType) {
   const userId = useAppSelector(state => state.profile.userData.id)
   const tableData = useAppSelector<AppPackType[]>(state => state.packs.tableData)
   const serverSort = useAppSelector<SortValuesType>(state => state.packs.queryParams.sortPacks)
@@ -82,7 +85,11 @@ export function PacksTable({}: PacksTablePropsType) {
   }
   const handleStudyCardPack = () => alert('study card')
   const handleEditCardPack = (data: UpdatePackDataType) => {
-    dispatch(updatePackTC(data))
+    const { id, name } = data
+
+    setEditData({ id, name })
+    openEditModal()
+    //dispatch(updatePackTC(data))
   }
   const handleDeleteCardPack = (id: string) => {
     dispatch(deletePackTC(id))
@@ -122,7 +129,7 @@ export function PacksTable({}: PacksTablePropsType) {
                       isStudyDisabled={row.cardsCount === 0}
                       isAllDisabled={row.requestStatus === 'loading'}
                       onStudy={handleStudyCardPack}
-                      onEdit={() => handleEditCardPack({ id: row._id, name: 'updated name' })}
+                      onEdit={() => handleEditCardPack({ id: row._id, name: row.name })}
                       onDelete={() => handleDeleteCardPack(row._id)}
                     />
                   </TableRow>

@@ -10,11 +10,12 @@ import { useAppDispatch } from '../../hooks/reduxHooks'
 import { getSearchParams } from '../../utils/getSearchParams'
 
 import { AddPack } from './addPack/AddPack'
+import { EditPack } from './editPack/EditPack'
 import { PackOwnerSwitcher } from './PackOwnerSwitcher/PackOwnerSwitcher'
 import s from './Packs.module.scss'
 import { PackSlider } from './PackSlider/PackSlider'
 import { PacksResetFilter } from './PacksResetFilter/PacksResetFilter'
-import { updatePacksQueryParamsTC, addPackTC } from './packsSlice'
+import { UpdatePackDataType, updatePacksQueryParamsTC } from './packsSlice'
 import { PacksTable } from './PacksTable/PacksTable'
 
 export const Packs = () => {
@@ -26,13 +27,21 @@ export const Packs = () => {
 
   // for modal dialog
   const [addModal, setAddModal] = React.useState(false)
+  const [editModal, setEditModal] = React.useState(false)
+  const [editData, setEditData] = React.useState<UpdatePackDataType>({ id: '', name: '' })
 
   const handleOpenAddModal = React.useCallback(() => setAddModal(true), [setAddModal])
+
   const handleCloseAddModal = React.useCallback(() => setAddModal(false), [setAddModal])
 
-  const handleTitleButton = () => {
-    dispatch(addPackTC({ name: 'NEW PACK', private: false }))
-  }
+  const handleOpenEditModal = React.useCallback(() => setEditModal(true), [setEditModal])
+
+  const handleCloseEditModal = React.useCallback(() => setEditModal(false), [setEditModal])
+
+  const handleSetEditData = React.useCallback(
+    (data: UpdatePackDataType) => setEditData(data),
+    [setEditData]
+  )
 
   React.useEffect(() => {
     setShowChildren(true)
@@ -56,12 +65,18 @@ export const Packs = () => {
               <PacksResetFilter />
             </div>
           </div>
-          <PacksTable />
+          <PacksTable setEditData={handleSetEditData} openEditModal={handleOpenEditModal} />
           <CustomPagination />
-
-          <CustomModalDialog active={addModal} setActive={handleCloseAddModal}>
-            <AddPack active={addModal} closeModal={handleCloseAddModal}></AddPack>
-          </CustomModalDialog>
+          {
+            <CustomModalDialog active={addModal} setActive={handleCloseAddModal}>
+              <AddPack active={addModal} closeModal={handleCloseAddModal}></AddPack>
+            </CustomModalDialog>
+          }
+          {
+            <CustomModalDialog active={editModal} setActive={handleCloseEditModal}>
+              <EditPack active={editModal} data={editData} closeModal={handleCloseEditModal} />
+            </CustomModalDialog>
+          }
         </div>
       )}
     </>
