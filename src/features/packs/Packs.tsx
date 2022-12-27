@@ -2,14 +2,21 @@ import * as React from 'react'
 
 import { CustomPagination } from '../../common/components/CustomPagination/CustomPagination'
 import { CustomSearch } from '../../common/components/CustomSearch/CustomSearch'
+import { CustomModalDialog } from '../../common/components/ModalDialog/CustomModalDialog'
 import { PageTitleBlock } from '../../common/components/PageTitleBlock/PageTitleBlock'
 import { useAppDispatch } from '../../hooks/reduxHooks'
 
+import { AddPack } from './addPack/AddPack'
+// eslint-disable-next-line import/namespace
+import { EditPack } from './editPack/EditPack'
 import { PackOwnerSwitcher } from './PackOwnerSwitcher/PackOwnerSwitcher'
 import s from './Packs.module.scss'
 import { PackSlider } from './PackSlider/PackSlider'
 import { PacksResetFilter } from './PacksResetFilter/PacksResetFilter'
-import { updatePacksQueryParamsTC, addPackTC, PacksQueryParamsType } from './packsSlice'
+// eslint-disable-next-line import/order
+import { UpdatePackDataType, updatePacksQueryParamsTC, PacksQueryParamsType } from './packsSlice'
+
+// eslint-disable-next-line import/namespace
 import { PacksTable } from './PacksTable/PacksTable'
 
 export const Packs = () => {
@@ -17,9 +24,23 @@ export const Packs = () => {
   const dispatch = useAppDispatch()
   const [showChildren, setShowChildren] = React.useState(false)
 
-  const handleTitleButton = () => {
-    dispatch(addPackTC({ name: 'NEW PACK', private: false }))
-  }
+  // for modal dialog
+  const [addModal, setAddModal] = React.useState(false)
+  const [editModal, setEditModal] = React.useState(false)
+  const [editData, setEditData] = React.useState<UpdatePackDataType>({ id: '', name: '' })
+
+  const handleOpenAddModal = React.useCallback(() => setAddModal(true), [setAddModal])
+
+  const handleCloseAddModal = React.useCallback(() => setAddModal(false), [setAddModal])
+
+  const handleOpenEditModal = React.useCallback(() => setEditModal(true), [setEditModal])
+
+  const handleCloseEditModal = React.useCallback(() => setEditModal(false), [setEditModal])
+
+  const handleSetEditData = React.useCallback(
+    (data: UpdatePackDataType) => setEditData(data),
+    [setEditData]
+  )
 
   React.useEffect(() => {
     const paramsArray = window.location.toString().split('?')[1]
@@ -48,7 +69,7 @@ export const Packs = () => {
             <PageTitleBlock
               title={'packs list'}
               button={'add new pack'}
-              buttonClick={handleTitleButton}
+              buttonClick={handleOpenAddModal}
             />
             <div className={s.packs__controlPanel}>
               <CustomSearch />
@@ -57,8 +78,18 @@ export const Packs = () => {
               <PacksResetFilter />
             </div>
           </div>
-          <PacksTable />
+          <PacksTable setEditData={handleSetEditData} openEditModal={handleOpenEditModal} />
           <CustomPagination />
+          {
+            <CustomModalDialog active={addModal} setActive={handleCloseAddModal}>
+              <AddPack active={addModal} closeModal={handleCloseAddModal}></AddPack>
+            </CustomModalDialog>
+          }
+          {
+            <CustomModalDialog active={editModal} setActive={handleCloseEditModal}>
+              <EditPack active={editModal} data={editData} closeModal={handleCloseEditModal} />
+            </CustomModalDialog>
+          }
         </div>
       )}
     </>

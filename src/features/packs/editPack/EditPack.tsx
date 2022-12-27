@@ -3,57 +3,84 @@ import React from 'react'
 import { TextField } from '@mui/material'
 import Button from '@mui/material/Button'
 import { useFormik } from 'formik'
+import { useDispatch } from 'react-redux'
+
+import { useAppDispatch } from '../../../hooks/reduxHooks'
+import { updatePackTC } from '../packsSlice'
+
+import s from './EditPack.module.scss'
 
 type EditPackType = {
+  closeModal: () => void
+  active: boolean
   data: {
     id: string
     name: string
   }
 }
 
-export const EditPack: React.FC<EditPackType> = ({ data }) => {
-  const [isDisabled, setIsDisabled] = React.useState(false)
+type formikErrorType = {
+  name?: string
+}
 
-  type ErrorType = {
-    name?: string
-  }
+export const EditPack: React.FC<EditPackType> = ({ active, data, closeModal }) => {
+  const dispatch = useAppDispatch()
+  const [errors, setErrors] = React.useState<formikErrorType>({ name: '' })
+
+  React.useEffect(() => {
+    setErrors({ name: '' })
+    formik.values.name = data.name
+  }, [active, data])
+  console.log(data.name)
+
   const formik = useFormik({
     initialValues: {
       name: data.name,
     },
     validate: values => {
-      const errors: ErrorType = {}
-
       if (!values.name) {
-        errors.name = 'name is required'
-        setIsDisabled(true)
+        setErrors({ name: 'name is required' })
       } else if (values.name.length > 50) {
-        errors.name = 'name should be less then 50 characters'
-        setIsDisabled(true)
+        setErrors({ name: 'name should be less then 50 characters' })
+      } else {
+        setErrors({ name: '' })
       }
-
-      return errors
     },
     onSubmit: values => {
-      console.log(values)
+      dispatch(updatePackTC({ id: data.id, name: formik.values.name }))
+      closeModal()
+      formik.resetForm()
     },
   })
 
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <h3>Edit Pack</h3>
-      <p>{data.id}</p>
-      <TextField
-        autoFocus
-        margin="dense"
-        label="Name"
-        size={'small'}
-        {...formik.getFieldProps('name')}
-      />
-      {formik.touched.name && formik.errors.name && <div>{formik.errors.name}</div>}
-      <Button type={'submit'} variant="contained" disabled={isDisabled}>
-        Submit
-      </Button>
-    </form>
+    <div className={s.Container}>
+      <form onSubmit={formik.handleSubmit}>
+        <div className={s.PackDataBlock}>
+          <h3 className={s.Title}>Edit Pack</h3>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Name"
+            size={'small'}
+            {...formik.getFieldProps('name')}
+          />
+          {
+            <div
+              className={
+                formik.touched.name && errors.name ? `${s.Error} ${s.Error__active}` : `${s.Error}`
+              }
+            >
+              {errors.name}
+            </div>
+          }
+        </div>
+        <div className={s.Submit}>
+          <Button disabled={errors.name ? true : false} type={'submit'} variant="contained">
+            Submit
+          </Button>
+        </div>
+      </form>
+    </div>
   )
 }

@@ -1,7 +1,9 @@
 import * as React from 'react'
 
+import { AddPack } from '../../../features/packs/addPack/AddPack'
 import { BackToPacks } from '../BackToPacks/BackToPacks'
 import { CustomButton } from '../CustomButton/CustomButton'
+import { CustomModalDialog } from '../ModalDialog/CustomModalDialog'
 
 import s from './PageTitleBlock.module.scss'
 

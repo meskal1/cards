@@ -12,7 +12,13 @@ import {
   HeadType,
 } from '../../../common/components/CustomTableHead/CustomTableHead'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
-import { SortValuesType, updatePacksQueryParamsTC } from '../packsSlice'
+import {
+  AppPackType,
+  deletePackTC,
+  SortValuesType,
+  UpdatePackDataType,
+  updatePacksQueryParamsTC,
+} from '../packsSlice'
 
 import { PacksTableBody } from './PacksTableBody/PacksTableBody'
 
@@ -33,9 +39,16 @@ const heads: HeadType<PacksOrderByType>[] = [
   { id: 'user_name', label: 'Created by' },
 ]
 
-type PacksTablePropsType = {}
+type PacksTablePropsType = {
+  openEditModal: () => void
+  setEditData: (data: UpdatePackDataType) => void
+}
 
-export function PacksTable({}: PacksTablePropsType) {
+// eslint-disable-next-line import/export
+export function PacksTable({ openEditModal, setEditData }: PacksTablePropsType) {
+  const userId = useAppSelector(state => state.profile.userData.id)
+  const tableData = useAppSelector<AppPackType[]>(state => state.packs.tableData)
+
   const status = useAppSelector<RequestStatusType>(state => state.packs.status)
 
   const serverSort = useAppSelector<SortValuesType>(state => state.packs.queryParams.sortPacks)
@@ -54,6 +67,17 @@ export function PacksTable({}: PacksTablePropsType) {
 
     dispatch(updatePacksQueryParamsTC({ sortPacks: newServerOrder }))
   }
+  const handleStudyCardPack = () => alert('study card')
+  const handleEditCardPack = (data: UpdatePackDataType) => {
+    const { id, name } = data
+
+    setEditData({ id, name })
+    openEditModal()
+    //dispatch(updatePackTC(data))
+  }
+  const handleDeleteCardPack = (id: string) => {
+    dispatch(deletePackTC(id))
+  }
 
   return (
     <Box>
@@ -70,7 +94,11 @@ export function PacksTable({}: PacksTablePropsType) {
             {status === 'loading' ? (
               <TableBodySkeleton columnsCount={heads.length + 1} rowsCount={10} />
             ) : (
-              <PacksTableBody heads={heads} />
+              <PacksTableBody
+                heads={heads}
+                openEditModal={openEditModal}
+                setEditData={setEditData}
+              />
             )}
           </Table>
         </TableContainer>

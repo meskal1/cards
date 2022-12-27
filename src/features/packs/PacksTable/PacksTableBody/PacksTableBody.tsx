@@ -10,7 +10,8 @@ import { RequestStatusType } from '../../../../app/appSlice'
 import { HeadType } from '../../../../common/components/CustomTableHead/CustomTableHead'
 import { PATH } from '../../../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../../../hooks/reduxHooks'
-import { AppPackType, deletePackTC, UpdatePackDataType, updatePackTC } from '../../packsSlice'
+import { AppPackType, deletePackTC, UpdatePackDataType } from '../../packsSlice'
+// eslint-disable-next-line import/namespace
 import { PacksOrderByType } from '../PacksTable'
 
 import { PacksActionCell } from './PacksActionCell/PacksActionCell'
@@ -18,9 +19,15 @@ import s from './PacksTableBody.module.scss'
 
 type PacksTableBodyType = {
   heads: HeadType<PacksOrderByType>[]
+  openEditModal: () => void
+  setEditData: (data: UpdatePackDataType) => void
 }
 
-export const PacksTableBody: React.FC<PacksTableBodyType> = ({ heads }) => {
+export const PacksTableBody: React.FC<PacksTableBodyType> = ({
+  heads,
+  setEditData,
+  openEditModal,
+}) => {
   const tableData = useAppSelector<AppPackType[]>(state => state.packs.tableData)
   const userId = useAppSelector(state => state.profile.userData.id)
 
@@ -38,7 +45,8 @@ export const PacksTableBody: React.FC<PacksTableBodyType> = ({ heads }) => {
 
   const handleStudyCardPack = () => alert('study card')
   const handleEditCardPack = (data: UpdatePackDataType) => {
-    dispatch(updatePackTC(data))
+    setEditData(data)
+    openEditModal()
   }
   const handleDeleteCardPack = (id: string) => {
     dispatch(deletePackTC(id))
@@ -68,7 +76,7 @@ export const PacksTableBody: React.FC<PacksTableBodyType> = ({ heads }) => {
               isStudyDisabled={row.cardsCount === 0}
               isAllDisabled={row.requestStatus === 'loading'}
               onStudy={handleStudyCardPack}
-              onEdit={() => handleEditCardPack({ id: row._id, name: 'updated name' })}
+              onEdit={() => handleEditCardPack({ id: row._id, name: row.name })}
               onDelete={() => handleDeleteCardPack(row._id)}
             />
           </TableRow>
