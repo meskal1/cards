@@ -8,7 +8,6 @@ import { CustomSearch } from '../../common/components/CustomSearch/CustomSearch'
 import { PageTitleBlock } from '../../common/components/PageTitleBlock/PageTitleBlock'
 import { PATH } from '../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
-import { ServerCardType } from '../../services/cardsApi'
 import { getSearchParams } from '../../utils/getSearchParams'
 
 import s from './Cards.module.scss'

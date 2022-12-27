@@ -2,8 +2,8 @@ import React, { MouseEvent } from 'react'
 
 import TableCell from '@mui/material/TableCell'
 
-import { CustomDeleteIconButton } from '../../../../common/components/CustomIconButtons/CustomDeleteIconButton'
-import { CustomEditIconButton } from '../../../../common/components/CustomIconButtons/CustomEditIconButton'
+import { CustomDeleteIconButton } from '../../../../../common/components/CustomIconButtons/CustomDeleteIconButton'
+import { CustomEditIconButton } from '../../../../../common/components/CustomIconButtons/CustomEditIconButton'
 
 import s from './CardsActionCell.module.scss'
 
