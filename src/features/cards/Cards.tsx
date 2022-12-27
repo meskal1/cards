@@ -11,14 +11,19 @@ import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { getSearchParams } from '../../utils/getSearchParams'
 
 import s from './Cards.module.scss'
-import { CardsErrorType, clearCardsState, updateCardsQueryParamsTC } from './cardsSlice'
+import {
+  AppCardType,
+  CardsErrorType,
+  clearCardsState,
+  updateCardsQueryParamsTC,
+} from './cardsSlice'
 import { CardsTable } from './CardsTable/CardsTable'
 
 export const Cards = () => {
   const dispatch = useAppDispatch()
   const [searchParams] = useSearchParams()
   const allParams = getSearchParams(searchParams)
-  const tableData = useAppSelector<ServerCardType[]>(state => state.cards.tableData)
+  const tableData = useAppSelector<AppCardType[]>(state => state.cards.tableData)
   const packName = useAppSelector(state => state.cards.cardsData.packName)
   const packUserId = useAppSelector(state => state.cards.cardsData.packUserId)
   const myId = useAppSelector(state => state.profile.userData.id)

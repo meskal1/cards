@@ -27,7 +27,7 @@ function App() {
         <>
           <div className={s.app}>
             {isLoggedIn && <Header />}
-            {status === 'loading' && <LinearProgress />}
+            {status === 'loading' ? <LinearProgress /> : <div className={s.fakeProgress}></div>}
             <main className={s.mainContent}>
               <AppRoutes />
             </main>
