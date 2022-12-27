@@ -39,12 +39,14 @@ export const PackOwnerSwitcher = () => {
         <p className={s.switcher__title}>show packs cards</p>
         <ButtonGroup className={s.switcher__block} disableElevation variant="text">
           <Button
+            disabled={!!isMyPacks}
             className={`${s.switcher__blockItem} ${isMyPacks ? s.active : ''}`}
             onClick={handleMyCards}
           >
             <p>my</p>
           </Button>
           <Button
+            disabled={!isMyPacks}
             className={`${s.switcher__blockItem} ${isMyPacks ? '' : s.active}`}
             onClick={handleAllCards}
           >
