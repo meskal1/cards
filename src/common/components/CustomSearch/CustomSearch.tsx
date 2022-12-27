@@ -42,17 +42,18 @@ export const CustomSearch: React.FC<CustomSearchType> = ({ cards }) => {
       }
     }
 
-    if (inputValue !== search) {
+    if (inputValue !== search && inputValue !== '') {
       setSearchParams({ ...allParams, [`${cards ? 'cardQuestion' : 'search'}`]: inputValue })
       isItWorthUpdating()
     }
 
-    if (inputValue === '') {
+    if (debouncedValue === '' && inintInputValue) {
       cards ? searchParams.delete('cardQuestion') : searchParams.delete('search')
       setSearchParams(searchParams)
       isItWorthUpdating()
     }
   }, [debouncedValue])
+  console.log('render search')
 
   return (
     <>

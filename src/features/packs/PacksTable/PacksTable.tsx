@@ -1,35 +1,20 @@
 import * as React from 'react'
-import { MouseEvent } from 'react'
 
 import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
-import TableBody from '@mui/material/TableBody'
-import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
-import TableRow from '@mui/material/TableRow'
-import dayjs from 'dayjs'
-import { createSearchParams, useNavigate } from 'react-router-dom'
 
 import { RequestStatusType } from '../../../app/appSlice'
+import { TableBodySkeleton } from '../../../common/components/CustomSkeletons/TableBodySkeleton/TableBodySkeleton'
 import {
   CustomTableHead,
   HeadType,
 } from '../../../common/components/CustomTableHead/CustomTableHead'
-import { PATH } from '../../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
-import { ServerPackType } from '../../../services/packsApi'
-import {
-  deletePackTC,
-  SortValuesType,
-  updatePackTC,
-  UpdatePackDataType,
-  updatePacksQueryParamsTC,
-  AppPackType,
-} from '../packsSlice'
+import { SortValuesType, updatePacksQueryParamsTC } from '../packsSlice'
 
-import { PacksActionCell } from './PacksActionCell/PacksActionCell'
-import s from './PacksTable.module.scss'
+import { PacksTableBody } from './PacksTableBody/PacksTableBody'
 
 export type PacksOrderByType = 'name' | 'cardsCount' | 'updated' | 'user_name'
 export type ServerOrderType = '0' | '1'
@@ -56,20 +41,12 @@ type PacksTablePropsType = {
 export function PacksTable({ openEditModal, setEditData }: PacksTablePropsType) {
   const userId = useAppSelector(state => state.profile.userData.id)
   const tableData = useAppSelector<AppPackType[]>(state => state.packs.tableData)
+export function PacksTable({}: PacksTablePropsType) {
+  const status = useAppSelector<RequestStatusType>(state => state.packs.status)
+
   const serverSort = useAppSelector<SortValuesType>(state => state.packs.queryParams.sortPacks)
 
-  const navigate = useNavigate()
-
   const dispatch = useAppDispatch()
-
-  const handleOpenCardPack = (id: string, requestStatus: RequestStatusType) => {
-    if (requestStatus === 'loading') return
-
-    navigate({
-      pathname: PATH.CARDS,
-      search: createSearchParams({ cardsPack_id: id }).toString(),
-    })
-  }
 
   // Check current order
   const serverOrder = serverSort.slice(0, 1) as ServerOrderType
@@ -105,7 +82,13 @@ export function PacksTable({ openEditModal, setEditData }: PacksTablePropsType) 
               order={tableOrder}
               orderBy={tableOrderBy}
               onSetSort={handleSetSort}
+              withActions={true}
             />
+            {status === 'loading' ? (
+              <TableBodySkeleton columnsCount={heads.length + 1} rowsCount={10} />
+            ) : (
+              <PacksTableBody heads={heads} />
+            )}
             <TableBody>
               {tableData.map(row => {
                 return (

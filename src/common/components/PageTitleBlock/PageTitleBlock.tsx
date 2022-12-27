@@ -26,9 +26,11 @@ export const PageTitleBlock: React.FC<PageTitleBlockType> = React.memo(
           {linkToPacks && <BackToPacks />}
           <div className={s.pageTitleBlock__titleBlock}>
             <h2 className={s.pageTitleBlock__title}>{title}</h2>
-            <CustomButton onClick={handleClick}>
-              <p>{button}</p>
-            </CustomButton>
+            {button && (
+              <CustomButton onClick={handleClick}>
+                <p>{button}</p>
+              </CustomButton>
+            )}
           </div>
         </div>
       </>

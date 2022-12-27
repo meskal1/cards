@@ -1,8 +1,6 @@
 .pageTitleBlockContainer {
   display: flex;
   flex-direction: column;
-
-  margin: 0px 0px 22px 0px;
 }
 
 .pageTitleBlock {
@@ -13,7 +11,10 @@
   }
 
   &__title {
+    max-width: 50%;
+
     font-size: 22px;
     font-weight: 600;
+    word-break: break-word;
   }
 }
