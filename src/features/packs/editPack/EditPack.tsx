@@ -76,7 +76,7 @@ export const EditPack: React.FC<EditPackType> = ({ active, data, closeModal }) =
           }
         </div>
         <div className={s.Submit}>
-          <Button type={'submit'} variant="contained">
+          <Button disabled={errors.name ? true : false} type={'submit'} variant="contained">
             Submit
           </Button>
         </div>

@@ -13,8 +13,10 @@ import { PackOwnerSwitcher } from './PackOwnerSwitcher/PackOwnerSwitcher'
 import s from './Packs.module.scss'
 import { PackSlider } from './PackSlider/PackSlider'
 import { PacksResetFilter } from './PacksResetFilter/PacksResetFilter'
-import { UpdatePackDataType, updatePacksQueryParamsTC } from './packsSlice'
-import { updatePacksQueryParamsTC, addPackTC, PacksQueryParamsType } from './packsSlice'
+// eslint-disable-next-line import/order
+import { UpdatePackDataType, updatePacksQueryParamsTC, PacksQueryParamsType } from './packsSlice'
+
+// eslint-disable-next-line import/namespace
 import { PacksTable } from './PacksTable/PacksTable'
 
 export const Packs = () => {

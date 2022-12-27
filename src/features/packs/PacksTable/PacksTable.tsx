@@ -12,7 +12,13 @@ import {
   HeadType,
 } from '../../../common/components/CustomTableHead/CustomTableHead'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
-import { SortValuesType, updatePacksQueryParamsTC } from '../packsSlice'
+import {
+  AppPackType,
+  deletePackTC,
+  SortValuesType,
+  UpdatePackDataType,
+  updatePacksQueryParamsTC,
+} from '../packsSlice'
 
 import { PacksTableBody } from './PacksTableBody/PacksTableBody'
 
@@ -38,10 +44,11 @@ type PacksTablePropsType = {
   setEditData: (data: UpdatePackDataType) => void
 }
 
+// eslint-disable-next-line import/export
 export function PacksTable({ openEditModal, setEditData }: PacksTablePropsType) {
   const userId = useAppSelector(state => state.profile.userData.id)
   const tableData = useAppSelector<AppPackType[]>(state => state.packs.tableData)
-export function PacksTable({}: PacksTablePropsType) {
+
   const status = useAppSelector<RequestStatusType>(state => state.packs.status)
 
   const serverSort = useAppSelector<SortValuesType>(state => state.packs.queryParams.sortPacks)
@@ -87,38 +94,12 @@ export function PacksTable({}: PacksTablePropsType) {
             {status === 'loading' ? (
               <TableBodySkeleton columnsCount={heads.length + 1} rowsCount={10} />
             ) : (
-              <PacksTableBody heads={heads} />
+              <PacksTableBody
+                heads={heads}
+                openEditModal={openEditModal}
+                setEditData={setEditData}
+              />
             )}
-            <TableBody>
-              {tableData.map(row => {
-                return (
-                  <TableRow
-                    className={s.row}
-                    key={row._id}
-                    hover={row.requestStatus === 'idle'}
-                    onClick={e => handleOpenCardPack(row._id, row.requestStatus)}
-                  >
-                    {heads.map(h => {
-                      return (
-                        <TableCell key={h.id}>
-                          <p className={s.tableCellText}>
-                            {h.id === 'updated' ? dayjs(row[h.id]).format('DD.MM.YYYY') : row[h.id]}
-                          </p>
-                        </TableCell>
-                      )
-                    })}
-                    <PacksActionCell
-                      isMine={row.user_id === userId}
-                      isStudyDisabled={row.cardsCount === 0}
-                      isAllDisabled={row.requestStatus === 'loading'}
-                      onStudy={handleStudyCardPack}
-                      onEdit={() => handleEditCardPack({ id: row._id, name: row.name })}
-                      onDelete={() => handleDeleteCardPack(row._id)}
-                    />
-                  </TableRow>
-                )
-              })}
-            </TableBody>
           </Table>
         </TableContainer>
       </Paper>
