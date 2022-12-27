@@ -12,6 +12,7 @@
   &__controlBlock {
     display: flex;
     flex-direction: column;
+    row-gap: 22px;
   }
 
   &__controlPanel {
@@ -25,5 +26,18 @@
     flex: 1 1 auto;
 
     border: 1px solid green;
+  }
+
+  &__emptyBlock {
+    margin: 86px auto 0;
+
+    text-align: center;
+  }
+
+  &__emptyTitle {
+    margin: 0px 0px 32px 0px;
+
+    font-weight: 500;
+    color: grey;
   }
 }
