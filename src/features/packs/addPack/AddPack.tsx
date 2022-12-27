@@ -65,7 +65,15 @@ export const AddPack = (props: AddPackType) => {
       <form onSubmit={formik.handleSubmit}>
         <h3 className={s.Title}>Add Pack</h3>
         <TextField margin="dense" {...formik.getFieldProps('name')} size={'small'} label={'name'} />
-        {formik.touched.name && errors.name && <div className={s.Error}>{errors.name}</div>}
+        {
+          <div
+            className={
+              formik.touched.name && errors.name ? `${s.Error} ${s.Error__active}` : `${s.Error}`
+            }
+          >
+            {errors.name}
+          </div>
+        }
         <div>
           <FormControlLabel
             control={
@@ -74,7 +82,7 @@ export const AddPack = (props: AddPackType) => {
             label="Private"
           />
         </div>
-        <div>
+        <div className={s.Submit}>
           <Button type={'submit'} variant="contained" disabled={isDisabled}>
             Create
           </Button>
