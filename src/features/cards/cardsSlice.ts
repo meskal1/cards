@@ -9,13 +9,17 @@ import { handleServerNetworkError } from '../../utils/errorUtils'
 const initialState = {
   queryParams: {
     min: 0,
-    max: 10,
+    max: 0,
     page: 1,
     pageCount: 10,
     sortCards: '0grade' as SortValuesCardsType,
     cardsPack_id: '',
     cardQuestion: '',
     cardAnswer: '',
+  },
+  cardsData: {
+    packName: '',
+    packUserId: '',
   },
   tableData: [] as AppCardType[],
   error: null as CardsErrorType,
@@ -30,6 +34,9 @@ const cardsSlice = createSlice({
     },
     setCardsTableData(state, action: PayloadAction<CardsTablePayloadType>) {
       state.tableData = action.payload.map(c => ({ ...c, requestStatus: 'idle' }))
+    },
+    setCardsData(state, action: PayloadAction<SetCardsDataPayloadType>) {
+      state.cardsData = action.payload
     },
     setError(state, action: PayloadAction<CardsErrorPayloadType>) {
       state.error = action.payload.error
@@ -56,6 +63,7 @@ export const {
   setError,
   clearCardsState,
   setCardRequestStatus,
+  setCardsData,
 } = cardsSlice.actions
 
 // THUNKS
@@ -78,6 +86,9 @@ export const getCardsTC =
       const data = getState().cards.queryParams
       const response = await cardsAPI.getCards(data)
 
+      dispatch(
+        setCardsData({ packName: response.data.packName, packUserId: response.data.packUserId })
+      )
       dispatch(setCardsTableData(response.data.cards))
     } catch (e) {
       // Подумать можно ли это вынести в handleServerNetworkError
@@ -160,7 +171,15 @@ type SetCardsQueryParamsPayloadType = {
 
 type CardsQueryParamsType = Partial<SetCardsQueryParamsPayloadType>
 
-type CardRequestStatusPayloadType = { cardId: string; requestStatus: RequestStatusType }
+type CardRequestStatusPayloadType = {
+  cardId: string
+  requestStatus: RequestStatusType
+}
+
+type SetCardsDataPayloadType = {
+  packName: string
+  packUserId: string
+}
 
 type CardsTablePayloadType = ServerCardType[]
 
