@@ -28,10 +28,10 @@ export const PackOwnerSwitcher = () => {
   }
 
   React.useEffect(() => {
-    if (isMyPacks) {
+    if (isMyPacks && allParams.isMyPacks === undefined) {
       setSearchParams({ ...allParams, isMyPacks: 'yes' })
     }
-  }, [])
+  }, [allParams])
 
   return (
     <>
