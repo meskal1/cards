@@ -16,6 +16,10 @@ const initialState = {
     search: '',
     isMyPacks: '' as 'yes' | '',
   },
+  cardsCount: {
+    minCardsCount: 0,
+    maxCardsCount: 0,
+  },
   tableData: [] as AppPackType[],
 }
 
@@ -28,6 +32,9 @@ const packsSlice = createSlice({
     },
     setPacksTableData(state, action: PayloadAction<PacksTablePayloadType>) {
       state.tableData = action.payload.map(p => ({ ...p, requestStatus: 'idle' }))
+    },
+    setCardsCount(state, action: PayloadAction<SetCardsCountPayloadType>) {
+      state.cardsCount = action.payload
     },
     setPackRequestStatus(state, action: PayloadAction<PackRequestStatusPayloadType>) {
       state.tableData.forEach(p => {
@@ -42,14 +49,30 @@ const packsSlice = createSlice({
 export const packsReducer = packsSlice.reducer
 
 // ACTIONS
-export const { setPacksQueryParams, setPackRequestStatus, setPacksTableData } = packsSlice.actions
+export const { setPacksQueryParams, setPackRequestStatus, setPacksTableData, setCardsCount } =
+  packsSlice.actions
 
 // THUNKS
 export const updatePacksQueryParamsTC =
-  (queryProps: PacksQueryParamsType) => async (dispatch: AppDispatchType) => {
+  (queryProps: PacksQueryParamsType) =>
+  async (dispatch: AppDispatchType, getState: () => RootStateType) => {
     try {
-      dispatch(setPacksQueryParams(queryProps))
+      // THE TYPES BUG WAS FOUND, THIS IS THE FIX
+      const { max, min, page, pageCount } = queryProps
+      const stateQueryParams = getState().packs.queryParams
+
+      dispatch(
+        setPacksQueryParams({
+          ...queryProps,
+          max: max || max === 0 ? +max : stateQueryParams.max,
+          min: min || min === 0 ? +min : stateQueryParams.min,
+          page: page || page === 0 ? +page : stateQueryParams.page,
+          pageCount: pageCount || pageCount === 0 ? +pageCount : stateQueryParams.pageCount,
+        })
+      )
       await dispatch(getPacksTC())
+
+      return true
     } catch (e) {
       handleServerNetworkError(dispatch, e as Error | AxiosError)
     }
@@ -76,10 +99,7 @@ export const getPacksTC =
       const maxCardsCount = response.data.maxCardsCount
 
       dispatch(setPacksTableData(response.data.cardPacks))
-
-      // if (min && max) {
-      dispatch(setPacksQueryParams({ min: minCardsCount, max: maxCardsCount }))
-      // }
+      dispatch(setCardsCount({ minCardsCount, maxCardsCount }))
     } catch (e) {
       handleServerNetworkError(dispatch, e as Error | AxiosError)
     }
@@ -136,9 +156,15 @@ export type SortValuesType =
 
 type PacksTablePayloadType = ServerPackType[]
 
-type PackRequestStatusPayloadType = { packId: string; requestStatus: RequestStatusType }
+type PackRequestStatusPayloadType = {
+  packId: string
+  requestStatus: RequestStatusType
+}
 
-type SortPacksPayloadType = { sortPacks: SortValuesType }
+type SetCardsCountPayloadType = {
+  minCardsCount: number
+  maxCardsCount: number
+}
 
 type SetPacksQueryParamsPayloadType = {
   min: number
@@ -150,12 +176,7 @@ type SetPacksQueryParamsPayloadType = {
   isMyPacks: 'yes' | ''
 }
 
-type SetCardsCountPayloadType = {
-  maxCardsCount: number
-  minCardsCount: number
-}
-
-type PacksQueryParamsType = Partial<SetPacksQueryParamsPayloadType>
+export type PacksQueryParamsType = Partial<SetPacksQueryParamsPayloadType>
 
 export type UpdatePackDataType = {
   id: string
