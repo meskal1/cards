@@ -11,7 +11,10 @@
   }
 
   &__title {
+    max-width: 50%;
+
     font-size: 22px;
     font-weight: 600;
+    word-break: break-word;
   }
 }
