@@ -136,4 +136,6 @@ export const createPasswordTC =
 // TYPES
 export type AuthStateType = typeof initialState
 
-type SetPasswordStatusType = { passwordIsChanged: boolean }
+type SetPasswordStatusType = {
+  passwordIsChanged: boolean
+}

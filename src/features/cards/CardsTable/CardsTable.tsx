@@ -1,4 +1,4 @@
-import React, { MouseEvent } from 'react'
+import * as React from 'react'
 
 import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
@@ -16,7 +16,6 @@ import {
   HeadType,
 } from '../../../common/components/CustomTableHead/CustomTableHead'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
-import { ServerCardType } from '../../../services/cardsApi'
 import { ServerOrderType, TableOrder, TableOrderType } from '../../packs/PacksTable/PacksTable'
 import {
   AppCardType,
@@ -40,7 +39,7 @@ const heads: HeadType<CardsOrderByType>[] = [
 ]
 
 type CardsTablePropsType = {
-  isMine: boolean
+  isMine?: boolean
 }
 
 export const CardsTable: React.FC<CardsTablePropsType> = ({ isMine }) => {

@@ -74,6 +74,10 @@ type SetAppMessagePayloadType = {
   messageText: AppAlertMessageTextType
 }
 
-export type SetRequestStatusPayloadType = { status: RequestStatusType }
+export type SetRequestStatusPayloadType = {
+  status: RequestStatusType
+}
 
-export type SetAppInitializedPayloadType = { isInitialized: boolean }
+export type SetAppInitializedPayloadType = {
+  isInitialized: boolean
+}
