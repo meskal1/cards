@@ -43,7 +43,10 @@ export const PacksTableBody: React.FC<PacksTableBodyType> = ({
     })
   }
 
-  const handleStudyCardPack = () => alert('study card')
+  const handleStudyCardPack = () => {
+    navigate(PATH.LEARN)
+    //alert('study card')
+  }
   const handleEditCardPack = (data: UpdatePackDataType) => {
     setEditData(data)
     openEditModal()

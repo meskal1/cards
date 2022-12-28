@@ -53,8 +53,13 @@ const packsSlice = createSlice({
 export const packsReducer = packsSlice.reducer
 
 // ACTIONS
-export const { setPacksQueryParams, setPackRequestStatus, setPacksTableData, setCardsCount, setPacksStatus } =
-  packsSlice.actions
+export const {
+  setPacksQueryParams,
+  setPackRequestStatus,
+  setPacksTableData,
+  setCardsCount,
+  setPacksStatus,
+} = packsSlice.actions
 
 // THUNKS
 export const updatePacksQueryParamsTC =
