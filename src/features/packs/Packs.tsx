@@ -51,7 +51,6 @@ export const Packs = () => {
         paramsArray.split('&').map(el => [el.split('=')[0], decodeURIComponent(el.split('=')[1])])
       )
     }
-
     ;(async () => {
       const isSucceeded = await dispatch(updatePacksQueryParamsTC(allParams))
 

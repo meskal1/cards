@@ -1,0 +1,24 @@
+.mainContainer {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  align-self: flex-start;
+
+  width: 100%;
+  height: 100%;
+  padding: 60px 0px 0px 0px;
+}
+
+.learnContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-self: center;
+
+  padding: 30px 40px;
+
+  background: rgb(240 240 240);
+  border-radius: 20px;
+}
