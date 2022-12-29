@@ -25,39 +25,33 @@ export const CustomPagination: React.FC<CustomPaginationType> = ({ cards }) => {
   const pageCountCards = useAppSelector(state => state.cards.queryParams.pageCount)
   const cardsTotalCount = useAppSelector(state => state.cards.cardsData.cardsTotalCount)
   const packsTotalCount = useAppSelector(state => state.packs.cardsCount.cardPacksTotalCount)
-  const [page, setPage] = React.useState(cards ? pageCards : pagePacks)
-  const [rowsPerPage, setRowsPerPage] = React.useState(cards ? pageCountCards : pageCountPacks)
+  const page = cards ? pageCards : pagePacks
+  const rowsPerPage = cards ? pageCountCards : pageCountPacks
   const paginationCount = Math.ceil(
     cards ? cardsTotalCount / pageCountCards : packsTotalCount / pageCountPacks
   )
 
-  const handleChangePage = (event: React.ChangeEvent<any>, page: number) => {
-    setPage(page)
-
+  const dispatchData = (data: { [key: string]: number }) => {
     if (cards) {
-      dispatch(updateCardsQueryParamsTC({ page }))
-      setSearchParams({ ...allParams, page: page + '' })
+      dispatch(updateCardsQueryParamsTC(data))
     } else {
-      dispatch(updatePacksQueryParamsTC({ page }))
-      setSearchParams({ ...allParams, page: page + '' })
+      dispatch(updatePacksQueryParamsTC(data))
     }
+  }
+
+  const handleChangePage = (event: React.ChangeEvent<any>, page: number) => {
+    dispatchData({ page })
+
+    setSearchParams({ ...allParams, page: page + '' })
   }
 
   const handleChangeRowsPerPage = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setRowsPerPage(parseInt(e.target.value))
+    dispatchData({ pageCount: +e.target.value })
 
-    if (cards) {
-      dispatch(updateCardsQueryParamsTC({ pageCount: +e.target.value }))
-      setSearchParams({ ...allParams, pageCount: e.target.value })
-    } else {
-      dispatch(updatePacksQueryParamsTC({ pageCount: +e.target.value }))
-      setSearchParams({ ...allParams, pageCount: e.target.value })
-    }
+    setSearchParams({ ...allParams, pageCount: e.target.value })
   }
-
-  React.useEffect(() => {}, [])
 
   return (
     <>
@@ -76,15 +70,11 @@ export const CustomPagination: React.FC<CustomPaginationType> = ({ cards }) => {
           component="div"
           labelRowsPerPage={'show'}
           labelDisplayedRows={() => `${cards ? 'cards' : 'packs'} per page`}
-          // Количество страниц всего
           count={101}
-          // Индекс текущей страницы
           page={page === -1 ? 0 : 1}
           onPageChange={() => {}}
-          // Количество строк на страницу
           rowsPerPage={rowsPerPage}
           rowsPerPageOptions={[4, 8, 12, 16, 30, 50, 100]}
-          // Убирает стрелки пагинации
           ActionsComponent={() => null}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
