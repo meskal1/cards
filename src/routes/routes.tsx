@@ -86,7 +86,9 @@ export const AppRoutes = () => {
         <Route element={<PrivateRoutes />}>
           <Route path="/" element={<Navigate to={PATH.PACKS} replace />} />
           <Route path={PATH.PACKS} element={<Packs />} />
-          <Route path={PATH.CARDS} element={<Cards />} />
+          <Route path={PATH.CARDS} element={<Cards />}>
+            <Route path={PATH.CARDS_ID} element={<Cards />} />
+          </Route>
           <Route path={PATH.PROFILE} element={<Profile />} />
         </Route>
         <Route element={<AuthRoutes />}>
