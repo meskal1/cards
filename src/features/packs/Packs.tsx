@@ -75,16 +75,20 @@ export const Packs = () => {
           </div>
           <PacksTable setEditData={handleSetEditData} openEditModal={handleOpenEditModal} />
           <CustomPagination />
-          {
+          {addModal ? (
             <CustomModalDialog active={addModal} setActive={handleCloseAddModal}>
-              <AddPack active={addModal} closeModal={handleCloseAddModal}></AddPack>
+              <AddPack closeModal={handleCloseAddModal}></AddPack>
             </CustomModalDialog>
-          }
-          {
+          ) : (
+            ''
+          )}
+          {editModal ? (
             <CustomModalDialog active={editModal} setActive={handleCloseEditModal}>
-              <EditPack active={editModal} data={editData} closeModal={handleCloseEditModal} />
+              <EditPack data={editData} closeModal={handleCloseEditModal} />
             </CustomModalDialog>
-          }
+          ) : (
+            ''
+          )}
         </div>
       )}
     </>
