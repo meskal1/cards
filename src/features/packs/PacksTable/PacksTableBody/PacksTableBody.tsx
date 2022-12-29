@@ -37,17 +37,11 @@ export const PacksTableBody: React.FC<PacksTableBodyType> = ({
   const handleOpenCardPack = (id: string, requestStatus: RequestStatusType) => {
     if (requestStatus === 'loading') return
 
-    navigate({
-      pathname: PATH.CARDS,
-      search: createSearchParams({ cardsPack_id: id }).toString(),
-    })
+    navigate(PATH.CARDS + `/${id}`)
   }
 
   const handleStudyCardPack = (id: string) => {
-    navigate({
-      pathname: PATH.LEARN,
-      search: createSearchParams({ cardsPack_id: id }).toString(),
-    })
+    navigate(PATH.LEARN + `/${id}`)
   }
   const handleEditCardPack = (data: UpdatePackDataType) => {
     setEditData(data)

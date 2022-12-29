@@ -40,10 +40,7 @@ export const CardsTableBody: React.FC<CardsTableBodyType> = ({
   const openCardHandler = (id: string, packId: string, requestStatus: RequestStatusType) => {
     if (requestStatus === 'loading') return
 
-    navigate({
-      pathname: PATH.LEARN,
-      search: createSearchParams({ cardsPack_id: packId, card_id: id }).toString(),
-    })
+    navigate(PATH.LEARN + `/${packId}/${id}`)
 
     //alert('Open card - ' + id)
   }

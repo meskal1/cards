@@ -4,7 +4,6 @@ import { Button, FormControl, FormLabel, Radio, RadioGroup, FormControlLabel } f
 import { useFormik } from 'formik'
 import { useSelector } from 'react-redux'
 import { useSearchParams } from 'react-router-dom'
-import { number } from 'yup'
 
 import { RootStateType } from '../../app/store'
 import { BackToPacks } from '../../common/components/BackToPacks/BackToPacks'
@@ -13,7 +12,7 @@ import { ServerCardType } from '../../services/cardsApi'
 import { getSearchParams } from '../../utils/getSearchParams'
 
 import s from './Learn.module.scss'
-import { getCards } from './LearnSlice'
+import { getCards, gradeCard } from './LearnSlice'
 
 const initialCard = {
   _id: '',
@@ -43,8 +42,12 @@ export const Learn = () => {
   console.log('All params: ', allParams)
   console.log('Cards: ', cards)
 
+  const getData = async () => {
+    await dispatch(getCards({ cardsPack_id: allParams.cardsPack_id }))
+  }
+
   React.useEffect(() => {
-    dispatch(getCards({ cardsPack_id: allParams.cardsPack_id }))
+    getData()
 
     if (allParams.card_id) {
       const selectedCard = cards.find(card => card._id === allParams.card_id)
@@ -70,6 +73,7 @@ export const Learn = () => {
       }
     },
     onSubmit: values => {
+      dispatch(gradeCard({ card_id: card._id, grade: +values.grade }))
       console.log(values)
     },
   })
