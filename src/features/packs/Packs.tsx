@@ -7,16 +7,12 @@ import { PageTitleBlock } from '../../common/components/PageTitleBlock/PageTitle
 import { useAppDispatch } from '../../hooks/reduxHooks'
 
 import { AddPack } from './addPack/AddPack'
-// eslint-disable-next-line import/namespace
 import { EditPack } from './editPack/EditPack'
 import { PackOwnerSwitcher } from './PackOwnerSwitcher/PackOwnerSwitcher'
 import s from './Packs.module.scss'
 import { PackSlider } from './PackSlider/PackSlider'
 import { PacksResetFilter } from './PacksResetFilter/PacksResetFilter'
-// eslint-disable-next-line import/order
 import { UpdatePackDataType, updatePacksQueryParamsTC, PacksQueryParamsType } from './packsSlice'
-
-// eslint-disable-next-line import/namespace
 import { PacksTable } from './PacksTable/PacksTable'
 
 export const Packs = () => {

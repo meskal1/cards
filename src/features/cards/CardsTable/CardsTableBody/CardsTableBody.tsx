@@ -18,9 +18,16 @@ import s from './CardsTableBody.module.scss'
 type CardsTableBodyType = {
   heads: HeadType<CardsOrderByType>[]
   isMine: boolean
+  openEdit: (state: boolean) => void
+  setEditData: (data: UpdateCardType) => void
 }
 
-export const CardsTableBody: React.FC<CardsTableBodyType> = ({ heads, isMine }) => {
+export const CardsTableBody: React.FC<CardsTableBodyType> = ({
+  heads,
+  isMine,
+  openEdit,
+  setEditData,
+}) => {
   const tableData = useAppSelector<AppCardType[]>(state => state.cards.tableData)
 
   const dispatch = useAppDispatch()
@@ -32,7 +39,9 @@ export const CardsTableBody: React.FC<CardsTableBodyType> = ({ heads, isMine }) 
   }
 
   const handleEditCard = (data: UpdateCardType) => {
-    dispatch(updateCardTC(data))
+    openEdit(true)
+    setEditData(data)
+    //dispatch(updateCardTC(data))
   }
   const handleDeleteCard = (id: string) => {
     dispatch(deleteCardTC(id))
@@ -65,7 +74,7 @@ export const CardsTableBody: React.FC<CardsTableBodyType> = ({ heads, isMine }) 
               <CardsActionCell
                 isAllDisabled={row.requestStatus === 'loading'}
                 onEdit={() =>
-                  handleEditCard({ id: row._id, question: 'updated', answer: 'updates' })
+                  handleEditCard({ id: row._id, question: row.question, answer: row.answer })
                 }
                 onDelete={() => handleDeleteCard(row._id)}
               />

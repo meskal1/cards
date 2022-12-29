@@ -18,8 +18,10 @@ import {
   CardsErrorType,
   clearCardsState,
   updateCardsQueryParamsTC,
+  UpdateCardType,
 } from './cardsSlice'
 import { CardsTable } from './CardsTable/CardsTable'
+import { EditCard } from './editCard/EditCard'
 
 export const Cards = () => {
   const dispatch = useAppDispatch()
@@ -34,6 +36,12 @@ export const Cards = () => {
   const isItMyPack = packUserId === myId
 
   const [addCard, setAddCard] = React.useState(false)
+  const [editCard, setEditCard] = React.useState(false)
+  const [editData, setEditData] = React.useState<UpdateCardType>({
+    id: '',
+    answer: '',
+    question: '',
+  })
 
   const handleTitleButton = React.useCallback(() => {
     setAddCard(true)
@@ -71,7 +79,7 @@ export const Cards = () => {
         </div>
         {isTableEmpty ? (
           <>
-            <CardsTable isMine={isItMyPack} />
+            <CardsTable isMine={isItMyPack} openEdit={setEditCard} setEditData={setEditData} />
             <CustomPagination cards />
           </>
         ) : (
@@ -86,9 +94,21 @@ export const Cards = () => {
             )}
           </div>
         )}
-        <CustomModalDialog active={addCard} setActive={setAddCard}>
-          <AddCard active={addCard} closeModal={setAddCard} cardsPack_id={cardsPack_id} />
-        </CustomModalDialog>
+        {addCard ? (
+          <CustomModalDialog active={addCard} setActive={setAddCard}>
+            <AddCard active={addCard} closeModal={setAddCard} cardsPack_id={cardsPack_id} />
+          </CustomModalDialog>
+        ) : (
+          ''
+        )}
+
+        {editCard ? (
+          <CustomModalDialog active={editCard} setActive={setEditCard}>
+            <EditCard closeModal={setEditCard} cardsData={editData} active={editCard} />
+          </CustomModalDialog>
+        ) : (
+          ''
+        )}
       </div>
     </>
   )
