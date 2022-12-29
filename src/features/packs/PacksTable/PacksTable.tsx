@@ -41,6 +41,7 @@ type PacksTablePropsType = {
 export const PacksTable: React.FC<PacksTablePropsType> = ({ openEditModal, setEditData }) => {
   const status = useAppSelector<RequestStatusType>(state => state.packs.status)
   const serverSort = useAppSelector<SortValuesType>(state => state.packs.queryParams.sortPacks)
+  const pageCount = useAppSelector(state => state.packs.queryParams.pageCount)
   const dispatch = useAppDispatch()
 
   // Check current order
@@ -69,7 +70,7 @@ export const PacksTable: React.FC<PacksTablePropsType> = ({ openEditModal, setEd
               withActions={true}
             />
             {status === 'loading' ? (
-              <TableBodySkeleton columnsCount={heads.length + 1} rowsCount={10} />
+              <TableBodySkeleton columnsCount={heads.length + 1} rowsCount={pageCount} />
             ) : (
               <PacksTableBody
                 heads={heads}
