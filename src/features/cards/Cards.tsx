@@ -5,11 +5,13 @@ import { Navigate, useSearchParams } from 'react-router-dom'
 import { CustomButton } from '../../common/components/CustomButton/CustomButton'
 import { CustomPagination } from '../../common/components/CustomPagination/CustomPagination'
 import { CustomSearch } from '../../common/components/CustomSearch/CustomSearch'
+import { CustomModalDialog } from '../../common/components/ModalDialog/CustomModalDialog'
 import { PageTitleBlock } from '../../common/components/PageTitleBlock/PageTitleBlock'
 import { PATH } from '../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { getSearchParams } from '../../utils/getSearchParams'
 
+import { AddCard } from './addCard/AddCard'
 import s from './Cards.module.scss'
 import {
   AppCardType,
@@ -31,8 +33,10 @@ export const Cards = () => {
   const isTableEmpty = !!tableData.length
   const isItMyPack = packUserId === myId
 
+  const [addCard, setAddCard] = React.useState(false)
+
   const handleTitleButton = React.useCallback(() => {
-    // dispatch() Add new card
+    setAddCard(true)
   }, [])
 
   React.useEffect(() => {
@@ -46,6 +50,8 @@ export const Cards = () => {
   if (cardsError === 'WRONG_ID') {
     return <Navigate to={PATH.PAGE_NOT_FOUND} replace />
   }
+
+  const { cardsPack_id } = allParams
 
   return (
     <>
@@ -80,6 +86,9 @@ export const Cards = () => {
             )}
           </div>
         )}
+        <CustomModalDialog active={addCard} setActive={setAddCard}>
+          <AddCard active={addCard} closeModal={setAddCard} cardsPack_id={cardsPack_id} />
+        </CustomModalDialog>
       </div>
     </>
   )
