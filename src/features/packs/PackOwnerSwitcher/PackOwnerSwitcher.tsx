@@ -5,7 +5,7 @@ import ButtonGroup from '@mui/material/ButtonGroup'
 import { useSearchParams } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
-import { getSearchParams } from '../../../utils/getSearchParams'
+import { useGetSearchParams } from '../../../hooks/useGetSearchParams'
 import { updatePacksQueryParamsTC } from '../packsSlice'
 
 import s from './PackOwnerSwitcher.module.scss'
@@ -13,18 +13,25 @@ import s from './PackOwnerSwitcher.module.scss'
 export const PackOwnerSwitcher = () => {
   const dispatch = useAppDispatch()
   const [searchParams, setSearchParams] = useSearchParams()
-  const allParams = getSearchParams(searchParams)
+  const allParams = useGetSearchParams()
   const isMyPacks = useAppSelector(state => state.packs.queryParams.isMyPacks)
+  const minCardsCount = useAppSelector(state => state.packs.cardsCount.minCardsCount)
+  const maxCardsCount = useAppSelector(state => state.packs.cardsCount.maxCardsCount)
 
   const handleMyCards = () => {
     setSearchParams({ ...allParams, isMyPacks: 'yes' })
-    dispatch(updatePacksQueryParamsTC({ isMyPacks: 'yes' }))
+    searchParams.delete('min')
+    searchParams.delete('max')
+    setSearchParams(searchParams)
+    dispatch(updatePacksQueryParamsTC({ isMyPacks: 'yes', min: minCardsCount, max: maxCardsCount }))
   }
 
   const handleAllCards = () => {
     searchParams.delete('isMyPacks')
+    searchParams.delete('min')
+    searchParams.delete('max')
     setSearchParams(searchParams)
-    dispatch(updatePacksQueryParamsTC({ isMyPacks: '' }))
+    dispatch(updatePacksQueryParamsTC({ isMyPacks: '', min: minCardsCount, max: maxCardsCount }))
   }
 
   React.useEffect(() => {
