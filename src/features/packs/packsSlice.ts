@@ -11,7 +11,7 @@ const initialState = {
     min: 0,
     max: 0,
     page: 1,
-    pageCount: 10,
+    pageCount: 8,
     sortPacks: '0updated' as SortValuesType,
     search: '',
     isMyPacks: '' as 'yes' | '',
@@ -19,7 +19,9 @@ const initialState = {
   cardsCount: {
     minCardsCount: 0,
     maxCardsCount: 0,
+    cardPacksTotalCount: 0,
   },
+  isDataReset: false,
   tableData: [] as AppPackType[],
   status: 'idle' as RequestStatusType,
 }
@@ -35,7 +37,7 @@ const packsSlice = createSlice({
       state.tableData = action.payload.map(p => ({ ...p, requestStatus: 'idle' }))
     },
     setCardsCount(state, action: PayloadAction<SetCardsCountPayloadType>) {
-      state.cardsCount = action.payload
+      state.cardsCount = { ...action.payload }
     },
     setPackRequestStatus(state, action: PayloadAction<PackRequestStatusPayloadType>) {
       state.tableData.forEach(p => {
@@ -47,14 +49,27 @@ const packsSlice = createSlice({
     setPacksStatus(state, action: PayloadAction<RequestStatusType>) {
       state.status = action.payload
     },
+    resetPacksQueryParams(state) {
+      state.queryParams = initialState.queryParams
+    },
+    toggleResetStatus(state) {
+      state.isDataReset = !state.isDataReset
+    },
   },
 })
 
 export const packsReducer = packsSlice.reducer
 
 // ACTIONS
-export const { setPacksQueryParams, setPackRequestStatus, setPacksTableData, setCardsCount, setPacksStatus } =
-  packsSlice.actions
+export const {
+  setPacksQueryParams,
+  setPackRequestStatus,
+  setPacksTableData,
+  setCardsCount,
+  setPacksStatus,
+  resetPacksQueryParams,
+  toggleResetStatus,
+} = packsSlice.actions
 
 // THUNKS
 export const updatePacksQueryParamsTC =
@@ -101,13 +116,13 @@ export const getPacksTC =
         user_id: isMyPacks ? getState().profile.userData.id : '',
         // block,
       }
-
       const response = await packsAPI.getPacks(data)
       const minCardsCount = response.data.minCardsCount
       const maxCardsCount = response.data.maxCardsCount
+      const cardPacksTotalCount = response.data.cardPacksTotalCount
 
       dispatch(setPacksTableData(response.data.cardPacks))
-      dispatch(setCardsCount({ minCardsCount, maxCardsCount }))
+      dispatch(setCardsCount({ minCardsCount, maxCardsCount, cardPacksTotalCount }))
     } catch (e) {
       handleServerNetworkError(dispatch, e as Error | AxiosError)
     }
@@ -183,6 +198,7 @@ type PackRequestStatusPayloadType = {
 type SetCardsCountPayloadType = {
   minCardsCount: number
   maxCardsCount: number
+  cardPacksTotalCount: number
 }
 
 type SetPacksQueryParamsPayloadType = {
@@ -200,4 +216,8 @@ export type PacksQueryParamsType = Partial<SetPacksQueryParamsPayloadType>
 export type UpdatePackDataType = {
   id: string
   name: string
+}
+
+type PackResetStatusPayloadType = {
+  isDataReset: boolean
 }
