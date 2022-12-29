@@ -5,10 +5,14 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 import dayjs from 'dayjs'
+import { useNavigate } from 'react-router'
+import { createSearchParams } from 'react-router-dom'
 
 import { RequestStatusType } from '../../../../app/appSlice'
 import { HeadType } from '../../../../common/components/CustomTableHead/CustomTableHead'
+import { PATH } from '../../../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../../../hooks/reduxHooks'
+import { getCards } from '../../../learn/LearnSlice'
 import { AppCardType, deleteCardTC, updateCardTC, UpdateCardType } from '../../cardsSlice'
 import { CardsOrderByType } from '../CardsTable'
 
@@ -31,11 +35,17 @@ export const CardsTableBody: React.FC<CardsTableBodyType> = ({
   const tableData = useAppSelector<AppCardType[]>(state => state.cards.tableData)
 
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
 
-  const openCardHandler = (id: string, requestStatus: RequestStatusType) => {
+  const openCardHandler = (id: string, packId: string, requestStatus: RequestStatusType) => {
     if (requestStatus === 'loading') return
 
-    alert('Open card - ' + id)
+    navigate({
+      pathname: PATH.LEARN,
+      search: createSearchParams({ cardsPack_id: packId, card_id: id }).toString(),
+    })
+
+    //alert('Open card - ' + id)
   }
 
   const handleEditCard = (data: UpdateCardType) => {
@@ -55,7 +65,7 @@ export const CardsTableBody: React.FC<CardsTableBodyType> = ({
             key={row._id}
             hover={row.requestStatus === 'idle'}
             className={s.row}
-            onClick={() => openCardHandler(row._id, row.requestStatus)}
+            onClick={() => openCardHandler(row._id, row.cardsPack_id, row.requestStatus)}
           >
             {heads.map(h => {
               return (

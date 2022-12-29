@@ -73,7 +73,6 @@ export function PacksTable({ openEditModal, setEditData }: PacksTablePropsType) 
 
     setEditData({ id, name })
     openEditModal()
-    //dispatch(updatePackTC(data))
   }
   const handleDeleteCardPack = (id: string) => {
     dispatch(deletePackTC(id))

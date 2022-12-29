@@ -10,8 +10,8 @@ import { RequestStatusType } from '../../../../app/appSlice'
 import { HeadType } from '../../../../common/components/CustomTableHead/CustomTableHead'
 import { PATH } from '../../../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../../../hooks/reduxHooks'
+import { getCards } from '../../../learn/LearnSlice'
 import { AppPackType, deletePackTC, UpdatePackDataType } from '../../packsSlice'
-// eslint-disable-next-line import/namespace
 import { PacksOrderByType } from '../PacksTable'
 
 import { PacksActionCell } from './PacksActionCell/PacksActionCell'
@@ -43,9 +43,11 @@ export const PacksTableBody: React.FC<PacksTableBodyType> = ({
     })
   }
 
-  const handleStudyCardPack = () => {
-    navigate(PATH.LEARN)
-    //alert('study card')
+  const handleStudyCardPack = (id: string) => {
+    navigate({
+      pathname: PATH.LEARN,
+      search: createSearchParams({ cardsPack_id: id }).toString(),
+    })
   }
   const handleEditCardPack = (data: UpdatePackDataType) => {
     setEditData(data)
@@ -78,7 +80,7 @@ export const PacksTableBody: React.FC<PacksTableBodyType> = ({
               isMine={row.user_id === userId}
               isStudyDisabled={row.cardsCount === 0}
               isAllDisabled={row.requestStatus === 'loading'}
-              onStudy={handleStudyCardPack}
+              onStudy={() => handleStudyCardPack(row._id)}
               onEdit={() => handleEditCardPack({ id: row._id, name: row.name })}
               onDelete={() => handleDeleteCardPack(row._id)}
             />
