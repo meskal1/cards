@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import * as React from 'react'
 
 import { FormControlLabel } from '@mui/material'
 import Button from '@mui/material/Button'
@@ -24,7 +24,7 @@ export const AddPack = (props: AddPackType) => {
   const [isDisabled, setIsDisabled] = React.useState(true)
   const [errors, setErrors] = React.useState<FormikErrorType>({ name: '' })
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!props.active) {
       setErrors({})
     }
