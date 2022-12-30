@@ -5,11 +5,13 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { CustomButton } from '../../common/components/CustomButton/CustomButton'
 import { CustomPagination } from '../../common/components/CustomPagination/CustomPagination'
 import { CustomSearch } from '../../common/components/CustomSearch/CustomSearch'
+import { CustomModalDialog } from '../../common/components/ModalDialog/CustomModalDialog'
 import { PageTitleBlock } from '../../common/components/PageTitleBlock/PageTitleBlock'
 import { PATH } from '../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { useGetSearchParams } from '../../hooks/useGetSearchParams'
 
+import { AddCard } from './addCard/AddCard'
 import s from './Cards.module.scss'
 import {
   AppCardType,
@@ -17,8 +19,10 @@ import {
   clearCardsState,
   setError,
   updateCardsQueryParamsTC,
+  UpdateCardType,
 } from './cardsSlice'
 import { CardsTable } from './CardsTable/CardsTable'
+import { EditCard } from './editCard/EditCard'
 
 export const Cards = () => {
   const dispatch = useAppDispatch()
@@ -37,8 +41,16 @@ export const Cards = () => {
   const titleButtonName =
     isTableEmpty || allParams.cardQuestion ? `${isItMyPack ? 'add new card' : 'learn to pack'}` : ''
 
+  const [addCard, setAddCard] = React.useState(false)
+  const [editCard, setEditCard] = React.useState(false)
+  const [editData, setEditData] = React.useState<UpdateCardType>({
+    id: '',
+    answer: '',
+    question: '',
+  })
+
   const handleTitleButton = React.useCallback(() => {
-    // dispatch() Add new card
+    setAddCard(true)
   }, [])
 
   React.useEffect(() => {
@@ -82,7 +94,7 @@ export const Cards = () => {
           </div>
           {isTableEmpty ? (
             <>
-              <CardsTable isMine={isItMyPack} />
+              <CardsTable isMine={isItMyPack} openEdit={setEditCard} setEditData={setEditData} />
               <CustomPagination cards />
             </>
           ) : (
@@ -96,6 +108,22 @@ export const Cards = () => {
                 </CustomButton>
               )}
             </div>
+          )}
+
+          {addCard ? (
+            <CustomModalDialog active={addCard} setActive={setAddCard}>
+              <AddCard active={addCard} closeModal={setAddCard} cardsPack_id={cardsPack_id} />
+            </CustomModalDialog>
+          ) : (
+            ''
+          )}
+
+          {editCard ? (
+            <CustomModalDialog active={editCard} setActive={setEditCard}>
+              <EditCard closeModal={setEditCard} cardsData={editData} active={editCard} />
+            </CustomModalDialog>
+          ) : (
+            ''
           )}
         </div>
       )}

@@ -2,6 +2,7 @@ import { combineReducers } from 'redux'
 
 import { authReducer } from '../features/auth/authSlice'
 import { cardsReducer } from '../features/cards/cardsSlice'
+import { LearnReducer } from '../features/learn/learnSlice'
 import { packsReducer } from '../features/packs/packsSlice'
 import { profileReducer } from '../features/profile/profileSlice'
 
@@ -13,4 +14,5 @@ export const rootReducer = combineReducers({
   profile: profileReducer,
   packs: packsReducer,
   cards: cardsReducer,
+  learn: LearnReducer,
 })

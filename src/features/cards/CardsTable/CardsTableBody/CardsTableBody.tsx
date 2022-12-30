@@ -5,10 +5,14 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 import dayjs from 'dayjs'
+import { useNavigate } from 'react-router'
+import { createSearchParams } from 'react-router-dom'
 
 import { RequestStatusType } from '../../../../app/appSlice'
 import { HeadType } from '../../../../common/components/CustomTableHead/CustomTableHead'
+import { PATH } from '../../../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../../../hooks/reduxHooks'
+import { getCards } from '../../../learn/learnSlice'
 import { AppCardType, deleteCardTC, updateCardTC, UpdateCardType } from '../../cardsSlice'
 import { CardsOrderByType } from '../CardsTable'
 
@@ -18,21 +22,33 @@ import s from './CardsTableBody.module.scss'
 type CardsTableBodyType = {
   heads: HeadType<CardsOrderByType>[]
   isMine: boolean
+  openEdit: (state: boolean) => void
+  setEditData: (data: UpdateCardType) => void
 }
 
-export const CardsTableBody: React.FC<CardsTableBodyType> = ({ heads, isMine }) => {
+export const CardsTableBody: React.FC<CardsTableBodyType> = ({
+  heads,
+  isMine,
+  openEdit,
+  setEditData,
+}) => {
   const tableData = useAppSelector<AppCardType[]>(state => state.cards.tableData)
 
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
 
-  const openCardHandler = (id: string, requestStatus: RequestStatusType) => {
+  const openCardHandler = (id: string, packId: string, requestStatus: RequestStatusType) => {
     if (requestStatus === 'loading') return
 
-    alert('Open card - ' + id)
+    navigate(PATH.LEARN + `/${packId}/${id}`)
+
+    //alert('Open card - ' + id)
   }
 
   const handleEditCard = (data: UpdateCardType) => {
-    dispatch(updateCardTC(data))
+    openEdit(true)
+    setEditData(data)
+    //dispatch(updateCardTC(data))
   }
   const handleDeleteCard = (id: string) => {
     dispatch(deleteCardTC(id))
@@ -46,7 +62,7 @@ export const CardsTableBody: React.FC<CardsTableBodyType> = ({ heads, isMine }) 
             key={row._id}
             hover={row.requestStatus === 'idle'}
             className={s.row}
-            onClick={() => openCardHandler(row._id, row.requestStatus)}
+            onClick={() => openCardHandler(row._id, row.cardsPack_id, row.requestStatus)}
           >
             {heads.map(h => {
               return (
@@ -65,7 +81,7 @@ export const CardsTableBody: React.FC<CardsTableBodyType> = ({ heads, isMine }) 
               <CardsActionCell
                 isAllDisabled={row.requestStatus === 'loading'}
                 onEdit={() =>
-                  handleEditCard({ id: row._id, question: 'updated', answer: 'updates' })
+                  handleEditCard({ id: row._id, question: row.question, answer: row.answer })
                 }
                 onDelete={() => handleDeleteCard(row._id)}
               />

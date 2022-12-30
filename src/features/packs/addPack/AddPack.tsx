@@ -13,7 +13,6 @@ import s from './AddPack.module.scss'
 
 type AddPackType = {
   closeModal: () => void
-  active: boolean
 }
 
 type FormikErrorType = {
@@ -23,12 +22,6 @@ type FormikErrorType = {
 export const AddPack = (props: AddPackType) => {
   const [isDisabled, setIsDisabled] = React.useState(true)
   const [errors, setErrors] = React.useState<FormikErrorType>({ name: '' })
-
-  React.useEffect(() => {
-    if (!props.active) {
-      setErrors({})
-    }
-  }, [props.active])
 
   const dispatch = useAppDispatch()
 

@@ -13,7 +13,7 @@ import {
 } from '../../../common/components/CustomTableHead/CustomTableHead'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { ServerOrderType, TableOrder, TableOrderType } from '../../packs/PacksTable/PacksTable'
-import { SortValuesCardsType, updateCardsQueryParamsTC } from '../cardsSlice'
+import { SortValuesCardsType, updateCardsQueryParamsTC, UpdateCardType } from '../cardsSlice'
 
 import { CardsTableBody } from './CardsTableBody/CardsTableBody'
 
@@ -28,9 +28,11 @@ const heads: HeadType<CardsOrderByType>[] = [
 
 type CardsTablePropsType = {
   isMine: boolean
+  openEdit: (state: boolean) => void
+  setEditData: (data: UpdateCardType) => void
 }
 
-export const CardsTable: React.FC<CardsTablePropsType> = ({ isMine }) => {
+export const CardsTable: React.FC<CardsTablePropsType> = ({ isMine, openEdit, setEditData }) => {
   const status = useAppSelector<RequestStatusType>(state => state.cards.status)
   const serverSort = useAppSelector<SortValuesCardsType>(state => state.cards.queryParams.sortCards)
   const pageCount = useAppSelector(state => state.cards.queryParams.pageCount)
@@ -69,7 +71,12 @@ export const CardsTable: React.FC<CardsTablePropsType> = ({ isMine }) => {
                 withActions={isMine}
               />
             ) : (
-              <CardsTableBody heads={heads} isMine={isMine} />
+              <CardsTableBody
+                heads={heads}
+                isMine={isMine}
+                openEdit={openEdit}
+                setEditData={setEditData}
+              />
             )}
           </Table>
         </TableContainer>

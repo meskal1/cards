@@ -1,3 +1,5 @@
+import { number } from 'yup'
+
 import { SortValuesCardsType } from '../features/cards/cardsSlice'
 
 import { instance } from './instance'
@@ -19,9 +21,17 @@ export const cardsAPI = {
   updateCard(data: ServerCardType) {
     return instance.put<UpdateResponseType>('cards/card', { card: data })
   },
+  gradeCard(data: GradeData) {
+    return instance.put<GradeCardResponseType>('cards/grade', data)
+  },
 }
 
 //TYPES
+export type GradeData = {
+  grade: number
+  card_id: string
+}
+
 export type QueryCardParamsType = {
   min?: number
   max?: number
@@ -95,4 +105,23 @@ type UpdateResponseType = {
   deletedCard: ServerCardType
   token: string
   tokenDeathTime: number
+}
+
+type GradeCardResponseType = {
+  updatedGrade: upgradedCardType
+  token: string
+  tokenDeathTime: 1672361003260
+}
+
+export type upgradedCardType = {
+  _id: string
+  cardsPack_id: string
+  card_id: string
+  user_id: string
+  grade: 5
+  shots: 1
+  more_id: string
+  created: string
+  updated: string
+  __v: 0
 }
