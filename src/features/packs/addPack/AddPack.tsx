@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import * as React from 'react'
 
 import { FormControlLabel } from '@mui/material'
 import Button from '@mui/material/Button'

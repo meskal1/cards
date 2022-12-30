@@ -90,6 +90,9 @@ export const AppRoutes = () => {
           <Route path={PATH.CARDS} element={<Cards />}>
             <Route path={PATH.CARDS_ID} element={<Cards />} />
           </Route>
+          <Route path={PATH.LEARN} element={<Learn />}>
+            <Route path={PATH.LEARN_ID} element={<Learn />} />
+          </Route>
           <Route path={PATH.PROFILE} element={<Profile />} />
         </Route>
         <Route element={<AuthRoutes />}>
@@ -97,7 +100,6 @@ export const AppRoutes = () => {
           <Route path={PATH.RECOVERY} element={<Recovery />} />
           <Route path={PATH.CHECK_EMAIL} element={<CheckEmail />} />
           <Route path={PATH.REGISTRATION} element={<Registration />} />
-          <Route path={PATH.LEARN} element={<Learn />} />
         </Route>
         <Route path={PATH.PAGE_NOT_FOUND} element={<Page404 />} />
         <Route path="*" element={<Page404 />} />

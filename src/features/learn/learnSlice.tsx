@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AxiosError } from 'axios/index'
 
-import { AppDispatchType } from '../../app/store'
+import { AppDispatchType, RootStateType } from '../../app/store'
 import { cardsAPI, GradeData, ServerCardType, upgradedCardType } from '../../services/cardsApi'
 import { handleServerNetworkError } from '../../utils/errorUtils'
 
@@ -29,15 +29,23 @@ export const { setCards, setGratedCard } = learnSlice.actions
 
 // thunks
 
-export const getCards = (data: { cardsPack_id: string }) => async (dispatch: AppDispatchType) => {
-  try {
-    const response = await cardsAPI.getCards({ cardsPack_id: data.cardsPack_id, pageCount: 100 })
+export const getCards =
+  (data: { cardsPack_id: string }) =>
+  async (dispatch: AppDispatchType, getState: () => RootStateType) => {
+    try {
+      const totalCardsCount = getState().cards.cardsData.cardsTotalCount
 
-    dispatch(setCards({ cards: response.data.cards }))
-  } catch (e) {
-    handleServerNetworkError(dispatch, e as Error | AxiosError)
+      const response = await cardsAPI.getCards({ cardsPack_id: data.cardsPack_id })
+      const responseAllCards = await cardsAPI.getCards({
+        cardsPack_id: data.cardsPack_id,
+        pageCount: response.data.cardsTotalCount,
+      })
+
+      dispatch(setCards({ cards: responseAllCards.data.cards }))
+    } catch (e) {
+      handleServerNetworkError(dispatch, e as Error | AxiosError)
+    }
   }
-}
 
 export const gradeCard = (data: GradeData) => async (dispatch: AppDispatchType) => {
   try {

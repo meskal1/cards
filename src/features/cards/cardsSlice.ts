@@ -11,7 +11,7 @@ const initialState = {
     min: 0,
     max: 0,
     page: 1,
-    pageCount: 10,
+    pageCount: 8,
     sortCards: '0grade' as SortValuesCardsType,
     cardsPack_id: '',
     cardQuestion: '',
@@ -20,6 +20,7 @@ const initialState = {
   cardsData: {
     packName: '',
     packUserId: '',
+    cardsTotalCount: 0,
   },
   tableData: [] as AppCardType[],
   error: null as CardsErrorType,
@@ -81,6 +82,8 @@ export const updateCardsQueryParamsTC =
 
       dispatch(setCardsQueryParams({ ...queryParams, ...queryProps }))
       await dispatch(getCardsTC())
+
+      return
     } catch (e) {
       handleServerNetworkError(dispatch, e as Error | AxiosError)
     } finally {
@@ -93,15 +96,19 @@ export const getCardsTC =
     try {
       const data = getState().cards.queryParams
       const response = await cardsAPI.getCards(data)
+      const packUserId = response.data.packUserId
+      const packName = response.data.packName
+      const cardsTotalCount = response.data.cardsTotalCount
 
-      dispatch(
-        setCardsData({ packName: response.data.packName, packUserId: response.data.packUserId })
-      )
+      dispatch(setCardsData({ packName, packUserId, cardsTotalCount }))
       dispatch(setCardsTableData(response.data.cards))
     } catch (e) {
       // Подумать можно ли это вынести в handleServerNetworkError
-      if (axios.isAxiosError<{ in: string }>(e)) {
-        if (e.response?.data.in === 'getCards/CardsPack.findById') {
+      if (axios.isAxiosError<{ in: string; error: string }>(e)) {
+        if (
+          e.response?.data.in === 'getCards/CardsPack.findById' ||
+          e.response?.data.error === 'CardsPack id not valid /ᐠ-ꞈ-ᐟ\\'
+        ) {
           dispatch(setError({ error: 'WRONG_ID' }))
 
           return
@@ -197,6 +204,7 @@ type CardRequestStatusPayloadType = {
 type SetCardsDataPayloadType = {
   packName: string
   packUserId: string
+  cardsTotalCount: number
 }
 
 type CardsTablePayloadType = ServerCardType[]

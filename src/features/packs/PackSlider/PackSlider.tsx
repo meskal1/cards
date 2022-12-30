@@ -3,22 +3,19 @@ import * as React from 'react'
 import { useSearchParams } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
-import { getSearchParams } from '../../../utils/getSearchParams'
-import { updateCardsQueryParamsTC } from '../../cards/cardsSlice'
+import { useGetSearchParams } from '../../../hooks/useGetSearchParams'
 import { updatePacksQueryParamsTC } from '../packsSlice'
 
 import { StyledSlider } from './CustomStyledSlider/CustomStyledSlider'
 import s from './PackSlider.module.scss'
 
 export const PackSlider = () => {
-  console.log('render slider')
   const dispatch = useAppDispatch()
   const [searchParams, setSearchParams] = useSearchParams()
-  const allParams = getSearchParams(searchParams)
-  const min = useAppSelector(state => state.packs.queryParams.min)
-  const max = useAppSelector(state => state.packs.queryParams.max)
+  const allParams = useGetSearchParams()
   const minCardsCount = useAppSelector(state => state.packs.cardsCount.minCardsCount)
   const maxCardsCount = useAppSelector(state => state.packs.cardsCount.maxCardsCount)
+  const isDataReset = useAppSelector(state => state.packs.isDataReset)
   const [value, setValue] = React.useState<number[]>([
     +allParams.min || minCardsCount,
     +allParams.max || maxCardsCount,
@@ -36,47 +33,14 @@ export const PackSlider = () => {
   }
 
   React.useEffect(() => {
-    if (!allParams.max) {
-      // dispatch(updatePacksQueryParamsTC({ min: minCardsCount, max: maxCardsCount }))
-    }
-  }, [])
+    setValue([+allParams.min || minCardsCount, +allParams.max || maxCardsCount])
+  }, [minCardsCount, maxCardsCount])
 
   React.useEffect(() => {
-    console.log('maxCardsCount: ', maxCardsCount)
-    if (!allParams.max) {
-      console.log('slider useEffect INside if')
-      // dispatch(updatePacksQueryParamsTC({ min: minCardsCount, max: maxCardsCount }))
-      // setValue([minCardsCount, maxCardsCount])
+    if (!+allParams.min) {
+      setValue([minCardsCount, maxCardsCount])
     }
-
-    if (min || max || minCardsCount === maxCardsCount) {
-      console.log('slider useEffect INside if')
-      // setSearchParams({ ...allParams, min: minCardsCount + '', max: maxCardsCount + '' })
-      // dispatch(updatePacksQueryParamsTC({ min: minCardsCount, max: maxCardsCount }))
-      // setValue([minCardsCount, maxCardsCount])
-    }
-    if (+allParams.min === min && +allParams.max === max) {
-      // setSearchParams({ ...allParams, min: min + '', max: max + '' })
-      // dispatch(updatePacksQueryParamsTC({ min: minCardsCount, max: maxCardsCount }))
-      // setValue([minCardsCount, maxCardsCount])
-      // dispatch(updatePacksQueryParamsTC({ min: minCardsCount, max: maxCardsCount }))
-      // setValue([minCardsCount, maxCardsCount])
-    }
-
-    if (allParams.isMyPacks && (min !== minCardsCount || max !== maxCardsCount)) {
-      // setSearchParams({ ...allParams, min: minCardsCount + '', max: maxCardsCount + '' })
-      // dispatch(updatePacksQueryParamsTC({ min: minCardsCount, max: maxCardsCount }))
-      // setValue([minCardsCount, maxCardsCount])
-    }
-
-    if (+allParams.max === undefined || +allParams.min === undefined) {
-      // console.log('slider useEffect INside if')
-    }
-    //  setSearchParams({ ...allParams, min: minCardsCount + '', max: maxCardsCount + '' })
-    //  dispatch(updatePacksQueryParamsTC({ min: minCardsCount, max: maxCardsCount }))
-    //  setValue([minCardsCount, maxCardsCount])
-    console.log('slider useEffect OUTside if')
-  }, [minCardsCount, maxCardsCount])
+  }, [isDataReset])
 
   return (
     <>
@@ -86,7 +50,7 @@ export const PackSlider = () => {
           <div className={s.slider__number}>{value[0]}</div>
           <StyledSlider
             className={s.slider}
-            value={[value[0], value[1]]}
+            value={value}
             onChange={handleChange}
             disableSwap
             min={minCardsCount}

@@ -9,6 +9,7 @@ export enum PATH {
   REGISTRATION = '/registration',
   NEW_PASSWORD = '/new_password',
   NEW_PASSWORD_TOKEN = '/new_password/:token',
-  PAGE_NOT_FOUND = '404',
-  LEARN = '/learn/:packId/:id',
+  PAGE_NOT_FOUND = '/404',
+  LEARN = '/learn',
+  LEARN_ID = '/learn/:packId/:cardId',
 }

@@ -8,13 +8,15 @@ import TableRow from '@mui/material/TableRow'
 type TableSkeletonPropsType = {
   columnsCount: number
   rowsCount: number
+  withActions?: boolean
 }
 
 export const TableBodySkeleton: React.FC<TableSkeletonPropsType> = ({
   columnsCount,
   rowsCount,
+  withActions = false,
 }) => {
-  const cells = new Array(columnsCount).fill('').map((_, i) => {
+  const cells = new Array(withActions ? columnsCount + 1 : columnsCount).fill('').map((_, i) => {
     return (
       <TableCell key={i}>
         <Skeleton animation={'pulse'} height={35} />

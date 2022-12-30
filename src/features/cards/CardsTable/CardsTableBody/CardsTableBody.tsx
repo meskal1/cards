@@ -12,7 +12,7 @@ import { RequestStatusType } from '../../../../app/appSlice'
 import { HeadType } from '../../../../common/components/CustomTableHead/CustomTableHead'
 import { PATH } from '../../../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../../../hooks/reduxHooks'
-import { getCards } from '../../../learn/LearnSlice'
+import { getCards } from '../../../learn/learnSlice'
 import { AppCardType, deleteCardTC, updateCardTC, UpdateCardType } from '../../cardsSlice'
 import { CardsOrderByType } from '../CardsTable'
 

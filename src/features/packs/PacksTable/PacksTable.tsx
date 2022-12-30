@@ -12,13 +12,7 @@ import {
   HeadType,
 } from '../../../common/components/CustomTableHead/CustomTableHead'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
-import {
-  AppPackType,
-  deletePackTC,
-  SortValuesType,
-  UpdatePackDataType,
-  updatePacksQueryParamsTC,
-} from '../packsSlice'
+import { SortValuesType, UpdatePackDataType, updatePacksQueryParamsTC } from '../packsSlice'
 
 import { PacksTableBody } from './PacksTableBody/PacksTableBody'
 
@@ -44,15 +38,10 @@ type PacksTablePropsType = {
   setEditData: (data: UpdatePackDataType) => void
 }
 
-// eslint-disable-next-line import/export
-export function PacksTable({ openEditModal, setEditData }: PacksTablePropsType) {
-  const userId = useAppSelector(state => state.profile.userData.id)
-  const tableData = useAppSelector<AppPackType[]>(state => state.packs.tableData)
-
+export const PacksTable: React.FC<PacksTablePropsType> = ({ openEditModal, setEditData }) => {
   const status = useAppSelector<RequestStatusType>(state => state.packs.status)
-
   const serverSort = useAppSelector<SortValuesType>(state => state.packs.queryParams.sortPacks)
-
+  const pageCount = useAppSelector(state => state.packs.queryParams.pageCount)
   const dispatch = useAppDispatch()
 
   // Check current order
@@ -66,16 +55,6 @@ export function PacksTable({ openEditModal, setEditData }: PacksTablePropsType) 
     const newServerOrder: SortValuesType = `${TableOrder[newOrder]}${property}`
 
     dispatch(updatePacksQueryParamsTC({ sortPacks: newServerOrder }))
-  }
-  const handleStudyCardPack = () => alert('study card')
-  const handleEditCardPack = (data: UpdatePackDataType) => {
-    const { id, name } = data
-
-    setEditData({ id, name })
-    openEditModal()
-  }
-  const handleDeleteCardPack = (id: string) => {
-    dispatch(deletePackTC(id))
   }
 
   return (
@@ -91,7 +70,7 @@ export function PacksTable({ openEditModal, setEditData }: PacksTablePropsType) 
               withActions={true}
             />
             {status === 'loading' ? (
-              <TableBodySkeleton columnsCount={heads.length + 1} rowsCount={10} />
+              <TableBodySkeleton columnsCount={heads.length + 1} rowsCount={pageCount} />
             ) : (
               <PacksTableBody
                 heads={heads}

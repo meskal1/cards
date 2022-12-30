@@ -7,7 +7,7 @@ import { useSearchParams } from 'react-router-dom'
 import { updateCardsQueryParamsTC } from '../../../features/cards/cardsSlice'
 import { updatePacksQueryParamsTC } from '../../../features/packs/packsSlice'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
-import { getSearchParams } from '../../../utils/getSearchParams'
+import { useGetSearchParams } from '../../../hooks/useGetSearchParams'
 
 import s from './CustomPagination.module.scss'
 
@@ -15,93 +15,70 @@ type CustomPaginationType = {
   cards?: boolean
 }
 
-export const CustomPagination: React.FC<CustomPaginationType> = React.memo(({ cards }) => {
+export const CustomPagination: React.FC<CustomPaginationType> = ({ cards }) => {
   const dispatch = useAppDispatch()
   const [searchParams, setSearchParams] = useSearchParams()
-  const allParams = getSearchParams(searchParams)
+  const allParams = useGetSearchParams()
   const pagePacks = useAppSelector(state => state.packs.queryParams.page)
   const pageCards = useAppSelector(state => state.cards.queryParams.page)
   const pageCountPacks = useAppSelector(state => state.packs.queryParams.pageCount)
   const pageCountCards = useAppSelector(state => state.cards.queryParams.pageCount)
-  const [page, setPage] = React.useState(cards ? pageCards : pagePacks)
-  const [rowsPerPage, setRowsPerPage] = React.useState(cards ? pageCountCards : pageCountPacks)
+  const cardsTotalCount = useAppSelector(state => state.cards.cardsData.cardsTotalCount)
+  const packsTotalCount = useAppSelector(state => state.packs.cardsCount.cardPacksTotalCount)
+  const page = cards ? pageCards : pagePacks
+  const rowsPerPage = cards ? pageCountCards : pageCountPacks
+  const paginationCount = Math.ceil(
+    cards ? cardsTotalCount / pageCountCards : packsTotalCount / pageCountPacks
+  )
 
-  const handleChangePage = (e: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
-    setPage(newPage)
-    isItWorthUpdating()
-    console.log('handleChangePage: ', newPage)
+  const dispatchData = (data: { [key: string]: number }) => {
+    if (cards) {
+      dispatch(updateCardsQueryParamsTC(data))
+    } else {
+      dispatch(updatePacksQueryParamsTC(data))
+    }
+  }
+
+  const handleChangePage = (event: React.ChangeEvent<any>, page: number) => {
+    dispatchData({ page })
+
+    setSearchParams({ ...allParams, page: page + '' })
   }
 
   const handleChangeRowsPerPage = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setRowsPerPage(parseInt(e.target.value, pageCountPacks))
-    setPage(1)
-    isItWorthUpdating()
-  }
+    dispatchData({ pageCount: +e.target.value })
 
-  const isItWorthUpdating = () => {
-    if (cards) {
-      console.log('CARDS page, rowsPerPage: ', page, rowsPerPage)
-      dispatch(updateCardsQueryParamsTC({ page, pageCount: rowsPerPage }))
-      setSearchParams({ ...allParams, page: page + '', pageCount: rowsPerPage + '' })
-    } else {
-      console.log('PACKS page, rowsPerPage: ', page, rowsPerPage)
-      dispatch(updatePacksQueryParamsTC({ page, pageCount: rowsPerPage }))
-      setSearchParams({ ...allParams, page: page + '', pageCount: rowsPerPage + '' })
-    }
+    setSearchParams({ ...allParams, pageCount: e.target.value })
   }
-
-  React.useEffect(() => {
-    // const isItWorthUpdating = () => {
-    //    if (cards) {
-    //      if (cardQuestion !== inputValue) {
-    //        dispatch(updateCardsQueryParamsTC({ page: inputValue,pageCount: }))
-    //      }
-    //    } else {
-    //      if (search !== inputValue) {
-    //        dispatch(updatePacksQueryParamsTC({ search: inputValue }))
-    //      }
-    //    }
-    //  }
-    //  if (inputValue !== search && inputValue !== '') {
-    //    setSearchParams({ ...allParams, [`${cards ? 'cardQuestion' : 'search'}`]: inputValue })
-    //    isItWorthUpdating()
-    //  }
-    //  if (debouncedValue === '' && inintInputValue) {
-    //    cards ? searchParams.delete('cardQuestion') : searchParams.delete('search')
-    //    setSearchParams(searchParams)
-    //    isItWorthUpdating()
-    //  }
-  }, [])
 
   return (
     <>
       <div className={s.paginationContainer}>
-        <Pagination
-          count={10}
-          shape="rounded"
-          color="primary"
-          //  onChange={handleChangePage}
-          page={page}
-        />
+        {paginationCount === 1 ? null : (
+          <Pagination
+            count={paginationCount}
+            shape="rounded"
+            color="primary"
+            onChange={handleChangePage}
+            page={page}
+          />
+        )}
         <TablePagination
           className={s.paginationTable}
           component="div"
           labelRowsPerPage={'show'}
           labelDisplayedRows={() => `${cards ? 'cards' : 'packs'} per page`}
-          // Количество страниц всего
-          count={100}
-          // Индекс текущей страницы
-          page={page}
-          onPageChange={handleChangePage}
-          // Количество строк на страницу
+          count={101}
+          page={page === -1 ? 0 : 1}
+          onPageChange={() => {}}
           rowsPerPage={rowsPerPage}
-          // Убирает стрелки пагинации
+          rowsPerPageOptions={[4, 8, 12, 16, 30, 50, 100]}
           ActionsComponent={() => null}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </div>
     </>
   )
-})
+}

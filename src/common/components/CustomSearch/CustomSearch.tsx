@@ -1,13 +1,13 @@
 import * as React from 'react'
 
 import { TextField } from '@mui/material'
-import { useSearchParams } from 'react-router-dom'
+import { useLocation, useSearchParams } from 'react-router-dom'
 
 import { updateCardsQueryParamsTC } from '../../../features/cards/cardsSlice'
 import { updatePacksQueryParamsTC } from '../../../features/packs/packsSlice'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { useDebounce } from '../../../hooks/useDebounce'
-import { getSearchParams } from '../../../utils/getSearchParams'
+import { useGetSearchParams } from '../../../hooks/useGetSearchParams'
 
 import s from './CustomSearch.module.scss'
 
@@ -17,8 +17,9 @@ type CustomSearchType = {
 
 export const CustomSearch: React.FC<CustomSearchType> = ({ cards }) => {
   const dispatch = useAppDispatch()
+  const location = useLocation()
   const [searchParams, setSearchParams] = useSearchParams()
-  const allParams = getSearchParams(searchParams)
+  const allParams = useGetSearchParams('always')
   const inintInputValue = allParams.search || allParams.cardQuestion || ''
   const [inputValue, setInputValue] = React.useState(inintInputValue)
   const debouncedValue = useDebounce(inputValue)
@@ -53,7 +54,10 @@ export const CustomSearch: React.FC<CustomSearchType> = ({ cards }) => {
       isItWorthUpdating()
     }
   }, [debouncedValue])
-  console.log('render search')
+
+  React.useEffect(() => {
+    setInputValue(inintInputValue)
+  }, [location.search])
 
   return (
     <>

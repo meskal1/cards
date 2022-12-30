@@ -1,9 +1,8 @@
-import React from 'react'
+import * as React from 'react'
 
 import { TextField } from '@mui/material'
 import Button from '@mui/material/Button'
 import { useFormik } from 'formik'
-import { useDispatch } from 'react-redux'
 
 import { useAppDispatch } from '../../../hooks/reduxHooks'
 import { updatePackTC } from '../packsSlice'

@@ -1,16 +1,16 @@
-import React from 'react'
+import * as React from 'react'
 
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 import dayjs from 'dayjs'
-import { createSearchParams, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import { RequestStatusType } from '../../../../app/appSlice'
 import { HeadType } from '../../../../common/components/CustomTableHead/CustomTableHead'
 import { PATH } from '../../../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../../../hooks/reduxHooks'
-import { getCards } from '../../../learn/LearnSlice'
+import { getCards } from '../../../learn/learnSlice'
 import { AppPackType, deletePackTC, UpdatePackDataType } from '../../packsSlice'
 import { PacksOrderByType } from '../PacksTable'
 
@@ -30,13 +30,11 @@ export const PacksTableBody: React.FC<PacksTableBodyType> = ({
 }) => {
   const tableData = useAppSelector<AppPackType[]>(state => state.packs.tableData)
   const userId = useAppSelector(state => state.profile.userData.id)
-
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
   const handleOpenCardPack = (id: string, requestStatus: RequestStatusType) => {
     if (requestStatus === 'loading') return
-
     navigate(PATH.CARDS + `/${id}`)
   }
 

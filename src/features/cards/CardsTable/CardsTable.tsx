@@ -35,6 +35,7 @@ type CardsTablePropsType = {
 export const CardsTable: React.FC<CardsTablePropsType> = ({ isMine, openEdit, setEditData }) => {
   const status = useAppSelector<RequestStatusType>(state => state.cards.status)
   const serverSort = useAppSelector<SortValuesCardsType>(state => state.cards.queryParams.sortCards)
+  const pageCount = useAppSelector(state => state.cards.queryParams.pageCount)
 
   const dispatch = useAppDispatch()
 
@@ -64,7 +65,11 @@ export const CardsTable: React.FC<CardsTablePropsType> = ({ isMine, openEdit, se
               withActions={isMine}
             />
             {status === 'loading' ? (
-              <TableBodySkeleton columnsCount={heads.length + 1} rowsCount={10} />
+              <TableBodySkeleton
+                columnsCount={heads.length}
+                rowsCount={pageCount}
+                withActions={isMine}
+              />
             ) : (
               <CardsTableBody
                 heads={heads}

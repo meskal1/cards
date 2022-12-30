@@ -3,16 +3,16 @@ import React from 'react'
 import { Button, FormControl, FormLabel, Radio, RadioGroup, FormControlLabel } from '@mui/material'
 import { useFormik } from 'formik'
 import { useSelector } from 'react-redux'
-import { useSearchParams } from 'react-router-dom'
+import { useParams } from 'react-router'
 
 import { RootStateType } from '../../app/store'
 import { BackToPacks } from '../../common/components/BackToPacks/BackToPacks'
 import { useAppDispatch } from '../../hooks/reduxHooks'
+import { useGetSearchParams } from '../../hooks/useGetSearchParams'
 import { ServerCardType } from '../../services/cardsApi'
-import { getSearchParams } from '../../utils/getSearchParams'
 
 import s from './Learn.module.scss'
-import { getCards, gradeCard } from './LearnSlice'
+import { getCards, gradeCard } from './learnSlice'
 
 const initialCard = {
   _id: '',
@@ -32,30 +32,35 @@ const initialCard = {
 }
 
 export const Learn = () => {
-  const [searchParams] = useSearchParams()
-  const allParams = getSearchParams(searchParams)
+  const { packId, cardId } = useParams()
   const dispatch = useAppDispatch()
   const [card, setCard] = React.useState<ServerCardType>(initialCard)
   const [showAnswer, setShowAnswer] = React.useState(false)
   const cards = useSelector<RootStateType, ServerCardType[]>(state => state.learn.cards)
 
-  console.log('All params: ', allParams)
   console.log('Cards: ', cards)
 
   const getData = async () => {
-    await dispatch(getCards({ cardsPack_id: allParams.cardsPack_id }))
+    if (packId) {
+      await dispatch(getCards({ cardsPack_id: packId }))
+    }
+    console.log('First useeffect')
   }
 
   React.useEffect(() => {
     getData()
+  }, [])
 
-    if (allParams.card_id) {
-      const selectedCard = cards.find(card => card._id === allParams.card_id)
+  React.useEffect(() => {
+    if (cardId) {
+      const selectedCard = cards.find(card => card._id === cardId)
 
       console.log('SELECTED ', selectedCard)
-      if (selectedCard) setCard(selectedCard)
+      if (selectedCard) {
+        setCard(selectedCard)
+      }
     }
-  }, [])
+  }, [cards])
 
   console.log('Card question: ', card.question)
 
