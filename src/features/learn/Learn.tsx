@@ -37,6 +37,8 @@ export const Learn = () => {
   const [showAnswer, setShowAnswer] = React.useState(false)
   const cards = useSelector<RootStateType, ServerCardType[]>(state => state.learn.cards)
 
+  debugger
+
   console.log('Cards: ', cards)
 
   const getData = async () => {
@@ -57,6 +59,12 @@ export const Learn = () => {
       console.log('SELECTED ', selectedCard)
       if (selectedCard) {
         setCard(selectedCard)
+      }
+    } else {
+      if (cards.length) {
+        const randomCardIndex = Math.floor(Math.random() * cards.length)
+
+        setCard(cards[randomCardIndex])
       }
     }
   }, [cards])
