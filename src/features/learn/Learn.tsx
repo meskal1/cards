@@ -8,7 +8,6 @@ import { useParams } from 'react-router'
 import { RootStateType } from '../../app/store'
 import { BackToPacks } from '../../common/components/BackToPacks/BackToPacks'
 import { useAppDispatch } from '../../hooks/reduxHooks'
-import { useGetSearchParams } from '../../hooks/useGetSearchParams'
 import { ServerCardType } from '../../services/cardsApi'
 
 import s from './Learn.module.scss'

@@ -11,7 +11,6 @@ import s from './EditPack.module.scss'
 
 type EditPackType = {
   closeModal: () => void
-  active: boolean
   data: {
     id: string
     name: string
@@ -22,15 +21,9 @@ type formikErrorType = {
   name?: string
 }
 
-export const EditPack: React.FC<EditPackType> = ({ active, data, closeModal }) => {
+export const EditPack: React.FC<EditPackType> = ({ data, closeModal }) => {
   const dispatch = useAppDispatch()
   const [errors, setErrors] = React.useState<formikErrorType>({ name: '' })
-
-  React.useEffect(() => {
-    setErrors({ name: '' })
-    formik.values.name = data.name
-  }, [active, data])
-  //   console.log(data.name)
 
   const formik = useFormik({
     initialValues: {

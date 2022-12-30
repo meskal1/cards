@@ -5,6 +5,7 @@ import { Navigate, Outlet, Route, Routes, useLocation, useSearchParams } from 'r
 import { LoadingProgress } from '../common/components/LoadingProgress/LoadingProgress'
 import { PATH } from '../constants/routePaths.enum'
 import { Page404 } from '../features/404/Page404'
+import { Learn } from '../features/learn/Learn'
 import { useAppSelector } from '../hooks/reduxHooks'
 
 const CheckEmail = React.lazy(() =>
@@ -88,6 +89,11 @@ export const AppRoutes = () => {
           <Route path={PATH.PACKS} element={<Packs />} />
           <Route path={PATH.CARDS} element={<Cards />}>
             <Route path={PATH.CARDS_ID} element={<Cards />} />
+          </Route>
+
+          <Route path={PATH.LEARN} element={<Learn />}>
+            <Route path={PATH.LEARN_CARD_ID} element={<Learn />} />
+            <Route path={PATH.LEARN_PACK_ID} element={<Learn />} />
           </Route>
           <Route path={PATH.PROFILE} element={<Profile />} />
         </Route>
