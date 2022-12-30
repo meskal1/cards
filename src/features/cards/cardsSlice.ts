@@ -123,7 +123,7 @@ export const deleteCardTC = (id: string) => async (dispatch: AppDispatchType) =>
     dispatch(setAppStatus({ status: 'loading' }))
     dispatch(setCardRequestStatus({ cardId: id, requestStatus: 'loading' }))
     await cardsAPI.deleteCard(id)
-    dispatch(getCardsTC())
+    await dispatch(getCardsTC())
   } catch (e) {
     dispatch(setCardRequestStatus({ cardId: id, requestStatus: 'idle' }))
     handleServerNetworkError(dispatch, e as Error | AxiosError)
@@ -158,7 +158,7 @@ export const updateCardTC =
         question: data.question,
         answer: data.answer,
       })
-      dispatch(getCardsTC())
+      await dispatch(getCardsTC())
     } catch (e) {
       handleServerNetworkError(dispatch, e as Error | AxiosError)
     } finally {
