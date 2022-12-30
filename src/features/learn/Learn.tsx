@@ -37,8 +37,6 @@ export const Learn = () => {
   const [showAnswer, setShowAnswer] = React.useState(false)
   const cards = useSelector<RootStateType, ServerCardType[]>(state => state.learn.cards)
 
-  debugger
-
   console.log('Cards: ', cards)
 
   const getData = async () => {
