@@ -133,7 +133,7 @@ export const deletePackTC = (id: string) => async (dispatch: AppDispatchType) =>
     dispatch(setAppStatus({ status: 'loading' }))
     dispatch(setPackRequestStatus({ packId: id, requestStatus: 'loading' }))
     await packsAPI.deletePack(id)
-    dispatch(getPacksTC())
+    await dispatch(getPacksTC())
   } catch (e) {
     dispatch(setPackRequestStatus({ packId: id, requestStatus: 'idle' }))
     handleServerNetworkError(dispatch, e as Error | AxiosError)
@@ -165,7 +165,7 @@ export const updatePackTC =
       const updatingPack = getState().packs.tableData.filter(pack => data.id === pack._id)
 
       await packsAPI.updatePack({ ...updatingPack[0], name: data.name })
-      dispatch(getPacksTC())
+      await dispatch(getPacksTC())
     } catch (e) {
       dispatch(setPackRequestStatus({ packId: data.id, requestStatus: 'idle' }))
       handleServerNetworkError(dispatch, e as Error | AxiosError)
