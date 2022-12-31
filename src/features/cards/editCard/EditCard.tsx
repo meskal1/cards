@@ -100,7 +100,7 @@ export const EditCard: React.FC<AddCardTextFormType> = ({ active, closeModal, ca
             variant="contained"
             disabled={!formik.errors.answer && !formik.errors.question ? false : true}
           >
-            Create
+            Edit
           </Button>
         </div>
       </form>
