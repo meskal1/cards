@@ -34,7 +34,7 @@ export const PacksTableBody: FC<PacksTableBodyType> = ({ heads, setEditData, ope
   }
 
   const handleStudyCardPack = async (id: string) => {
-    await dispatch(setAppStatus( 'loading' ))
+    await dispatch(setAppStatus('loading'))
     navigate(PATH.LEARN + `/${id}`)
   }
   const handleEditCardPack = (data: UpdatePackDataType) => {

@@ -3,14 +3,12 @@ import { useEffect, useState } from 'react'
 import { Button, FormControl, FormLabel, Radio, RadioGroup, FormControlLabel } from '@mui/material'
 import { useFormik } from 'formik'
 import { useSelector } from 'react-redux'
-import { useNavigate, useParams } from 'react-router'
+import { useParams } from 'react-router'
 import { useLocation } from 'react-router-dom'
 
 import { RootStateType } from '../../app/store'
 import { BackToPacks } from '../../common/components/BackToPacks/BackToPacks'
-import { PATH } from '../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
-import { useGetSearchParams } from '../../hooks/useGetSearchParams'
 import { ServerCardType } from '../../services/cardsApi'
 import { getCard } from '../../utils/random'
 
@@ -44,19 +42,13 @@ const grades = [
 
 export const Learn = () => {
   let { packId } = useParams()
-
-  console.log('PakId: ', packId)
-  const dispatch = useAppDispatch()
   const location = useLocation()
+  const dispatch = useAppDispatch()
   const appStatus = useAppSelector(state => state.app.status)
-
-  console.log('Location', location)
+  const cards = useSelector<RootStateType, ServerCardType[]>(state => state.learn.cards)
   const [card, setCard] = useState<ServerCardType>(initialCard)
   const [showAnswer, setShowAnswer] = useState(false)
-  const cards = useSelector<RootStateType, ServerCardType[]>(state => state.learn.cards)
   const [cardId, setCardId] = useState(location.state ? location.state.cardId : '')
-
-  const navigate = useNavigate()
 
   useEffect(() => {
     ;(async () => {
@@ -67,7 +59,7 @@ export const Learn = () => {
   }, [])
 
   useEffect(() => {
-    let selectedCard: any
+    let selectedCard
 
     if (cardId) {
       for (let i = 0; i < cards.length; i++) {
