@@ -169,7 +169,7 @@ export const Learn = () => {
         </div>
       )}
       {showAlert ? (
-        <CustomModalDialog active={showAlert} setActive={setShowAlert}>
+        <CustomModalDialog active={showAlert}>
           <NoCardsToLearn />
         </CustomModalDialog>
       ) : (

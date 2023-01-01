@@ -11,13 +11,13 @@ type PageTitleBlockType = {
   linkToPacks?: boolean
   button: string
   title: string
-  buttonClick: () => void
+  buttonClick: (state: boolean) => void
 }
 
 export const PageTitleBlock: React.FC<PageTitleBlockType> = React.memo(
   ({ linkToPacks, button, title, buttonClick }) => {
     const handleClick = () => {
-      buttonClick()
+      buttonClick(true)
     }
 
     return (

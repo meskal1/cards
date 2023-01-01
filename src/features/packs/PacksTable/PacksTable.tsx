@@ -34,7 +34,7 @@ const heads: HeadType<PacksOrderByType>[] = [
 ]
 
 type PacksTablePropsType = {
-  openEditModal: () => void
+  openEditModal: (state: boolean) => void
   setEditData: (data: UpdatePackDataType) => void
 }
 
@@ -57,6 +57,8 @@ export const PacksTable: React.FC<PacksTablePropsType> = ({ openEditModal, setEd
     dispatch(updatePacksQueryParamsTC({ sortPacks: newServerOrder }))
   }
 
+  const handleOpenEditModal = React.useCallback(() => openEditModal(true), [openEditModal])
+
   return (
     <Box>
       <Paper>
@@ -74,7 +76,7 @@ export const PacksTable: React.FC<PacksTablePropsType> = ({ openEditModal, setEd
             ) : (
               <PacksTableBody
                 heads={heads}
-                openEditModal={openEditModal}
+                openEditModal={handleOpenEditModal}
                 setEditData={setEditData}
               />
             )}

@@ -24,14 +24,6 @@ export const Packs = () => {
   const [editData, setEditData] = React.useState<UpdatePackDataType>({ id: '', name: '' })
   const allParams = useGetSearchParams()
 
-  const handleOpenAddModal = React.useCallback(() => setAddModal(true), [setAddModal])
-
-  const handleCloseAddModal = React.useCallback(() => setAddModal(false), [setAddModal])
-
-  const handleOpenEditModal = React.useCallback(() => setEditModal(true), [setEditModal])
-
-  const handleCloseEditModal = React.useCallback(() => setEditModal(false), [setEditModal])
-
   const handleSetEditData = React.useCallback(
     (data: UpdatePackDataType) => setEditData(data),
     [setEditData]
@@ -59,7 +51,7 @@ export const Packs = () => {
             <PageTitleBlock
               title={'packs list'}
               button={'add new pack'}
-              buttonClick={handleOpenAddModal}
+              buttonClick={setAddModal}
             />
             <div className={s.packs__controlPanel}>
               <CustomSearch />
@@ -68,18 +60,18 @@ export const Packs = () => {
               <PacksResetFilter />
             </div>
           </div>
-          <PacksTable setEditData={handleSetEditData} openEditModal={handleOpenEditModal} />
+          <PacksTable setEditData={handleSetEditData} openEditModal={setEditModal} />
           <CustomPagination />
           {addModal ? (
-            <CustomModalDialog active={addModal} setActive={handleCloseAddModal}>
-              <AddPack closeModal={handleCloseAddModal}></AddPack>
+            <CustomModalDialog active={addModal} setActive={setAddModal}>
+              <AddPack activeModal={setAddModal}></AddPack>
             </CustomModalDialog>
           ) : (
             ''
           )}
           {editModal ? (
-            <CustomModalDialog active={editModal} setActive={handleCloseEditModal}>
-              <EditPack data={editData} closeModal={handleCloseEditModal} />
+            <CustomModalDialog active={editModal} setActive={setEditModal}>
+              <EditPack data={editData} activeModal={setEditModal} />
             </CustomModalDialog>
           ) : (
             ''
