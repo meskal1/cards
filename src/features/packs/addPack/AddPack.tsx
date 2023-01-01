@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { useState } from 'react'
 
 import { FormControlLabel } from '@mui/material'
 import Button from '@mui/material/Button'
@@ -20,8 +20,8 @@ type FormikErrorType = {
 }
 
 export const AddPack = (props: AddPackType) => {
-  const [isDisabled, setIsDisabled] = React.useState(true)
-  const [errors, setErrors] = React.useState<FormikErrorType>({ name: '' })
+  const [isDisabled, setIsDisabled] = useState(true)
+  const [errors, setErrors] = useState<FormikErrorType>({ name: '' })
 
   const dispatch = useAppDispatch()
 

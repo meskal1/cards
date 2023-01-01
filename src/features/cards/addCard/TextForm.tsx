@@ -1,4 +1,4 @@
-import React from 'react'
+import { FC } from 'react'
 
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
@@ -19,7 +19,7 @@ type FormikErrorType = {
   answer?: string
 }
 
-export const TextForm: React.FC<AddCardTextFormType> = ({ closeModal, cardsPack_id }) => {
+export const TextForm: FC<AddCardTextFormType> = ({ closeModal, cardsPack_id }) => {
   const dispatch = useAppDispatch()
 
   const formik = useFormik({

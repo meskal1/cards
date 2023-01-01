@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { useCallback } from 'react'
 
 import { CameraAlt } from '@mui/icons-material'
 
@@ -24,7 +24,7 @@ export const Profile = () => {
 
   const setNewAvatar = () => alert('add photo')
 
-  const changeUserName = React.useCallback(
+  const changeUserName = useCallback(
     (newName: string) => {
       dispatch(newUserDataTC({ name: newName, avatar }))
     },

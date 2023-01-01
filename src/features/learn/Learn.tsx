@@ -1,4 +1,4 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
 
 import { Button, FormControl, FormLabel, Radio, RadioGroup, FormControlLabel } from '@mui/material'
 import { useFormik } from 'formik'
@@ -33,28 +33,22 @@ const initialCard = {
 export const Learn = () => {
   const { packId, cardId } = useParams()
   const dispatch = useAppDispatch()
-  const [card, setCard] = React.useState<ServerCardType>(initialCard)
-  const [showAnswer, setShowAnswer] = React.useState(false)
+  const [card, setCard] = useState<ServerCardType>(initialCard)
+  const [showAnswer, setShowAnswer] = useState(false)
   const cards = useSelector<RootStateType, ServerCardType[]>(state => state.learn.cards)
 
-  console.log('Cards: ', cards)
-
-  const getData = async () => {
-    if (packId) {
-      await dispatch(getCards({ cardsPack_id: packId }))
-    }
-    console.log('First useeffect')
-  }
-
-  React.useEffect(() => {
-    getData()
+  useEffect(() => {
+    ;(async () => {
+      if (packId) {
+        await dispatch(getCards({ cardsPack_id: packId }))
+      }
+    })()
   }, [])
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (cardId) {
       const selectedCard = cards.find(card => card._id === cardId)
 
-      console.log('SELECTED ', selectedCard)
       if (selectedCard) {
         setCard(selectedCard)
       }

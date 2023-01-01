@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { useState, MouseEvent } from 'react'
 
 import { Toolbar } from '@mui/material'
 import AppBar from '@mui/material/AppBar'
@@ -15,13 +15,13 @@ import s from './Header.module.scss'
 export const Header = () => {
   const name = useAppSelector(state => state.profile.userData.name)
   const avatar = useAppSelector(state => state.profile.userData.avatar)
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
   }
 
-  const onMouseDownOutOffMenu = (e: React.MouseEvent) => {
+  const onMouseDownOutOffMenu = (e: MouseEvent) => {
     if ((e.target as Element).id === 'header' && isMenuOpen !== false) {
       setIsMenuOpen(false)
     }

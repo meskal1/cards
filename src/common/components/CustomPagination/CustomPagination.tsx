@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { FC, ChangeEvent } from 'react'
 
 import Pagination from '@mui/material/Pagination'
 import TablePagination from '@mui/material/TablePagination'
@@ -15,7 +15,7 @@ type CustomPaginationType = {
   cards?: boolean
 }
 
-export const CustomPagination: React.FC<CustomPaginationType> = ({ cards }) => {
+export const CustomPagination: FC<CustomPaginationType> = ({ cards }) => {
   const dispatch = useAppDispatch()
   const [searchParams, setSearchParams] = useSearchParams()
   const allParams = useGetSearchParams()
@@ -39,15 +39,13 @@ export const CustomPagination: React.FC<CustomPaginationType> = ({ cards }) => {
     }
   }
 
-  const handleChangePage = (event: React.ChangeEvent<any>, page: number) => {
+  const handleChangePage = (event: ChangeEvent<any>, page: number) => {
     dispatchData({ page })
 
     setSearchParams({ ...allParams, page: page + '' })
   }
 
-  const handleChangeRowsPerPage = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleChangeRowsPerPage = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     dispatchData({ pageCount: +e.target.value })
 
     setSearchParams({ ...allParams, pageCount: e.target.value })

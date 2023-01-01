@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { CustomPagination } from '../../common/components/CustomPagination/CustomPagination'
 import { CustomSearch } from '../../common/components/CustomSearch/CustomSearch'
@@ -18,26 +18,26 @@ import { PacksTable } from './PacksTable/PacksTable'
 
 export const Packs = () => {
   const dispatch = useAppDispatch()
-  const [showChildren, setShowChildren] = React.useState(false)
-  const [addModal, setAddModal] = React.useState(false)
-  const [editModal, setEditModal] = React.useState(false)
-  const [editData, setEditData] = React.useState<UpdatePackDataType>({ id: '', name: '' })
+  const [showChildren, setShowChildren] = useState(false)
+  const [addModal, setAddModal] = useState(false)
+  const [editModal, setEditModal] = useState(false)
+  const [editData, setEditData] = useState<UpdatePackDataType>({ id: '', name: '' })
   const allParams = useGetSearchParams()
 
-  const handleOpenAddModal = React.useCallback(() => setAddModal(true), [setAddModal])
+  const handleOpenAddModal = useCallback(() => setAddModal(true), [setAddModal])
 
-  const handleCloseAddModal = React.useCallback(() => setAddModal(false), [setAddModal])
+  const handleCloseAddModal = useCallback(() => setAddModal(false), [setAddModal])
 
-  const handleOpenEditModal = React.useCallback(() => setEditModal(true), [setEditModal])
+  const handleOpenEditModal = useCallback(() => setEditModal(true), [setEditModal])
 
-  const handleCloseEditModal = React.useCallback(() => setEditModal(false), [setEditModal])
+  const handleCloseEditModal = useCallback(() => setEditModal(false), [setEditModal])
 
-  const handleSetEditData = React.useCallback(
+  const handleSetEditData = useCallback(
     (data: UpdatePackDataType) => setEditData(data),
     [setEditData]
   )
 
-  React.useEffect(() => {
+  useEffect(() => {
     ;(async () => {
       const isSucceeded = await dispatch(updatePacksQueryParamsTC(allParams))
 

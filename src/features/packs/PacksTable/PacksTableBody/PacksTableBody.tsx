@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { FC } from 'react'
 
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
@@ -10,7 +10,6 @@ import { RequestStatusType } from '../../../../app/appSlice'
 import { HeadType } from '../../../../common/components/CustomTableHead/CustomTableHead'
 import { PATH } from '../../../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../../../hooks/reduxHooks'
-import { getCards } from '../../../learn/learnSlice'
 import { AppPackType, deletePackTC, UpdatePackDataType } from '../../packsSlice'
 import { PacksOrderByType } from '../PacksTable'
 
@@ -23,11 +22,7 @@ type PacksTableBodyType = {
   setEditData: (data: UpdatePackDataType) => void
 }
 
-export const PacksTableBody: React.FC<PacksTableBodyType> = ({
-  heads,
-  setEditData,
-  openEditModal,
-}) => {
+export const PacksTableBody: FC<PacksTableBodyType> = ({ heads, setEditData, openEditModal }) => {
   const tableData = useAppSelector<AppPackType[]>(state => state.packs.tableData)
   const userId = useAppSelector(state => state.profile.userData.id)
   const dispatch = useAppDispatch()

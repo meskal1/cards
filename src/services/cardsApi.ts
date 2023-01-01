@@ -1,5 +1,3 @@
-import { number } from 'yup'
-
 import { SortValuesCardsType } from '../features/cards/cardsSlice'
 
 import { instance } from './instance'

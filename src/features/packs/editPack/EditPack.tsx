@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { FC, useState } from 'react'
 
 import { TextField } from '@mui/material'
 import Button from '@mui/material/Button'
@@ -21,9 +21,9 @@ type formikErrorType = {
   name?: string
 }
 
-export const EditPack: React.FC<EditPackType> = ({ data, closeModal }) => {
+export const EditPack: FC<EditPackType> = ({ data, closeModal }) => {
   const dispatch = useAppDispatch()
-  const [errors, setErrors] = React.useState<formikErrorType>({ name: '' })
+  const [errors, setErrors] = useState<formikErrorType>({ name: '' })
 
   const formik = useFormik({
     initialValues: {

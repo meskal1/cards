@@ -1,4 +1,4 @@
-import React from 'react'
+import { SyntheticEvent } from 'react'
 
 import { Alert, Box, Snackbar } from '@mui/material'
 
@@ -11,7 +11,7 @@ export const CustomSnackbar = () => {
 
   const dispatch = useAppDispatch()
 
-  const handleClose = (event?: Event | React.SyntheticEvent, reason?: string) => {
+  const handleClose = (event?: Event | SyntheticEvent, reason?: string) => {
     if (reason === 'clickaway') {
       return
     }

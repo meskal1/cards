@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { useState, useEffect, FC, ChangeEvent } from 'react'
 
 import { TextField } from '@mui/material'
 import { useLocation, useSearchParams } from 'react-router-dom'
@@ -15,22 +15,22 @@ type CustomSearchType = {
   cards?: boolean
 }
 
-export const CustomSearch: React.FC<CustomSearchType> = ({ cards }) => {
+export const CustomSearch: FC<CustomSearchType> = ({ cards }) => {
   const dispatch = useAppDispatch()
   const location = useLocation()
   const [searchParams, setSearchParams] = useSearchParams()
   const allParams = useGetSearchParams('always')
   const inintInputValue = allParams.search || allParams.cardQuestion || ''
-  const [inputValue, setInputValue] = React.useState(inintInputValue)
+  const [inputValue, setInputValue] = useState(inintInputValue)
   const debouncedValue = useDebounce(inputValue)
   const search = useAppSelector(state => state.packs.queryParams.search)
   const cardQuestion = useAppSelector(state => state.cards.queryParams.cardQuestion)
 
-  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.currentTarget.value)
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     const isItWorthUpdating = () => {
       if (cards) {
         if (cardQuestion !== inputValue) {
@@ -55,7 +55,7 @@ export const CustomSearch: React.FC<CustomSearchType> = ({ cards }) => {
     }
   }, [debouncedValue])
 
-  React.useEffect(() => {
+  useEffect(() => {
     setInputValue(inintInputValue)
   }, [location.search])
 

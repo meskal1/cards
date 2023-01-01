@@ -1,4 +1,4 @@
-import React from 'react'
+import { FC } from 'react'
 
 import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
@@ -32,7 +32,7 @@ type CardsTablePropsType = {
   setEditData: (data: UpdateCardType) => void
 }
 
-export const CardsTable: React.FC<CardsTablePropsType> = ({ isMine, openEdit, setEditData }) => {
+export const CardsTable: FC<CardsTablePropsType> = ({ isMine, openEdit, setEditData }) => {
   const status = useAppSelector<RequestStatusType>(state => state.cards.status)
   const serverSort = useAppSelector<SortValuesCardsType>(state => state.cards.queryParams.sortCards)
   const pageCount = useAppSelector(state => state.cards.queryParams.pageCount)

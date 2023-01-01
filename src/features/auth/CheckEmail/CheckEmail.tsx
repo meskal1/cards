@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { useEffect } from 'react'
 
 import { useNavigate } from 'react-router'
 
@@ -19,7 +19,7 @@ export const CheckEmail = () => {
     navigate(PATH.LOGIN)
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     const setEmail = () => {
       dispatch(setRecoveryEmail({ recoveryEmail: '' }))
     }

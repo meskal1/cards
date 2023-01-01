@@ -1,4 +1,4 @@
-import React from 'react'
+import { FC } from 'react'
 
 import Rating from '@mui/material/Rating'
 import TableBody from '@mui/material/TableBody'
@@ -6,14 +6,12 @@ import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 import dayjs from 'dayjs'
 import { useNavigate } from 'react-router'
-import { createSearchParams } from 'react-router-dom'
 
 import { RequestStatusType } from '../../../../app/appSlice'
 import { HeadType } from '../../../../common/components/CustomTableHead/CustomTableHead'
 import { PATH } from '../../../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../../../hooks/reduxHooks'
-import { getCards } from '../../../learn/learnSlice'
-import { AppCardType, deleteCardTC, updateCardTC, UpdateCardType } from '../../cardsSlice'
+import { AppCardType, deleteCardTC, UpdateCardType } from '../../cardsSlice'
 import { CardsOrderByType } from '../CardsTable'
 
 import { CardsActionCell } from './CardsActionCell/CardsActionCell'
@@ -26,7 +24,7 @@ type CardsTableBodyType = {
   setEditData: (data: UpdateCardType) => void
 }
 
-export const CardsTableBody: React.FC<CardsTableBodyType> = ({
+export const CardsTableBody: FC<CardsTableBodyType> = ({
   heads,
   isMine,
   openEdit,
@@ -41,14 +39,11 @@ export const CardsTableBody: React.FC<CardsTableBodyType> = ({
     if (requestStatus === 'loading') return
 
     navigate(PATH.LEARN + `/${packId}/${id}`)
-
-    //alert('Open card - ' + id)
   }
 
   const handleEditCard = (data: UpdateCardType) => {
     openEdit(true)
     setEditData(data)
-    //dispatch(updateCardTC(data))
   }
   const handleDeleteCard = (id: string) => {
     dispatch(deleteCardTC(id))

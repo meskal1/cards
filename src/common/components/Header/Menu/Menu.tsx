@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { FC } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 
@@ -14,7 +14,7 @@ type MenuType = {
   closeMenu: () => void
 }
 
-export const Menu: React.FC<MenuType> = ({ closeMenu }) => {
+export const Menu: FC<MenuType> = ({ closeMenu }) => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 

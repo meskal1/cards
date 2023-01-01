@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { useState, useEffect } from 'react'
 
 import { useSearchParams } from 'react-router-dom'
 
@@ -16,7 +16,7 @@ export const PackSlider = () => {
   const minCardsCount = useAppSelector(state => state.packs.cardsCount.minCardsCount)
   const maxCardsCount = useAppSelector(state => state.packs.cardsCount.maxCardsCount)
   const isDataReset = useAppSelector(state => state.packs.isDataReset)
-  const [value, setValue] = React.useState<number[]>([
+  const [value, setValue] = useState<number[]>([
     +allParams.min || minCardsCount,
     +allParams.max || maxCardsCount,
   ])
@@ -32,11 +32,11 @@ export const PackSlider = () => {
     }
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     setValue([+allParams.min || minCardsCount, +allParams.max || maxCardsCount])
   }, [minCardsCount, maxCardsCount])
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!+allParams.min) {
       setValue([minCardsCount, maxCardsCount])
     }

@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { useEffect } from 'react'
 
 import { LinearProgress } from '@mui/material'
 
@@ -17,7 +17,7 @@ function App() {
   const isInitialized = useAppSelector(state => state.app.isInitialized)
   const dispatch = useAppDispatch()
 
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(initializeAppTC())
   }, [])
 

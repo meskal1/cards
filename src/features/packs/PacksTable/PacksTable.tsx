@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { FC } from 'react'
 
 import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
@@ -38,7 +38,7 @@ type PacksTablePropsType = {
   setEditData: (data: UpdatePackDataType) => void
 }
 
-export const PacksTable: React.FC<PacksTablePropsType> = ({ openEditModal, setEditData }) => {
+export const PacksTable: FC<PacksTablePropsType> = ({ openEditModal, setEditData }) => {
   const status = useAppSelector<RequestStatusType>(state => state.packs.status)
   const serverSort = useAppSelector<SortValuesType>(state => state.packs.queryParams.sortPacks)
   const pageCount = useAppSelector(state => state.packs.queryParams.pageCount)

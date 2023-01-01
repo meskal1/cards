@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { FC } from 'react'
 
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
@@ -25,7 +25,7 @@ type BasicTableType = {
   rows: JSX.Element[]
 }
 
-export const BasicTable: React.FC<BasicTableType> = ({ head, rows }) => {
+export const BasicTable: FC<BasicTableType> = ({ head, rows }) => {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">

@@ -1,4 +1,4 @@
-import React, { memo, useState, MouseEvent, ChangeEvent, KeyboardEvent, FC } from 'react'
+import { memo, useState, MouseEvent, ChangeEvent, KeyboardEvent, FC } from 'react'
 
 import { BorderColor, Send } from '@mui/icons-material'
 

@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { FC, memo } from 'react'
 
 import { AddPack } from '../../../features/packs/addPack/AddPack'
 import { BackToPacks } from '../BackToPacks/BackToPacks'
@@ -14,7 +14,7 @@ type PageTitleBlockType = {
   buttonClick: () => void
 }
 
-export const PageTitleBlock: React.FC<PageTitleBlockType> = React.memo(
+export const PageTitleBlock: FC<PageTitleBlockType> = memo(
   ({ linkToPacks, button, title, buttonClick }) => {
     const handleClick = () => {
       buttonClick()
