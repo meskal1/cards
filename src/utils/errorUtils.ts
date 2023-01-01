@@ -16,7 +16,7 @@ export const handleServerNetworkError = (dispatch: AppDispatchType, error: Error
       handle401UnauthorizedError(dispatch)
     }
   }
-  dispatch(setAppStatus({ status: 'idle' }))
+  dispatch(setAppStatus('idle'))
 }
 
 const handle401UnauthorizedError = (dispatch: AppDispatchType) => {

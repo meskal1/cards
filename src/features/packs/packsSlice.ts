@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AxiosError } from 'axios'
 
-import { RequestStatusType, setAppStatus } from '../../app/appSlice'
+import { RequestStatusPayloadType, setAppStatus, setTableStatus } from '../../app/appSlice'
 import { AppDispatchType, RootStateType } from '../../app/store'
 import { CreatePackType, packsAPI, ServerPackType } from '../../services/packsApi'
 import { handleServerNetworkError } from '../../utils/errorUtils'
@@ -23,7 +23,6 @@ const initialState = {
   },
   isDataReset: false,
   tableData: [] as AppPackType[],
-  status: 'idle' as RequestStatusType,
 }
 
 const packsSlice = createSlice({
@@ -46,9 +45,6 @@ const packsSlice = createSlice({
         }
       })
     },
-    setPacksStatus(state, action: PayloadAction<RequestStatusType>) {
-      state.status = action.payload
-    },
     resetPacksQueryParams(state) {
       state.queryParams = initialState.queryParams
     },
@@ -66,7 +62,6 @@ export const {
   setPackRequestStatus,
   setPacksTableData,
   setCardsCount,
-  setPacksStatus,
   resetPacksQueryParams,
   toggleResetStatus,
 } = packsSlice.actions
@@ -76,7 +71,7 @@ export const updatePacksQueryParamsTC =
   (queryProps: PacksQueryParamsType) =>
   async (dispatch: AppDispatchType, getState: () => RootStateType) => {
     try {
-      dispatch(setPacksStatus('loading'))
+      dispatch(setTableStatus('loading'))
 
       // THE TYPES BUG WAS FOUND, THIS IS THE FIX
       const { max, min, page, pageCount } = queryProps
@@ -97,7 +92,7 @@ export const updatePacksQueryParamsTC =
     } catch (e) {
       handleServerNetworkError(dispatch, e as Error | AxiosError)
     } finally {
-      dispatch(setPacksStatus('idle'))
+      dispatch(setTableStatus('idle'))
     }
   }
 
@@ -130,7 +125,7 @@ export const getPacksTC =
 
 export const deletePackTC = (id: string) => async (dispatch: AppDispatchType) => {
   try {
-    dispatch(setAppStatus({ status: 'loading' }))
+    dispatch(setAppStatus('loading'))
     dispatch(setPackRequestStatus({ packId: id, requestStatus: 'loading' }))
     await packsAPI.deletePack(id)
     dispatch(getPacksTC())
@@ -138,21 +133,21 @@ export const deletePackTC = (id: string) => async (dispatch: AppDispatchType) =>
     dispatch(setPackRequestStatus({ packId: id, requestStatus: 'idle' }))
     handleServerNetworkError(dispatch, e as Error | AxiosError)
   } finally {
-    dispatch(setAppStatus({ status: 'idle' }))
+    dispatch(setAppStatus('idle'))
   }
 }
 
 export const addPackTC = (data: CreatePackType) => async (dispatch: AppDispatchType) => {
   try {
-    dispatch(setAppStatus({ status: 'loading' }))
-    dispatch(setPacksStatus('loading'))
+    dispatch(setAppStatus('loading'))
+    dispatch(setTableStatus('loading'))
     await packsAPI.addPack(data)
     await dispatch(getPacksTC())
   } catch (e) {
     handleServerNetworkError(dispatch, e as Error | AxiosError)
   } finally {
-    dispatch(setAppStatus({ status: 'idle' }))
-    dispatch(setPacksStatus('idle'))
+    dispatch(setAppStatus('idle'))
+    dispatch(setTableStatus('idle'))
   }
 }
 
@@ -160,7 +155,7 @@ export const updatePackTC =
   (data: UpdatePackDataType) =>
   async (dispatch: AppDispatchType, getState: () => RootStateType) => {
     try {
-      dispatch(setAppStatus({ status: 'loading' }))
+      dispatch(setAppStatus('loading'))
       dispatch(setPackRequestStatus({ packId: data.id, requestStatus: 'loading' }))
       const updatingPack = getState().packs.tableData.filter(pack => data.id === pack._id)
 
@@ -170,13 +165,13 @@ export const updatePackTC =
       dispatch(setPackRequestStatus({ packId: data.id, requestStatus: 'idle' }))
       handleServerNetworkError(dispatch, e as Error | AxiosError)
     } finally {
-      dispatch(setAppStatus({ status: 'idle' }))
+      dispatch(setAppStatus('idle'))
     }
   }
 
 // TYPES
 export type PacksStateType = typeof initialState
-export type AppPackType = ServerPackType & { requestStatus: RequestStatusType }
+export type AppPackType = ServerPackType & { requestStatus: RequestStatusPayloadType }
 
 export type SortValuesType =
   | '0cardsCount'
@@ -192,7 +187,7 @@ type PacksTablePayloadType = ServerPackType[]
 
 type PackRequestStatusPayloadType = {
   packId: string
-  requestStatus: RequestStatusType
+  requestStatus: RequestStatusPayloadType
 }
 
 type SetCardsCountPayloadType = {

@@ -5,7 +5,7 @@ import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
 import TableContainer from '@mui/material/TableContainer'
 
-import { RequestStatusType } from '../../../app/appSlice'
+import { RequestStatusPayloadType } from '../../../app/appSlice'
 import { TableBodySkeleton } from '../../../common/components/CustomSkeletons/TableBodySkeleton/TableBodySkeleton'
 import {
   CustomTableHead,
@@ -39,7 +39,7 @@ type PacksTablePropsType = {
 }
 
 export const PacksTable: FC<PacksTablePropsType> = ({ openEditModal, setEditData }) => {
-  const status = useAppSelector<RequestStatusType>(state => state.packs.status)
+  const status = useAppSelector<RequestStatusPayloadType>(state => state.app.tableStatus)
   const serverSort = useAppSelector<SortValuesType>(state => state.packs.queryParams.sortPacks)
   const pageCount = useAppSelector(state => state.packs.queryParams.pageCount)
   const dispatch = useAppDispatch()

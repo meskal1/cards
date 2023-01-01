@@ -9,10 +9,10 @@ import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks'
 import { AppRoutes } from '../routes/routes'
 
 import s from './App.module.scss'
-import { initializeAppTC, RequestStatusType } from './appSlice'
+import { initializeAppTC } from './appSlice'
 
 function App() {
-  const status = useAppSelector<RequestStatusType>(state => state.app.status)
+  const status = useAppSelector(state => state.app.status)
   const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
   const isInitialized = useAppSelector(state => state.app.isInitialized)
   const dispatch = useAppDispatch()

@@ -1,4 +1,4 @@
-import { RequestStatusType } from '../../app/appSlice'
+import { RequestStatusPayloadType } from '../../app/appSlice'
 
 import { authReducer, AuthStateType, setAuthStatus, setIsLoggedIn } from './authSlice'
 
@@ -9,7 +9,7 @@ describe('auth reducer tests', () => {
     initialState = {
       isLoggedIn: false,
       recoveryEmail: '',
-      status: 'idle' as RequestStatusType,
+      status: 'idle' as RequestStatusPayloadType,
       passwordIsChanged: false,
     }
   })

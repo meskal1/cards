@@ -8,20 +8,21 @@ import { authAPI } from '../services/authApi'
 import { AppDispatchType } from './store'
 
 const initialState = {
-  status: 'idle' as RequestStatusType,
+  status: 'idle' as RequestStatusPayloadType,
   alertMessage: {
     messageType: 'error' as AlertMessageType,
     messageText: null as AppAlertMessageTextType,
   },
   isInitialized: false,
+  tableStatus: 'idle' as RequestStatusPayloadType,
 }
 
 const appSlice = createSlice({
   name: 'app',
   initialState,
   reducers: {
-    setAppStatus(state, action: PayloadAction<SetRequestStatusPayloadType>) {
-      state.status = action.payload.status
+    setAppStatus(state, action: PayloadAction<RequestStatusPayloadType>) {
+      state.status = action.payload
     },
     setAppAlertMessage(state, action: PayloadAction<SetAppMessagePayloadType>) {
       state.alertMessage = action.payload
@@ -29,13 +30,17 @@ const appSlice = createSlice({
     setIsInitialized(state, action: PayloadAction<SetAppInitializedPayloadType>) {
       state.isInitialized = action.payload.isInitialized
     },
+    setTableStatus(state, action: PayloadAction<RequestStatusPayloadType>) {
+      state.tableStatus = action.payload
+    },
   },
 })
 
 export const appReducer = appSlice.reducer
 
 // ACTIONS
-export const { setAppStatus, setAppAlertMessage, setIsInitialized } = appSlice.actions
+export const { setAppStatus, setAppAlertMessage, setIsInitialized, setTableStatus } =
+  appSlice.actions
 
 // THUNKS
 export const initializeAppTC = () => async (dispatch: AppDispatchType) => {
@@ -63,7 +68,7 @@ export const initializeAppTC = () => async (dispatch: AppDispatchType) => {
 // TYPES
 export type AppStateType = typeof initialState
 
-export type RequestStatusType = 'idle' | 'loading'
+export type RequestStatusPayloadType = 'idle' | 'loading'
 
 export type AlertMessageType = 'success' | 'error'
 
@@ -75,7 +80,7 @@ type SetAppMessagePayloadType = {
 }
 
 export type SetRequestStatusPayloadType = {
-  status: RequestStatusType
+  status: RequestStatusPayloadType
 }
 
 export type SetAppInitializedPayloadType = {

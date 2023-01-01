@@ -3,7 +3,7 @@ import {
   AppAlertMessageTextType,
   appReducer,
   AppStateType,
-  RequestStatusType,
+  RequestStatusPayloadType,
   setAppAlertMessage,
   setAppStatus,
   setIsInitialized,
@@ -14,12 +14,13 @@ describe('app reducer tests', () => {
 
   beforeEach(() => {
     initialState = {
-      status: 'idle' as RequestStatusType,
+      status: 'idle' as RequestStatusPayloadType,
       alertMessage: {
         messageType: 'error' as AlertMessageType,
         messageText: null as AppAlertMessageTextType,
       },
       isInitialized: false,
+      tableStatus: 'idle' as RequestStatusPayloadType,
     }
   })
 
@@ -28,12 +29,12 @@ describe('app reducer tests', () => {
   })
 
   test('should set status to loading', () => {
-    expect(appReducer(initialState, setAppStatus({ status: 'loading' })).status).toBe('loading')
+    expect(appReducer(initialState, setAppStatus('loading')).status).toBe('loading')
   })
 
   test('should set status to idle', () => {
     initialState.status = 'loading'
-    expect(appReducer(initialState, setAppStatus({ status: 'idle' })).status).toBe('idle')
+    expect(appReducer(initialState, setAppStatus('idle')).status).toBe('idle')
   })
 
   test('should set error alert message', () => {
