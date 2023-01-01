@@ -70,7 +70,7 @@ export const EditPack: React.FC<EditPackType> = ({ data, activeModal }) => {
           }
         </div>
         <div className={s.Submit}>
-          <Button onClick={() => activeModal(false)} type={'button'} variant="contained">
+          <Button onClick={() => activeModal(false)} type={'button'} variant="outlined">
             Cancel
           </Button>
           <Button disabled={errors.name ? true : false} type={'submit'} variant="contained">

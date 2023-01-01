@@ -24,9 +24,13 @@ export const CustomModalDialog: React.FC<CustomModalDialogType> = ({
         className={active ? `${s.Content__Active} ${s.Content}` : s.Content}
         onClick={e => e.stopPropagation()}
       >
-        <div className={s.Close}>
-          <Close onClick={setActive ? () => setActive(false) : () => {}} />
-        </div>
+        {setActive ? (
+          <div className={s.Close}>
+            <Close onClick={setActive ? () => setActive(false) : () => {}} />
+          </div>
+        ) : (
+          ''
+        )}
         {children}
       </div>
     </div>

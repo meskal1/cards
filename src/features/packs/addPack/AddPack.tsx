@@ -76,7 +76,7 @@ export const AddPack: React.FC<AddPackType> = ({ activeModal }) => {
           />
         </div>
         <div className={s.Submit}>
-          <Button onClick={() => activeModal(false)} type={'button'} variant="contained">
+          <Button onClick={() => activeModal(false)} type={'button'} variant="outlined">
             Cancel
           </Button>
           <Button type={'submit'} variant="contained" disabled={isDisabled}>
