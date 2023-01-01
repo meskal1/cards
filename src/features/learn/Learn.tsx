@@ -8,14 +8,14 @@ import { useLocation } from 'react-router-dom'
 
 import { RootStateType } from '../../app/store'
 import { BackToPacks } from '../../common/components/BackToPacks/BackToPacks'
-import { PATH } from '../../constants/routePaths.enum'
+import { CustomModalDialog } from '../../common/components/ModalDialog/CustomModalDialog'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
-import { useGetSearchParams } from '../../hooks/useGetSearchParams'
 import { ServerCardType } from '../../services/cardsApi'
 import { getCard } from '../../utils/random'
 
 import s from './Learn.module.scss'
 import { getCards, gradeCard } from './learnSlice'
+import { NoCardsToLearn } from './noCardsToLearn/NoCardsToLearn'
 
 const initialCard = {
   _id: '',
@@ -53,11 +53,9 @@ export const Learn = () => {
   console.log('Location', location)
   const [card, setCard] = React.useState<ServerCardType>(initialCard)
   const [showAnswer, setShowAnswer] = React.useState(false)
+  const [showAlert, setShowAlert] = React.useState(false)
   const cards = useSelector<RootStateType, ServerCardType[]>(state => state.learn.cards)
   const [cardId, setCardId] = React.useState(location.state ? location.state.cardId : '')
-
-  //debugger
-  const navigate = useNavigate()
 
   console.log('Cards: ', cards)
 
@@ -82,7 +80,6 @@ export const Learn = () => {
           selectedCard = cards[i]
         }
       }
-      //const selectedCard = cards.find(card => card._id === cardId)
 
       console.log('SELECTED ', selectedCard)
       if (selectedCard) {
@@ -91,7 +88,7 @@ export const Learn = () => {
       }
     } else {
       if (cards.length === 0 && appStatus !== 'loading') {
-        alert('No cards left!')
+        setShowAlert(true)
       } else {
         const newCard = getCard(cards)
 
@@ -99,8 +96,6 @@ export const Learn = () => {
       }
     }
   }, [cards])
-
-  //console.log('Card question: ', card.question)
 
   const handleShowAnswer = () => setShowAnswer(!showAnswer)
 
@@ -172,6 +167,13 @@ export const Learn = () => {
             )}
           </div>
         </div>
+      )}
+      {showAlert ? (
+        <CustomModalDialog active={showAlert} setActive={setShowAlert}>
+          <NoCardsToLearn />
+        </CustomModalDialog>
+      ) : (
+        ''
       )}
     </>
   )
