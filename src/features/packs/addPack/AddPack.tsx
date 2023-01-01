@@ -12,14 +12,14 @@ import { addPackTC } from '../packsSlice'
 import s from './AddPack.module.scss'
 
 type AddPackType = {
-  closeModal: () => void
+  activeModal: (state: boolean) => void
 }
 
 type FormikErrorType = {
   name?: string
 }
 
-export const AddPack = (props: AddPackType) => {
+export const AddPack: React.FC<AddPackType> = ({ activeModal }) => {
   const [isDisabled, setIsDisabled] = React.useState(true)
   const [errors, setErrors] = React.useState<FormikErrorType>({ name: '' })
 
@@ -48,7 +48,7 @@ export const AddPack = (props: AddPackType) => {
     },
     onSubmit: async values => {
       await dispatch(addPackTC({ ...formik.values }))
-      props.closeModal()
+      activeModal(false)
       formik.resetForm()
     },
   })
@@ -76,6 +76,9 @@ export const AddPack = (props: AddPackType) => {
           />
         </div>
         <div className={s.Submit}>
+          <Button onClick={() => activeModal(false)} type={'button'} variant="contained">
+            Cancel
+          </Button>
           <Button type={'submit'} variant="contained" disabled={isDisabled}>
             Create
           </Button>
