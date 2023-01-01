@@ -52,6 +52,12 @@ export const Learn = () => {
       if (selectedCard) {
         setCard(selectedCard)
       }
+    } else {
+      if (cards.length) {
+        const randomCardIndex = Math.floor(Math.random() * cards.length)
+
+        setCard(cards[randomCardIndex])
+      }
     }
   }, [cards])
 
