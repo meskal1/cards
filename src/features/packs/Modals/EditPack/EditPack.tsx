@@ -4,8 +4,8 @@ import { TextField } from '@mui/material'
 import Button from '@mui/material/Button'
 import { useFormik } from 'formik'
 
-import { useAppDispatch } from '../../../hooks/reduxHooks'
-import { updatePackTC } from '../packsSlice'
+import { useAppDispatch } from '../../../../hooks/reduxHooks'
+import { updatePackTC } from '../../packsSlice'
 
 import s from './EditPack.module.scss'
 

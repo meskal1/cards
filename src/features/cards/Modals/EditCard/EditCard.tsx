@@ -4,9 +4,9 @@ import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import { useFormik } from 'formik'
 
-import { useAppDispatch } from '../../../hooks/reduxHooks'
-import s from '../addCard/AddCard.module.scss'
-import { updateCardTC, UpdateCardType } from '../cardsSlice'
+import { useAppDispatch } from '../../../../hooks/reduxHooks'
+import { updateCardTC, UpdateCardType } from '../../cardsSlice'
+import s from '../AddCard/AddCard.module.scss'
 
 type AddCardTextFormType = {
   active: boolean

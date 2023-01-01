@@ -6,8 +6,8 @@ import Checkbox from '@mui/material/Checkbox'
 import TextField from '@mui/material/TextField'
 import { useFormik } from 'formik'
 
-import { useAppDispatch } from '../../../hooks/reduxHooks'
-import { addPackTC } from '../packsSlice'
+import { useAppDispatch } from '../../../../hooks/reduxHooks'
+import { addPackTC } from '../../packsSlice'
 
 import s from './AddPack.module.scss'
 

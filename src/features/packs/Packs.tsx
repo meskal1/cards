@@ -7,8 +7,8 @@ import { PageTitleBlock } from '../../common/components/PageTitleBlock/PageTitle
 import { useAppDispatch } from '../../hooks/reduxHooks'
 import { useGetSearchParams } from '../../hooks/useGetSearchParams'
 
-import { AddPack } from './addPack/AddPack'
-import { EditPack } from './editPack/EditPack'
+import { AddPack } from './Modals/AddPack/AddPack'
+import { EditPack } from './Modals/EditPack/EditPack'
 import { PackOwnerSwitcher } from './PackOwnerSwitcher/PackOwnerSwitcher'
 import s from './Packs.module.scss'
 import { PackSlider } from './PackSlider/PackSlider'

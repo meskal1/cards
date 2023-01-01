@@ -11,7 +11,6 @@ import { PATH } from '../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { useGetSearchParams } from '../../hooks/useGetSearchParams'
 
-import { AddCard } from './addCard/AddCard'
 import s from './Cards.module.scss'
 import {
   AppCardType,
@@ -22,7 +21,8 @@ import {
   UpdateCardType,
 } from './cardsSlice'
 import { CardsTable } from './CardsTable/CardsTable'
-import { EditCard } from './editCard/EditCard'
+import { AddCard } from './Modals/AddCard/AddCard'
+import { EditCard } from './Modals/EditCard/EditCard'
 
 export const Cards = () => {
   const dispatch = useAppDispatch()

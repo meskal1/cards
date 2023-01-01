@@ -1,6 +1,6 @@
 import { FC, memo } from 'react'
 
-import { AddPack } from '../../../features/packs/addPack/AddPack'
+import { AddPack } from '../../../features/packs/Modals/AddPack/AddPack'
 import { BackToPacks } from '../BackToPacks/BackToPacks'
 import { CustomButton } from '../CustomButton/CustomButton'
 import { CustomModalDialog } from '../ModalDialog/CustomModalDialog'
