@@ -53,9 +53,9 @@ export const Cards = () => {
     setAddCard(true)
   }, [])
 
-  const handleLearnPack = useCallback(() => {
+  const handleLearnCards = () => {
     navigate(PATH.LEARN + `/${id}`)
-  }, [])
+  }
 
   useEffect(() => {
     if (cardsPack_id === '' || cardsPack_id !== id) {
@@ -88,7 +88,7 @@ export const Cards = () => {
               linkToPacks
               title={packName}
               button={titleButtonName}
-              buttonClick={isItMyPack ? handleTitleButton : handleLearnPack}
+              buttonClick={isItMyPack ? handleTitleButton : handleLearnCards}
             />
             {(isTableEmpty || allParams.cardQuestion) && (
               <div className={s.cards__controlPanel}>

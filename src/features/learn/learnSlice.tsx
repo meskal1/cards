@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AxiosError } from 'axios/index'
 
+import { setAppStatus } from '../../app/appSlice'
 import { AppDispatchType, RootStateType } from '../../app/store'
 import { cardsAPI, GradeData, ServerCardType, upgradedCardType } from '../../services/cardsApi'
 import { handleServerNetworkError } from '../../utils/errorUtils'
@@ -19,9 +20,7 @@ export const learnSlice = createSlice({
       state.cards = action.payload.cards
     },
     setGratedCard(state, action: PayloadAction<{ card: upgradedCardType }>) {
-      state.cards = state.cards.map(card =>
-        card._id === action.payload.card.card_id ? { ...card, ...action.payload.card } : card
-      )
+      state.cards = state.cards.filter(card => card._id !== action.payload.card.card_id)
     },
   },
   extraReducers: builder => {
@@ -39,6 +38,7 @@ export const { setCards, setGratedCard } = learnSlice.actions
 export const getCards =
   (data: { cardsPack_id: string }) =>
   async (dispatch: AppDispatchType, getState: () => RootStateType) => {
+    dispatch(setAppStatus('loading'))
     try {
       const totalCardsCount = getState().learn.cardsTotalCount
       const responseAllCards = await cardsAPI.getCards({
@@ -47,6 +47,7 @@ export const getCards =
       })
 
       dispatch(setCards({ cards: responseAllCards.data.cards }))
+      dispatch(setAppStatus('idle'))
     } catch (e) {
       handleServerNetworkError(dispatch, e as Error | AxiosError)
     }

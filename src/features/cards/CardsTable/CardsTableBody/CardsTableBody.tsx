@@ -38,7 +38,7 @@ export const CardsTableBody: FC<CardsTableBodyType> = ({
   const openCardHandler = (id: string, packId: string, requestStatus: RequestStatusPayloadType) => {
     if (requestStatus === 'loading') return
 
-    navigate(PATH.LEARN + `/${packId}/${id}`)
+    navigate(PATH.LEARN + `/${packId}`, { state: { cardId: id } })
   }
 
   const handleEditCard = (data: UpdateCardType) => {

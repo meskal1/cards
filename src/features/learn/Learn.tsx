@@ -3,12 +3,16 @@ import { useEffect, useState } from 'react'
 import { Button, FormControl, FormLabel, Radio, RadioGroup, FormControlLabel } from '@mui/material'
 import { useFormik } from 'formik'
 import { useSelector } from 'react-redux'
-import { useParams } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
+import { useLocation } from 'react-router-dom'
 
 import { RootStateType } from '../../app/store'
 import { BackToPacks } from '../../common/components/BackToPacks/BackToPacks'
-import { useAppDispatch } from '../../hooks/reduxHooks'
+import { PATH } from '../../constants/routePaths.enum'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+import { useGetSearchParams } from '../../hooks/useGetSearchParams'
 import { ServerCardType } from '../../services/cardsApi'
+import { getCard } from '../../utils/random'
 
 import s from './Learn.module.scss'
 import { getCards, gradeCard } from './learnSlice'
@@ -30,12 +34,29 @@ const initialCard = {
   __v: 0,
 }
 
+const grades = [
+  { grade: '1', title: 'Did not know' },
+  { grade: '2', title: 'Forgot' },
+  { grade: '3', title: 'A lot of thought' },
+  { grade: '4', title: 'Confused' },
+  { grade: '5', title: 'Knew the answer' },
+]
+
 export const Learn = () => {
-  const { packId, cardId } = useParams()
+  let { packId } = useParams()
+
+  console.log('PakId: ', packId)
   const dispatch = useAppDispatch()
+  const location = useLocation()
+  const appStatus = useAppSelector(state => state.app.status)
+
+  console.log('Location', location)
   const [card, setCard] = useState<ServerCardType>(initialCard)
   const [showAnswer, setShowAnswer] = useState(false)
   const cards = useSelector<RootStateType, ServerCardType[]>(state => state.learn.cards)
+  const [cardId, setCardId] = useState(location.state ? location.state.cardId : '')
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     ;(async () => {
@@ -46,22 +67,28 @@ export const Learn = () => {
   }, [])
 
   useEffect(() => {
-    if (cardId) {
-      const selectedCard = cards.find(card => card._id === cardId)
+    let selectedCard: any
 
+    if (cardId) {
+      for (let i = 0; i < cards.length; i++) {
+        if (cards[i]._id === cardId) {
+          selectedCard = cards[i]
+        }
+      }
       if (selectedCard) {
         setCard(selectedCard)
+        setCardId('')
       }
     } else {
-      if (cards.length) {
-        const randomCardIndex = Math.floor(Math.random() * cards.length)
+      if (cards.length === 0 && appStatus !== 'loading') {
+        alert('No cards left!')
+      } else {
+        const newCard = getCard(cards)
 
-        setCard(cards[randomCardIndex])
+        setCard(newCard)
       }
     }
   }, [cards])
-
-  console.log('Card question: ', card.question)
 
   const handleShowAnswer = () => setShowAnswer(!showAnswer)
 
@@ -77,54 +104,63 @@ export const Learn = () => {
       }
     },
     onSubmit: values => {
+      handleShowAnswer()
       dispatch(gradeCard({ card_id: card._id, grade: +values.grade }))
-      console.log(values)
     },
   })
 
   return (
     <>
-      <div className={s.mainContainer}>
-        <BackToPacks />
-        <div className={s.learnContainer}>
-          <p>
-            <b>Question:</b> {card.question}
-          </p>
-          {showAnswer ? (
-            <div>
-              <p>
-                <b>Answer:</b> {card.answer}
-              </p>
-              <form onSubmit={formik.handleSubmit}>
-                <FormControl>
-                  <FormLabel id="demo-radio-buttons-group-label">Rate yourself</FormLabel>
-                  <RadioGroup
-                    aria-labelledby="demo-radio-buttons-group-label"
-                    {...formik.getFieldProps('grade')}
+      {appStatus === 'loading' ? (
+        ''
+      ) : (
+        <div className={s.mainContainer}>
+          <BackToPacks />
+          <div className={s.learnContainer}>
+            <p>
+              <b>Question:</b> {card && card.question}
+            </p>
+            {showAnswer ? (
+              <div>
+                <p>
+                  <b>Answer:</b> {card && card.answer}
+                </p>
+                <form onSubmit={formik.handleSubmit}>
+                  <FormControl>
+                    <FormLabel id="demo-radio-buttons-group-label">Rate yourself</FormLabel>
+                    <RadioGroup
+                      aria-labelledby="demo-radio-buttons-group-label"
+                      {...formik.getFieldProps('grade')}
+                    >
+                      {grades.map(grade => {
+                        return (
+                          <FormControlLabel
+                            key={grade.grade}
+                            value={grade.grade}
+                            control={<Radio />}
+                            label={grade.title}
+                          />
+                        )
+                      })}
+                    </RadioGroup>
+                  </FormControl>
+                  <Button
+                    type={'submit'}
+                    variant={'contained'}
+                    disabled={formik.errors.grade ? true : false}
                   >
-                    <FormControlLabel value="1" control={<Radio />} label="Did not know" />
-                    <FormControlLabel value="2" control={<Radio />} label="Forgot" />
-                    <FormControlLabel value="3" control={<Radio />} label="A lot of thought" />
-                    <FormControlLabel value="4" control={<Radio />} label="Confused" />
-                    <FormControlLabel value="5" control={<Radio />} label="Knew the answer" />
-                  </RadioGroup>
-                </FormControl>
-                <Button
-                  type={'submit'}
-                  variant={'contained'}
-                  disabled={formik.errors.grade ? true : false}
-                >
-                  Next
-                </Button>
-              </form>
-            </div>
-          ) : (
-            <Button type={'button'} variant={'contained'} onClick={handleShowAnswer}>
-              Show Answer
-            </Button>
-          )}
+                    Next
+                  </Button>
+                </form>
+              </div>
+            ) : (
+              <Button type={'button'} variant={'contained'} onClick={handleShowAnswer}>
+                Show Answer
+              </Button>
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </>
   )
 }

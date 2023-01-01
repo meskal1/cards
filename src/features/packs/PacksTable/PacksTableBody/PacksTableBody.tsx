@@ -6,7 +6,7 @@ import TableRow from '@mui/material/TableRow'
 import dayjs from 'dayjs'
 import { useNavigate } from 'react-router-dom'
 
-import { RequestStatusPayloadType } from '../../../../app/appSlice'
+import { RequestStatusPayloadType, setAppStatus } from '../../../../app/appSlice'
 import { HeadType } from '../../../../common/components/CustomTableHead/CustomTableHead'
 import { PATH } from '../../../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../../../hooks/reduxHooks'
@@ -33,7 +33,8 @@ export const PacksTableBody: FC<PacksTableBodyType> = ({ heads, setEditData, ope
     navigate(PATH.CARDS + `/${id}`)
   }
 
-  const handleStudyCardPack = (id: string) => {
+  const handleStudyCardPack = async (id: string) => {
+    await dispatch(setAppStatus( 'loading' ))
     navigate(PATH.LEARN + `/${id}`)
   }
   const handleEditCardPack = (data: UpdatePackDataType) => {
