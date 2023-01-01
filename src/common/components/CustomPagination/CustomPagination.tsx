@@ -4,6 +4,7 @@ import Pagination from '@mui/material/Pagination'
 import TablePagination from '@mui/material/TablePagination'
 import { useSearchParams } from 'react-router-dom'
 
+import { RequestStatusPayloadType } from '../../../app/appSlice'
 import { updateCardsQueryParamsTC } from '../../../features/cards/cardsSlice'
 import { updatePacksQueryParamsTC } from '../../../features/packs/packsSlice'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
@@ -19,6 +20,7 @@ export const CustomPagination: FC<CustomPaginationType> = ({ cards }) => {
   const dispatch = useAppDispatch()
   const [searchParams, setSearchParams] = useSearchParams()
   const allParams = useGetSearchParams()
+  const isDataLoading = useAppSelector<RequestStatusPayloadType>(state => state.app.tableStatus)
   const pagePacks = useAppSelector(state => state.packs.queryParams.page)
   const pageCards = useAppSelector(state => state.cards.queryParams.page)
   const pageCountPacks = useAppSelector(state => state.packs.queryParams.pageCount)
@@ -39,7 +41,7 @@ export const CustomPagination: FC<CustomPaginationType> = ({ cards }) => {
     }
   }
 
-  const handleChangePage = (event: ChangeEvent<any>, page: number) => {
+  const handleChangePage = (event: ChangeEvent<unknown>, page: number) => {
     dispatchData({ page })
 
     setSearchParams({ ...allParams, page: page + '' })
@@ -52,17 +54,18 @@ export const CustomPagination: FC<CustomPaginationType> = ({ cards }) => {
   }
 
   return (
-    <>
-      <div className={s.paginationContainer}>
-        {paginationCount === 1 ? null : (
-          <Pagination
-            count={paginationCount}
-            shape="rounded"
-            color="primary"
-            onChange={handleChangePage}
-            page={page}
-          />
-        )}
+    <div className={s.paginationContainer}>
+      {paginationCount === 1 ? null : (
+        <Pagination
+          disabled={isDataLoading === 'loading'}
+          count={paginationCount}
+          shape="rounded"
+          color="primary"
+          onChange={handleChangePage}
+          page={page}
+        />
+      )}
+      {packsTotalCount < 5 && cardsTotalCount < 5 ? null : (
         <TablePagination
           className={s.paginationTable}
           component="div"
@@ -75,8 +78,9 @@ export const CustomPagination: FC<CustomPaginationType> = ({ cards }) => {
           rowsPerPageOptions={[4, 8, 12, 16, 30, 50, 100]}
           ActionsComponent={() => null}
           onRowsPerPageChange={handleChangeRowsPerPage}
+          SelectProps={{ disabled: isDataLoading === 'loading' }}
         />
-      </div>
-    </>
+      )}
+    </div>
   )
 }
