@@ -14,6 +14,7 @@ import {
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { SortValuesType, UpdatePackDataType, updatePacksQueryParamsTC } from '../packsSlice'
 
+import s from './PacksTable.module.scss'
 import { PacksTableBody } from './PacksTableBody/PacksTableBody'
 
 export type PacksOrderByType = 'name' | 'cardsCount' | 'updated' | 'user_name'
@@ -40,6 +41,7 @@ type PacksTablePropsType = {
 
 export const PacksTable: FC<PacksTablePropsType> = ({ openEditModal, setEditData }) => {
   const status = useAppSelector<RequestStatusPayloadType>(state => state.app.tableStatus)
+  const isDataEmpty = useAppSelector(state => state.packs.tableData).length
   const serverSort = useAppSelector<SortValuesType>(state => state.packs.queryParams.sortPacks)
   const pageCount = useAppSelector(state => state.packs.queryParams.pageCount)
   const dispatch = useAppDispatch()
@@ -58,29 +60,35 @@ export const PacksTable: FC<PacksTablePropsType> = ({ openEditModal, setEditData
   }
 
   return (
-    <Box>
-      <Paper>
-        <TableContainer>
-          <Table>
-            <CustomTableHead
-              heads={heads}
-              order={tableOrder}
-              orderBy={tableOrderBy}
-              onSetSort={handleSetSort}
-              withActions={true}
-            />
-            {status === 'loading' ? (
-              <TableBodySkeleton columnsCount={heads.length + 1} rowsCount={pageCount} />
-            ) : (
-              <PacksTableBody
-                heads={heads}
-                openEditModal={openEditModal}
-                setEditData={setEditData}
-              />
-            )}
-          </Table>
-        </TableContainer>
-      </Paper>
-    </Box>
+    <>
+      {isDataEmpty ? (
+        <Box>
+          <Paper>
+            <TableContainer>
+              <Table>
+                <CustomTableHead
+                  heads={heads}
+                  order={tableOrder}
+                  orderBy={tableOrderBy}
+                  onSetSort={handleSetSort}
+                  withActions={true}
+                />
+                {status === 'loading' ? (
+                  <TableBodySkeleton columnsCount={heads.length + 1} rowsCount={pageCount} />
+                ) : (
+                  <PacksTableBody
+                    heads={heads}
+                    openEditModal={openEditModal}
+                    setEditData={setEditData}
+                  />
+                )}
+              </Table>
+            </TableContainer>
+          </Paper>
+        </Box>
+      ) : (
+        <p className={s.emptyTable}>no packs found.</p>
+      )}
+    </>
   )
 }
