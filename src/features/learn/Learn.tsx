@@ -127,11 +127,15 @@ export const Learn = () => {
             <p>
               <b>Question:</b> {card && card.question}
             </p>
+            <br />
+            <p> Number of attempts: {card ? card.shots : ''}</p>
+            <br />
             {showAnswer ? (
               <div>
                 <p>
                   <b>Answer:</b> {card && card.answer}
                 </p>
+                <br />
                 <form onSubmit={formik.handleSubmit}>
                   <FormControl>
                     <FormLabel id="demo-radio-buttons-group-label">Rate yourself</FormLabel>
@@ -151,19 +155,23 @@ export const Learn = () => {
                       })}
                     </RadioGroup>
                   </FormControl>
-                  <Button
-                    type={'submit'}
-                    variant={'contained'}
-                    disabled={formik.errors.grade ? true : false}
-                  >
-                    Next
-                  </Button>
+                  <div className={s.ButtonContainer}>
+                    <Button
+                      type={'submit'}
+                      variant={'contained'}
+                      disabled={formik.errors.grade ? true : false}
+                    >
+                      Next
+                    </Button>
+                  </div>
                 </form>
               </div>
             ) : (
-              <Button type={'button'} variant={'contained'} onClick={handleShowAnswer}>
-                Show Answer
-              </Button>
+              <div className={s.ButtonContainer}>
+                <Button type={'button'} variant={'contained'} onClick={handleShowAnswer}>
+                  Show Answer
+                </Button>
+              </div>
             )}
           </div>
         </div>
