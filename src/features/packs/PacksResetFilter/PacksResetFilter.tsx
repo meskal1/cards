@@ -1,6 +1,7 @@
 import { useSearchParams } from 'react-router-dom'
 
-import { useAppDispatch } from '../../../hooks/reduxHooks'
+import { RequestStatusPayloadType, setTableStatus } from '../../../app/appSlice'
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { getPacksTC, resetPacksQueryParams, toggleResetStatus } from '../packsSlice'
 
 import s from './PacksResetFilter.module.scss'
@@ -8,18 +9,23 @@ import s from './PacksResetFilter.module.scss'
 export const PacksResetFilter = () => {
   const dispatch = useAppDispatch()
   const [searchParams, setSearchParams] = useSearchParams()
+  const isDataLoading = useAppSelector<RequestStatusPayloadType>(state => state.app.tableStatus)
 
-  const handleResetFilter = () => {
-    dispatch(toggleResetStatus())
-    dispatch(resetPacksQueryParams())
-    searchParams.delete('min')
-    searchParams.delete('max')
-    searchParams.delete('page')
-    searchParams.delete('pageCount')
-    searchParams.delete('search')
-    searchParams.delete('isMyPacks')
-    setSearchParams(searchParams)
-    dispatch(getPacksTC())
+  const handleResetFilter = async () => {
+    if (isDataLoading === 'idle') {
+      dispatch(toggleResetStatus())
+      dispatch(resetPacksQueryParams())
+      searchParams.delete('min')
+      searchParams.delete('max')
+      searchParams.delete('page')
+      searchParams.delete('pageCount')
+      searchParams.delete('search')
+      searchParams.delete('isMyPacks')
+      setSearchParams(searchParams)
+      dispatch(setTableStatus('loading'))
+      await dispatch(getPacksTC())
+      dispatch(setTableStatus('idle'))
+    }
   }
 
   return (
