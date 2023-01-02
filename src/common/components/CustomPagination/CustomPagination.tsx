@@ -55,7 +55,7 @@ export const CustomPagination: FC<CustomPaginationType> = ({ cards }) => {
 
   return (
     <div className={s.paginationContainer}>
-      {paginationCount === 1 ? null : (
+      {paginationCount <= 1 ? null : (
         <Pagination
           disabled={isDataLoading === 'loading'}
           count={paginationCount}
