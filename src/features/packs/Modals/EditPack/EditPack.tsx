@@ -1,11 +1,11 @@
-import * as React from 'react'
+import { FC, useState } from 'react'
 
 import { TextField } from '@mui/material'
 import Button from '@mui/material/Button'
 import { useFormik } from 'formik'
 
-import { useAppDispatch } from '../../../hooks/reduxHooks'
-import { updatePackTC } from '../packsSlice'
+import { useAppDispatch } from '../../../../hooks/reduxHooks'
+import { updatePackTC } from '../../packsSlice'
 
 import s from './EditPack.module.scss'
 
@@ -23,9 +23,7 @@ type formikErrorType = {
 
 export const EditPack: React.FC<EditPackType> = ({ data, activeModal }) => {
   const dispatch = useAppDispatch()
-  const [errors, setErrors] = React.useState<formikErrorType>({ name: '' })
-
-  console.log(data.name)
+  const [errors, setErrors] = useState<formikErrorType>({ name: '' })
 
   const formik = useFormik({
     initialValues: {

@@ -1,12 +1,15 @@
-import * as React from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { CustomPagination } from '../../common/components/CustomPagination/CustomPagination'
 import { CustomSearch } from '../../common/components/CustomSearch/CustomSearch'
+import { LoadingProgress } from '../../common/components/LoadingProgress/LoadingProgress'
 import { CustomModalDialog } from '../../common/components/ModalDialog/CustomModalDialog'
 import { PageTitleBlock } from '../../common/components/PageTitleBlock/PageTitleBlock'
 import { useAppDispatch } from '../../hooks/reduxHooks'
 import { useGetSearchParams } from '../../hooks/useGetSearchParams'
 
+import { AddPack } from './Modals/AddPack/AddPack'
+import { EditPack } from './Modals/EditPack/EditPack'
 import { AddPack } from './addPack/AddPack'
 import { DeletePack, PackDeleteDataType } from './deletePack/DeletePack'
 import { EditPack } from './editPack/EditPack'
@@ -14,7 +17,7 @@ import { PackOwnerSwitcher } from './PackOwnerSwitcher/PackOwnerSwitcher'
 import s from './Packs.module.scss'
 import { PackSlider } from './PackSlider/PackSlider'
 import { PacksResetFilter } from './PacksResetFilter/PacksResetFilter'
-import { resetPacksQueryParams, UpdatePackDataType, updatePacksQueryParamsTC } from './packsSlice'
+import { UpdatePackDataType, updatePacksQueryParamsTC } from './packsSlice'
 import { PacksTable } from './PacksTable/PacksTable'
 
 export const Packs = () => {
@@ -32,7 +35,7 @@ export const Packs = () => {
     [setEditData]
   )
 
-  React.useEffect(() => {
+  useEffect(() => {
     ;(async () => {
       const isSucceeded = await dispatch(updatePacksQueryParamsTC(allParams))
 
@@ -40,15 +43,11 @@ export const Packs = () => {
         setShowChildren(true)
       }
     })()
-
-    return () => {
-      dispatch(resetPacksQueryParams())
-    }
   }, [])
 
   return (
     <>
-      {showChildren && (
+      {showChildren ? (
         <div className={s.packsContainer}>
           <div className={s.packs__controlBlock}>
             <PageTitleBlock
@@ -92,6 +91,8 @@ export const Packs = () => {
             ''
           )}
         </div>
+      ) : (
+        <LoadingProgress />
       )}
     </>
   )

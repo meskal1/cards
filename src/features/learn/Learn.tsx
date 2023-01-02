@@ -1,9 +1,9 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
 
 import { Button, FormControl, FormLabel, Radio, RadioGroup, FormControlLabel } from '@mui/material'
 import { useFormik } from 'formik'
 import { useSelector } from 'react-redux'
-import { useNavigate, useParams } from 'react-router'
+import { useParams } from 'react-router'
 import { useLocation } from 'react-router-dom'
 
 import { RootStateType } from '../../app/store'
@@ -44,10 +44,8 @@ const grades = [
 
 export const Learn = () => {
   let { packId } = useParams()
-
-  console.log('PakId: ', packId)
-  const dispatch = useAppDispatch()
   const location = useLocation()
+  const dispatch = useAppDispatch()
   const appStatus = useAppSelector(state => state.app.status)
 
   console.log('Location', location)
@@ -70,8 +68,7 @@ export const Learn = () => {
     getData()
   }, [])
 
-  React.useEffect(() => {
-    console.log(cardId)
+  useEffect(() => {
     let selectedCard
 
     if (cardId) {

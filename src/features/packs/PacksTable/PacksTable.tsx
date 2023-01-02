@@ -1,11 +1,11 @@
-import * as React from 'react'
+import { FC } from 'react'
 
 import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
 import TableContainer from '@mui/material/TableContainer'
 
-import { RequestStatusType } from '../../../app/appSlice'
+import { RequestStatusPayloadType } from '../../../app/appSlice'
 import { TableBodySkeleton } from '../../../common/components/CustomSkeletons/TableBodySkeleton/TableBodySkeleton'
 import {
   CustomTableHead,
@@ -15,6 +15,7 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { PackDeleteDataType } from '../deletePack/DeletePack'
 import { SortValuesType, UpdatePackDataType, updatePacksQueryParamsTC } from '../packsSlice'
 
+import s from './PacksTable.module.scss'
 import { PacksTableBody } from './PacksTableBody/PacksTableBody'
 
 export type PacksOrderByType = 'name' | 'cardsCount' | 'updated' | 'user_name'
@@ -47,7 +48,9 @@ export const PacksTable: React.FC<PacksTablePropsType> = ({
   openDeleteModal,
   setDeleteData,
 }) => {
-  const status = useAppSelector<RequestStatusType>(state => state.packs.status)
+  //const status = useAppSelector<RequestStatusType>(state => state.packs.status)
+  const status = useAppSelector<RequestStatusPayloadType>(state => state.app.tableStatus)
+  const isDataEmpty = useAppSelector(state => state.packs.tableData).length
   const serverSort = useAppSelector<SortValuesType>(state => state.packs.queryParams.sortPacks)
   const pageCount = useAppSelector(state => state.packs.queryParams.pageCount)
   const dispatch = useAppDispatch()
@@ -68,6 +71,8 @@ export const PacksTable: React.FC<PacksTablePropsType> = ({
   const handleOpenEditModal = React.useCallback(() => openEditModal(true), [openEditModal])
 
   return (
+      <>
+        {isDataEmpty ? (
     <Box>
       <Paper>
         <TableContainer>
@@ -94,5 +99,9 @@ export const PacksTable: React.FC<PacksTablePropsType> = ({
         </TableContainer>
       </Paper>
     </Box>
+  ) : (
+      <p className={s.emptyTable}>no packs found.</p>
+  )}
+</>
   )
 }

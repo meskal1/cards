@@ -1,4 +1,4 @@
-import React, { MouseEvent } from 'react'
+import React, { FC, MouseEvent } from 'react'
 
 import TableCell from '@mui/material/TableCell'
 
@@ -13,7 +13,7 @@ type CardsTableActionCellType = {
   onDelete: () => void
 }
 
-export const CardsActionCell: React.FC<CardsTableActionCellType> = ({
+export const CardsActionCell: FC<CardsTableActionCellType> = ({
   isAllDisabled,
   onEdit,
   onDelete,

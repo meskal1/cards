@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { FC } from 'react'
 
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
@@ -6,7 +6,7 @@ import TableRow from '@mui/material/TableRow'
 import dayjs from 'dayjs'
 import { useNavigate } from 'react-router-dom'
 
-import { RequestStatusType, setAppStatus } from '../../../../app/appSlice'
+import { RequestStatusPayloadType, setAppStatus } from '../../../../app/appSlice'
 import { HeadType } from '../../../../common/components/CustomTableHead/CustomTableHead'
 import { PATH } from '../../../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../../../hooks/reduxHooks'
@@ -38,13 +38,13 @@ export const PacksTableBody: React.FC<PacksTableBodyType> = ({
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
-  const handleOpenCardPack = (id: string, requestStatus: RequestStatusType) => {
+  const handleOpenCardPack = (id: string, requestStatus: RequestStatusPayloadType) => {
     if (requestStatus === 'loading') return
     navigate(PATH.CARDS + `/${id}`)
   }
 
   const handleStudyCardPack = async (id: string) => {
-    await dispatch(setAppStatus({ status: 'loading' }))
+    await dispatch(setAppStatus('loading'))
     navigate(PATH.LEARN + `/${id}`)
   }
   const handleEditCardPack = (data: UpdatePackDataType) => {

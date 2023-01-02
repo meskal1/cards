@@ -1,12 +1,12 @@
-import React from 'react'
+import { FC } from 'react'
 
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import { useFormik } from 'formik'
 
-import { useAppDispatch } from '../../../hooks/reduxHooks'
-import s from '../addCard/AddCard.module.scss'
-import { updateCardTC, UpdateCardType } from '../cardsSlice'
+import { useAppDispatch } from '../../../../hooks/reduxHooks'
+import { updateCardTC, UpdateCardType } from '../../cardsSlice'
+import s from '../AddCard/AddCard.module.scss'
 
 type AddCardTextFormType = {
   active: boolean
@@ -19,7 +19,7 @@ type FormikErrorType = {
   answer?: string
 }
 
-export const EditCard: React.FC<AddCardTextFormType> = ({ active, closeModal, cardsData }) => {
+export const EditCard: FC<AddCardTextFormType> = ({ active, closeModal, cardsData }) => {
   const dispatch = useAppDispatch()
 
   const formik = useFormik({

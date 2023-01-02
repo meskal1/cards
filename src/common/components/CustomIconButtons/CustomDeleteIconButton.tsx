@@ -1,4 +1,4 @@
-import React from 'react'
+import { FC } from 'react'
 
 import { IconButton, Tooltip } from '@mui/material'
 import { IconButtonProps } from '@mui/material/IconButton/IconButton'
@@ -9,7 +9,7 @@ type CustomStudyIconButtonPropsType = IconButtonProps & {
   tooltip?: string
 }
 
-export const CustomDeleteIconButton: React.FC<CustomStudyIconButtonPropsType> = ({
+export const CustomDeleteIconButton: FC<CustomStudyIconButtonPropsType> = ({
   tooltip,
   className,
   ...props

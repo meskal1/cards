@@ -1,4 +1,4 @@
-import React, { MouseEvent } from 'react'
+import { FC, MouseEvent } from 'react'
 
 import TableCell from '@mui/material/TableCell'
 
@@ -17,7 +17,7 @@ type PacksActionCellPropsType = {
   onDelete: () => void
 }
 
-export const PacksActionCell: React.FC<PacksActionCellPropsType> = ({
+export const PacksActionCell: FC<PacksActionCellPropsType> = ({
   isMine,
   isStudyDisabled,
   isAllDisabled,

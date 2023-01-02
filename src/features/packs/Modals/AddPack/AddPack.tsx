@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { useState } from 'react'
 
 import { FormControlLabel } from '@mui/material'
 import Button from '@mui/material/Button'
@@ -6,8 +6,8 @@ import Checkbox from '@mui/material/Checkbox'
 import TextField from '@mui/material/TextField'
 import { useFormik } from 'formik'
 
-import { useAppDispatch } from '../../../hooks/reduxHooks'
-import { addPackTC } from '../packsSlice'
+import { useAppDispatch } from '../../../../hooks/reduxHooks'
+import { addPackTC } from '../../packsSlice'
 
 import s from './AddPack.module.scss'
 

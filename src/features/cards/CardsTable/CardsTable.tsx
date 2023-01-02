@@ -1,11 +1,11 @@
-import React from 'react'
+import { FC } from 'react'
 
 import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
 import TableContainer from '@mui/material/TableContainer'
 
-import { RequestStatusType } from '../../../app/appSlice'
+import { RequestStatusPayloadType } from '../../../app/appSlice'
 import { TableBodySkeleton } from '../../../common/components/CustomSkeletons/TableBodySkeleton/TableBodySkeleton'
 import {
   CustomTableHead,
@@ -32,8 +32,8 @@ type CardsTablePropsType = {
   setEditData: (data: UpdateCardType) => void
 }
 
-export const CardsTable: React.FC<CardsTablePropsType> = ({ isMine, openEdit, setEditData }) => {
-  const status = useAppSelector<RequestStatusType>(state => state.cards.status)
+export const CardsTable: FC<CardsTablePropsType> = ({ isMine, openEdit, setEditData }) => {
+  const status = useAppSelector<RequestStatusPayloadType>(state => state.app.tableStatus)
   const serverSort = useAppSelector<SortValuesCardsType>(state => state.cards.queryParams.sortCards)
   const pageCount = useAppSelector(state => state.cards.queryParams.pageCount)
 

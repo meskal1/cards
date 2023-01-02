@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { useEffect } from 'react'
 
 import Button from '@mui/material/Button'
 import ButtonGroup from '@mui/material/ButtonGroup'
@@ -34,7 +34,7 @@ export const PackOwnerSwitcher = () => {
     dispatch(updatePacksQueryParamsTC({ isMyPacks: '', min: minCardsCount, max: maxCardsCount }))
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isMyPacks && allParams.isMyPacks === undefined) {
       setSearchParams({ ...allParams, isMyPacks: 'yes' })
     }

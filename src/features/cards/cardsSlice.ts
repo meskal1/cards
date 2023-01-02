@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios, { AxiosError } from 'axios'
 
-import { RequestStatusType, setAppStatus } from '../../app/appSlice'
+import { RequestStatusPayloadType, setAppStatus, setTableStatus } from '../../app/appSlice'
 import { AppDispatchType, RootStateType } from '../../app/store'
 import { cardsAPI, ServerCardType, CreateCardType } from '../../services/cardsApi'
 import { handleServerNetworkError } from '../../utils/errorUtils'
@@ -24,7 +24,6 @@ const initialState = {
   },
   tableData: [] as AppCardType[],
   error: null as CardsErrorType,
-  status: 'idle' as RequestStatusType,
 }
 
 const cardsSlice = createSlice({
@@ -50,9 +49,6 @@ const cardsSlice = createSlice({
         }
       })
     },
-    setCardsStatus(state, action: PayloadAction<RequestStatusType>) {
-      state.status = action.payload
-    },
     clearCardsState() {
       return initialState
     },
@@ -67,7 +63,6 @@ export const {
   setCardsTableData,
   setError,
   clearCardsState,
-  setCardsStatus,
   setCardRequestStatus,
   setCardsData,
 } = cardsSlice.actions
@@ -76,7 +71,7 @@ export const {
 export const updateCardsQueryParamsTC =
   (queryProps: CardsQueryParamsType) =>
   async (dispatch: AppDispatchType, getState: () => RootStateType) => {
-    dispatch(setCardsStatus('loading'))
+    dispatch(setTableStatus('loading'))
     try {
       const queryParams = getState().cards.queryParams
 
@@ -87,7 +82,7 @@ export const updateCardsQueryParamsTC =
     } catch (e) {
       handleServerNetworkError(dispatch, e as Error | AxiosError)
     } finally {
-      dispatch(setCardsStatus('idle'))
+      dispatch(setTableStatus('idle'))
     }
   }
 
@@ -120,36 +115,36 @@ export const getCardsTC =
 
 export const deleteCardTC = (id: string) => async (dispatch: AppDispatchType) => {
   try {
-    dispatch(setAppStatus({ status: 'loading' }))
+    dispatch(setAppStatus('loading'))
     dispatch(setCardRequestStatus({ cardId: id, requestStatus: 'loading' }))
     await cardsAPI.deleteCard(id)
-    dispatch(getCardsTC())
+    await dispatch(getCardsTC())
   } catch (e) {
     dispatch(setCardRequestStatus({ cardId: id, requestStatus: 'idle' }))
     handleServerNetworkError(dispatch, e as Error | AxiosError)
   } finally {
-    dispatch(setAppStatus({ status: 'idle' }))
+    dispatch(setAppStatus('idle'))
   }
 }
 
 export const addCardTC = (data: CreateCardType) => async (dispatch: AppDispatchType) => {
   try {
-    dispatch(setAppStatus({ status: 'loading' }))
-    dispatch(setCardsStatus('loading'))
+    dispatch(setAppStatus('loading'))
+    dispatch(setTableStatus('loading'))
     await cardsAPI.addCard(data)
     await dispatch(getCardsTC())
   } catch (e) {
     handleServerNetworkError(dispatch, e as Error | AxiosError)
   } finally {
-    dispatch(setAppStatus({ status: 'idle' }))
-    dispatch(setCardsStatus('idle'))
+    dispatch(setAppStatus('idle'))
+    dispatch(setTableStatus('idle'))
   }
 }
 
 export const updateCardTC =
   (data: UpdateCardType) => async (dispatch: AppDispatchType, getState: () => RootStateType) => {
     try {
-      dispatch(setAppStatus({ status: 'loading' }))
+      dispatch(setAppStatus('loading'))
       dispatch(setCardRequestStatus({ cardId: data.id, requestStatus: 'loading' }))
       const updatingCard = getState().cards.tableData.filter(card => data.id === card._id)
 
@@ -158,18 +153,18 @@ export const updateCardTC =
         question: data.question,
         answer: data.answer,
       })
-      dispatch(getCardsTC())
+      await dispatch(getCardsTC())
     } catch (e) {
       handleServerNetworkError(dispatch, e as Error | AxiosError)
     } finally {
-      dispatch(setAppStatus({ status: 'idle' }))
+      dispatch(setAppStatus('idle'))
       dispatch(setCardRequestStatus({ cardId: data.id, requestStatus: 'idle' }))
     }
   }
 
 // TYPES
 export type CardsStateType = typeof initialState
-export type AppCardType = ServerCardType & { requestStatus: RequestStatusType }
+export type AppCardType = ServerCardType & { requestStatus: RequestStatusPayloadType }
 
 export type SortValuesCardsType =
   | '0grade'
@@ -198,7 +193,7 @@ type CardsQueryParamsType = Partial<SetCardsQueryParamsPayloadType>
 
 type CardRequestStatusPayloadType = {
   cardId: string
-  requestStatus: RequestStatusType
+  requestStatus: RequestStatusPayloadType
 }
 
 type SetCardsDataPayloadType = {

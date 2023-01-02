@@ -1,11 +1,11 @@
-import React from 'react'
+import { FC } from 'react'
 
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import { useFormik } from 'formik'
 
-import { useAppDispatch } from '../../../hooks/reduxHooks'
-import { addCardTC } from '../cardsSlice'
+import { useAppDispatch } from '../../../../hooks/reduxHooks'
+import { addCardTC } from '../../cardsSlice'
 
 import s from './AddCard.module.scss'
 
@@ -19,7 +19,7 @@ type FormikErrorType = {
   answer?: string
 }
 
-export const TextForm: React.FC<AddCardTextFormType> = ({ closeModal, cardsPack_id }) => {
+export const TextForm: FC<AddCardTextFormType> = ({ closeModal, cardsPack_id }) => {
   const dispatch = useAppDispatch()
 
   const formik = useFormik({

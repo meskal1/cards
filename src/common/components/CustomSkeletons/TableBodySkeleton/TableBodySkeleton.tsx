@@ -1,4 +1,4 @@
-import React from 'react'
+import { FC } from 'react'
 
 import { Skeleton } from '@mui/material'
 import TableBody from '@mui/material/TableBody'
@@ -11,7 +11,7 @@ type TableSkeletonPropsType = {
   withActions?: boolean
 }
 
-export const TableBodySkeleton: React.FC<TableSkeletonPropsType> = ({
+export const TableBodySkeleton: FC<TableSkeletonPropsType> = ({
   columnsCount,
   rowsCount,
   withActions = false,

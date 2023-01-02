@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { useEffect } from 'react'
 
 import { useFormik } from 'formik'
 import { useNavigate, useParams } from 'react-router'
@@ -29,7 +29,7 @@ export const NewPassword = () => {
     },
   })
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (passwordIsChanged) {
       formik.resetForm()
       navigate(PATH.LOGIN)

@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { useEffect } from 'react'
 
 import { LinearProgress } from '@mui/material'
 
@@ -9,15 +9,15 @@ import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks'
 import { AppRoutes } from '../routes/routes'
 
 import s from './App.module.scss'
-import { initializeAppTC, RequestStatusType } from './appSlice'
+import { initializeAppTC, RequestStatusPayloadType } from './appSlice'
 
 function App() {
-  const status = useAppSelector<RequestStatusType>(state => state.app.status)
+  const status = useAppSelector<RequestStatusPayloadType>(state => state.app.status)
   const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
   const isInitialized = useAppSelector(state => state.app.isInitialized)
   const dispatch = useAppDispatch()
 
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(initializeAppTC())
   }, [])
 

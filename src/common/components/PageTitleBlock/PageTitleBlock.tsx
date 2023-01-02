@@ -1,6 +1,6 @@
-import * as React from 'react'
+import { FC, memo } from 'react'
 
-import { AddPack } from '../../../features/packs/addPack/AddPack'
+import { AddPack } from '../../../features/packs/Modals/AddPack/AddPack'
 import { BackToPacks } from '../BackToPacks/BackToPacks'
 import { CustomButton } from '../CustomButton/CustomButton'
 import { CustomModalDialog } from '../ModalDialog/CustomModalDialog'
@@ -14,7 +14,7 @@ type PageTitleBlockType = {
   buttonClick: (state: boolean) => void
 }
 
-export const PageTitleBlock: React.FC<PageTitleBlockType> = React.memo(
+export const PageTitleBlock: FC<PageTitleBlockType> = memo(
   ({ linkToPacks, button, title, buttonClick }) => {
     const handleClick = () => {
       buttonClick(true)

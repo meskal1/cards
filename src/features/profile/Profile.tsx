@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { useCallback, useEffect } from 'react'
 
 import { CameraAlt } from '@mui/icons-material'
 
@@ -9,6 +9,7 @@ import { CustomButton } from '../../common/components/CustomButton/CustomButton'
 import { EditableSpan } from '../../common/components/EditableSpan/EditableSpan'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { logOutTC } from '../auth/authSlice'
+import { resetPacksQueryParams } from '../packs/packsSlice'
 
 import s from './Profile.module.scss'
 import { newUserDataTC } from './profileSlice'
@@ -24,12 +25,18 @@ export const Profile = () => {
 
   const setNewAvatar = () => alert('add photo')
 
-  const changeUserName = React.useCallback(
+  const changeUserName = useCallback(
     (newName: string) => {
       dispatch(newUserDataTC({ name: newName, avatar }))
     },
     [dispatch]
   )
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetPacksQueryParams())
+    }
+  }, [])
 
   return (
     <>

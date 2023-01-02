@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState, FC } from 'react'
 
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
@@ -10,7 +10,7 @@ type CustomPasswordInputPropsType = TextFieldProps & {
   value: string //Use our value to control input and also because value in MUI has unknown type
 }
 
-export const CustomPasswordInput: React.FC<CustomPasswordInputPropsType> = ({
+export const CustomPasswordInput: FC<CustomPasswordInputPropsType> = ({
   value,
   type,
   ...props

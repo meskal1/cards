@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AxiosError } from 'axios'
 
 import {
-  RequestStatusType,
+  RequestStatusPayloadType,
   setAppAlertMessage,
   setAppStatus,
   SetRequestStatusPayloadType,
@@ -20,7 +20,7 @@ import { setUserData } from '../profile/profileSlice'
 const initialState = {
   isLoggedIn: false,
   recoveryEmail: '',
-  status: 'idle' as RequestStatusType,
+  status: 'idle' as RequestStatusPayloadType,
   passwordIsChanged: false,
 }
 
@@ -69,7 +69,7 @@ export const logInTC = (data: LoginParamsType) => async (dispatch: AppDispatchTy
 
 export const logOutTC = () => async (dispatch: AppDispatchType) => {
   try {
-    dispatch(setAppStatus({ status: 'loading' }))
+    dispatch(setAppStatus('loading'))
     await authAPI.logout()
     dispatch(setUserData({ userData: { id: '', name: '', email: '', avatar: undefined } }))
     dispatch(setIsLoggedIn({ isLoggedIn: false }))
@@ -77,6 +77,8 @@ export const logOutTC = () => async (dispatch: AppDispatchType) => {
     const error = e as Error | AxiosError
 
     handleServerNetworkError(dispatch, error)
+  } finally {
+    dispatch(setAppStatus('idle'))
   }
 }
 

@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { memo, useState, MouseEvent, ChangeEvent, KeyboardEvent, FC } from 'react'
 
 import { BorderColor, Send } from '@mui/icons-material'
 
@@ -11,12 +11,12 @@ type EditableSpanType = {
   changeName: (name: string) => void
 }
 
-export const EditableSpan: React.FC<EditableSpanType> = React.memo(({ changeName }) => {
+export const EditableSpan: FC<EditableSpanType> = memo(({ changeName }) => {
   const name = useAppSelector(state => state.profile.userData.name)
-  const [inputValue, setInputValue] = React.useState(name)
-  const [isInEditMode, setIsInEditMode] = React.useState(false)
-  const [errorEmptyField, setErrorEmptyField] = React.useState(false)
-  const [errorStyleButton, setErrorStyleButton] = React.useState('')
+  const [inputValue, setInputValue] = useState(name)
+  const [isInEditMode, setIsInEditMode] = useState(false)
+  const [errorEmptyField, setErrorEmptyField] = useState(false)
+  const [errorStyleButton, setErrorStyleButton] = useState('')
 
   const handleAnimationEndError = () => {
     setErrorStyleButton('')
@@ -33,41 +33,36 @@ export const EditableSpan: React.FC<EditableSpanType> = React.memo(({ changeName
     setIsInEditMode(true)
   }
 
-  const handleSetNewName = () => {
+  const handleSetNewName = (e?: MouseEvent<SVGSVGElement>) => {
+    e?.preventDefault()
     if (inputValue.trim() === '') {
       setErrorEmptyField(true)
+      setErrorStyleButton(s.errorButton)
 
       return
+    } else {
+      setIsInEditMode(false)
     }
 
     if (inputValue.trim() !== name) {
       changeName(inputValue.trim())
     }
-
-    setIsInEditMode(false)
   }
 
-  const onChangeInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.currentTarget.value.trim() !== '') {
       setErrorEmptyField(false)
     }
     setInputValue(e.currentTarget.value)
   }
 
-  const onBlurInput = (e?: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    if (inputValue.trim() === '') {
-      e?.preventDefault()
-      setErrorEmptyField(true)
-
-      return
-    }
-
+  const onBlurInput = () => {
     setInputValue(name)
     setIsInEditMode(false)
     setErrorEmptyField(false)
   }
 
-  const onKeyDownInputHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const onKeyDownInputHandler = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       handleSetNewName()
     }

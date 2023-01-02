@@ -1,4 +1,4 @@
-import React from 'react'
+import { FC } from 'react'
 
 import { Close } from '@mui/icons-material'
 
@@ -10,11 +10,7 @@ type CustomModalDialogType = {
   children: JSX.Element
 }
 
-export const CustomModalDialog: React.FC<CustomModalDialogType> = ({
-  active,
-  setActive,
-  children,
-}) => {
+export const CustomModalDialog: FC<CustomModalDialogType> = ({ active, setActive, children }) => {
   return (
     <div
       className={active ? `${s.Modal__Active} ${s.Modal}` : s.Modal}

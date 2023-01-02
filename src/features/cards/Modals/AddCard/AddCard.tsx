@@ -1,4 +1,4 @@
-import React from 'react'
+import { FC, useEffect, useState } from 'react'
 
 import { FormControl, MenuItem, Select, SelectChangeEvent } from '@mui/material'
 
@@ -11,10 +11,10 @@ type AddCardType = {
   cardsPack_id: string
 }
 
-export const AddCard: React.FC<AddCardType> = ({ active, closeModal, cardsPack_id }) => {
-  const [cardFormat, setCardFormat] = React.useState('')
+export const AddCard: FC<AddCardType> = ({ active, closeModal, cardsPack_id }) => {
+  const [cardFormat, setCardFormat] = useState('')
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!active) {
       setCardFormat('')
     }
