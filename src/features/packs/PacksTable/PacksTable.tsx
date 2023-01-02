@@ -12,6 +12,7 @@ import {
   HeadType,
 } from '../../../common/components/CustomTableHead/CustomTableHead'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
+import { PackDeleteDataType } from '../deletePack/DeletePack'
 import { SortValuesType, UpdatePackDataType, updatePacksQueryParamsTC } from '../packsSlice'
 
 import { PacksTableBody } from './PacksTableBody/PacksTableBody'
@@ -36,9 +37,16 @@ const heads: HeadType<PacksOrderByType>[] = [
 type PacksTablePropsType = {
   openEditModal: (state: boolean) => void
   setEditData: (data: UpdatePackDataType) => void
+  openDeleteModal: (state: boolean) => void
+  setDeleteData: (data: PackDeleteDataType) => void
 }
 
-export const PacksTable: React.FC<PacksTablePropsType> = ({ openEditModal, setEditData }) => {
+export const PacksTable: React.FC<PacksTablePropsType> = ({
+  openEditModal,
+  setEditData,
+  openDeleteModal,
+  setDeleteData,
+}) => {
   const status = useAppSelector<RequestStatusType>(state => state.packs.status)
   const serverSort = useAppSelector<SortValuesType>(state => state.packs.queryParams.sortPacks)
   const pageCount = useAppSelector(state => state.packs.queryParams.pageCount)
@@ -78,6 +86,8 @@ export const PacksTable: React.FC<PacksTablePropsType> = ({ openEditModal, setEd
                 heads={heads}
                 openEditModal={handleOpenEditModal}
                 setEditData={setEditData}
+                openDeleteModal={openDeleteModal}
+                setDeleteData={setDeleteData}
               />
             )}
           </Table>

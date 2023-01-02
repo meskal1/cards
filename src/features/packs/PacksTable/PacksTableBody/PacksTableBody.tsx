@@ -11,6 +11,7 @@ import { HeadType } from '../../../../common/components/CustomTableHead/CustomTa
 import { PATH } from '../../../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../../../hooks/reduxHooks'
 import { getCards } from '../../../learn/learnSlice'
+import { PackDeleteDataType } from '../../deletePack/DeletePack'
 import { AppPackType, deletePackTC, UpdatePackDataType } from '../../packsSlice'
 import { PacksOrderByType } from '../PacksTable'
 
@@ -21,12 +22,16 @@ type PacksTableBodyType = {
   heads: HeadType<PacksOrderByType>[]
   openEditModal: () => void
   setEditData: (data: UpdatePackDataType) => void
+  openDeleteModal: (state: boolean) => void
+  setDeleteData: (data: PackDeleteDataType) => void
 }
 
 export const PacksTableBody: React.FC<PacksTableBodyType> = ({
   heads,
   setEditData,
   openEditModal,
+  openDeleteModal,
+  setDeleteData,
 }) => {
   const tableData = useAppSelector<AppPackType[]>(state => state.packs.tableData)
   const userId = useAppSelector(state => state.profile.userData.id)
@@ -46,8 +51,9 @@ export const PacksTableBody: React.FC<PacksTableBodyType> = ({
     setEditData(data)
     openEditModal()
   }
-  const handleDeleteCardPack = (id: string) => {
-    dispatch(deletePackTC(id))
+  const handleDeleteCardPack = (data: PackDeleteDataType) => {
+    setDeleteData(data)
+    openDeleteModal(true)
   }
 
   return (
@@ -75,7 +81,7 @@ export const PacksTableBody: React.FC<PacksTableBodyType> = ({
               isAllDisabled={row.requestStatus === 'loading'}
               onStudy={() => handleStudyCardPack(row._id)}
               onEdit={() => handleEditCardPack({ id: row._id, name: row.name })}
-              onDelete={() => handleDeleteCardPack(row._id)}
+              onDelete={() => handleDeleteCardPack({ id: row._id, name: row.name })}
             />
           </TableRow>
         )

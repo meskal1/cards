@@ -8,6 +8,7 @@ import { useAppDispatch } from '../../hooks/reduxHooks'
 import { useGetSearchParams } from '../../hooks/useGetSearchParams'
 
 import { AddPack } from './addPack/AddPack'
+import { DeletePack, PackDeleteDataType } from './deletePack/DeletePack'
 import { EditPack } from './editPack/EditPack'
 import { PackOwnerSwitcher } from './PackOwnerSwitcher/PackOwnerSwitcher'
 import s from './Packs.module.scss'
@@ -21,6 +22,8 @@ export const Packs = () => {
   const [showChildren, setShowChildren] = React.useState(false)
   const [addModal, setAddModal] = React.useState(false)
   const [editModal, setEditModal] = React.useState(false)
+  const [deleteModal, setDeleteModal] = React.useState(false)
+  const [deleteData, setDeleteData] = React.useState<PackDeleteDataType>({ id: '', name: '' })
   const [editData, setEditData] = React.useState<UpdatePackDataType>({ id: '', name: '' })
   const allParams = useGetSearchParams()
 
@@ -60,7 +63,12 @@ export const Packs = () => {
               <PacksResetFilter />
             </div>
           </div>
-          <PacksTable setEditData={handleSetEditData} openEditModal={setEditModal} />
+          <PacksTable
+            setEditData={handleSetEditData}
+            openEditModal={setEditModal}
+            openDeleteModal={setDeleteModal}
+            setDeleteData={setDeleteData}
+          />
           <CustomPagination />
           {addModal ? (
             <CustomModalDialog active={addModal} setActive={setAddModal}>
@@ -72,6 +80,13 @@ export const Packs = () => {
           {editModal ? (
             <CustomModalDialog active={editModal} setActive={setEditModal}>
               <EditPack data={editData} activeModal={setEditModal} />
+            </CustomModalDialog>
+          ) : (
+            ''
+          )}
+          {deleteModal ? (
+            <CustomModalDialog active={deleteModal} setActive={setDeleteModal}>
+              <DeletePack packData={deleteData} activeModal={setDeleteModal} />
             </CustomModalDialog>
           ) : (
             ''
