@@ -13,7 +13,7 @@ import { PackOwnerSwitcher } from './PackOwnerSwitcher/PackOwnerSwitcher'
 import s from './Packs.module.scss'
 import { PackSlider } from './PackSlider/PackSlider'
 import { PacksResetFilter } from './PacksResetFilter/PacksResetFilter'
-import { resetPacksQueryParams, UpdatePackDataType, updatePacksQueryParamsTC } from './packsSlice'
+import { UpdatePackDataType, updatePacksQueryParamsTC } from './packsSlice'
 import { PacksTable } from './PacksTable/PacksTable'
 
 export const Packs = () => {
@@ -45,10 +45,6 @@ export const Packs = () => {
         setShowChildren(true)
       }
     })()
-
-    return () => {
-      dispatch(resetPacksQueryParams())
-    }
   }, [])
 
   return (
