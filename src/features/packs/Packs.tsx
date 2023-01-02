@@ -8,11 +8,9 @@ import { PageTitleBlock } from '../../common/components/PageTitleBlock/PageTitle
 import { useAppDispatch } from '../../hooks/reduxHooks'
 import { useGetSearchParams } from '../../hooks/useGetSearchParams'
 
+import { DeletePack, PackDeleteDataType } from './deletePack/DeletePack'
 import { AddPack } from './Modals/AddPack/AddPack'
 import { EditPack } from './Modals/EditPack/EditPack'
-import { AddPack } from './addPack/AddPack'
-import { DeletePack, PackDeleteDataType } from './deletePack/DeletePack'
-import { EditPack } from './editPack/EditPack'
 import { PackOwnerSwitcher } from './PackOwnerSwitcher/PackOwnerSwitcher'
 import s from './Packs.module.scss'
 import { PackSlider } from './PackSlider/PackSlider'
@@ -22,15 +20,15 @@ import { PacksTable } from './PacksTable/PacksTable'
 
 export const Packs = () => {
   const dispatch = useAppDispatch()
-  const [showChildren, setShowChildren] = React.useState(false)
-  const [addModal, setAddModal] = React.useState(false)
-  const [editModal, setEditModal] = React.useState(false)
-  const [deleteModal, setDeleteModal] = React.useState(false)
-  const [deleteData, setDeleteData] = React.useState<PackDeleteDataType>({ id: '', name: '' })
-  const [editData, setEditData] = React.useState<UpdatePackDataType>({ id: '', name: '' })
+  const [showChildren, setShowChildren] = useState(false)
+  const [addModal, setAddModal] = useState(false)
+  const [editModal, setEditModal] = useState(false)
+  const [deleteModal, setDeleteModal] = useState(false)
+  const [deleteData, setDeleteData] = useState<PackDeleteDataType>({ id: '', name: '' })
+  const [editData, setEditData] = useState<UpdatePackDataType>({ id: '', name: '' })
   const allParams = useGetSearchParams()
 
-  const handleSetEditData = React.useCallback(
+  const handleSetEditData = useCallback(
     (data: UpdatePackDataType) => setEditData(data),
     [setEditData]
   )

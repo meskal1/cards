@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useCallback } from 'react'
 
 import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
@@ -48,7 +48,6 @@ export const PacksTable: React.FC<PacksTablePropsType> = ({
   openDeleteModal,
   setDeleteData,
 }) => {
-  //const status = useAppSelector<RequestStatusType>(state => state.packs.status)
   const status = useAppSelector<RequestStatusPayloadType>(state => state.app.tableStatus)
   const isDataEmpty = useAppSelector(state => state.packs.tableData).length
   const serverSort = useAppSelector<SortValuesType>(state => state.packs.queryParams.sortPacks)
@@ -68,40 +67,40 @@ export const PacksTable: React.FC<PacksTablePropsType> = ({
     dispatch(updatePacksQueryParamsTC({ sortPacks: newServerOrder }))
   }
 
-  const handleOpenEditModal = React.useCallback(() => openEditModal(true), [openEditModal])
+  const handleOpenEditModal = useCallback(() => openEditModal(true), [openEditModal])
 
   return (
-      <>
-        {isDataEmpty ? (
-    <Box>
-      <Paper>
-        <TableContainer>
-          <Table>
-            <CustomTableHead
-              heads={heads}
-              order={tableOrder}
-              orderBy={tableOrderBy}
-              onSetSort={handleSetSort}
-              withActions={true}
-            />
-            {status === 'loading' ? (
-              <TableBodySkeleton columnsCount={heads.length + 1} rowsCount={pageCount} />
-            ) : (
-              <PacksTableBody
-                heads={heads}
-                openEditModal={handleOpenEditModal}
-                setEditData={setEditData}
-                openDeleteModal={openDeleteModal}
-                setDeleteData={setDeleteData}
-              />
-            )}
-          </Table>
-        </TableContainer>
-      </Paper>
-    </Box>
-  ) : (
-      <p className={s.emptyTable}>no packs found.</p>
-  )}
-</>
+    <>
+      {isDataEmpty ? (
+        <Box>
+          <Paper>
+            <TableContainer>
+              <Table>
+                <CustomTableHead
+                  heads={heads}
+                  order={tableOrder}
+                  orderBy={tableOrderBy}
+                  onSetSort={handleSetSort}
+                  withActions={true}
+                />
+                {status === 'loading' ? (
+                  <TableBodySkeleton columnsCount={heads.length + 1} rowsCount={pageCount} />
+                ) : (
+                  <PacksTableBody
+                    heads={heads}
+                    openEditModal={handleOpenEditModal}
+                    setEditData={setEditData}
+                    openDeleteModal={openDeleteModal}
+                    setDeleteData={setDeleteData}
+                  />
+                )}
+              </Table>
+            </TableContainer>
+          </Paper>
+        </Box>
+      ) : (
+        <p className={s.emptyTable}>no packs found.</p>
+      )}
+    </>
   )
 }

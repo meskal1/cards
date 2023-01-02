@@ -20,8 +20,8 @@ type FormikErrorType = {
 }
 
 export const AddPack: React.FC<AddPackType> = ({ activeModal }) => {
-  const [isDisabled, setIsDisabled] = React.useState(true)
-  const [errors, setErrors] = React.useState<FormikErrorType>({ name: '' })
+  const [isDisabled, setIsDisabled] = useState(true)
+  const [errors, setErrors] = useState<FormikErrorType>({ name: '' })
 
   const dispatch = useAppDispatch()
 
@@ -47,7 +47,7 @@ export const AddPack: React.FC<AddPackType> = ({ activeModal }) => {
       return errors
     },
     onSubmit: async values => {
-      await dispatch(addPackTC({ ...formik.values }))
+      await dispatch(addPackTC({ ...values }))
       activeModal(false)
       formik.resetForm()
     },

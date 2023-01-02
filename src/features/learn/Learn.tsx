@@ -49,11 +49,11 @@ export const Learn = () => {
   const appStatus = useAppSelector(state => state.app.status)
 
   console.log('Location', location)
-  const [card, setCard] = React.useState<ServerCardType>(initialCard)
-  const [showAnswer, setShowAnswer] = React.useState(false)
-  const [showAlert, setShowAlert] = React.useState(false)
+  const [card, setCard] = useState<ServerCardType>(initialCard)
+  const [showAnswer, setShowAnswer] = useState(false)
+  const [showAlert, setShowAlert] = useState(false)
   const cards = useSelector<RootStateType, ServerCardType[]>(state => state.learn.cards)
-  const [cardId, setCardId] = React.useState(location.state ? location.state.cardId : '')
+  const [cardId, setCardId] = useState(location.state ? location.state.cardId : '')
 
   console.log('Cards: ', cards)
 
@@ -61,10 +61,12 @@ export const Learn = () => {
     if (packId) {
       await dispatch(getCards({ cardsPack_id: packId }))
     }
-    console.log('First useeffect')
+    console.log('First useEffect')
+
+    return
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     getData()
   }, [])
 
@@ -153,11 +155,7 @@ export const Learn = () => {
                     </RadioGroup>
                   </FormControl>
                   <div className={s.ButtonContainer}>
-                    <Button
-                      type={'submit'}
-                      variant={'contained'}
-                      disabled={formik.errors.grade ? true : false}
-                    >
+                    <Button type={'submit'} variant={'contained'} disabled={!!formik.errors.grade}>
                       Next
                     </Button>
                   </div>
