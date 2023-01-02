@@ -11,14 +11,6 @@ export const handleServerNetworkError = (dispatch: AppDispatchType, error: Error
       : error.message
 
     dispatch(setAppAlertMessage({ messageType: 'error', messageText: err }))
-
-    if (error.response?.status === 401) {
-      handle401UnauthorizedError(dispatch)
-    }
   }
   dispatch(setAppStatus('idle'))
-}
-
-const handle401UnauthorizedError = (dispatch: AppDispatchType) => {
-  dispatch(setIsLoggedIn({ isLoggedIn: false }))
 }
