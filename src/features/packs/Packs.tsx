@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 
 import { CustomPagination } from '../../common/components/CustomPagination/CustomPagination'
 import { CustomSearch } from '../../common/components/CustomSearch/CustomSearch'
+import { LoadingProgress } from '../../common/components/LoadingProgress/LoadingProgress'
 import { CustomModalDialog } from '../../common/components/ModalDialog/CustomModalDialog'
 import { PageTitleBlock } from '../../common/components/PageTitleBlock/PageTitleBlock'
 import { useAppDispatch } from '../../hooks/reduxHooks'
@@ -49,7 +50,7 @@ export const Packs = () => {
 
   return (
     <>
-      {showChildren && (
+      {showChildren ? (
         <div className={s.packsContainer}>
           <div className={s.packs__controlBlock}>
             <PageTitleBlock
@@ -81,6 +82,8 @@ export const Packs = () => {
             ''
           )}
         </div>
+      ) : (
+        <LoadingProgress />
       )}
     </>
   )

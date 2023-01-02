@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { CustomButton } from '../../common/components/CustomButton/CustomButton'
 import { CustomPagination } from '../../common/components/CustomPagination/CustomPagination'
 import { CustomSearch } from '../../common/components/CustomSearch/CustomSearch'
+import { LoadingProgress } from '../../common/components/LoadingProgress/LoadingProgress'
 import { CustomModalDialog } from '../../common/components/ModalDialog/CustomModalDialog'
 import { PageTitleBlock } from '../../common/components/PageTitleBlock/PageTitleBlock'
 import { PATH } from '../../constants/routePaths.enum'
@@ -81,7 +82,7 @@ export const Cards = () => {
 
   return (
     <>
-      {showChildren && (
+      {showChildren ? (
         <div className={s.cardsContainer}>
           <div className={s.cards__controlBlock}>
             <PageTitleBlock
@@ -130,6 +131,8 @@ export const Cards = () => {
             ''
           )}
         </div>
+      ) : (
+        <LoadingProgress />
       )}
     </>
   )
