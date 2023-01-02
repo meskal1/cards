@@ -41,7 +41,9 @@ export const EditPack: React.FC<EditPackType> = ({ data, activeModal }) => {
       }
     },
     onSubmit: values => {
-      dispatch(updatePackTC({ id: data.id, name: formik.values.name }))
+      if (data.name !== values.name) {
+        dispatch(updatePackTC({ id: data.id, name: formik.values.name }))
+      }
       activeModal(false)
       formik.resetForm()
     },
