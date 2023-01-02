@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { useNavigate } from 'react-router'
 
-import emailIcon from '../../../assets/img/icons/check_email.svg'
+import emailIcon from '../../../assets/img/icons/checkEmail.svg'
 import { CustomButton } from '../../../common/components/CustomButton/CustomButton'
 import { PATH } from '../../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
