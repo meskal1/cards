@@ -8,8 +8,8 @@ import { PageTitleBlock } from '../../common/components/PageTitleBlock/PageTitle
 import { useAppDispatch } from '../../hooks/reduxHooks'
 import { useGetSearchParams } from '../../hooks/useGetSearchParams'
 
-import { DeletePack, PackDeleteDataType } from './deletePack/DeletePack'
 import { AddPack } from './Modals/AddPack/AddPack'
+import { DeletePack, PackDeleteDataType } from './Modals/DeletePack/DeletePack'
 import { EditPack } from './Modals/EditPack/EditPack'
 import { PackOwnerSwitcher } from './PackOwnerSwitcher/PackOwnerSwitcher'
 import s from './Packs.module.scss'

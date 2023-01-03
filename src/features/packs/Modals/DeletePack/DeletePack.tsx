@@ -2,8 +2,8 @@ import React from 'react'
 
 import Button from '@mui/material/Button'
 
-import { useAppDispatch } from '../../../hooks/reduxHooks'
-import { deletePackTC } from '../packsSlice'
+import { useAppDispatch } from '../../../../hooks/reduxHooks'
+import { deletePackTC } from '../../packsSlice'
 
 import s from './DeletePack.module.scss'
 

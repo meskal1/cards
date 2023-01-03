@@ -11,7 +11,7 @@ import { HeadType } from '../../../../common/components/CustomTableHead/CustomTa
 import { PATH } from '../../../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../../../hooks/reduxHooks'
 import { getCards } from '../../../learn/learnSlice'
-import { PackDeleteDataType } from '../../deletePack/DeletePack'
+import { PackDeleteDataType } from '../../Modals/DeletePack/DeletePack'
 import { AppPackType, deletePackTC, UpdatePackDataType } from '../../packsSlice'
 import { PacksOrderByType } from '../PacksTable'
 
