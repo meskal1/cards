@@ -16,7 +16,7 @@ import s from './Cards.module.scss'
 import {
   AppCardType,
   CardsErrorType,
-  clearCardsState,
+  clearCardsQueryParams,
   setError,
   updateCardsQueryParamsTC,
   UpdateCardType,
@@ -78,7 +78,7 @@ export const Cards = () => {
 
   useEffect(() => {
     return () => {
-      dispatch(clearCardsState())
+      dispatch(clearCardsQueryParams())
     }
   }, [])
 
