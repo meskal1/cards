@@ -49,6 +49,9 @@ const cardsSlice = createSlice({
         }
       })
     },
+    clearCardsQueryParams(state) {
+      state.queryParams = initialState.queryParams
+    },
     clearCardsState() {
       return initialState
     },
@@ -65,6 +68,7 @@ export const {
   clearCardsState,
   setCardRequestStatus,
   setCardsData,
+  clearCardsQueryParams,
 } = cardsSlice.actions
 
 // THUNKS
