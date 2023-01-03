@@ -35,12 +35,14 @@ export const Cards = () => {
   const packUserId = useAppSelector(state => state.cards.cardsData.packUserId)
   const myId = useAppSelector(state => state.profile.userData.id)
   const cardsError = useAppSelector<CardsErrorType>(state => state.cards.error)
-  const isTableEmpty = !!tableData.length
+  const isTableNotEmpty = !!tableData.length
   const isItMyPack = packUserId === myId
   const { id } = useParams()
   const navigate = useNavigate()
   const titleButtonName =
-    isTableEmpty || allParams.cardQuestion ? `${isItMyPack ? 'add new card' : 'learn to pack'}` : ''
+    isTableNotEmpty || allParams.cardQuestion
+      ? `${isItMyPack ? 'add new card' : 'learn to pack'}`
+      : ''
 
   const [addCard, setAddCard] = useState(false)
   const [editCard, setEditCard] = useState(false)
@@ -91,13 +93,13 @@ export const Cards = () => {
               button={titleButtonName}
               buttonClick={isItMyPack ? handleTitleButton : handleLearnCards}
             />
-            {(isTableEmpty || allParams.cardQuestion) && (
+            {(isTableNotEmpty || allParams.cardQuestion) && (
               <div className={s.cards__controlPanel}>
                 <CustomSearch cards />
               </div>
             )}
           </div>
-          {isTableEmpty ? (
+          {isTableNotEmpty ? (
             <>
               <CardsTable isMine={isItMyPack} openEdit={setEditCard} setEditData={setEditData} />
               <CustomPagination cards />
