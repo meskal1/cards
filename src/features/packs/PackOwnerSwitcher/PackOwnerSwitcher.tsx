@@ -21,8 +21,9 @@ export const PackOwnerSwitcher = () => {
     searchParams.delete('min')
     searchParams.delete('max')
     searchParams.delete('page')
+    searchParams.delete('search')
     setSearchParams(searchParams)
-    dispatch(updatePacksQueryParamsTC({ isMyPacks: 'yes', min: 0, max: 0, page: 1 }))
+    dispatch(updatePacksQueryParamsTC({ isMyPacks: 'yes', min: 0, max: 0, page: 1, search: '' }))
   }
 
   const handleAllCards = () => {
@@ -30,8 +31,9 @@ export const PackOwnerSwitcher = () => {
     searchParams.delete('min')
     searchParams.delete('max')
     searchParams.delete('page')
+    searchParams.delete('search')
     setSearchParams(searchParams)
-    dispatch(updatePacksQueryParamsTC({ isMyPacks: '', min: 0, max: 0, page: 1 }))
+    dispatch(updatePacksQueryParamsTC({ isMyPacks: '', min: 0, max: 0, page: 1, search: '' }))
   }
 
   useEffect(() => {

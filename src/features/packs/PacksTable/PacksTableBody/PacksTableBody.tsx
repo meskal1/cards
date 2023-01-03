@@ -1,24 +1,15 @@
-import { FC } from 'react'
-
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 import dayjs from 'dayjs'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
-import { RequestStatusPayloadType, setAppStatus } from '../../../../app/appSlice'
+import { RequestStatusPayloadType } from '../../../../app/appSlice'
 import { HeadType } from '../../../../common/components/CustomTableHead/CustomTableHead'
 import { PATH } from '../../../../constants/routePaths.enum'
-import { useAppDispatch, useAppSelector } from '../../../../hooks/reduxHooks'
-import { getCards } from '../../../learn/learnSlice'
+import { useAppSelector } from '../../../../hooks/reduxHooks'
 import { PackDeleteDataType } from '../../Modals/DeletePack/DeletePack'
-import { useGetSearchParams } from '../../../../hooks/useGetSearchParams'
-import {
-  AppPackType,
-  deletePackTC,
-  setPacksQueryParams,
-  UpdatePackDataType,
-} from '../../packsSlice'
+import { AppPackType, UpdatePackDataType } from '../../packsSlice'
 import { PacksOrderByType } from '../PacksTable'
 
 import { PacksActionCell } from './PacksActionCell/PacksActionCell'
@@ -39,11 +30,8 @@ export const PacksTableBody: React.FC<PacksTableBodyType> = ({
   openDeleteModal,
   setDeleteData,
 }) => {
-  const [searchParams, setSearchParams] = useSearchParams()
-  const allParams = useGetSearchParams()
   const tableData = useAppSelector<AppPackType[]>(state => state.packs.tableData)
   const userId = useAppSelector(state => state.profile.userData.id)
-  const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
   const handleOpenCardPack = (id: string, requestStatus: RequestStatusPayloadType) => {
@@ -59,11 +47,6 @@ export const PacksTableBody: React.FC<PacksTableBodyType> = ({
     openEditModal()
   }
   const handleDeleteCardPack = (data: PackDeleteDataType) => {
-    // Move to delete modal
-    // if (tableData.length === 1 && allParams.page > 1) {
-    //   setSearchParams({ ...allParams, page: allParams.page - 1 })
-    //   dispatch(setPacksQueryParams({ page: allParams.page - 1 }))
-    // }
     setDeleteData(data)
     openDeleteModal(true)
   }

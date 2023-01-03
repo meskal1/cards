@@ -37,9 +37,6 @@ export const CardsTableBody: FC<CardsTableBodyType> = ({
   setDeleteData,
 }) => {
   const tableData = useAppSelector<AppCardType[]>(state => state.cards.tableData)
-  const [searchParams, setSearchParams] = useSearchParams()
-  const allParams = useGetSearchParams()
-  const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
   const openCardHandler = (id: string, packId: string, requestStatus: RequestStatusPayloadType) => {
@@ -53,11 +50,6 @@ export const CardsTableBody: FC<CardsTableBodyType> = ({
     setEditData(data)
   }
   const handleDeleteCard = (id: string) => {
-    // Move this condition to delete modal
-    // if (tableData.length === 1 && allParams.page > 1) {
-    //   setSearchParams({ ...allParams, page: allParams.page - 1 })
-    //   dispatch(setCardsQueryParams({ page: allParams.page - 1 }))
-    // }
     setDeleteData(id)
     openDelete(true)
   }

@@ -2,7 +2,6 @@ import axios, { AxiosError } from 'axios'
 
 import { setAppAlertMessage, setAppStatus } from '../app/appSlice'
 import { AppDispatchType } from '../app/store'
-import { setIsLoggedIn } from '../features/auth/authSlice'
 
 export const handleServerNetworkError = (dispatch: AppDispatchType, error: Error | AxiosError) => {
   if (axios.isAxiosError(error)) {

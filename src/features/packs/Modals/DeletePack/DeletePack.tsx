@@ -1,9 +1,11 @@
 import React from 'react'
 
 import Button from '@mui/material/Button'
+import { useSearchParams } from 'react-router-dom'
 
-import { useAppDispatch } from '../../../../hooks/reduxHooks'
-import { deletePackTC } from '../../packsSlice'
+import { useAppDispatch, useAppSelector } from '../../../../hooks/reduxHooks'
+import { useGetSearchParams } from '../../../../hooks/useGetSearchParams'
+import { deletePackTC, setPacksQueryParams } from '../../packsSlice'
 
 import s from './DeletePack.module.scss'
 
@@ -13,8 +15,16 @@ type DeletePackType = {
 }
 
 export const DeletePack: React.FC<DeletePackType> = ({ packData, activeModal }) => {
+  const [searchParams, setSearchParams] = useSearchParams()
+  const allParams = useGetSearchParams()
+  const tableData = useAppSelector(state => state.packs.tableData)
   const dispatch = useAppDispatch()
+
   const handleDeletePacK = async () => {
+    if (tableData.length === 1 && allParams.page > 1) {
+      setSearchParams({ ...allParams, page: allParams.page - 1 })
+      dispatch(setPacksQueryParams({ page: allParams.page - 1 }))
+    }
     await dispatch(deletePackTC(packData.id))
     activeModal(false)
   }
