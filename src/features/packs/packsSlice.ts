@@ -21,7 +21,7 @@ const initialState = {
     maxCardsCount: 0,
     cardPacksTotalCount: 0,
   },
-  isDataReset: false,
+  dataResetToggle: false,
   tableData: [] as AppPackType[],
 }
 
@@ -48,8 +48,8 @@ const packsSlice = createSlice({
     clearPacksQueryParams(state) {
       state.queryParams = initialState.queryParams
     },
-    toggleResetStatus(state) {
-      state.isDataReset = !state.isDataReset
+    toggleResetData(state) {
+      state.dataResetToggle = !state.dataResetToggle
     },
   },
 })
@@ -63,7 +63,7 @@ export const {
   setPacksTableData,
   setCardsCount,
   clearPacksQueryParams,
-  toggleResetStatus,
+  toggleResetData,
 } = packsSlice.actions
 
 // THUNKS
