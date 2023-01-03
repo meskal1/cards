@@ -61,12 +61,10 @@ export const Cards = () => {
   }
 
   useEffect(() => {
-    if (cardsPack_id === '' || cardsPack_id !== id) {
-      ;(async () => {
-        await dispatch(updateCardsQueryParamsTC({ ...allParams, cardsPack_id: id }))
-        setShowChildren(true)
-      })()
-    }
+    ;(async () => {
+      await dispatch(updateCardsQueryParamsTC({ ...allParams, cardsPack_id: id }))
+      setShowChildren(true)
+    })()
   }, [id])
 
   useEffect(() => {
