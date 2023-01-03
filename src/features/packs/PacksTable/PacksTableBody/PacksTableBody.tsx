@@ -44,7 +44,6 @@ export const PacksTableBody: React.FC<PacksTableBodyType> = ({
   }
 
   const handleStudyCardPack = async (id: string) => {
-    await dispatch(setAppStatus('loading'))
     navigate(PATH.LEARN + `/${id}`)
   }
   const handleEditCardPack = (data: UpdatePackDataType) => {

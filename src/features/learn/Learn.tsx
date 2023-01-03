@@ -8,6 +8,7 @@ import { useLocation } from 'react-router-dom'
 
 import { RootStateType } from '../../app/store'
 import { BackToPacks } from '../../common/components/BackToPacks/BackToPacks'
+import { LoadingProgress } from '../../common/components/LoadingProgress/LoadingProgress'
 import { CustomModalDialog } from '../../common/components/ModalDialog/CustomModalDialog'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { ServerCardType } from '../../services/cardsApi'
@@ -46,7 +47,6 @@ export const Learn = () => {
   let { packId } = useParams()
   const location = useLocation()
   const dispatch = useAppDispatch()
-  const appStatus = useAppSelector(state => state.app.status)
   const isInitialized = useAppSelector(state => state.learn.isInitialized)
 
   console.log('Location', location)
@@ -91,7 +91,7 @@ export const Learn = () => {
         setCardId('')
       }
     } else {
-      if (cards.length === 0 && appStatus !== 'loading' && isInitialized) {
+      if (cards.length === 0 && isInitialized) {
         setShowAlert(true)
       } else {
         const newCard = getCard(cards)
@@ -131,7 +131,7 @@ export const Learn = () => {
   return (
     <>
       {!isInitialized ? (
-        ''
+        <LoadingProgress />
       ) : (
         <div className={s.mainContainer}>
           <BackToPacks />

@@ -42,7 +42,6 @@ export const { setCards, setGratedCard, setInitialized } = learnSlice.actions
 export const getCards =
   (data: { cardsPack_id: string }) =>
   async (dispatch: AppDispatchType, getState: () => RootStateType) => {
-    dispatch(setAppStatus('loading'))
     try {
       const totalCardsCount = getState().learn.cardsTotalCount
       const responseAllCards = await cardsAPI.getCards({
@@ -51,7 +50,6 @@ export const getCards =
       })
 
       dispatch(setCards({ cards: responseAllCards.data.cards }))
-      dispatch(setAppStatus('idle'))
       dispatch(setInitialized({ initialized: true }))
     } catch (e) {
       handleServerNetworkError(dispatch, e as Error | AxiosError)
