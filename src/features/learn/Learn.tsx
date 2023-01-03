@@ -14,7 +14,7 @@ import { ServerCardType } from '../../services/cardsApi'
 import { getCard } from '../../utils/random'
 
 import s from './Learn.module.scss'
-import { getCards, gradeCard } from './learnSlice'
+import { getCards, gradeCard, setInitialized } from './learnSlice'
 import { NoCardsToLearn } from './Modals/NoCardsToLearn'
 
 const initialCard = {
@@ -47,6 +47,7 @@ export const Learn = () => {
   const location = useLocation()
   const dispatch = useAppDispatch()
   const appStatus = useAppSelector(state => state.app.status)
+  const isInitialized = useAppSelector(state => state.learn.isInitialized)
 
   console.log('Location', location)
   const [card, setCard] = useState<ServerCardType>(initialCard)
@@ -67,10 +68,14 @@ export const Learn = () => {
   }
 
   useEffect(() => {
+    //debugger
     getData()
   }, [])
+  console.log('AFTER FIRST USEEFECT CAARDS: ', cards)
+  //debugger
 
   useEffect(() => {
+    //debugger
     let selectedCard
 
     if (cardId) {
@@ -86,7 +91,7 @@ export const Learn = () => {
         setCardId('')
       }
     } else {
-      if (cards.length === 0 && appStatus !== 'loading') {
+      if (cards.length === 0 && appStatus !== 'loading' && isInitialized) {
         setShowAlert(true)
       } else {
         const newCard = getCard(cards)
@@ -95,6 +100,12 @@ export const Learn = () => {
       }
     }
   }, [cards])
+
+  useEffect(() => {
+    return () => {
+      dispatch(setInitialized({ initialized: false }))
+    }
+  }, [])
 
   const handleShowAnswer = () => setShowAnswer(!showAnswer)
 
@@ -115,9 +126,11 @@ export const Learn = () => {
     },
   })
 
+  console.log('IS INITILIZED: ', isInitialized)
+
   return (
     <>
-      {appStatus === 'loading' ? (
+      {!isInitialized ? (
         ''
       ) : (
         <div className={s.mainContainer}>
@@ -169,14 +182,14 @@ export const Learn = () => {
               </div>
             )}
           </div>
+          {showAlert ? (
+            <CustomModalDialog active={showAlert}>
+              <NoCardsToLearn />
+            </CustomModalDialog>
+          ) : (
+            ''
+          )}
         </div>
-      )}
-      {showAlert ? (
-        <CustomModalDialog active={showAlert}>
-          <NoCardsToLearn />
-        </CustomModalDialog>
-      ) : (
-        ''
       )}
     </>
   )
