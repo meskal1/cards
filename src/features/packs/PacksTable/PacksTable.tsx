@@ -42,7 +42,6 @@ type PacksTablePropsType = {
 }
 
 export const PacksTable: FC<PacksTablePropsType> = ({ openEditModal, setEditData }) => {
-  console.log('Render table')
   const status = useAppSelector<RequestStatusPayloadType>(state => state.app.tableStatus)
   const isDataEmpty = useAppSelector(state => state.packs.tableData).length
   const serverSort = useAppSelector<SortValuesType>(state => state.packs.queryParams.sortPacks)
