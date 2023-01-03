@@ -52,7 +52,7 @@ const PrivateRoutes = () => {
   const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
 
   return isLoggedIn ? (
-    <Suspense fallback={null}>
+    <Suspense fallback={<LoadingProgress />}>
       <Outlet />
     </Suspense>
   ) : (

@@ -4,6 +4,7 @@ import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
 import TableContainer from '@mui/material/TableContainer'
+import { useSearchParams } from 'react-router-dom'
 
 import { RequestStatusPayloadType } from '../../../app/appSlice'
 import { TableBodySkeleton } from '../../../common/components/CustomSkeletons/TableBodySkeleton/TableBodySkeleton'
@@ -13,6 +14,7 @@ import {
 } from '../../../common/components/CustomTableHead/CustomTableHead'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { PackDeleteDataType } from '../Modals/DeletePack/DeletePack'
+import { useGetSearchParams } from '../../../hooks/useGetSearchParams'
 import { SortValuesType, UpdatePackDataType, updatePacksQueryParamsTC } from '../packsSlice'
 
 import s from './PacksTable.module.scss'
@@ -42,7 +44,7 @@ type PacksTablePropsType = {
   setDeleteData: (data: PackDeleteDataType) => void
 }
 
-export const PacksTable: React.FC<PacksTablePropsType> = ({
+export const PacksTable: FC<PacksTablePropsType> = ({
   openEditModal,
   setEditData,
   openDeleteModal,
@@ -53,6 +55,8 @@ export const PacksTable: React.FC<PacksTablePropsType> = ({
   const serverSort = useAppSelector<SortValuesType>(state => state.packs.queryParams.sortPacks)
   const pageCount = useAppSelector(state => state.packs.queryParams.pageCount)
   const dispatch = useAppDispatch()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const allParams = useGetSearchParams()
 
   // Check current order
   const serverOrder = serverSort.slice(0, 1) as ServerOrderType
@@ -64,6 +68,7 @@ export const PacksTable: React.FC<PacksTablePropsType> = ({
     const newOrder = isAsc ? 'desc' : 'asc'
     const newServerOrder: SortValuesType = `${TableOrder[newOrder]}${property}`
 
+    setSearchParams({ ...allParams, sortPacks: newServerOrder })
     dispatch(updatePacksQueryParamsTC({ sortPacks: newServerOrder }))
   }
 

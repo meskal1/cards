@@ -15,7 +15,7 @@ export const PackSlider = () => {
   const allParams = useGetSearchParams()
   const minCardsCount = useAppSelector(state => state.packs.cardsCount.minCardsCount)
   const maxCardsCount = useAppSelector(state => state.packs.cardsCount.maxCardsCount)
-  const isDataReset = useAppSelector(state => state.packs.isDataReset)
+  const dataResetToggle = useAppSelector(state => state.packs.dataResetToggle)
   const [value, setValue] = useState<number[]>([
     +allParams.min || minCardsCount,
     +allParams.max || maxCardsCount,
@@ -40,7 +40,7 @@ export const PackSlider = () => {
     if (!+allParams.min) {
       setValue([minCardsCount, maxCardsCount])
     }
-  }, [isDataReset])
+  }, [dataResetToggle])
 
   return (
     <>

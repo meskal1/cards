@@ -16,7 +16,7 @@ import s from './Cards.module.scss'
 import {
   AppCardType,
   CardsErrorType,
-  clearCardsState,
+  clearCardsQueryParams,
   setError,
   updateCardsQueryParamsTC,
   UpdateCardType,
@@ -36,12 +36,14 @@ export const Cards = () => {
   const packUserId = useAppSelector(state => state.cards.cardsData.packUserId)
   const myId = useAppSelector(state => state.profile.userData.id)
   const cardsError = useAppSelector<CardsErrorType>(state => state.cards.error)
-  const isTableEmpty = !!tableData.length
+  const isTableNotEmpty = !!tableData.length
   const isItMyPack = packUserId === myId
   const { id } = useParams()
   const navigate = useNavigate()
   const titleButtonName =
-    isTableEmpty || allParams.cardQuestion ? `${isItMyPack ? 'add new card' : 'learn to pack'}` : ''
+    isTableNotEmpty || allParams.cardQuestion
+      ? `${isItMyPack ? 'add new card' : 'learn to pack'}`
+      : ''
 
   const [addCard, setAddCard] = useState(false)
   const [deleteCard, setDeleteCard] = useState(false)
@@ -62,12 +64,10 @@ export const Cards = () => {
   }
 
   useEffect(() => {
-    if (cardsPack_id === '' || cardsPack_id !== id) {
-      ;(async () => {
-        await dispatch(updateCardsQueryParamsTC({ ...allParams, cardsPack_id: id }))
-        setShowChildren(true)
-      })()
-    }
+    ;(async () => {
+      await dispatch(updateCardsQueryParamsTC({ ...allParams, cardsPack_id: id }))
+      setShowChildren(true)
+    })()
   }, [id])
 
   useEffect(() => {
@@ -79,7 +79,7 @@ export const Cards = () => {
 
   useEffect(() => {
     return () => {
-      dispatch(clearCardsState())
+      dispatch(clearCardsQueryParams())
     }
   }, [])
 
@@ -94,13 +94,13 @@ export const Cards = () => {
               button={titleButtonName}
               buttonClick={isItMyPack ? handleTitleButton : handleLearnCards}
             />
-            {(isTableEmpty || allParams.cardQuestion) && (
+            {(isTableNotEmpty || allParams.cardQuestion) && (
               <div className={s.cards__controlPanel}>
                 <CustomSearch cards />
               </div>
             )}
           </div>
-          {isTableEmpty ? (
+          {isTableNotEmpty ? (
             <>
               <CardsTable
                 isMine={isItMyPack}

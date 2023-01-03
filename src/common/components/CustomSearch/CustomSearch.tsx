@@ -20,8 +20,8 @@ export const CustomSearch: FC<CustomSearchType> = ({ cards }) => {
   const location = useLocation()
   const [searchParams, setSearchParams] = useSearchParams()
   const allParams = useGetSearchParams('always')
-  const inintInputValue = allParams.search || allParams.cardQuestion || ''
-  const [inputValue, setInputValue] = useState(inintInputValue)
+  const initInputValue = allParams.search || allParams.cardQuestion || ''
+  const [inputValue, setInputValue] = useState(initInputValue)
   const debouncedValue = useDebounce(inputValue)
   const search = useAppSelector(state => state.packs.queryParams.search)
   const cardQuestion = useAppSelector(state => state.cards.queryParams.cardQuestion)
@@ -48,7 +48,7 @@ export const CustomSearch: FC<CustomSearchType> = ({ cards }) => {
       isItWorthUpdating()
     }
 
-    if (debouncedValue === '' && inintInputValue) {
+    if (debouncedValue === '' && initInputValue) {
       cards ? searchParams.delete('cardQuestion') : searchParams.delete('search')
       setSearchParams(searchParams)
       isItWorthUpdating()
@@ -56,7 +56,7 @@ export const CustomSearch: FC<CustomSearchType> = ({ cards }) => {
   }, [debouncedValue])
 
   useEffect(() => {
-    setInputValue(inintInputValue)
+    setInputValue(initInputValue)
   }, [location.search])
 
   return (

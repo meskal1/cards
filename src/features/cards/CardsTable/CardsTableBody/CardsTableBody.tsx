@@ -6,12 +6,14 @@ import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 import dayjs from 'dayjs'
 import { useNavigate } from 'react-router'
+import { useSearchParams } from 'react-router-dom'
 
 import { RequestStatusPayloadType } from '../../../../app/appSlice'
 import { HeadType } from '../../../../common/components/CustomTableHead/CustomTableHead'
 import { PATH } from '../../../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../../../hooks/reduxHooks'
-import { AppCardType, deleteCardTC, UpdateCardType } from '../../cardsSlice'
+import { useGetSearchParams } from '../../../../hooks/useGetSearchParams'
+import { AppCardType, deleteCardTC, setCardsQueryParams, UpdateCardType } from '../../cardsSlice'
 import { CardsOrderByType } from '../CardsTable'
 
 import { CardsActionCell } from './CardsActionCell/CardsActionCell'
@@ -35,7 +37,8 @@ export const CardsTableBody: FC<CardsTableBodyType> = ({
   setDeleteData,
 }) => {
   const tableData = useAppSelector<AppCardType[]>(state => state.cards.tableData)
-
+  const [searchParams, setSearchParams] = useSearchParams()
+  const allParams = useGetSearchParams()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
@@ -46,11 +49,15 @@ export const CardsTableBody: FC<CardsTableBodyType> = ({
   }
 
   const handleEditCard = (data: UpdateCardType) => {
-    debugger
     openEdit(true)
     setEditData(data)
   }
   const handleDeleteCard = (id: string) => {
+    // Move this condition to delete modal
+    // if (tableData.length === 1 && allParams.page > 1) {
+    //   setSearchParams({ ...allParams, page: allParams.page - 1 })
+    //   dispatch(setCardsQueryParams({ page: allParams.page - 1 }))
+    // }
     setDeleteData(id)
     openDelete(true)
   }

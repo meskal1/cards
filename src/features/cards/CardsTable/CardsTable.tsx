@@ -4,6 +4,7 @@ import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
 import TableContainer from '@mui/material/TableContainer'
+import { useSearchParams } from 'react-router-dom'
 
 import { RequestStatusPayloadType } from '../../../app/appSlice'
 import { TableBodySkeleton } from '../../../common/components/CustomSkeletons/TableBodySkeleton/TableBodySkeleton'
@@ -12,6 +13,7 @@ import {
   HeadType,
 } from '../../../common/components/CustomTableHead/CustomTableHead'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
+import { useGetSearchParams } from '../../../hooks/useGetSearchParams'
 import { ServerOrderType, TableOrder, TableOrderType } from '../../packs/PacksTable/PacksTable'
 import { SortValuesCardsType, updateCardsQueryParamsTC, UpdateCardType } from '../cardsSlice'
 
@@ -44,8 +46,9 @@ export const CardsTable: FC<CardsTablePropsType> = ({
   const status = useAppSelector<RequestStatusPayloadType>(state => state.app.tableStatus)
   const serverSort = useAppSelector<SortValuesCardsType>(state => state.cards.queryParams.sortCards)
   const pageCount = useAppSelector(state => state.cards.queryParams.pageCount)
-
   const dispatch = useAppDispatch()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const allParams = useGetSearchParams()
 
   const serverOrder = serverSort.slice(0, 1) as ServerOrderType
   const tableOrderBy = serverSort.slice(1) as CardsOrderByType
@@ -57,6 +60,7 @@ export const CardsTable: FC<CardsTablePropsType> = ({
 
     const newServerOrder: SortValuesCardsType = `${TableOrder[newOrder]}${property}`
 
+    setSearchParams({ ...allParams, sortCards: newServerOrder })
     dispatch(updateCardsQueryParamsTC({ sortCards: newServerOrder }))
   }
 
