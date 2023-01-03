@@ -50,6 +50,10 @@ export const PacksTableBody: FC<PacksTableBodyType> = ({ heads, setEditData, ope
     openEditModal()
   }
   const handleDeleteCardPack = (id: string) => {
+    if (tableData.length === 1 && allParams.page > 1) {
+      setSearchParams({ ...allParams, page: allParams.page - 1 })
+      dispatch(setPacksQueryParams({ page: allParams.page - 1 }))
+    }
     dispatch(deletePackTC(id))
   }
 
