@@ -6,16 +6,18 @@ import { AppDispatchType, RootStateType } from '../../app/store'
 import { CreatePackType, packsAPI, ServerPackType } from '../../services/packsApi'
 import { handleServerNetworkError } from '../../utils/errorUtils'
 
+export const initialPacksQueryParams = {
+  min: 0,
+  max: 0,
+  page: 1,
+  pageCount: 8,
+  sortPacks: '0updated' as SortValuesType,
+  search: '',
+  isMyPacks: '' as 'yes' | '',
+}
+
 const initialState = {
-  queryParams: {
-    min: 0,
-    max: 0,
-    page: 1,
-    pageCount: 8,
-    sortPacks: '0updated' as SortValuesType,
-    search: '',
-    isMyPacks: '' as 'yes' | '',
-  },
+  queryParams: initialPacksQueryParams,
   cardsCount: {
     minCardsCount: 0,
     maxCardsCount: 0,
@@ -211,8 +213,4 @@ export type PacksQueryParamsType = Partial<SetPacksQueryParamsPayloadType>
 export type UpdatePackDataType = {
   id: string
   name: string
-}
-
-type PackResetStatusPayloadType = {
-  isDataReset: boolean
 }
