@@ -30,8 +30,8 @@ const cardsSlice = createSlice({
   name: 'cards',
   initialState,
   reducers: {
-    setCardsQueryParams(state, action: PayloadAction<SetCardsQueryParamsPayloadType>) {
-      state.queryParams = action.payload
+    setCardsQueryParams(state, action: PayloadAction<CardsQueryParamsType>) {
+      state.queryParams = { ...state.queryParams, ...action.payload }
     },
     setCardsTableData(state, action: PayloadAction<CardsTablePayloadType>) {
       state.tableData = action.payload.map(c => ({ ...c, requestStatus: 'idle' }))
