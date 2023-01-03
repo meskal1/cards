@@ -4,13 +4,19 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 import dayjs from 'dayjs'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 
 import { RequestStatusPayloadType, setAppStatus } from '../../../../app/appSlice'
 import { HeadType } from '../../../../common/components/CustomTableHead/CustomTableHead'
 import { PATH } from '../../../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../../../hooks/reduxHooks'
-import { AppPackType, deletePackTC, UpdatePackDataType } from '../../packsSlice'
+import { useGetSearchParams } from '../../../../hooks/useGetSearchParams'
+import {
+  AppPackType,
+  deletePackTC,
+  setPacksQueryParams,
+  UpdatePackDataType,
+} from '../../packsSlice'
 import { PacksOrderByType } from '../PacksTable'
 
 import { PacksActionCell } from './PacksActionCell/PacksActionCell'
@@ -23,6 +29,8 @@ type PacksTableBodyType = {
 }
 
 export const PacksTableBody: FC<PacksTableBodyType> = ({ heads, setEditData, openEditModal }) => {
+  const [searchParams, setSearchParams] = useSearchParams()
+  const allParams = useGetSearchParams()
   const tableData = useAppSelector<AppPackType[]>(state => state.packs.tableData)
   const userId = useAppSelector(state => state.profile.userData.id)
   const dispatch = useAppDispatch()
