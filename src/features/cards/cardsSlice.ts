@@ -77,9 +77,16 @@ export const updateCardsQueryParamsTC =
   async (dispatch: AppDispatchType, getState: () => RootStateType) => {
     dispatch(setTableStatus('loading'))
     try {
+      const { page, pageCount } = queryProps
       const queryParams = getState().cards.queryParams
 
-      dispatch(setCardsQueryParams({ ...queryParams, ...queryProps }))
+      dispatch(
+        setCardsQueryParams({
+          ...queryProps,
+          page: page || page === 0 ? +page : queryParams.page,
+          pageCount: pageCount || pageCount === 0 ? +pageCount : queryParams.pageCount,
+        })
+      )
       await dispatch(getCardsTC())
 
       return
