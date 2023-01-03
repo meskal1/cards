@@ -45,7 +45,7 @@ const packsSlice = createSlice({
         }
       })
     },
-    resetPacksQueryParams(state) {
+    clearPacksQueryParams(state) {
       state.queryParams = initialState.queryParams
     },
     toggleResetStatus(state) {
@@ -62,7 +62,7 @@ export const {
   setPackRequestStatus,
   setPacksTableData,
   setCardsCount,
-  resetPacksQueryParams,
+  clearPacksQueryParams,
   toggleResetStatus,
 } = packsSlice.actions
 

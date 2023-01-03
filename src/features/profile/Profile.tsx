@@ -9,7 +9,7 @@ import { CustomButton } from '../../common/components/CustomButton/CustomButton'
 import { EditableSpan } from '../../common/components/EditableSpan/EditableSpan'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { logOutTC } from '../auth/authSlice'
-import { resetPacksQueryParams } from '../packs/packsSlice'
+import { clearPacksQueryParams } from '../packs/packsSlice'
 
 import s from './Profile.module.scss'
 import { newUserDataTC } from './profileSlice'
@@ -34,7 +34,7 @@ export const Profile = () => {
 
   useEffect(() => {
     return () => {
-      dispatch(resetPacksQueryParams())
+      dispatch(clearPacksQueryParams())
     }
   }, [])
 
