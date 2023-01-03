@@ -15,7 +15,7 @@ import { getCard } from '../../utils/random'
 
 import s from './Learn.module.scss'
 import { getCards, gradeCard } from './learnSlice'
-import { NoCardsToLearn } from './noCardsToLearn/NoCardsToLearn'
+import { NoCardsToLearn } from './Modals/NoCardsToLearn'
 
 const initialCard = {
   _id: '',
