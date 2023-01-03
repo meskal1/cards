@@ -5,7 +5,7 @@ import TablePagination from '@mui/material/TablePagination'
 import { useSearchParams } from 'react-router-dom'
 
 import { RequestStatusPayloadType } from '../../../app/appSlice'
-import { updateCardsQueryParamsTC } from '../../../features/cards/cardsSlice'
+import { setCardsQueryParams, updateCardsQueryParamsTC } from '../../../features/cards/cardsSlice'
 import { setPacksQueryParams, updatePacksQueryParamsTC } from '../../../features/packs/packsSlice'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { useGetSearchParams } from '../../../hooks/useGetSearchParams'
@@ -57,7 +57,11 @@ export const CustomPagination: FC<CustomPaginationType> = ({ cards }) => {
   useEffect(() => {
     if (allParams.page > paginationCount) {
       setSearchParams({ ...allParams, page: paginationCount })
-      dispatch(setPacksQueryParams({ page: paginationCount }))
+      if (cards) {
+        dispatch(setCardsQueryParams({ page: paginationCount }))
+      } else {
+        dispatch(setPacksQueryParams({ page: paginationCount }))
+      }
     }
   }, [allParams])
 
