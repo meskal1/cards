@@ -23,6 +23,7 @@ import {
 } from './cardsSlice'
 import { CardsTable } from './CardsTable/CardsTable'
 import { AddCard } from './Modals/AddCard/AddCard'
+import { DeleteCard } from './Modals/DeleteCard/DeleteCard'
 import { EditCard } from './Modals/EditCard/EditCard'
 
 export const Cards = () => {
@@ -43,6 +44,8 @@ export const Cards = () => {
     isTableEmpty || allParams.cardQuestion ? `${isItMyPack ? 'add new card' : 'learn to pack'}` : ''
 
   const [addCard, setAddCard] = useState(false)
+  const [deleteCard, setDeleteCard] = useState(false)
+  const [deleteData, setDeleteData] = useState('')
   const [editCard, setEditCard] = useState(false)
   const [editData, setEditData] = useState<UpdateCardType>({
     id: '',
@@ -99,7 +102,13 @@ export const Cards = () => {
           </div>
           {isTableEmpty ? (
             <>
-              <CardsTable isMine={isItMyPack} openEdit={setEditCard} setEditData={setEditData} />
+              <CardsTable
+                isMine={isItMyPack}
+                openEdit={setEditCard}
+                setEditData={setEditData}
+                setDeleteData={setDeleteData}
+                openDelete={setDeleteCard}
+              />
               <CustomPagination cards />
             </>
           ) : (
@@ -126,6 +135,14 @@ export const Cards = () => {
           {editCard ? (
             <CustomModalDialog active={editCard} setActive={setEditCard}>
               <EditCard closeModal={setEditCard} cardsData={editData} active={editCard} />
+            </CustomModalDialog>
+          ) : (
+            ''
+          )}
+
+          {deleteCard ? (
+            <CustomModalDialog active={deleteCard} setActive={setDeleteCard}>
+              <DeleteCard activeModal={setDeleteCard} id={deleteData} />
             </CustomModalDialog>
           ) : (
             ''

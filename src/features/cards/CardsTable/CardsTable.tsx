@@ -30,9 +30,17 @@ type CardsTablePropsType = {
   isMine: boolean
   openEdit: (state: boolean) => void
   setEditData: (data: UpdateCardType) => void
+  openDelete: (state: boolean) => void
+  setDeleteData: (id: string) => void
 }
 
-export const CardsTable: FC<CardsTablePropsType> = ({ isMine, openEdit, setEditData }) => {
+export const CardsTable: FC<CardsTablePropsType> = ({
+  isMine,
+  openEdit,
+  setEditData,
+  openDelete,
+  setDeleteData,
+}) => {
   const status = useAppSelector<RequestStatusPayloadType>(state => state.app.tableStatus)
   const serverSort = useAppSelector<SortValuesCardsType>(state => state.cards.queryParams.sortCards)
   const pageCount = useAppSelector(state => state.cards.queryParams.pageCount)
@@ -76,6 +84,8 @@ export const CardsTable: FC<CardsTablePropsType> = ({ isMine, openEdit, setEditD
                 isMine={isMine}
                 openEdit={openEdit}
                 setEditData={setEditData}
+                openDelete={openDelete}
+                setDeleteData={setDeleteData}
               />
             )}
           </Table>

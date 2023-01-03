@@ -22,6 +22,8 @@ type CardsTableBodyType = {
   isMine: boolean
   openEdit: (state: boolean) => void
   setEditData: (data: UpdateCardType) => void
+  openDelete: (state: boolean) => void
+  setDeleteData: (id: string) => void
 }
 
 export const CardsTableBody: FC<CardsTableBodyType> = ({
@@ -29,6 +31,8 @@ export const CardsTableBody: FC<CardsTableBodyType> = ({
   isMine,
   openEdit,
   setEditData,
+  openDelete,
+  setDeleteData,
 }) => {
   const tableData = useAppSelector<AppCardType[]>(state => state.cards.tableData)
 
@@ -42,11 +46,13 @@ export const CardsTableBody: FC<CardsTableBodyType> = ({
   }
 
   const handleEditCard = (data: UpdateCardType) => {
+    debugger
     openEdit(true)
     setEditData(data)
   }
   const handleDeleteCard = (id: string) => {
-    dispatch(deleteCardTC(id))
+    setDeleteData(id)
+    openDelete(true)
   }
 
   return (
