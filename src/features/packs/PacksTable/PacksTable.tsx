@@ -13,8 +13,8 @@ import {
   HeadType,
 } from '../../../common/components/CustomTableHead/CustomTableHead'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
-import { PackDeleteDataType } from '../Modals/DeletePack/DeletePack'
 import { useGetSearchParams } from '../../../hooks/useGetSearchParams'
+import { PackDeleteDataType } from '../Modals/DeletePack/DeletePack'
 import { SortValuesType, UpdatePackDataType, updatePacksQueryParamsTC } from '../packsSlice'
 
 import s from './PacksTable.module.scss'
