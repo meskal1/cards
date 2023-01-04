@@ -12,5 +12,4 @@ export enum PATH {
   PAGE_NOT_FOUND = '/404',
   LEARN = '/learn',
   LEARN_PACK_ID = '/learn/:packId',
-  LEARN_CARD_ID = '/learn/:packId/:cardId',
 }

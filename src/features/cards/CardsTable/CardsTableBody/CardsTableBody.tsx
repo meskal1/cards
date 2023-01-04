@@ -6,12 +6,14 @@ import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 import dayjs from 'dayjs'
 import { useNavigate } from 'react-router'
+import { useSearchParams } from 'react-router-dom'
 
 import { RequestStatusPayloadType } from '../../../../app/appSlice'
 import { HeadType } from '../../../../common/components/CustomTableHead/CustomTableHead'
 import { PATH } from '../../../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../../../hooks/reduxHooks'
-import { AppCardType, deleteCardTC, UpdateCardType } from '../../cardsSlice'
+import { useGetSearchParams } from '../../../../hooks/useGetSearchParams'
+import { AppCardType, deleteCardTC, setCardsQueryParams, UpdateCardType } from '../../cardsSlice'
 import { CardsOrderByType } from '../CardsTable'
 
 import { CardsActionCell } from './CardsActionCell/CardsActionCell'
@@ -22,6 +24,8 @@ type CardsTableBodyType = {
   isMine: boolean
   openEdit: (state: boolean) => void
   setEditData: (data: UpdateCardType) => void
+  openDelete: (state: boolean) => void
+  setDeleteData: (id: string) => void
 }
 
 export const CardsTableBody: FC<CardsTableBodyType> = ({
@@ -29,10 +33,10 @@ export const CardsTableBody: FC<CardsTableBodyType> = ({
   isMine,
   openEdit,
   setEditData,
+  openDelete,
+  setDeleteData,
 }) => {
   const tableData = useAppSelector<AppCardType[]>(state => state.cards.tableData)
-
-  const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
   const openCardHandler = (id: string, packId: string, requestStatus: RequestStatusPayloadType) => {
@@ -46,7 +50,8 @@ export const CardsTableBody: FC<CardsTableBodyType> = ({
     setEditData(data)
   }
   const handleDeleteCard = (id: string) => {
-    dispatch(deleteCardTC(id))
+    setDeleteData(id)
+    openDelete(true)
   }
 
   return (

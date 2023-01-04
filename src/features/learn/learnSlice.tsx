@@ -10,6 +10,7 @@ import { setCardsData } from '../cards/cardsSlice'
 const initialState = {
   cards: [] as ServerCardType[],
   cardsTotalCount: 0,
+  isInitialized: false,
 }
 
 export const learnSlice = createSlice({
@@ -22,6 +23,9 @@ export const learnSlice = createSlice({
     setGratedCard(state, action: PayloadAction<{ card: upgradedCardType }>) {
       state.cards = state.cards.filter(card => card._id !== action.payload.card.card_id)
     },
+    setInitialized(state, action: PayloadAction<{ initialized: boolean }>) {
+      state.isInitialized = action.payload.initialized
+    },
   },
   extraReducers: builder => {
     builder.addCase(setCardsData, (state, action: PayloadAction<{ cardsTotalCount: number }>) => {
@@ -31,14 +35,13 @@ export const learnSlice = createSlice({
 })
 
 export const LearnReducer = learnSlice.reducer
-export const { setCards, setGratedCard } = learnSlice.actions
+export const { setCards, setGratedCard, setInitialized } = learnSlice.actions
 
 // thunks
 
 export const getCards =
   (data: { cardsPack_id: string }) =>
   async (dispatch: AppDispatchType, getState: () => RootStateType) => {
-    dispatch(setAppStatus('loading'))
     try {
       const totalCardsCount = getState().learn.cardsTotalCount
       const responseAllCards = await cardsAPI.getCards({
@@ -47,7 +50,7 @@ export const getCards =
       })
 
       dispatch(setCards({ cards: responseAllCards.data.cards }))
-      dispatch(setAppStatus('idle'))
+      dispatch(setInitialized({ initialized: true }))
     } catch (e) {
       handleServerNetworkError(dispatch, e as Error | AxiosError)
     }

@@ -10,7 +10,7 @@ import { updatePackTC } from '../../packsSlice'
 import s from './EditPack.module.scss'
 
 type EditPackType = {
-  closeModal: () => void
+  activeModal: (state: boolean) => void
   data: {
     id: string
     name: string
@@ -21,7 +21,7 @@ type formikErrorType = {
   name?: string
 }
 
-export const EditPack: FC<EditPackType> = ({ data, closeModal }) => {
+export const EditPack: React.FC<EditPackType> = ({ data, activeModal }) => {
   const dispatch = useAppDispatch()
   const [errors, setErrors] = useState<formikErrorType>({ name: '' })
 
@@ -39,8 +39,10 @@ export const EditPack: FC<EditPackType> = ({ data, closeModal }) => {
       }
     },
     onSubmit: values => {
-      dispatch(updatePackTC({ id: data.id, name: formik.values.name }))
-      closeModal()
+      if (data.name !== values.name) {
+        dispatch(updatePackTC({ id: data.id, name: formik.values.name }))
+      }
+      activeModal(false)
       formik.resetForm()
     },
   })
@@ -68,6 +70,9 @@ export const EditPack: FC<EditPackType> = ({ data, closeModal }) => {
           }
         </div>
         <div className={s.Submit}>
+          <Button onClick={() => activeModal(false)} type={'button'} variant="outlined">
+            Cancel
+          </Button>
           <Button disabled={errors.name ? true : false} type={'submit'} variant="contained">
             Submit
           </Button>

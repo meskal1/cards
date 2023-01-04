@@ -7,22 +7,24 @@ import { CreatePackType, packsAPI, ServerPackType } from '../../services/packsAp
 import { handleServerNetworkError } from '../../utils/errorUtils'
 import { setCardsData } from '../cards/cardsSlice'
 
+export const initialPacksQueryParams = {
+  min: 0,
+  max: 0,
+  page: 1,
+  pageCount: 8,
+  sortPacks: '0updated' as SortValuesType,
+  search: '',
+  isMyPacks: '' as 'yes' | '',
+}
+
 const initialState = {
-  queryParams: {
-    min: 0,
-    max: 0,
-    page: 1,
-    pageCount: 8,
-    sortPacks: '0updated' as SortValuesType,
-    search: '',
-    isMyPacks: '' as 'yes' | '',
-  },
+  queryParams: initialPacksQueryParams,
   cardsCount: {
     minCardsCount: 0,
     maxCardsCount: 0,
     cardPacksTotalCount: 0,
   },
-  isDataReset: false,
+  dataResetToggle: false,
   tableData: [] as AppPackType[],
 }
 
@@ -46,11 +48,11 @@ const packsSlice = createSlice({
         }
       })
     },
-    resetPacksQueryParams(state) {
+    clearPacksQueryParams(state) {
       state.queryParams = initialState.queryParams
     },
-    toggleResetStatus(state) {
-      state.isDataReset = !state.isDataReset
+    toggleResetData(state) {
+      state.dataResetToggle = !state.dataResetToggle
     },
   },
 })
@@ -63,8 +65,8 @@ export const {
   setPackRequestStatus,
   setPacksTableData,
   setCardsCount,
-  resetPacksQueryParams,
-  toggleResetStatus,
+  clearPacksQueryParams,
+  toggleResetData,
 } = packsSlice.actions
 
 // THUNKS

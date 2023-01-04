@@ -9,6 +9,7 @@ import { useAppDispatch } from '../../hooks/reduxHooks'
 import { useGetSearchParams } from '../../hooks/useGetSearchParams'
 
 import { AddPack } from './Modals/AddPack/AddPack'
+import { DeletePack, PackDeleteDataType } from './Modals/DeletePack/DeletePack'
 import { EditPack } from './Modals/EditPack/EditPack'
 import { PackOwnerSwitcher } from './PackOwnerSwitcher/PackOwnerSwitcher'
 import s from './Packs.module.scss'
@@ -22,16 +23,10 @@ export const Packs = () => {
   const [showChildren, setShowChildren] = useState(false)
   const [addModal, setAddModal] = useState(false)
   const [editModal, setEditModal] = useState(false)
+  const [deleteModal, setDeleteModal] = useState(false)
+  const [deleteData, setDeleteData] = useState<PackDeleteDataType>({ id: '', name: '' })
   const [editData, setEditData] = useState<UpdatePackDataType>({ id: '', name: '' })
   const allParams = useGetSearchParams()
-
-  const handleOpenAddModal = useCallback(() => setAddModal(true), [setAddModal])
-
-  const handleCloseAddModal = useCallback(() => setAddModal(false), [setAddModal])
-
-  const handleOpenEditModal = useCallback(() => setEditModal(true), [setEditModal])
-
-  const handleCloseEditModal = useCallback(() => setEditModal(false), [setEditModal])
 
   const handleSetEditData = useCallback(
     (data: UpdatePackDataType) => setEditData(data),
@@ -56,7 +51,7 @@ export const Packs = () => {
             <PageTitleBlock
               title={'packs list'}
               button={'add new pack'}
-              buttonClick={handleOpenAddModal}
+              buttonClick={setAddModal}
             />
             <div className={s.packs__controlPanel}>
               <CustomSearch />
@@ -65,18 +60,30 @@ export const Packs = () => {
               <PacksResetFilter />
             </div>
           </div>
-          <PacksTable setEditData={handleSetEditData} openEditModal={handleOpenEditModal} />
+          <PacksTable
+            setEditData={handleSetEditData}
+            openEditModal={setEditModal}
+            openDeleteModal={setDeleteModal}
+            setDeleteData={setDeleteData}
+          />
           <CustomPagination />
           {addModal ? (
-            <CustomModalDialog active={addModal} setActive={handleCloseAddModal}>
-              <AddPack closeModal={handleCloseAddModal}></AddPack>
+            <CustomModalDialog active={addModal} setActive={setAddModal}>
+              <AddPack activeModal={setAddModal}></AddPack>
             </CustomModalDialog>
           ) : (
             ''
           )}
           {editModal ? (
-            <CustomModalDialog active={editModal} setActive={handleCloseEditModal}>
-              <EditPack data={editData} closeModal={handleCloseEditModal} />
+            <CustomModalDialog active={editModal} setActive={setEditModal}>
+              <EditPack data={editData} activeModal={setEditModal} />
+            </CustomModalDialog>
+          ) : (
+            ''
+          )}
+          {deleteModal ? (
+            <CustomModalDialog active={deleteModal} setActive={setDeleteModal}>
+              <DeletePack packData={deleteData} activeModal={setDeleteModal} />
             </CustomModalDialog>
           ) : (
             ''

@@ -1,16 +1,15 @@
-import { FC } from 'react'
-
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 import dayjs from 'dayjs'
 import { useNavigate } from 'react-router-dom'
 
-import { RequestStatusPayloadType, setAppStatus } from '../../../../app/appSlice'
+import { RequestStatusPayloadType } from '../../../../app/appSlice'
 import { HeadType } from '../../../../common/components/CustomTableHead/CustomTableHead'
 import { PATH } from '../../../../constants/routePaths.enum'
-import { useAppDispatch, useAppSelector } from '../../../../hooks/reduxHooks'
-import { AppPackType, deletePackTC, UpdatePackDataType } from '../../packsSlice'
+import { useAppSelector } from '../../../../hooks/reduxHooks'
+import { PackDeleteDataType } from '../../Modals/DeletePack/DeletePack'
+import { AppPackType, UpdatePackDataType } from '../../packsSlice'
 import { PacksOrderByType } from '../PacksTable'
 
 import { PacksActionCell } from './PacksActionCell/PacksActionCell'
@@ -20,12 +19,19 @@ type PacksTableBodyType = {
   heads: HeadType<PacksOrderByType>[]
   openEditModal: () => void
   setEditData: (data: UpdatePackDataType) => void
+  openDeleteModal: (state: boolean) => void
+  setDeleteData: (data: PackDeleteDataType) => void
 }
 
-export const PacksTableBody: FC<PacksTableBodyType> = ({ heads, setEditData, openEditModal }) => {
+export const PacksTableBody: React.FC<PacksTableBodyType> = ({
+  heads,
+  setEditData,
+  openEditModal,
+  openDeleteModal,
+  setDeleteData,
+}) => {
   const tableData = useAppSelector<AppPackType[]>(state => state.packs.tableData)
   const userId = useAppSelector(state => state.profile.userData.id)
-  const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
   const handleOpenCardPack = (id: string, requestStatus: RequestStatusPayloadType) => {
@@ -34,15 +40,15 @@ export const PacksTableBody: FC<PacksTableBodyType> = ({ heads, setEditData, ope
   }
 
   const handleStudyCardPack = async (id: string) => {
-    await dispatch(setAppStatus('loading'))
     navigate(PATH.LEARN + `/${id}`)
   }
   const handleEditCardPack = (data: UpdatePackDataType) => {
     setEditData(data)
     openEditModal()
   }
-  const handleDeleteCardPack = (id: string) => {
-    dispatch(deletePackTC(id))
+  const handleDeleteCardPack = (data: PackDeleteDataType) => {
+    setDeleteData(data)
+    openDeleteModal(true)
   }
 
   return (
@@ -70,7 +76,7 @@ export const PacksTableBody: FC<PacksTableBodyType> = ({ heads, setEditData, ope
               isAllDisabled={row.requestStatus === 'loading'}
               onStudy={() => handleStudyCardPack(row._id)}
               onEdit={() => handleEditCardPack({ id: row._id, name: row.name })}
-              onDelete={() => handleDeleteCardPack(row._id)}
+              onDelete={() => handleDeleteCardPack({ id: row._id, name: row.name })}
             />
           </TableRow>
         )

@@ -15,23 +15,25 @@ export const PackOwnerSwitcher = () => {
   const [searchParams, setSearchParams] = useSearchParams()
   const allParams = useGetSearchParams()
   const isMyPacks = useAppSelector(state => state.packs.queryParams.isMyPacks)
-  const minCardsCount = useAppSelector(state => state.packs.cardsCount.minCardsCount)
-  const maxCardsCount = useAppSelector(state => state.packs.cardsCount.maxCardsCount)
 
   const handleMyCards = () => {
     setSearchParams({ ...allParams, isMyPacks: 'yes' })
     searchParams.delete('min')
     searchParams.delete('max')
+    searchParams.delete('page')
+    searchParams.delete('search')
     setSearchParams(searchParams)
-    dispatch(updatePacksQueryParamsTC({ isMyPacks: 'yes', min: minCardsCount, max: maxCardsCount }))
+    dispatch(updatePacksQueryParamsTC({ isMyPacks: 'yes', min: 0, max: 0, page: 1, search: '' }))
   }
 
   const handleAllCards = () => {
     searchParams.delete('isMyPacks')
     searchParams.delete('min')
     searchParams.delete('max')
+    searchParams.delete('page')
+    searchParams.delete('search')
     setSearchParams(searchParams)
-    dispatch(updatePacksQueryParamsTC({ isMyPacks: '', min: minCardsCount, max: maxCardsCount }))
+    dispatch(updatePacksQueryParamsTC({ isMyPacks: '', min: 0, max: 0, page: 1, search: '' }))
   }
 
   useEffect(() => {

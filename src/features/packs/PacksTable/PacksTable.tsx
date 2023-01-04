@@ -1,9 +1,10 @@
-import { FC } from 'react'
+import { FC, useCallback } from 'react'
 
 import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
 import TableContainer from '@mui/material/TableContainer'
+import { useSearchParams } from 'react-router-dom'
 
 import { RequestStatusPayloadType } from '../../../app/appSlice'
 import { TableBodySkeleton } from '../../../common/components/CustomSkeletons/TableBodySkeleton/TableBodySkeleton'
@@ -12,6 +13,8 @@ import {
   HeadType,
 } from '../../../common/components/CustomTableHead/CustomTableHead'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
+import { PackDeleteDataType } from '../Modals/DeletePack/DeletePack'
+import { useGetSearchParams } from '../../../hooks/useGetSearchParams'
 import { SortValuesType, UpdatePackDataType, updatePacksQueryParamsTC } from '../packsSlice'
 
 import s from './PacksTable.module.scss'
@@ -35,16 +38,25 @@ const heads: HeadType<PacksOrderByType>[] = [
 ]
 
 type PacksTablePropsType = {
-  openEditModal: () => void
+  openEditModal: (state: boolean) => void
   setEditData: (data: UpdatePackDataType) => void
+  openDeleteModal: (state: boolean) => void
+  setDeleteData: (data: PackDeleteDataType) => void
 }
 
-export const PacksTable: FC<PacksTablePropsType> = ({ openEditModal, setEditData }) => {
+export const PacksTable: FC<PacksTablePropsType> = ({
+  openEditModal,
+  setEditData,
+  openDeleteModal,
+  setDeleteData,
+}) => {
   const status = useAppSelector<RequestStatusPayloadType>(state => state.app.tableStatus)
   const isDataEmpty = useAppSelector(state => state.packs.tableData).length
   const serverSort = useAppSelector<SortValuesType>(state => state.packs.queryParams.sortPacks)
   const pageCount = useAppSelector(state => state.packs.queryParams.pageCount)
   const dispatch = useAppDispatch()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const allParams = useGetSearchParams()
 
   // Check current order
   const serverOrder = serverSort.slice(0, 1) as ServerOrderType
@@ -56,8 +68,11 @@ export const PacksTable: FC<PacksTablePropsType> = ({ openEditModal, setEditData
     const newOrder = isAsc ? 'desc' : 'asc'
     const newServerOrder: SortValuesType = `${TableOrder[newOrder]}${property}`
 
+    setSearchParams({ ...allParams, sortPacks: newServerOrder })
     dispatch(updatePacksQueryParamsTC({ sortPacks: newServerOrder }))
   }
+
+  const handleOpenEditModal = useCallback(() => openEditModal(true), [openEditModal])
 
   return (
     <>
@@ -78,8 +93,10 @@ export const PacksTable: FC<PacksTablePropsType> = ({ openEditModal, setEditData
                 ) : (
                   <PacksTableBody
                     heads={heads}
-                    openEditModal={openEditModal}
+                    openEditModal={handleOpenEditModal}
                     setEditData={setEditData}
+                    openDeleteModal={openDeleteModal}
+                    setDeleteData={setDeleteData}
                   />
                 )}
               </Table>

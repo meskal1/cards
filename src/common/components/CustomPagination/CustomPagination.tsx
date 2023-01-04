@@ -1,12 +1,12 @@
-import { FC, ChangeEvent } from 'react'
+import { FC, ChangeEvent, useEffect } from 'react'
 
 import Pagination from '@mui/material/Pagination'
 import TablePagination from '@mui/material/TablePagination'
 import { useSearchParams } from 'react-router-dom'
 
 import { RequestStatusPayloadType } from '../../../app/appSlice'
-import { updateCardsQueryParamsTC } from '../../../features/cards/cardsSlice'
-import { updatePacksQueryParamsTC } from '../../../features/packs/packsSlice'
+import { setCardsQueryParams, updateCardsQueryParamsTC } from '../../../features/cards/cardsSlice'
+import { setPacksQueryParams, updatePacksQueryParamsTC } from '../../../features/packs/packsSlice'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { useGetSearchParams } from '../../../hooks/useGetSearchParams'
 
@@ -32,6 +32,7 @@ export const CustomPagination: FC<CustomPaginationType> = ({ cards }) => {
   const paginationCount = Math.ceil(
     cards ? cardsTotalCount / pageCountCards : packsTotalCount / pageCountPacks
   )
+  const showTablePagination = cards ? cardsTotalCount > 4 : packsTotalCount > 4
 
   const dispatchData = (data: { [key: string]: number }) => {
     if (cards) {
@@ -53,6 +54,17 @@ export const CustomPagination: FC<CustomPaginationType> = ({ cards }) => {
     setSearchParams({ ...allParams, pageCount: e.target.value })
   }
 
+  useEffect(() => {
+    if (allParams.page > paginationCount) {
+      setSearchParams({ ...allParams, page: paginationCount })
+      if (cards) {
+        dispatch(setCardsQueryParams({ page: paginationCount }))
+      } else {
+        dispatch(setPacksQueryParams({ page: paginationCount }))
+      }
+    }
+  }, [allParams])
+
   return (
     <div className={s.paginationContainer}>
       {paginationCount <= 1 ? null : (
@@ -65,7 +77,7 @@ export const CustomPagination: FC<CustomPaginationType> = ({ cards }) => {
           page={page}
         />
       )}
-      {packsTotalCount < 5 && cardsTotalCount < 5 ? null : (
+      {showTablePagination ? (
         <TablePagination
           className={s.paginationTable}
           component="div"
@@ -80,7 +92,7 @@ export const CustomPagination: FC<CustomPaginationType> = ({ cards }) => {
           onRowsPerPageChange={handleChangeRowsPerPage}
           SelectProps={{ disabled: isDataLoading === 'loading' }}
         />
-      )}
+      ) : null}
     </div>
   )
 }

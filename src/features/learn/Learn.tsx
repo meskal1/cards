@@ -8,12 +8,15 @@ import { useLocation } from 'react-router-dom'
 
 import { RootStateType } from '../../app/store'
 import { BackToPacks } from '../../common/components/BackToPacks/BackToPacks'
+import { LoadingProgress } from '../../common/components/LoadingProgress/LoadingProgress'
+import { CustomModalDialog } from '../../common/components/ModalDialog/CustomModalDialog'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { ServerCardType } from '../../services/cardsApi'
 import { getCard } from '../../utils/random'
 
 import s from './Learn.module.scss'
-import { getCards, gradeCard } from './learnSlice'
+import { getCards, gradeCard, setInitialized } from './learnSlice'
+import { NoCardsToLearn } from './Modals/NoCardsToLearn'
 
 const initialCard = {
   _id: '',
@@ -44,21 +47,35 @@ export const Learn = () => {
   let { packId } = useParams()
   const location = useLocation()
   const dispatch = useAppDispatch()
-  const appStatus = useAppSelector(state => state.app.status)
-  const cards = useSelector<RootStateType, ServerCardType[]>(state => state.learn.cards)
+  const isInitialized = useAppSelector(state => state.learn.isInitialized)
+
+  console.log('Location', location)
   const [card, setCard] = useState<ServerCardType>(initialCard)
   const [showAnswer, setShowAnswer] = useState(false)
+  const [showAlert, setShowAlert] = useState(false)
+  const cards = useSelector<RootStateType, ServerCardType[]>(state => state.learn.cards)
   const [cardId, setCardId] = useState(location.state ? location.state.cardId : '')
 
-  useEffect(() => {
-    ;(async () => {
-      if (packId) {
-        await dispatch(getCards({ cardsPack_id: packId }))
-      }
-    })()
-  }, [])
+  console.log('Cards: ', cards)
+
+  const getData = async () => {
+    if (packId) {
+      await dispatch(getCards({ cardsPack_id: packId }))
+    }
+    console.log('First useEffect')
+
+    return
+  }
 
   useEffect(() => {
+    //debugger
+    getData()
+  }, [])
+  console.log('AFTER FIRST USEEFECT CAARDS: ', cards)
+  //debugger
+
+  useEffect(() => {
+    //debugger
     let selectedCard
 
     if (cardId) {
@@ -67,13 +84,15 @@ export const Learn = () => {
           selectedCard = cards[i]
         }
       }
+
+      console.log('SELECTED ', selectedCard)
       if (selectedCard) {
         setCard(selectedCard)
         setCardId('')
       }
     } else {
-      if (cards.length === 0 && appStatus !== 'loading') {
-        alert('No cards left!')
+      if (cards.length === 0 && isInitialized) {
+        setShowAlert(true)
       } else {
         const newCard = getCard(cards)
 
@@ -81,6 +100,12 @@ export const Learn = () => {
       }
     }
   }, [cards])
+
+  useEffect(() => {
+    return () => {
+      dispatch(setInitialized({ initialized: false }))
+    }
+  }, [])
 
   const handleShowAnswer = () => setShowAnswer(!showAnswer)
 
@@ -101,10 +126,12 @@ export const Learn = () => {
     },
   })
 
+  console.log('IS INITILIZED: ', isInitialized)
+
   return (
     <>
-      {appStatus === 'loading' ? (
-        ''
+      {!isInitialized ? (
+        <LoadingProgress />
       ) : (
         <div className={s.mainContainer}>
           <BackToPacks />
@@ -112,11 +139,15 @@ export const Learn = () => {
             <p>
               <b>Question:</b> {card && card.question}
             </p>
+            <br />
+            <p> Number of attempts: {card ? card.shots : ''}</p>
+            <br />
             {showAnswer ? (
               <div>
                 <p>
                   <b>Answer:</b> {card && card.answer}
                 </p>
+                <br />
                 <form onSubmit={formik.handleSubmit}>
                   <FormControl>
                     <FormLabel id="demo-radio-buttons-group-label">Rate yourself</FormLabel>
@@ -136,21 +167,28 @@ export const Learn = () => {
                       })}
                     </RadioGroup>
                   </FormControl>
-                  <Button
-                    type={'submit'}
-                    variant={'contained'}
-                    disabled={formik.errors.grade ? true : false}
-                  >
-                    Next
-                  </Button>
+                  <div className={s.ButtonContainer}>
+                    <Button type={'submit'} variant={'contained'} disabled={!!formik.errors.grade}>
+                      Next
+                    </Button>
+                  </div>
                 </form>
               </div>
             ) : (
-              <Button type={'button'} variant={'contained'} onClick={handleShowAnswer}>
-                Show Answer
-              </Button>
+              <div className={s.ButtonContainer}>
+                <Button type={'button'} variant={'contained'} onClick={handleShowAnswer}>
+                  Show Answer
+                </Button>
+              </div>
             )}
           </div>
+          {showAlert ? (
+            <CustomModalDialog active={showAlert}>
+              <NoCardsToLearn />
+            </CustomModalDialog>
+          ) : (
+            ''
+          )}
         </div>
       )}
     </>

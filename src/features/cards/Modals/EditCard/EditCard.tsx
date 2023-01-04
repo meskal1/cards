@@ -42,7 +42,9 @@ export const EditCard: FC<AddCardTextFormType> = ({ active, closeModal, cardsDat
     onSubmit: async values => {
       const { question, answer } = values
 
-      dispatch(updateCardTC({ id: cardsData.id, question, answer }))
+      if (cardsData.question !== question || cardsData.answer !== answer) {
+        dispatch(updateCardTC({ id: cardsData.id, question, answer }))
+      }
       closeModal(false)
       formik.resetForm()
     },

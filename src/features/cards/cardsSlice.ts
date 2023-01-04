@@ -30,8 +30,8 @@ const cardsSlice = createSlice({
   name: 'cards',
   initialState,
   reducers: {
-    setCardsQueryParams(state, action: PayloadAction<SetCardsQueryParamsPayloadType>) {
-      state.queryParams = action.payload
+    setCardsQueryParams(state, action: PayloadAction<CardsQueryParamsType>) {
+      state.queryParams = { ...state.queryParams, ...action.payload }
     },
     setCardsTableData(state, action: PayloadAction<CardsTablePayloadType>) {
       state.tableData = action.payload.map(c => ({ ...c, requestStatus: 'idle' }))
@@ -49,6 +49,9 @@ const cardsSlice = createSlice({
         }
       })
     },
+    clearCardsQueryParams(state) {
+      state.queryParams = initialState.queryParams
+    },
     clearCardsState() {
       return initialState
     },
@@ -65,6 +68,7 @@ export const {
   clearCardsState,
   setCardRequestStatus,
   setCardsData,
+  clearCardsQueryParams,
 } = cardsSlice.actions
 
 // THUNKS
@@ -73,9 +77,16 @@ export const updateCardsQueryParamsTC =
   async (dispatch: AppDispatchType, getState: () => RootStateType) => {
     dispatch(setTableStatus('loading'))
     try {
+      const { page, pageCount } = queryProps
       const queryParams = getState().cards.queryParams
 
-      dispatch(setCardsQueryParams({ ...queryParams, ...queryProps }))
+      dispatch(
+        setCardsQueryParams({
+          ...queryProps,
+          page: page || page === 0 ? +page : queryParams.page,
+          pageCount: pageCount || pageCount === 0 ? +pageCount : queryParams.pageCount,
+        })
+      )
       await dispatch(getCardsTC())
 
       return

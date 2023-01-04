@@ -52,7 +52,7 @@ const PrivateRoutes = () => {
   const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
 
   return isLoggedIn ? (
-    <Suspense fallback={null}>
+    <Suspense fallback={<LoadingProgress />}>
       <Outlet />
     </Suspense>
   ) : (
@@ -96,7 +96,6 @@ export const AppRoutes = () => {
             <Route path={PATH.CARDS_ID} element={<Cards />} />
           </Route>
           <Route path={PATH.LEARN} element={<Learn />}>
-            <Route path={PATH.LEARN_CARD_ID} element={<Learn />} />
             <Route path={PATH.LEARN_PACK_ID} element={<Learn />} />
           </Route>
           <Route path={PATH.PROFILE} element={<Profile />} />

@@ -13,7 +13,7 @@ type PageTitleBlockType = {
   linkToPacks?: boolean
   button: string
   title: string
-  buttonClick: () => void
+  buttonClick: (state: boolean) => void
 }
 
 export const PageTitleBlock: FC<PageTitleBlockType> = memo(
