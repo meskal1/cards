@@ -126,7 +126,7 @@ export const getCardsTC =
 
 export const deleteCardTC = (id: string) => async (dispatch: AppDispatchType) => {
   try {
-    dispatch(setAppStatus('loading'))
+    dispatch(setTableStatus('loading'))
     dispatch(setCardRequestStatus({ cardId: id, requestStatus: 'loading' }))
     await cardsAPI.deleteCard(id)
     await dispatch(getCardsTC())
@@ -134,20 +134,18 @@ export const deleteCardTC = (id: string) => async (dispatch: AppDispatchType) =>
     dispatch(setCardRequestStatus({ cardId: id, requestStatus: 'idle' }))
     handleServerNetworkError(dispatch, e as Error | AxiosError)
   } finally {
-    dispatch(setAppStatus('idle'))
+    dispatch(setTableStatus('idle'))
   }
 }
 
 export const addCardTC = (data: CreateCardType) => async (dispatch: AppDispatchType) => {
   try {
-    dispatch(setAppStatus('loading'))
     dispatch(setTableStatus('loading'))
     await cardsAPI.addCard(data)
     await dispatch(getCardsTC())
   } catch (e) {
     handleServerNetworkError(dispatch, e as Error | AxiosError)
   } finally {
-    dispatch(setAppStatus('idle'))
     dispatch(setTableStatus('idle'))
   }
 }
@@ -155,7 +153,7 @@ export const addCardTC = (data: CreateCardType) => async (dispatch: AppDispatchT
 export const updateCardTC =
   (data: UpdateCardType) => async (dispatch: AppDispatchType, getState: () => RootStateType) => {
     try {
-      dispatch(setAppStatus('loading'))
+      dispatch(setTableStatus('loading'))
       dispatch(setCardRequestStatus({ cardId: data.id, requestStatus: 'loading' }))
       const updatingCard = getState().cards.tableData.filter(card => data.id === card._id)
 
@@ -168,7 +166,7 @@ export const updateCardTC =
     } catch (e) {
       handleServerNetworkError(dispatch, e as Error | AxiosError)
     } finally {
-      dispatch(setAppStatus('idle'))
+      dispatch(setTableStatus('idle'))
       dispatch(setCardRequestStatus({ cardId: data.id, requestStatus: 'idle' }))
     }
   }

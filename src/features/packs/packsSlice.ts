@@ -127,7 +127,7 @@ export const getPacksTC =
 
 export const deletePackTC = (id: string) => async (dispatch: AppDispatchType) => {
   try {
-    dispatch(setAppStatus('loading'))
+    dispatch(setTableStatus('loading'))
     dispatch(setPackRequestStatus({ packId: id, requestStatus: 'loading' }))
     await packsAPI.deletePack(id)
     await dispatch(getPacksTC())
@@ -135,20 +135,18 @@ export const deletePackTC = (id: string) => async (dispatch: AppDispatchType) =>
     dispatch(setPackRequestStatus({ packId: id, requestStatus: 'idle' }))
     handleServerNetworkError(dispatch, e as Error | AxiosError)
   } finally {
-    dispatch(setAppStatus('idle'))
+    dispatch(setTableStatus('idle'))
   }
 }
 
 export const addPackTC = (data: CreatePackType) => async (dispatch: AppDispatchType) => {
   try {
-    dispatch(setAppStatus('loading'))
     dispatch(setTableStatus('loading'))
     await packsAPI.addPack(data)
     await dispatch(getPacksTC())
   } catch (e) {
     handleServerNetworkError(dispatch, e as Error | AxiosError)
   } finally {
-    dispatch(setAppStatus('idle'))
     dispatch(setTableStatus('idle'))
   }
 }
@@ -157,7 +155,7 @@ export const updatePackTC =
   (data: UpdatePackDataType) =>
   async (dispatch: AppDispatchType, getState: () => RootStateType) => {
     try {
-      dispatch(setAppStatus('loading'))
+      dispatch(setTableStatus('loading'))
       dispatch(setPackRequestStatus({ packId: data.id, requestStatus: 'loading' }))
       const updatingPack = getState().packs.tableData.filter(pack => data.id === pack._id)
 
@@ -167,7 +165,7 @@ export const updatePackTC =
       dispatch(setPackRequestStatus({ packId: data.id, requestStatus: 'idle' }))
       handleServerNetworkError(dispatch, e as Error | AxiosError)
     } finally {
-      dispatch(setAppStatus('idle'))
+      dispatch(setTableStatus('idle'))
     }
   }
 
