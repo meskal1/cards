@@ -119,14 +119,15 @@ export const Learn = () => {
       if (!values.grade) {
         errors.grade = 'rate field is required'
       }
+
+      return errors
     },
     onSubmit: values => {
       handleShowAnswer()
       dispatch(gradeCard({ card_id: card._id, grade: +values.grade }))
+      formik.resetForm()
     },
   })
-
-  console.log('IS INITILIZED: ', isInitialized)
 
   return (
     <>
@@ -168,7 +169,11 @@ export const Learn = () => {
                     </RadioGroup>
                   </FormControl>
                   <div className={s.ButtonContainer}>
-                    <Button type={'submit'} variant={'contained'} disabled={!!formik.errors.grade}>
+                    <Button
+                      type={'submit'}
+                      variant={'contained'}
+                      disabled={formik.values.grade ? false : true}
+                    >
                       Next
                     </Button>
                   </div>
