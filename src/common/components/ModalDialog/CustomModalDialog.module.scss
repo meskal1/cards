@@ -1,32 +1,41 @@
-.Modal{
-  height: 100vh;
-  width: 100vw;
-  background-color: rgba(0, 0, 0, 0.4);
+.Modal {
+  pointer-events: none;
+
   position: fixed;
   top: 0;
   left: 0;
+
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+
+  width: 100vw;
+  height: 100vh;
+
   opacity: 0;
-  pointer-events: none;
+  background-color: rgb(0 0 0 / 40%);
+
   transition: 0.5s;
 }
 
-.Modal__Active{
-  opacity: 1;
+.Modal__Active {
   pointer-events: all;
+
+  opacity: 1;
 }
 
-.Content{
-  padding: 20px;
-  border-radius: 12px;
-  background-color: white;
-  width: 400px;
+.Content {
   transform: scale(0.5);
+
+  width: 400px;
+  padding: 20px;
+
+  background-color: white;
+  border-radius: 12px;
+
   transition: 0.4s all;
 }
 
-.Content__Active{
+.Content__Active {
   transform: scale(1);
 }
