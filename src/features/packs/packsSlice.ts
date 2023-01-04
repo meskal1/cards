@@ -5,6 +5,7 @@ import { RequestStatusPayloadType, setAppStatus, setTableStatus } from '../../ap
 import { AppDispatchType, RootStateType } from '../../app/store'
 import { CreatePackType, packsAPI, ServerPackType } from '../../services/packsApi'
 import { handleServerNetworkError } from '../../utils/errorUtils'
+import { setCardsData } from '../cards/cardsSlice'
 
 const initialState = {
   queryParams: {
@@ -157,10 +158,11 @@ export const updatePackTC =
     try {
       dispatch(setAppStatus('loading'))
       dispatch(setPackRequestStatus({ packId: data.id, requestStatus: 'loading' }))
-      const updatingPack = getState().packs.tableData.filter(pack => data.id === pack._id)
+      const updateCardsData = getState().cards.cardsData
 
-      await packsAPI.updatePack({ ...updatingPack[0], name: data.name })
+      await packsAPI.updatePack({ _id: data.id, name: data.name })
       await dispatch(getPacksTC())
+      dispatch(setCardsData({ ...updateCardsData, packName: data.name }))
     } catch (e) {
       dispatch(setPackRequestStatus({ packId: data.id, requestStatus: 'idle' }))
       handleServerNetworkError(dispatch, e as Error | AxiosError)
@@ -211,8 +213,4 @@ export type PacksQueryParamsType = Partial<SetPacksQueryParamsPayloadType>
 export type UpdatePackDataType = {
   id: string
   name: string
-}
-
-type PackResetStatusPayloadType = {
-  isDataReset: boolean
 }
