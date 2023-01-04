@@ -14,7 +14,7 @@ export const packsAPI = {
     return instance.delete<DeletePackResponseType>('cards/pack', { params: { id } })
   },
 
-  updatePack(data: ServerPackType) {
+  updatePack(data: UpdatePackType) {
     return instance.put<UpdatePackResponseType>('cards/pack', { cardsPack: data })
   },
 }
@@ -60,6 +60,8 @@ export type ServerPackType = {
   more_id: string
   __v: number
 }
+
+type UpdatePackType = Pick<ServerPackType, '_id' & 'name'>
 
 type AddPackResponseType = {
   newCardsPack: ServerPackType
