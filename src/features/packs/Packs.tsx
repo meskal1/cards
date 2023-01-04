@@ -9,7 +9,7 @@ import { useAppDispatch } from '../../hooks/reduxHooks'
 import { useGetSearchParams } from '../../hooks/useGetSearchParams'
 
 import { AddPack } from './Modals/AddPack/AddPack'
-import { DeletePack, PackDeleteDataType } from './Modals/DeletePack/DeletePack'
+import { DeletePack } from './Modals/DeletePack/DeletePack'
 import { EditPack } from './Modals/EditPack/EditPack'
 import { PackOwnerSwitcher } from './PackOwnerSwitcher/PackOwnerSwitcher'
 import s from './Packs.module.scss'
@@ -24,7 +24,7 @@ export const Packs = () => {
   const [addModal, setAddModal] = useState(false)
   const [editModal, setEditModal] = useState(false)
   const [deleteModal, setDeleteModal] = useState(false)
-  const [deleteData, setDeleteData] = useState<PackDeleteDataType>({ id: '', name: '' })
+  const [deleteData, setDeleteData] = useState<UpdatePackDataType>({ id: '', name: '' })
   const [editData, setEditData] = useState<UpdatePackDataType>({ id: '', name: '' })
   const allParams = useGetSearchParams()
 
@@ -51,7 +51,7 @@ export const Packs = () => {
             <PageTitleBlock
               title={'packs list'}
               button={'add new pack'}
-              buttonClick={setAddModal}
+              buttonClick={() => setAddModal(true)}
             />
             <div className={s.packs__controlPanel}>
               <CustomSearch />
