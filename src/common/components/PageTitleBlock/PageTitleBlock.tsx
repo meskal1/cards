@@ -1,7 +1,10 @@
 import { FC, memo, useState } from 'react'
 
 import { Portal } from '@mui/base'
+import { useNavigate, useParams } from 'react-router-dom'
 
+import { PATH } from '../../../constants/routePaths.enum'
+import { DeletePack } from '../../../features/packs/Modals/DeletePack/DeletePack'
 import { EditPack } from '../../../features/packs/Modals/EditPack/EditPack'
 import { useAppSelector } from '../../../hooks/reduxHooks'
 import { BackToPacks } from '../BackToPacks/BackToPacks'
@@ -13,23 +16,27 @@ type PageTitleBlockType = {
   linkToPacks?: boolean
   button: string
   title: string
-  buttonClick: (state: boolean) => void
+  buttonClick: () => void
 }
 
 export const PageTitleBlock: FC<PageTitleBlockType> = memo(
   ({ linkToPacks, button, title, buttonClick }) => {
+    const { id } = useParams()
     const packUserId = useAppSelector(state => state.cards.cardsData.packUserId)
-    const packId = useAppSelector(state => state.cards.tableData[0]?.cardsPack_id)
+    const cardsTotalCount = useAppSelector(state => state.cards.cardsData.cardsTotalCount)
     const myId = useAppSelector(state => state.profile.userData.id)
     const isItMyPack = packUserId === myId
     const [isMenuOpen, setIsMenuOpen] = useState(false)
+    const [openModals, setOpenModals] = useState<number[]>([0, 0])
+    const showModals = openModals.reduce((a, b) => a + b, 0)
+    const sendData = { id: id as string, name: title }
     const menuSheet = isMenuOpen ? s.pageTitleBlock__menuSheet : ''
     const menuItemStyle = isMenuOpen ? s.pageTitleBlock__menuItemStyle : ''
-    const [openModals, setOpenModals] = useState<number[]>([0, 0, 0])
-    const showModals = openModals.reduce((a, b) => a + b, 0)
-    const dataEdit = { id: packId, name: title }
+    const listStyle = `${s.menuItem} ${menuItemStyle}`
     const portalStyle = isMenuOpen ? s.portal : ''
     const portalStyleBg = showModals ? s.portalBgColor : ''
+
+    const navigate = useNavigate()
 
     const handleClickButton = () => {
       buttonClick()
@@ -39,39 +46,44 @@ export const PageTitleBlock: FC<PageTitleBlockType> = memo(
       setIsMenuOpen(!isMenuOpen)
     }
 
-    const handleCloseMenu = () => {
+    const handleClose = () => {
       setIsMenuOpen(false)
-      setOpenModals([0, 0, 0])
+      setOpenModals([0, 0])
     }
 
     const handleLearn = () => {
-      setOpenModals([1, 0, 0])
+      if (cardsTotalCount) {
+        navigate(PATH.LEARN + `/${id}`)
+      }
     }
 
     const handleEdit = () => {
-      setOpenModals([0, 1, 0])
+      setOpenModals([1, 0])
     }
 
     const handleDelete = () => {
-      setOpenModals([0, 0, 1])
+      setOpenModals([0, 1])
     }
 
     return (
       <>
         <Portal>
-          <div className={portalStyle || portalStyleBg} onClick={handleCloseMenu}></div>
+          <div className={portalStyle || portalStyleBg} onClick={handleClose}></div>
         </Portal>
 
         <div className={s.pageTitleBlockContainer}>
           {linkToPacks && <BackToPacks />}
           <div className={s.pageTitleBlock__titleBlock}>
             <h2 className={s.pageTitleBlock__title}>{title}</h2>
-            {isItMyPack && (
+            {isItMyPack && linkToPacks && (
               <div className={`${s.pageTitleBlock__menuContainer} ${menuSheet}`}>
                 <ul className={s.pageTitleBlock__menu} onClick={handleToogleMenu}>
-                  <li className={`${s.menuItem} ${menuItemStyle}`} onClick={handleLearn}></li>
-                  <li className={`${s.menuItem} ${menuItemStyle}`} onClick={handleEdit}></li>
-                  <li className={`${s.menuItem} ${menuItemStyle}`} onClick={handleDelete}></li>
+                  <li
+                    className={`${listStyle} ${cardsTotalCount ? '' : s.disabled}`}
+                    onClick={handleLearn}
+                  ></li>
+                  <li className={listStyle} onClick={handleEdit}></li>
+                  <li className={listStyle} onClick={handleDelete}></li>
                 </ul>
               </div>
             )}
@@ -86,7 +98,8 @@ export const PageTitleBlock: FC<PageTitleBlockType> = memo(
 
         {isItMyPack && !!showModals && (
           <div className={showModals ? s.modalsContainer : ''}>
-            {!!openModals[1] && <EditPack data={dataEdit} closeModal={handleCloseMenu} />}
+            {!!openModals[0] && <EditPack data={sendData} activeModal={handleClose} />}
+            {!!openModals[1] && <DeletePack packData={sendData} activeModal={handleClose} />}
           </div>
         )}
       </>
