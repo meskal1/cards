@@ -1,7 +1,7 @@
 import { useFormik } from 'formik'
 import { Link, useNavigate } from 'react-router-dom'
 
-import { RequestStatusPayloadType } from '../../../app/appSlice'
+import { RequestStatusType } from '../../../app/appSlice'
 import { CustomButton } from '../../../common/components/CustomButton/CustomButton'
 import { CustomInput } from '../../../common/components/CustomInput/CustomInput'
 import { PATH } from '../../../constants/routePaths.enum'
@@ -14,7 +14,7 @@ import s from './Recovery.module.scss'
 export const Recovery = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const authStatus = useAppSelector<RequestStatusPayloadType>(state => state.auth.status)
+  const authStatus = useAppSelector<RequestStatusType>(state => state.auth.status)
 
   const { handleSubmit, getFieldProps, errors, touched } = useFormik({
     initialValues: {

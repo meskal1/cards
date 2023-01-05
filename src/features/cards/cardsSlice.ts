@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios, { AxiosError } from 'axios'
 
-import { RequestStatusPayloadType, setAppStatus, setTableStatus } from '../../app/appSlice'
+import { RequestStatusType, setAppStatus, setTableStatus } from '../../app/appSlice'
 import { AppDispatchType, RootStateType } from '../../app/store'
 import { cardsAPI, ServerCardType, CreateCardType } from '../../services/cardsApi'
 import { handleServerNetworkError } from '../../utils/errorUtils'
@@ -173,7 +173,7 @@ export const updateCardTC =
 
 // TYPES
 export type CardsStateType = typeof initialState
-export type AppCardType = ServerCardType & { requestStatus: RequestStatusPayloadType }
+export type AppCardType = ServerCardType & { requestStatus: RequestStatusType }
 
 export type SortValuesCardsType =
   | '0grade'
@@ -202,7 +202,7 @@ type CardsQueryParamsType = Partial<SetCardsQueryParamsPayloadType>
 
 type CardRequestStatusPayloadType = {
   cardId: string
-  requestStatus: RequestStatusPayloadType
+  requestStatus: RequestStatusType
 }
 
 type SetCardsDataPayloadType = {

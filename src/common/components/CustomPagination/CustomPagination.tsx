@@ -4,7 +4,7 @@ import Pagination from '@mui/material/Pagination'
 import TablePagination from '@mui/material/TablePagination'
 import { useSearchParams } from 'react-router-dom'
 
-import { RequestStatusPayloadType } from '../../../app/appSlice'
+import { RequestStatusType } from '../../../app/appSlice'
 import { setCardsQueryParams, updateCardsQueryParamsTC } from '../../../features/cards/cardsSlice'
 import { setPacksQueryParams, updatePacksQueryParamsTC } from '../../../features/packs/packsSlice'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
@@ -20,7 +20,7 @@ export const CustomPagination: FC<CustomPaginationType> = ({ cards }) => {
   const dispatch = useAppDispatch()
   const [searchParams, setSearchParams] = useSearchParams()
   const allParams = useGetSearchParams()
-  const isDataLoading = useAppSelector<RequestStatusPayloadType>(state => state.app.tableStatus)
+  const isDataLoading = useAppSelector<RequestStatusType>(state => state.app.tableStatus)
   const pagePacks = useAppSelector(state => state.packs.queryParams.page)
   const pageCards = useAppSelector(state => state.cards.queryParams.page)
   const pageCountPacks = useAppSelector(state => state.packs.queryParams.pageCount)

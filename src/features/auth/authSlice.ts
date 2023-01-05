@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AxiosError } from 'axios'
 
-import { RequestStatusPayloadType, setAppAlertMessage, setAppStatus } from '../../app/appSlice'
+import { RequestStatusType, setAppAlertMessage, setAppStatus } from '../../app/appSlice'
 import {
   authAPI,
   CreatePasswordParamsType,
@@ -14,7 +14,7 @@ import { setUserData } from '../profile/profileSlice'
 const initialState = {
   isLoggedIn: false,
   recoveryEmail: '',
-  status: 'idle' as RequestStatusPayloadType,
+  status: 'idle' as RequestStatusType,
   passwordIsChanged: false,
 }
 

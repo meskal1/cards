@@ -4,7 +4,7 @@ import TableRow from '@mui/material/TableRow'
 import dayjs from 'dayjs'
 import { useNavigate } from 'react-router-dom'
 
-import { RequestStatusPayloadType } from '../../../../app/appSlice'
+import { RequestStatusType } from '../../../../app/appSlice'
 import { HeadType } from '../../../../common/components/CustomTableHead/CustomTableHead'
 import { PATH } from '../../../../constants/routePaths.enum'
 import { useAppSelector } from '../../../../hooks/reduxHooks'
@@ -34,7 +34,7 @@ export const PacksTableBody: React.FC<PacksTableBodyType> = ({
   const userId = useAppSelector(state => state.profile.userData.id)
   const navigate = useNavigate()
 
-  const handleOpenCardPack = (id: string, requestStatus: RequestStatusPayloadType) => {
+  const handleOpenCardPack = (id: string, requestStatus: RequestStatusType) => {
     if (requestStatus === 'loading') return
     navigate(PATH.CARDS + `/${id}`)
   }

@@ -6,7 +6,7 @@ import Table from '@mui/material/Table'
 import TableContainer from '@mui/material/TableContainer'
 import { useSearchParams } from 'react-router-dom'
 
-import { RequestStatusPayloadType } from '../../../app/appSlice'
+import { RequestStatusType } from '../../../app/appSlice'
 import { TableBodySkeleton } from '../../../common/components/CustomSkeletons/TableBodySkeleton/TableBodySkeleton'
 import {
   CustomTableHead,
@@ -50,7 +50,7 @@ export const PacksTable: FC<PacksTablePropsType> = ({
   openDeleteModal,
   setDeleteData,
 }) => {
-  const status = useAppSelector<RequestStatusPayloadType>(state => state.app.tableStatus)
+  const status = useAppSelector<RequestStatusType>(state => state.app.tableStatus)
   const isDataEmpty = useAppSelector(state => state.packs.tableData).length
   const serverSort = useAppSelector<SortValuesType>(state => state.packs.queryParams.sortPacks)
   const pageCount = useAppSelector(state => state.packs.queryParams.pageCount)

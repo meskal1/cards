@@ -6,7 +6,7 @@ import Table from '@mui/material/Table'
 import TableContainer from '@mui/material/TableContainer'
 import { useSearchParams } from 'react-router-dom'
 
-import { RequestStatusPayloadType } from '../../../app/appSlice'
+import { RequestStatusType } from '../../../app/appSlice'
 import { TableBodySkeleton } from '../../../common/components/CustomSkeletons/TableBodySkeleton/TableBodySkeleton'
 import {
   CustomTableHead,
@@ -43,7 +43,7 @@ export const CardsTable: FC<CardsTablePropsType> = ({
   openDelete,
   setDeleteData,
 }) => {
-  const status = useAppSelector<RequestStatusPayloadType>(state => state.app.tableStatus)
+  const status = useAppSelector<RequestStatusType>(state => state.app.tableStatus)
   const serverSort = useAppSelector<SortValuesCardsType>(state => state.cards.queryParams.sortCards)
   const pageCount = useAppSelector(state => state.cards.queryParams.pageCount)
   const dispatch = useAppDispatch()

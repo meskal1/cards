@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AxiosError } from 'axios'
 
-import { RequestStatusPayloadType, setAppStatus, setTableStatus } from '../../app/appSlice'
+import { RequestStatusType, setAppStatus, setTableStatus } from '../../app/appSlice'
 import { AppDispatchType, RootStateType } from '../../app/store'
 import { CreatePackType, packsAPI, ServerPackType } from '../../services/packsApi'
 import { handleServerNetworkError } from '../../utils/errorUtils'
@@ -173,7 +173,7 @@ export const updatePackTC =
 
 // TYPES
 export type PacksStateType = typeof initialState
-export type AppPackType = ServerPackType & { requestStatus: RequestStatusPayloadType }
+export type AppPackType = ServerPackType & { requestStatus: RequestStatusType }
 
 export type SortValuesType =
   | '0cardsCount'
@@ -189,7 +189,7 @@ type PacksTablePayloadType = ServerPackType[]
 
 type PackRequestStatusPayloadType = {
   packId: string
-  requestStatus: RequestStatusPayloadType
+  requestStatus: RequestStatusType
 }
 
 type SetCardsCountPayloadType = {

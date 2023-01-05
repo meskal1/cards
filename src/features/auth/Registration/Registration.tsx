@@ -1,7 +1,7 @@
 import { useFormik } from 'formik'
 import { Link, useNavigate } from 'react-router-dom'
 
-import { RequestStatusPayloadType } from '../../../app/appSlice'
+import { RequestStatusType } from '../../../app/appSlice'
 import { CustomButton } from '../../../common/components/CustomButton/CustomButton'
 import { CustomInput } from '../../../common/components/CustomInput/CustomInput'
 import { CustomPasswordInput } from '../../../common/components/CustomPasswordInput/CustomPasswordInput'
@@ -13,7 +13,7 @@ import { registerTC } from '../authSlice'
 import s from './Registration.module.scss'
 
 export const Registration = () => {
-  const authStatus = useAppSelector<RequestStatusPayloadType>(state => state.auth.status)
+  const authStatus = useAppSelector<RequestStatusType>(state => state.auth.status)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 

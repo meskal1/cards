@@ -1,6 +1,6 @@
 import { useSearchParams } from 'react-router-dom'
 
-import { RequestStatusPayloadType, setTableStatus } from '../../../app/appSlice'
+import { RequestStatusType, setTableStatus } from '../../../app/appSlice'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { getPacksTC, clearPacksQueryParams, toggleResetData } from '../packsSlice'
 
@@ -9,7 +9,7 @@ import s from './PacksResetFilter.module.scss'
 export const PacksResetFilter = () => {
   const dispatch = useAppDispatch()
   const [searchParams, setSearchParams] = useSearchParams()
-  const isDataLoading = useAppSelector<RequestStatusPayloadType>(state => state.app.tableStatus)
+  const isDataLoading = useAppSelector<RequestStatusType>(state => state.app.tableStatus)
 
   const handleResetFilter = async () => {
     if (isDataLoading === 'idle') {

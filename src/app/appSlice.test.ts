@@ -3,10 +3,10 @@ import {
   AppAlertMessageTextType,
   appReducer,
   AppStateType,
-  RequestStatusPayloadType,
+  initializeAppTC,
+  RequestStatusType,
   setAppAlertMessage,
   setAppStatus,
-  setIsInitialized,
 } from './appSlice'
 
 describe('app reducer tests', () => {
@@ -14,13 +14,13 @@ describe('app reducer tests', () => {
 
   beforeEach(() => {
     initialState = {
-      status: 'idle' as RequestStatusPayloadType,
+      status: 'idle' as RequestStatusType,
       alertMessage: {
         messageType: 'error' as AlertMessageType,
         messageText: null as AppAlertMessageTextType,
       },
       isInitialized: false,
-      tableStatus: 'idle' as RequestStatusPayloadType,
+      tableStatus: 'idle' as RequestStatusType,
     }
   })
 
@@ -63,17 +63,9 @@ describe('app reducer tests', () => {
     })
   })
 
-  test('should set isInitialized to false', () => {
-    initialState.isInitialized = true
-
-    expect(
-      appReducer(initialState, setIsInitialized({ isInitialized: false })).isInitialized
-    ).toBeFalsy()
-  })
-
   test('should set isInitialized to true', () => {
     expect(
-      appReducer(initialState, setIsInitialized({ isInitialized: true })).isInitialized
+      appReducer(initialState, initializeAppTC.fulfilled(undefined, '')).isInitialized
     ).toBeTruthy()
   })
 })
