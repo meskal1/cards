@@ -29,7 +29,7 @@ export const Registration = () => {
         registerTC({ email: values.email, password: values.password })
       )
 
-      if (isRegisterSucceed) {
+      if (isRegisterSucceed.payload) {
         navigate(PATH.LOGIN)
       }
     },
