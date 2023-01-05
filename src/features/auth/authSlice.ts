@@ -25,7 +25,7 @@ export const logInTC = createAsyncThunk(
       const response = await authAPI.login(data)
       const { _id, name, email, avatar } = response.data
 
-      dispatch(setUserData({ userData: { id: _id, name, email, avatar } }))
+      dispatch(setUserData({ id: _id, name, email, avatar }))
     } catch (e) {
       handleServerNetworkError(dispatch, e as Error | AxiosError)
 
@@ -40,7 +40,7 @@ export const logOutTC = createAsyncThunk(
     try {
       dispatch(setAppStatus('loading'))
       await authAPI.logout()
-      dispatch(setUserData({ userData: { id: '', name: '', email: '', avatar: undefined } }))
+      dispatch(setUserData({ id: '', name: '', email: '', avatar: undefined }))
     } catch (e) {
       handleServerNetworkError(dispatch, e as Error | AxiosError)
 

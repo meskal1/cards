@@ -26,7 +26,7 @@ describe('profile reducer tests', () => {
       avatar: 'petyaAva.jpg',
     }
 
-    const endState = profileReducer(initialState, setUserData({ userData: userData }))
+    const endState = profileReducer(initialState, setUserData(userData))
 
     expect(endState.userData).toEqual(userData)
   })
@@ -39,7 +39,7 @@ describe('profile reducer tests', () => {
       avatar: undefined,
     }
 
-    const endState = profileReducer(initialState, setUserData({ userData: userData }))
+    const endState = profileReducer(initialState, setUserData(userData))
 
     expect(endState.userData).toEqual(userData)
   })

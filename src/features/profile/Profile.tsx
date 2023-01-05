@@ -12,7 +12,7 @@ import { logOutTC } from '../auth/authSlice'
 import { clearPacksQueryParams } from '../packs/packsSlice'
 
 import s from './Profile.module.scss'
-import { newUserDataTC } from './profileSlice'
+import { updateUserDataTC } from './profileSlice'
 
 export const Profile = () => {
   const dispatch = useAppDispatch()
@@ -27,7 +27,7 @@ export const Profile = () => {
 
   const changeUserName = useCallback(
     (newName: string) => {
-      dispatch(newUserDataTC({ name: newName, avatar }))
+      dispatch(updateUserDataTC({ name: newName, avatar }))
     },
     [dispatch]
   )

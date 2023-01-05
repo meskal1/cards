@@ -1,7 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AxiosError } from 'axios'
 
-import { AppDispatchType } from '../../app/store'
 import { authAPI } from '../../services/authApi'
 import { handleServerNetworkError } from '../../utils/errorUtils'
 
@@ -14,13 +13,34 @@ const initialState = {
   } as UserDataType,
 }
 
+export const updateUserDataTC = createAsyncThunk(
+  'profile/updateUserData',
+  async (data: UserDataType, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await authAPI.newUserData(data)
+      const { name, email, avatar } = response.data.updatedUser
+
+      return { name, email, avatar }
+    } catch (e) {
+      handleServerNetworkError(dispatch, e as Error | AxiosError)
+
+      return rejectWithValue(null)
+    }
+  }
+)
+
 export const profileSlice = createSlice({
   name: 'profile',
   initialState,
   reducers: {
-    setUserData(state, action: PayloadAction<{ userData: UserDataType }>) {
-      state.userData = action.payload.userData
+    setUserData(state, action: PayloadAction<UserDataType>) {
+      state.userData = action.payload
     },
+  },
+  extraReducers: builder => {
+    builder.addCase(updateUserDataTC.fulfilled, (state, action) => {
+      state.userData = action.payload
+    })
   },
 })
 
@@ -28,18 +48,6 @@ export const profileReducer = profileSlice.reducer
 
 // ACTIONS
 export const { setUserData } = profileSlice.actions
-
-// THUNKS
-export const newUserDataTC = (data: UserDataType) => async (dispatch: AppDispatchType) => {
-  try {
-    const response = await authAPI.newUserData(data)
-    const { name, email, avatar } = response.data.updatedUser
-
-    dispatch(setUserData({ userData: { name, email, avatar } }))
-  } catch (e) {
-    handleServerNetworkError(dispatch, e as Error | AxiosError)
-  }
-}
 
 // TYPES
 export type ProfileStateType = typeof initialState

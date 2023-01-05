@@ -13,7 +13,7 @@ export const initializeAppTC = createAsyncThunk(
       const { _id, name, email, avatar } = response.data
 
       dispatch(setIsLoggedIn({ isLoggedIn: true }))
-      dispatch(setUserData({ userData: { id: _id, name, email, avatar } }))
+      dispatch(setUserData({ id: _id, name, email, avatar }))
     } catch (e) {
       return rejectWithValue(e)
     }
