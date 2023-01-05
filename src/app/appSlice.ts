@@ -15,7 +15,17 @@ export const initializeAppTC = createAsyncThunk(
       dispatch(setIsLoggedIn({ isLoggedIn: true }))
       dispatch(setUserData({ id: _id, name, email, avatar }))
     } catch (e) {
-      return rejectWithValue(e)
+      const error = e as Error | AxiosError
+
+      if (axios.isAxiosError(error)) {
+        const err = error.response?.data
+          ? (error.response.data as { error: 'string' }).error
+          : error.message
+
+        console.log(err)
+      }
+
+      return rejectWithValue(null)
     }
   }
 )
@@ -50,15 +60,6 @@ const appSlice = createSlice({
         state.isInitialized = true
       })
       .addCase(initializeAppTC.rejected, (state, action) => {
-        const error = action.payload as Error | AxiosError
-
-        if (axios.isAxiosError(error)) {
-          const err = error.response?.data
-            ? (error.response.data as { error: 'string' }).error
-            : error.message
-
-          console.log(err)
-        }
         state.isInitialized = true
       })
   },
