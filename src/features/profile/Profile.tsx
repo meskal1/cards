@@ -1,9 +1,6 @@
 import { useCallback, useEffect } from 'react'
 
-import { CameraAlt } from '@mui/icons-material'
-
 import avatarLocal from '../../assets/img/avatar.jpg'
-import logout from '../../assets/img/icons/logout.svg'
 import { BackToPacks } from '../../common/components/BackToPacks/BackToPacks'
 import { CustomButton } from '../../common/components/CustomButton/CustomButton'
 import { EditableSpan } from '../../common/components/EditableSpan/EditableSpan'
@@ -19,16 +16,12 @@ export const Profile = () => {
   const email = useAppSelector(state => state.profile.userData.email)
   const avatar = useAppSelector(state => state.profile.userData.avatar)
 
-  const onLogOutHandler = () => {
-    dispatch(logOutTC())
-  }
+  const onLogOutHandler = () => dispatch(logOutTC())
 
   const setNewAvatar = () => alert('add photo')
 
   const changeUserName = useCallback(
-    (newName: string) => {
-      dispatch(newUserDataTC({ name: newName, avatar }))
-    },
+    (newName: string) => dispatch(newUserDataTC({ name: newName, avatar })),
     [dispatch]
   )
 
@@ -48,15 +41,14 @@ export const Profile = () => {
             <div className={s.profile__pic}>
               <img className={s.profile__img} src={avatarLocal || avatar} alt="avatar" />
             </div>
-            <CameraAlt className={s.profile__avatarIcon} />
+            <div className={s.profile__avatarIcon} />
           </div>
           <div className={s.profile__userName}>
             <EditableSpan changeName={changeUserName} />
           </div>
           <p className={s.profile__userEmail}>{email}</p>
           <CustomButton className={s.profile__button} onClick={onLogOutHandler}>
-            <img className={s.profile__buttonIcon} src={logout} alt="logout" />
-            <p>log out</p>
+            <p className={s.profile__buttonIcon}>log out</p>
           </CustomButton>
         </div>
       </div>

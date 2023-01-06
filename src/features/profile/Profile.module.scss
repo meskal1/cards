@@ -104,9 +104,7 @@
     height: 30px !important;
     padding: 4px;
 
-    color: grey;
-
-    background: white;
+    background: white url('../../assets/img/icons/camera.svg') 50%/80% no-repeat;
     border: 1px solid grey;
     border-radius: 30px !important;
   }
@@ -151,6 +149,8 @@
   }
 
   &__buttonIcon {
-    margin: 0px 10px 0px 0px;
+    padding: 0 0 0 26px;
+
+    background: url('../../assets/img/icons/logout.svg') 0% 50% no-repeat;
   }
 }
