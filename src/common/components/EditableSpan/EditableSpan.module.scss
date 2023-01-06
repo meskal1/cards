@@ -13,7 +13,10 @@
   top: 7px;
   right: -25px;
 
-  color: grey;
+  width: 20px;
+  height: 20px;
+
+  background: url('../../../assets/img/icons/send.svg') 100% / contain no-repeat;
 }
 
 .userName {
@@ -23,9 +26,11 @@
 .marker {
   cursor: pointer;
 
-  margin: 0px 0px 0px 10px !important;
+  width: 20px;
+  height: 20px;
+  margin: 0px 0px 0px 10px;
 
-  color: grey;
+  background: url('../../../assets/img/icons/editPack.svg') 100% / contain no-repeat;
 }
 
 .errorButton {
@@ -35,7 +40,7 @@
   0% {
     transform: translate(3px, 0px);
 
-    color: red;
+    background: url('../../../assets/img/icons/sendRed.svg') 100% / contain no-repeat;
   }
 
   10% {
@@ -77,6 +82,6 @@
   100% {
     transform: translate(3px, 0px);
 
-    color: red;
+    background: url('../../../assets/img/icons/sendRed.svg') 100% / contain no-repeat;
   }
 }

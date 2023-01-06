@@ -1,7 +1,5 @@
 import { memo, useState, MouseEvent, ChangeEvent, KeyboardEvent, FC } from 'react'
 
-import { BorderColor, Send } from '@mui/icons-material'
-
 import { useAppSelector } from '../../../hooks/reduxHooks'
 import { CustomInput } from '../CustomInput/CustomInput'
 
@@ -18,9 +16,7 @@ export const EditableSpan: FC<EditableSpanType> = memo(({ changeName }) => {
   const [errorEmptyField, setErrorEmptyField] = useState(false)
   const [errorStyleButton, setErrorStyleButton] = useState('')
 
-  const handleAnimationEndError = () => {
-    setErrorStyleButton('')
-  }
+  const handleAnimationEndError = () => setErrorStyleButton('')
 
   const handleErrorSetNewName = () => {
     if (errorEmptyField) {
@@ -33,7 +29,7 @@ export const EditableSpan: FC<EditableSpanType> = memo(({ changeName }) => {
     setIsInEditMode(true)
   }
 
-  const handleSetNewName = (e?: MouseEvent<SVGSVGElement>) => {
+  const handleSetNewName = (e?: MouseEvent<HTMLDivElement>) => {
     e?.preventDefault()
     if (inputValue.trim() === '') {
       setErrorEmptyField(true)
@@ -53,6 +49,7 @@ export const EditableSpan: FC<EditableSpanType> = memo(({ changeName }) => {
     if (e.currentTarget.value.trim() !== '') {
       setErrorEmptyField(false)
     }
+
     setInputValue(e.currentTarget.value)
   }
 
@@ -88,7 +85,7 @@ export const EditableSpan: FC<EditableSpanType> = memo(({ changeName }) => {
               inputProps: { style: { textAlign: 'center' } },
             }}
           />
-          <Send
+          <div
             className={`${s.sendButton} ${errorStyleButton}`}
             onMouseDown={handleSetNewName}
             onClick={handleErrorSetNewName}
@@ -96,10 +93,10 @@ export const EditableSpan: FC<EditableSpanType> = memo(({ changeName }) => {
           />
         </div>
       ) : (
-        <span className={s.userName}>
-          {name}
-          <BorderColor className={s.marker} onClick={handleEditMode} />
-        </span>
+        <>
+          <span className={s.userName}>{name}</span>
+          <div className={s.marker} onClick={handleEditMode} />
+        </>
       )}
     </>
   )
