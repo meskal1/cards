@@ -1,4 +1,4 @@
-import { FC, ChangeEvent, useEffect } from 'react'
+import { ChangeEvent, FC, useEffect } from 'react'
 
 import Pagination from '@mui/material/Pagination'
 import TablePagination from '@mui/material/TablePagination'
@@ -55,7 +55,7 @@ export const CustomPagination: FC<CustomPaginationType> = ({ cards }) => {
   }
 
   useEffect(() => {
-    if (allParams.page > paginationCount) {
+    if (paginationCount && allParams.page > paginationCount) {
       setSearchParams({ ...allParams, page: paginationCount })
       if (cards) {
         dispatch(setCardsQueryParams({ page: paginationCount }))

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 
 import { useNavigate, useParams } from 'react-router-dom'
 
+import { RequestStatusType } from '../../app/appSlice'
 import { CustomButton } from '../../common/components/CustomButton/CustomButton'
 import { CustomPagination } from '../../common/components/CustomPagination/CustomPagination'
 import { CustomSearch } from '../../common/components/CustomSearch/CustomSearch'
@@ -17,7 +18,6 @@ import {
   AppCardType,
   CardsErrorType,
   clearCardsQueryParams,
-  getCardsTC,
   setCardsQueryParams,
   setError,
   UpdateCardType,
@@ -32,6 +32,7 @@ export const Cards = () => {
   const allParams = useGetSearchParams()
   const [showChildren, setShowChildren] = useState(false)
   const tableData = useAppSelector<AppCardType[]>(state => state.cards.tableData)
+  const tableStatus = useAppSelector<RequestStatusType>(state => state.app.tableStatus)
   const cardsPack_id = useAppSelector(state => state.cards.queryParams.cardsPack_id)
   const packName = useAppSelector(state => state.cards.cardsData.packName)
   const packUserId = useAppSelector(state => state.cards.cardsData.packUserId)
@@ -67,7 +68,6 @@ export const Cards = () => {
   useEffect(() => {
     ;(async () => {
       await dispatch(setCardsQueryParams({ ...allParams, cardsPack_id: id }))
-      await dispatch(getCardsTC())
       setShowChildren(true)
     })()
   }, [id])
@@ -102,7 +102,7 @@ export const Cards = () => {
               </div>
             )}
           </div>
-          {isTableNotEmpty ? (
+          {isTableNotEmpty || tableStatus ? (
             <>
               <CardsTable
                 isMine={isItMyPack}

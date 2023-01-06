@@ -1,12 +1,11 @@
 import { FC } from 'react'
 
 import Button from '@mui/material/Button'
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import { PATH } from '../../../../constants/routePaths.enum'
-import { useAppDispatch, useAppSelector } from '../../../../hooks/reduxHooks'
-import { useGetSearchParams } from '../../../../hooks/useGetSearchParams'
-import { clearPacksQueryParams, deletePackTC, setPacksQueryParams } from '../../packsSlice'
+import { useAppDispatch } from '../../../../hooks/reduxHooks'
+import { clearPacksQueryParams, deletePackTC } from '../../packsSlice'
 
 import s from './DeletePack.module.scss'
 
@@ -16,18 +15,11 @@ type DeletePackType = {
 }
 
 export const DeletePack: FC<DeletePackType> = ({ packData, activeModal }) => {
-  const [searchParams, setSearchParams] = useSearchParams()
-  const allParams = useGetSearchParams()
-  const tableData = useAppSelector(state => state.packs.tableData)
   const dispatch = useAppDispatch()
   const location = useLocation()
   const navigate = useNavigate()
 
   const handleDeletePacK = async () => {
-    if (tableData.length === 1 && allParams.page > 1) {
-      setSearchParams({ ...allParams, page: allParams.page - 1 })
-      dispatch(setPacksQueryParams({ page: allParams.page - 1 }))
-    }
     await dispatch(deletePackTC(packData.id))
     activeModal(false)
     if (/cards/gi.test(location.pathname)) {

@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AxiosError } from 'axios'
 
-import { RequestStatusType, setAppStatus, setTableStatus } from '../../app/appSlice'
-import { AppDispatchType, RootStateType } from '../../app/store'
+import { RequestStatusType, setTableStatus } from '../../app/appSlice'
+import { RootStateType } from '../../app/store'
 import { CreatePackType, packsAPI, ServerPackType } from '../../services/packsApi'
 import { handleServerNetworkError } from '../../utils/errorUtils'
 import { setCardsData } from '../cards/cardsSlice'
@@ -177,17 +177,9 @@ export type SortValuesType =
   | '0user_name'
   | '1user_name'
 
-type PacksTablePayloadType = ServerPackType[]
-
 type PackRequestStatusPayloadType = {
   packId: string
   requestStatus: RequestStatusType
-}
-
-type SetCardsCountPayloadType = {
-  minCardsCount: number
-  maxCardsCount: number
-  cardPacksTotalCount: number
 }
 
 type SetPacksQueryParamsPayloadType = {
