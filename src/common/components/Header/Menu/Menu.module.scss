@@ -60,6 +60,18 @@
       background: rgb(128 128 128 / 66.7%);
     }
   }
+
+  &__itemProfile {
+    padding: 0 0 0 23px;
+
+    background: url('../../../../assets/img/icons/user.svg') 0% 50% no-repeat;
+  }
+
+  &__itemLogOut {
+    padding: 0 0 0 23px;
+
+    background: url('../../../../assets/img/icons/logout.svg') 0% 50% no-repeat;
+  }
 }
 @keyframes animateMenuOpen {
   0% {

@@ -2,8 +2,6 @@ import { FC } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 
-import logout from '../../../../assets/img/icons/logout.svg'
-import user from '../../../../assets/img/icons/user.svg'
 import { PATH } from '../../../../constants/routePaths.enum'
 import { logOutTC } from '../../../../features/auth/authSlice'
 import { useAppDispatch } from '../../../../hooks/reduxHooks'
@@ -23,9 +21,9 @@ export const Menu: FC<MenuType> = ({ closeMenu }) => {
     dispatch(logOutTC())
   }
 
-  const onClickNavigate = (path: string) => {
+  const onClickNavigate = () => {
     closeMenu()
-    navigate(path)
+    navigate(PATH.PROFILE)
   }
 
   return (
@@ -34,15 +32,13 @@ export const Menu: FC<MenuType> = ({ closeMenu }) => {
         <ul className={s.menu__itemsList}>
           <li
             className={s.menu__item}
-            onClick={() => onClickNavigate(PATH.PROFILE)}
+            onClick={onClickNavigate}
             style={{ animationDelay: '0.275s' }}
           >
-            <img src={user} alt="user" />
-            <p>profile</p>
+            <p className={s.menu__itemProfile}>profile</p>
           </li>
           <li className={s.menu__item} onClick={onClickLogOut} style={{ animationDelay: '0.2s' }}>
-            <img src={logout} alt="log out" />
-            <p>log out</p>
+            <p className={s.menu__itemLogOut}>log out</p>
           </li>
         </ul>
       </nav>
