@@ -1,11 +1,10 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { AxiosError } from 'axios/index'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { AxiosError } from 'axios'
 
-import { setAppStatus } from '../../app/appSlice'
-import { AppDispatchType, RootStateType } from '../../app/store'
-import { cardsAPI, GradeData, ServerCardType, upgradedCardType } from '../../services/cardsApi'
+import { RootStateType } from '../../app/store'
+import { cardsAPI, GradeData, ServerCardType } from '../../services/cardsApi'
 import { handleServerNetworkError } from '../../utils/errorUtils'
-import { setCardsData } from '../cards/cardsSlice'
+import { getCardsTC } from '../cards/cardsSlice'
 
 const initialState = {
   cards: [] as ServerCardType[],
@@ -13,55 +12,65 @@ const initialState = {
   isInitialized: false,
 }
 
+export const getCards = createAsyncThunk(
+  'learn/getCards',
+  async (cardsPack_id: string, { dispatch, rejectWithValue, getState }) => {
+    try {
+      const state = getState() as RootStateType
+      const totalCardsCount = state.learn.cardsTotalCount
+      const responseAllCards = await cardsAPI.getCards({ cardsPack_id, pageCount: totalCardsCount })
+
+      return responseAllCards.data.cards
+    } catch (e) {
+      handleServerNetworkError(dispatch, e as Error | AxiosError)
+
+      return rejectWithValue(null)
+    }
+  }
+)
+
+export const gradeCard = createAsyncThunk(
+  'learn/gradeCard',
+  async (data: GradeData, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await cardsAPI.gradeCard(data)
+
+      return response.data.updatedGrade
+    } catch (e) {
+      handleServerNetworkError(dispatch, e as Error | AxiosError)
+
+      return rejectWithValue(null)
+    }
+  }
+)
+
 export const learnSlice = createSlice({
   name: 'learn',
   initialState,
   reducers: {
-    setCards(state, action: PayloadAction<{ cards: ServerCardType[] }>) {
-      state.cards = action.payload.cards
-    },
-    setGratedCard(state, action: PayloadAction<{ card: upgradedCardType }>) {
-      state.cards = state.cards.filter(card => card._id !== action.payload.card.card_id)
-    },
-    setInitialized(state, action: PayloadAction<{ initialized: boolean }>) {
-      state.isInitialized = action.payload.initialized
+    setInitialized(state, action: PayloadAction<boolean>) {
+      state.isInitialized = action.payload
     },
   },
   extraReducers: builder => {
-    builder.addCase(setCardsData, (state, action: PayloadAction<{ cardsTotalCount: number }>) => {
-      state.cardsTotalCount = action.payload.cardsTotalCount
+    builder.addCase(getCardsTC.fulfilled, (state, action) => {
+      state.cardsTotalCount = action.payload.cardsData.cardsTotalCount
+    })
+
+    builder
+      .addCase(getCards.fulfilled, (state, action) => {
+        state.cards = action.payload
+        state.isInitialized = true
+      })
+      .addCase(getCards.rejected, state => {
+        state.isInitialized = true
+      })
+
+    builder.addCase(gradeCard.fulfilled, (state, action) => {
+      state.cards = state.cards.filter(card => card._id !== action.payload.card_id)
     })
   },
 })
 
 export const LearnReducer = learnSlice.reducer
-export const { setCards, setGratedCard, setInitialized } = learnSlice.actions
-
-// thunks
-
-export const getCards =
-  (data: { cardsPack_id: string }) =>
-  async (dispatch: AppDispatchType, getState: () => RootStateType) => {
-    try {
-      const totalCardsCount = getState().learn.cardsTotalCount
-      const responseAllCards = await cardsAPI.getCards({
-        cardsPack_id: data.cardsPack_id,
-        pageCount: totalCardsCount,
-      })
-
-      dispatch(setCards({ cards: responseAllCards.data.cards }))
-      dispatch(setInitialized({ initialized: true }))
-    } catch (e) {
-      handleServerNetworkError(dispatch, e as Error | AxiosError)
-    }
-  }
-
-export const gradeCard = (data: GradeData) => async (dispatch: AppDispatchType) => {
-  try {
-    const response = await cardsAPI.gradeCard(data)
-
-    dispatch(setGratedCard({ card: response.data.updatedGrade }))
-  } catch (e) {
-    handleServerNetworkError(dispatch, e as Error | AxiosError)
-  }
-}
+export const { setInitialized } = learnSlice.actions
