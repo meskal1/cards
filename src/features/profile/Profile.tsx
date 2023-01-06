@@ -1,6 +1,6 @@
-import { ChangeEvent, useCallback, useEffect, useState } from 'react'
+import { ChangeEvent, useCallback, useEffect } from 'react'
 
-import { CameraAlt, Label } from '@mui/icons-material'
+import { CameraAlt } from '@mui/icons-material'
 import { IconButton } from '@mui/material'
 
 import { setAppAlertMessage } from '../../app/appSlice'
@@ -20,13 +20,10 @@ export const Profile = () => {
   const dispatch = useAppDispatch()
   const email = useAppSelector(state => state.profile.userData.email)
   const avatar = useAppSelector(state => state.profile.userData.avatar)
-  //for test
 
   const onLogOutHandler = () => {
     dispatch(logOutTC())
   }
-
-  const setNewAvatar = () => alert('add photo')
 
   const changeUserName = useCallback(
     (newName: string) => {
@@ -53,8 +50,6 @@ export const Profile = () => {
         reader.onload = () => {
           const file64 = reader.result as string
 
-          debugger
-          //setImage(file64)
           dispatch(newUserDataTC({ avatar: file64 }))
           console.log('IMAGE: ', file64)
         }
