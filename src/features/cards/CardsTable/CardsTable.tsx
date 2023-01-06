@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 
 import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
@@ -15,7 +15,7 @@ import {
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { useGetSearchParams } from '../../../hooks/useGetSearchParams'
 import { ServerOrderType, TableOrder, TableOrderType } from '../../packs/PacksTable/PacksTable'
-import { SortValuesCardsType, updateCardsQueryParamsTC, UpdateCardType } from '../cardsSlice'
+import { getCardsTC, setCardsQueryParams, SortValuesCardsType, UpdateCardType } from '../cardsSlice'
 
 import { CardsTableBody } from './CardsTableBody/CardsTableBody'
 
@@ -46,6 +46,7 @@ export const CardsTable: FC<CardsTablePropsType> = ({
   const status = useAppSelector<RequestStatusType>(state => state.app.tableStatus)
   const serverSort = useAppSelector<SortValuesCardsType>(state => state.cards.queryParams.sortCards)
   const pageCount = useAppSelector(state => state.cards.queryParams.pageCount)
+  const queryParams = useAppSelector(state => state.cards.queryParams)
   const dispatch = useAppDispatch()
   const [searchParams, setSearchParams] = useSearchParams()
   const allParams = useGetSearchParams()
@@ -61,8 +62,12 @@ export const CardsTable: FC<CardsTablePropsType> = ({
     const newServerOrder: SortValuesCardsType = `${TableOrder[newOrder]}${property}`
 
     setSearchParams({ ...allParams, sortCards: newServerOrder })
-    dispatch(updateCardsQueryParamsTC({ sortCards: newServerOrder }))
+    dispatch(setCardsQueryParams({ sortCards: newServerOrder }))
   }
+
+  useEffect(() => {
+    dispatch(getCardsTC())
+  }, [queryParams])
 
   return (
     <Box>

@@ -5,7 +5,7 @@ import TablePagination from '@mui/material/TablePagination'
 import { useSearchParams } from 'react-router-dom'
 
 import { RequestStatusType } from '../../../app/appSlice'
-import { setCardsQueryParams, updateCardsQueryParamsTC } from '../../../features/cards/cardsSlice'
+import { setCardsQueryParams } from '../../../features/cards/cardsSlice'
 import { setPacksQueryParams } from '../../../features/packs/packsSlice'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { useGetSearchParams } from '../../../hooks/useGetSearchParams'
@@ -36,7 +36,7 @@ export const CustomPagination: FC<CustomPaginationType> = ({ cards }) => {
 
   const dispatchData = (data: { [key: string]: number }) => {
     if (cards) {
-      dispatch(updateCardsQueryParamsTC(data))
+      dispatch(setCardsQueryParams(data))
     } else {
       dispatch(setPacksQueryParams(data))
     }

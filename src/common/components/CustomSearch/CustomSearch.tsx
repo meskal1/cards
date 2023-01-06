@@ -3,7 +3,7 @@ import { useState, useEffect, FC, ChangeEvent } from 'react'
 import { TextField } from '@mui/material'
 import { useLocation, useSearchParams } from 'react-router-dom'
 
-import { updateCardsQueryParamsTC } from '../../../features/cards/cardsSlice'
+import { setCardsQueryParams } from '../../../features/cards/cardsSlice'
 import { setPacksQueryParams } from '../../../features/packs/packsSlice'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { useDebounce } from '../../../hooks/useDebounce'
@@ -34,7 +34,7 @@ export const CustomSearch: FC<CustomSearchType> = ({ cards }) => {
     const isItWorthUpdating = () => {
       if (cards) {
         if (cardQuestion !== inputValue) {
-          dispatch(updateCardsQueryParamsTC({ cardQuestion: inputValue }))
+          dispatch(setCardsQueryParams({ cardQuestion: inputValue }))
         }
       } else {
         if (search !== inputValue) {

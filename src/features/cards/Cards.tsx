@@ -17,8 +17,9 @@ import {
   AppCardType,
   CardsErrorType,
   clearCardsQueryParams,
+  getCardsTC,
+  setCardsQueryParams,
   setError,
-  updateCardsQueryParamsTC,
   UpdateCardType,
 } from './cardsSlice'
 import { CardsTable } from './CardsTable/CardsTable'
@@ -65,7 +66,8 @@ export const Cards = () => {
 
   useEffect(() => {
     ;(async () => {
-      await dispatch(updateCardsQueryParamsTC({ ...allParams, cardsPack_id: id }))
+      await dispatch(setCardsQueryParams({ ...allParams, cardsPack_id: id }))
+      await dispatch(getCardsTC())
       setShowChildren(true)
     })()
   }, [id])
