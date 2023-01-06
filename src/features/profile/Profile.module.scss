@@ -93,6 +93,12 @@
     object-fit: cover;
   }
 
+  &__label{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: -20px;
+  }
+
   &__avatarIcon {
     cursor: pointer;
 

@@ -1,7 +1,9 @@
-import { useCallback, useEffect } from 'react'
+import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 
-import { CameraAlt } from '@mui/icons-material'
+import { CameraAlt, Label } from '@mui/icons-material'
+import { IconButton } from '@mui/material'
 
+import { setAppAlertMessage } from '../../app/appSlice'
 import avatarLocal from '../../assets/img/avatar.jpg'
 import logout from '../../assets/img/icons/logout.svg'
 import { BackToPacks } from '../../common/components/BackToPacks/BackToPacks'
@@ -18,6 +20,7 @@ export const Profile = () => {
   const dispatch = useAppDispatch()
   const email = useAppSelector(state => state.profile.userData.email)
   const avatar = useAppSelector(state => state.profile.userData.avatar)
+  //for test
 
   const onLogOutHandler = () => {
     dispatch(logOutTC())
@@ -27,7 +30,7 @@ export const Profile = () => {
 
   const changeUserName = useCallback(
     (newName: string) => {
-      dispatch(newUserDataTC({ name: newName, avatar }))
+      dispatch(newUserDataTC({ name: newName }))
     },
     [dispatch]
   )
@@ -38,17 +41,61 @@ export const Profile = () => {
     }
   }, [])
 
+  const handleUpload = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length) {
+      const file = e.target.files[0]
+
+      console.log('FILE: ', file)
+
+      if (file.size < 4000000 && file.type.includes('image')) {
+        const reader = new FileReader()
+
+        reader.onload = () => {
+          const file64 = reader.result as string
+
+          debugger
+          //setImage(file64)
+          dispatch(newUserDataTC({ avatar: file64 }))
+          console.log('IMAGE: ', file64)
+        }
+
+        reader.readAsDataURL(file)
+      } else {
+        dispatch(setAppAlertMessage({ messageText: 'image is invalid', messageType: 'error' }))
+      }
+    }
+  }
+
+  const handleInputAvatarError = () => {
+    //dispatch(setAppAlertMessage({ messageText: 'image is invalid', messageType: 'error' }))
+  }
+
   return (
     <>
       <div className={s.profileContainer}>
         <BackToPacks />
         <div className={s.profile__content}>
           <h2 className={s.profile__title}>personal information</h2>
-          <div className={s.profile__avatarBlock} onClick={setNewAvatar}>
+          <div className={s.profile__avatarBlock}>
             <div className={s.profile__pic}>
-              <img className={s.profile__img} src={avatarLocal || avatar} alt="avatar" />
+              <img
+                className={s.profile__img}
+                src={avatar ? avatar : avatarLocal}
+                alt="avatar"
+                onError={handleInputAvatarError}
+              />
             </div>
-            <CameraAlt className={s.profile__avatarIcon} />
+            <label className={s.profile__label}>
+              <input
+                type="file"
+                onChange={handleUpload}
+                style={{ display: 'none' }}
+                accept={'image/*'}
+              />
+              <IconButton component={'span'}>
+                <CameraAlt className={s.profile__avatarIcon} />
+              </IconButton>
+            </label>
           </div>
           <div className={s.profile__userName}>
             <EditableSpan changeName={changeUserName} />

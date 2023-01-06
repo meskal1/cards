@@ -46,7 +46,7 @@ export type ProfileStateType = typeof initialState
 
 export type UserDataType = {
   id?: string
-  name: string
+  name?: string
   email?: string
-  avatar: string | undefined
+  avatar?: string | undefined
 }
