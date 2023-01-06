@@ -5,7 +5,7 @@ import { CustomSearch } from '../../common/components/CustomSearch/CustomSearch'
 import { LoadingProgress } from '../../common/components/LoadingProgress/LoadingProgress'
 import { CustomModalDialog } from '../../common/components/ModalDialog/CustomModalDialog'
 import { PageTitleBlock } from '../../common/components/PageTitleBlock/PageTitleBlock'
-import { useAppDispatch } from '../../hooks/reduxHooks'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { useGetSearchParams } from '../../hooks/useGetSearchParams'
 
 import { AddPack } from './Modals/AddPack/AddPack'
@@ -15,7 +15,7 @@ import { PackOwnerSwitcher } from './PackOwnerSwitcher/PackOwnerSwitcher'
 import s from './Packs.module.scss'
 import { PackSlider } from './PackSlider/PackSlider'
 import { PacksResetFilter } from './PacksResetFilter/PacksResetFilter'
-import { UpdatePackDataType, updatePacksQueryParamsTC } from './packsSlice'
+import { setPacksQueryParams, UpdatePackDataType } from './packsSlice'
 import { PacksTable } from './PacksTable/PacksTable'
 
 export const Packs = () => {
@@ -35,11 +35,8 @@ export const Packs = () => {
 
   useEffect(() => {
     ;(async () => {
-      const isSucceeded = await dispatch(updatePacksQueryParamsTC(allParams))
-
-      if (isSucceeded) {
-        setShowChildren(true)
-      }
+      await dispatch(setPacksQueryParams(allParams))
+      setShowChildren(true)
     })()
   }, [])
 

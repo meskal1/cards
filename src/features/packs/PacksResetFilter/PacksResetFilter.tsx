@@ -23,9 +23,6 @@ export const PacksResetFilter = () => {
       searchParams.delete('isMyPacks')
       searchParams.delete('sortPacks')
       setSearchParams(searchParams)
-      dispatch(setTableStatus('loading'))
-      await dispatch(getPacksTC())
-      dispatch(setTableStatus('idle'))
     }
   }
 

@@ -4,7 +4,7 @@ import { TextField } from '@mui/material'
 import { useLocation, useSearchParams } from 'react-router-dom'
 
 import { updateCardsQueryParamsTC } from '../../../features/cards/cardsSlice'
-import { updatePacksQueryParamsTC } from '../../../features/packs/packsSlice'
+import { setPacksQueryParams } from '../../../features/packs/packsSlice'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { useDebounce } from '../../../hooks/useDebounce'
 import { useGetSearchParams } from '../../../hooks/useGetSearchParams'
@@ -38,7 +38,7 @@ export const CustomSearch: FC<CustomSearchType> = ({ cards }) => {
         }
       } else {
         if (search !== inputValue) {
-          dispatch(updatePacksQueryParamsTC({ search: inputValue }))
+          dispatch(setPacksQueryParams({ search: inputValue }))
         }
       }
     }

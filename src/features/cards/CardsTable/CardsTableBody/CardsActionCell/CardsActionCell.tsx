@@ -1,4 +1,4 @@
-import React, { FC, MouseEvent } from 'react'
+import { FC, MouseEvent } from 'react'
 
 import TableCell from '@mui/material/TableCell'
 
@@ -19,7 +19,9 @@ export const CardsActionCell: FC<CardsTableActionCellType> = ({
   onDelete,
 }) => {
   const handleSpanClick = (e: MouseEvent<HTMLSpanElement>) => e.stopPropagation()
+
   const handleEditCardClick = () => onEdit()
+
   const handleDeleteCardClick = () => onDelete()
 
   return (

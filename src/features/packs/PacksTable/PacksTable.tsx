@@ -1,4 +1,4 @@
-import { FC, useCallback } from 'react'
+import { FC, useCallback, useEffect } from 'react'
 
 import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
@@ -15,7 +15,7 @@ import {
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { useGetSearchParams } from '../../../hooks/useGetSearchParams'
 import { PackDeleteDataType } from '../Modals/DeletePack/DeletePack'
-import { SortValuesType, UpdatePackDataType, updatePacksQueryParamsTC } from '../packsSlice'
+import { getPacksTC, setPacksQueryParams, SortValuesType, UpdatePackDataType } from '../packsSlice'
 
 import s from './PacksTable.module.scss'
 import { PacksTableBody } from './PacksTableBody/PacksTableBody'
@@ -51,9 +51,10 @@ export const PacksTable: FC<PacksTablePropsType> = ({
   setDeleteData,
 }) => {
   const status = useAppSelector<RequestStatusType>(state => state.app.tableStatus)
-  const isDataEmpty = useAppSelector(state => state.packs.tableData).length
+  const isDataNotEmpty = useAppSelector(state => state.packs.tableData).length
   const serverSort = useAppSelector<SortValuesType>(state => state.packs.queryParams.sortPacks)
   const pageCount = useAppSelector(state => state.packs.queryParams.pageCount)
+  const queryParams = useAppSelector(state => state.packs.queryParams)
   const dispatch = useAppDispatch()
   const [searchParams, setSearchParams] = useSearchParams()
   const allParams = useGetSearchParams()
@@ -69,14 +70,18 @@ export const PacksTable: FC<PacksTablePropsType> = ({
     const newServerOrder: SortValuesType = `${TableOrder[newOrder]}${property}`
 
     setSearchParams({ ...allParams, sortPacks: newServerOrder })
-    dispatch(updatePacksQueryParamsTC({ sortPacks: newServerOrder }))
+    dispatch(setPacksQueryParams({ sortPacks: newServerOrder }))
   }
 
   const handleOpenEditModal = useCallback(() => openEditModal(true), [openEditModal])
 
+  useEffect(() => {
+    dispatch(getPacksTC())
+  }, [queryParams])
+
   return (
     <>
-      {isDataEmpty ? (
+      {isDataNotEmpty || status === 'loading' ? (
         <Box>
           <Paper>
             <TableContainer>

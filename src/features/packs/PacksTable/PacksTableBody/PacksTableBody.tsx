@@ -1,3 +1,5 @@
+import { FC } from 'react'
+
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
@@ -23,7 +25,7 @@ type PacksTableBodyType = {
   setDeleteData: (data: PackDeleteDataType) => void
 }
 
-export const PacksTableBody: React.FC<PacksTableBodyType> = ({
+export const PacksTableBody: FC<PacksTableBodyType> = ({
   heads,
   setEditData,
   openEditModal,
@@ -39,13 +41,13 @@ export const PacksTableBody: React.FC<PacksTableBodyType> = ({
     navigate(PATH.CARDS + `/${id}`)
   }
 
-  const handleStudyCardPack = async (id: string) => {
-    navigate(PATH.LEARN + `/${id}`)
-  }
+  const handleStudyCardPack = (id: string) => navigate(PATH.LEARN + `/${id}`)
+
   const handleEditCardPack = (data: UpdatePackDataType) => {
     setEditData(data)
     openEditModal()
   }
+
   const handleDeleteCardPack = (data: PackDeleteDataType) => {
     setDeleteData(data)
     openDeleteModal(true)
