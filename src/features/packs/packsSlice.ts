@@ -6,6 +6,7 @@ import { RequestStatusPayloadType, setAppStatus, setTableStatus } from '../../ap
 import { AppDispatchType, RootStateType } from '../../app/store'
 import { CreatePackType, packsAPI, ServerPackType } from '../../services/packsApi'
 import { handleServerNetworkError } from '../../utils/errorUtils'
+import { setCardsData } from '../cards/cardsSlice'
 
 export const initialPacksQueryParams = {
   min: 0,
@@ -128,7 +129,7 @@ export const getPacksTC =
 
 export const deletePackTC = (id: string) => async (dispatch: AppDispatchType) => {
   try {
-    dispatch(setAppStatus('loading'))
+    dispatch(setTableStatus('loading'))
     dispatch(setPackRequestStatus({ packId: id, requestStatus: 'loading' }))
     await packsAPI.deletePack(id)
     await dispatch(getPacksTC())
@@ -136,20 +137,18 @@ export const deletePackTC = (id: string) => async (dispatch: AppDispatchType) =>
     dispatch(setPackRequestStatus({ packId: id, requestStatus: 'idle' }))
     handleServerNetworkError(dispatch, e as Error | AxiosError)
   } finally {
-    dispatch(setAppStatus('idle'))
+    dispatch(setTableStatus('idle'))
   }
 }
 
 export const addPackTC = (data: CreatePackType) => async (dispatch: AppDispatchType) => {
   try {
-    dispatch(setAppStatus('loading'))
     dispatch(setTableStatus('loading'))
     await packsAPI.addPack(data)
     await dispatch(getPacksTC())
   } catch (e) {
     handleServerNetworkError(dispatch, e as Error | AxiosError)
   } finally {
-    dispatch(setAppStatus('idle'))
     dispatch(setTableStatus('idle'))
   }
 }
@@ -158,17 +157,18 @@ export const updatePackTC =
   (data: UpdatePackDataType) =>
   async (dispatch: AppDispatchType, getState: () => RootStateType) => {
     try {
-      dispatch(setAppStatus('loading'))
+      dispatch(setTableStatus('loading'))
       dispatch(setPackRequestStatus({ packId: data.id, requestStatus: 'loading' }))
-      const updatingPack = getState().packs.tableData.filter(pack => data.id === pack._id)
+      const updateCardsData = getState().cards.cardsData
 
-      await packsAPI.updatePack({ ...updatingPack[0], name: data.name })
+      await packsAPI.updatePack({ _id: data.id, name: data.name })
       await dispatch(getPacksTC())
+      dispatch(setCardsData({ ...updateCardsData, packName: data.name }))
     } catch (e) {
       dispatch(setPackRequestStatus({ packId: data.id, requestStatus: 'idle' }))
       handleServerNetworkError(dispatch, e as Error | AxiosError)
     } finally {
-      dispatch(setAppStatus('idle'))
+      dispatch(setTableStatus('idle'))
     }
   }
 
