@@ -121,8 +121,8 @@ type CreatePasswordResponseType = {
 }
 
 export type ProfileDataType = {
-  name: string
-  avatar: string | undefined
+  name?: string
+  avatar?: string | undefined
 }
 
 type ProfileDataResponseType = {

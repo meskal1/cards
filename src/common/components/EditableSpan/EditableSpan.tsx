@@ -13,7 +13,7 @@ type EditableSpanType = {
 
 export const EditableSpan: FC<EditableSpanType> = memo(({ changeName }) => {
   const name = useAppSelector(state => state.profile.userData.name)
-  const [inputValue, setInputValue] = useState(name)
+  const [inputValue, setInputValue] = useState(name ? name : '')
   const [isInEditMode, setIsInEditMode] = useState(false)
   const [errorEmptyField, setErrorEmptyField] = useState(false)
   const [errorStyleButton, setErrorStyleButton] = useState('')
@@ -57,7 +57,7 @@ export const EditableSpan: FC<EditableSpanType> = memo(({ changeName }) => {
   }
 
   const onBlurInput = () => {
-    setInputValue(name)
+    setInputValue(name ? name : '')
     setIsInEditMode(false)
     setErrorEmptyField(false)
   }

@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AxiosError } from 'axios'
+import { boolean } from 'yup'
 
 import { RequestStatusPayloadType, setAppStatus, setTableStatus } from '../../app/appSlice'
 import { AppDispatchType, RootStateType } from '../../app/store'
