@@ -71,16 +71,6 @@
 
     width: 24px;
     height: inherit;
-
-    &::after {
-      content: '';
-
-      position: absolute;
-      z-index: 2;
-
-      width: 24px;
-      height: 24px;
-    }
   }
 
   &__menuItemStyle {

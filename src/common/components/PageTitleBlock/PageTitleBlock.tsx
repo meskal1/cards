@@ -38,13 +38,9 @@ export const PageTitleBlock: FC<PageTitleBlockType> = memo(
 
     const navigate = useNavigate()
 
-    const handleClickButton = () => {
-      buttonClick()
-    }
+    const handleClickButton = () => buttonClick()
 
-    const handleToogleMenu = () => {
-      setIsMenuOpen(!isMenuOpen)
-    }
+    const handleToogleMenu = () => setIsMenuOpen(!isMenuOpen)
 
     const handleClose = () => {
       setIsMenuOpen(false)
@@ -57,13 +53,9 @@ export const PageTitleBlock: FC<PageTitleBlockType> = memo(
       }
     }
 
-    const handleEdit = () => {
-      setOpenModals([1, 0])
-    }
+    const handleEdit = () => setOpenModals([1, 0])
 
-    const handleDelete = () => {
-      setOpenModals([0, 1])
-    }
+    const handleDelete = () => setOpenModals([0, 1])
 
     return (
       <>
