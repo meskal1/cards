@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
@@ -5,6 +7,7 @@ import dayjs from 'dayjs'
 import { useNavigate } from 'react-router-dom'
 
 import { RequestStatusPayloadType } from '../../../../app/appSlice'
+import cover from '../../../../assets/img/cover.png'
 import { HeadType } from '../../../../common/components/CustomTableHead/CustomTableHead'
 import { PATH } from '../../../../constants/routePaths.enum'
 import { useAppSelector } from '../../../../hooks/reduxHooks'
@@ -64,9 +67,26 @@ export const PacksTableBody: React.FC<PacksTableBodyType> = ({
             {heads.map(h => {
               return (
                 <TableCell key={h.id}>
-                  <p className={s.tableCellText}>
-                    {h.id === 'updated' ? dayjs(row[h.id]).format('DD.MM.YYYY') : row[h.id]}
-                  </p>
+                  <div className={`${s.CellContainer} ${s.tableCellText}`}>
+                    {h.id === 'name' && (
+                      <p>
+                        <img
+                          src={row.deckCover ? row.deckCover : cover}
+                          alt="deckCover"
+                          className={s.Image}
+                          onError={({ currentTarget }) => {
+                            currentTarget.onerror = null // prevents looping
+                            currentTarget.src = cover
+                          }}
+                        />
+                      </p>
+                    )}
+                    {h.id === 'updated' ? (
+                      <p>{dayjs(row[h.id]).format('DD.MM.YYYY')}</p>
+                    ) : (
+                      <p className={s.PackName}>{row[h.id]}</p>
+                    )}
+                  </div>
                 </TableCell>
               )
             })}

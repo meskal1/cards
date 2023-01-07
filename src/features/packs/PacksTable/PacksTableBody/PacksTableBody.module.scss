@@ -1,2 +1,20 @@
 @import "../../../../common/styles/mixins/mixinCommon";
 @include table_body_styles;
+
+.Image{
+  wight: 80px;
+  height: 50px;
+  margin-left: 5px;
+}
+
+.CellContainer{
+  -webkit-box-orient: horizontal !important;
+  -webkit-align-content: center;
+}
+.PackName{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 5px;
+  padding-right: 50px;
+}
