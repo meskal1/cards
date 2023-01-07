@@ -95,7 +95,13 @@ export const PacksTableBody: React.FC<PacksTableBodyType> = ({
               isStudyDisabled={row.cardsCount === 0}
               isAllDisabled={row.requestStatus === 'loading'}
               onStudy={() => handleStudyCardPack(row._id)}
-              onEdit={() => handleEditCardPack({ id: row._id, name: row.name })}
+              onEdit={() =>
+                handleEditCardPack({
+                  id: row._id,
+                  name: row.name,
+                  deckCover: row.deckCover ? row.deckCover : '',
+                })
+              }
               onDelete={() => handleDeleteCardPack({ id: row._id, name: row.name })}
             />
           </TableRow>

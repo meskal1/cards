@@ -96,12 +96,15 @@ export const PageTitleBlock: FC<PageTitleBlockType> = memo(
           </div>
         </div>
 
+        {/*
+          NEED TO DISCUSS SEEMS LIKE NEVER USED CODE!!!
+
         {isItMyPack && !!showModals && (
           <div className={showModals ? s.modalsContainer : ''}>
             {!!openModals[0] && <EditPack data={sendData} activeModal={handleClose} />}
             {!!openModals[1] && <DeletePack packData={sendData} activeModal={handleClose} />}
           </div>
-        )}
+        )}*/}
       </>
     )
   }
