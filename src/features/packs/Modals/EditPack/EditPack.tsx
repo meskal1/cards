@@ -1,9 +1,10 @@
-import { FC, useState } from 'react'
+import { ChangeEvent, FC, useState } from 'react'
 
 import { TextField } from '@mui/material'
 import Button from '@mui/material/Button'
 import { useFormik } from 'formik'
 
+import cs from '../../../../common/styles/modalStyles/ModalStyles.module.scss'
 import { useAppDispatch } from '../../../../hooks/reduxHooks'
 import { updatePackTC } from '../../packsSlice'
 
@@ -14,6 +15,7 @@ type EditPackType = {
   data: {
     id: string
     name: string
+    deckCover: string
   }
 }
 
@@ -24,6 +26,7 @@ type formikErrorType = {
 export const EditPack: React.FC<EditPackType> = ({ data, activeModal }) => {
   const dispatch = useAppDispatch()
   const [errors, setErrors] = useState<formikErrorType>({ name: '' })
+  const [image, setImage] = useState(data.deckCover)
 
   const formik = useFormik({
     initialValues: {
@@ -39,13 +42,32 @@ export const EditPack: React.FC<EditPackType> = ({ data, activeModal }) => {
       }
     },
     onSubmit: values => {
-      if (data.name !== values.name) {
-        dispatch(updatePackTC({ id: data.id, name: formik.values.name }))
+      if (data.name !== values.name || data.deckCover !== image) {
+        dispatch(updatePackTC({ id: data.id, name: formik.values.name, deckCover: image }))
       }
       activeModal(false)
       formik.resetForm()
     },
   })
+
+  //to be refactored as util function
+  const handleCoverInput = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length) {
+      const file = e.target.files[0]
+
+      if (file.size < 4000000 && file.type.includes('image')) {
+        const reader = new FileReader()
+
+        reader.onload = () => {
+          const file64 = reader.result as string
+
+          setImage(file64)
+        }
+
+        reader.readAsDataURL(file)
+      }
+    }
+  }
 
   return (
     <div className={s.Container}>
@@ -68,6 +90,17 @@ export const EditPack: React.FC<EditPackType> = ({ data, activeModal }) => {
               {errors.name}
             </div>
           }
+
+          <div className={cs.ImageContainer}>
+            <img src={image} alt="cover" className={cs.Image} />
+          </div>
+
+          <label>
+            <input type="file" hidden onChange={handleCoverInput} accept={'image/*'} />
+            <Button variant={'contained'} className={cs.FormFields} component={'span'}>
+              Add Pack Cover
+            </Button>
+          </label>
         </div>
         <div className={s.Submit}>
           <Button onClick={() => activeModal(false)} type={'button'} variant="outlined">
