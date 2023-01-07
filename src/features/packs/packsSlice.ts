@@ -161,7 +161,7 @@ export const updatePackTC =
       dispatch(setPackRequestStatus({ packId: data.id, requestStatus: 'loading' }))
       const updateCardsData = getState().cards.cardsData
 
-      await packsAPI.updatePack({ _id: data.id, name: data.name })
+      await packsAPI.updatePack({ _id: data.id, name: data.name, deckCover: data.deckCover })
       await dispatch(getPacksTC())
       dispatch(setCardsData({ ...updateCardsData, packName: data.name }))
     } catch (e) {
@@ -214,4 +214,5 @@ export type PacksQueryParamsType = Partial<SetPacksQueryParamsPayloadType>
 export type UpdatePackDataType = {
   id: string
   name: string
+  deckCover: string
 }
