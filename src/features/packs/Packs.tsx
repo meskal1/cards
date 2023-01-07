@@ -24,8 +24,11 @@ export const Packs = () => {
   const [addModal, setAddModal] = useState(false)
   const [editModal, setEditModal] = useState(false)
   const [deleteModal, setDeleteModal] = useState(false)
-  const [deleteData, setDeleteData] = useState<UpdatePackDataType>({ id: '', name: '' })
-  const [editData, setEditData] = useState<UpdatePackDataType>({ id: '', name: '' })
+  const [deleteData, setDeleteData] = useState<Omit<UpdatePackDataType, 'deckCover'>>({
+    id: '',
+    name: '',
+  })
+  const [editData, setEditData] = useState<UpdatePackDataType>({ id: '', name: '', deckCover: '' })
   const allParams = useGetSearchParams()
 
   const handleSetEditData = useCallback(

@@ -54,6 +54,7 @@ export const AddPack: React.FC<AddPackType> = ({ activeModal }) => {
     },
   })
 
+  //to be refactored as util function
   const handleCoverInput = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length) {
       const file = e.target.files[0]
