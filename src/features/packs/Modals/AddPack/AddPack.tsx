@@ -6,6 +6,7 @@ import Checkbox from '@mui/material/Checkbox'
 import TextField from '@mui/material/TextField'
 import { useFormik } from 'formik'
 
+import cs from '../../../../common/styles/modalStyles/ModalStyles.module.scss'
 import { useAppDispatch } from '../../../../hooks/reduxHooks'
 import { addPackTC } from '../../packsSlice'
 
@@ -95,15 +96,15 @@ export const AddPack: React.FC<AddPackType> = ({ activeModal }) => {
           </div>
         }
         {image ? (
-          <div className={s.ImageContainer}>
-            <img src={image} alt="cover" className={s.Image} />
+          <div className={cs.ImageContainer}>
+            <img src={image} alt="cover" className={cs.Image} />
           </div>
         ) : (
           ''
         )}
         <label>
           <input type="file" hidden onChange={handleCoverInput} accept={'image/*'} />
-          <Button variant={'contained'} className={s.FormFields} component={'span'}>
+          <Button variant={'contained'} className={cs.FormFields} component={'span'}>
             Add Pack Cover
           </Button>
         </label>
