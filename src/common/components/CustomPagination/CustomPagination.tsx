@@ -1,12 +1,12 @@
-import { FC, ChangeEvent, useEffect } from 'react'
+import { ChangeEvent, FC, useEffect } from 'react'
 
 import Pagination from '@mui/material/Pagination'
 import TablePagination from '@mui/material/TablePagination'
 import { useSearchParams } from 'react-router-dom'
 
-import { RequestStatusPayloadType } from '../../../app/appSlice'
-import { setCardsQueryParams, updateCardsQueryParamsTC } from '../../../features/cards/cardsSlice'
-import { setPacksQueryParams, updatePacksQueryParamsTC } from '../../../features/packs/packsSlice'
+import { RequestStatusType } from '../../../app/appSlice'
+import { setCardsQueryParams } from '../../../features/cards/cardsSlice'
+import { setPacksQueryParams } from '../../../features/packs/packsSlice'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { useGetSearchParams } from '../../../hooks/useGetSearchParams'
 
@@ -20,7 +20,7 @@ export const CustomPagination: FC<CustomPaginationType> = ({ cards }) => {
   const dispatch = useAppDispatch()
   const [searchParams, setSearchParams] = useSearchParams()
   const allParams = useGetSearchParams()
-  const isDataLoading = useAppSelector<RequestStatusPayloadType>(state => state.app.tableStatus)
+  const isDataLoading = useAppSelector<RequestStatusType>(state => state.app.tableStatus)
   const pagePacks = useAppSelector(state => state.packs.queryParams.page)
   const pageCards = useAppSelector(state => state.cards.queryParams.page)
   const pageCountPacks = useAppSelector(state => state.packs.queryParams.pageCount)
@@ -36,9 +36,9 @@ export const CustomPagination: FC<CustomPaginationType> = ({ cards }) => {
 
   const dispatchData = (data: { [key: string]: number }) => {
     if (cards) {
-      dispatch(updateCardsQueryParamsTC(data))
+      dispatch(setCardsQueryParams(data))
     } else {
-      dispatch(updatePacksQueryParamsTC(data))
+      dispatch(setPacksQueryParams(data))
     }
   }
 
@@ -55,7 +55,7 @@ export const CustomPagination: FC<CustomPaginationType> = ({ cards }) => {
   }
 
   useEffect(() => {
-    if (allParams.page > paginationCount) {
+    if (paginationCount && allParams.page > paginationCount) {
       setSearchParams({ ...allParams, page: paginationCount })
       if (cards) {
         dispatch(setCardsQueryParams({ page: paginationCount }))

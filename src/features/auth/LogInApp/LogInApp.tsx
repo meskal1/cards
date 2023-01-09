@@ -5,7 +5,7 @@ import Checkbox from '@mui/material/Checkbox'
 import { useFormik } from 'formik'
 import { Link, useNavigate } from 'react-router-dom'
 
-import { RequestStatusPayloadType } from '../../../app/appSlice'
+import { RequestStatusType } from '../../../app/appSlice'
 import { CustomButton } from '../../../common/components/CustomButton/CustomButton'
 import { CustomInput } from '../../../common/components/CustomInput/CustomInput'
 import { CustomPasswordInput } from '../../../common/components/CustomPasswordInput/CustomPasswordInput'
@@ -19,7 +19,7 @@ import s from './LogInApp.module.scss'
 export const LogInApp = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const authStatus = useAppSelector<RequestStatusPayloadType>(state => state.auth.status)
+  const authStatus = useAppSelector<RequestStatusType>(state => state.auth.status)
 
   const formik = useFormik({
     initialValues: {

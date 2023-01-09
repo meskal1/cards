@@ -64,7 +64,7 @@ export const Learn = () => {
 
   const getData = async () => {
     if (packId) {
-      await dispatch(getCards({ cardsPack_id: packId }))
+      await dispatch(getCards(packId))
     }
     console.log('First useEffect')
 
@@ -107,7 +107,7 @@ export const Learn = () => {
 
   useEffect(() => {
     return () => {
-      dispatch(setInitialized({ initialized: false }))
+      dispatch(setInitialized(false))
     }
   }, [])
 

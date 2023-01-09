@@ -8,8 +8,8 @@ import dayjs from 'dayjs'
 import { useNavigate } from 'react-router'
 import { useSearchParams } from 'react-router-dom'
 
-import { RequestStatusPayloadType } from '../../../../app/appSlice'
 import cover from '../../../../assets/img/cover.png'
+import { RequestStatusType } from '../../../../app/appSlice'
 import { HeadType } from '../../../../common/components/CustomTableHead/CustomTableHead'
 import { PATH } from '../../../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../../../hooks/reduxHooks'
@@ -40,7 +40,7 @@ export const CardsTableBody: FC<CardsTableBodyType> = ({
   const tableData = useAppSelector<AppCardType[]>(state => state.cards.tableData)
   const navigate = useNavigate()
 
-  const openCardHandler = (id: string, packId: string, requestStatus: RequestStatusPayloadType) => {
+  const openCardHandler = (id: string, packId: string, requestStatus: RequestStatusType) => {
     if (requestStatus === 'loading') return
 
     navigate(PATH.LEARN + `/${packId}`, { state: { cardId: id } })

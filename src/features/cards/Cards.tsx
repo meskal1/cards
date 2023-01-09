@@ -3,12 +3,12 @@ import { useCallback, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import cover from '../../assets/img/cover.png'
+import { RequestStatusType } from '../../app/appSlice'
 import { CustomButton } from '../../common/components/CustomButton/CustomButton'
 import { CustomPagination } from '../../common/components/CustomPagination/CustomPagination'
 import { CustomSearch } from '../../common/components/CustomSearch/CustomSearch'
 import { LoadingProgress } from '../../common/components/LoadingProgress/LoadingProgress'
 import { CustomModalDialog } from '../../common/components/ModalDialog/CustomModalDialog'
-// eslint-disable-next-line import/namespace
 import { PageTitleBlock } from '../../common/components/PageTitleBlock/PageTitleBlock'
 import cs from '../../common/styles/modalStyles/ModalStyles.module.scss'
 import { PATH } from '../../constants/routePaths.enum'
@@ -20,8 +20,8 @@ import {
   AppCardType,
   CardsErrorType,
   clearCardsQueryParams,
+  setCardsQueryParams,
   setError,
-  updateCardsQueryParamsTC,
   UpdateCardType,
 } from './cardsSlice'
 import { CardsTable } from './CardsTable/CardsTable'
@@ -34,6 +34,7 @@ export const Cards = () => {
   const allParams = useGetSearchParams()
   const [showChildren, setShowChildren] = useState(false)
   const tableData = useAppSelector<AppCardType[]>(state => state.cards.tableData)
+  const tableStatus = useAppSelector<RequestStatusType>(state => state.app.tableStatus)
   const cardsPack_id = useAppSelector(state => state.cards.queryParams.cardsPack_id)
   const packName = useAppSelector(state => state.cards.cardsData.packName)
   const packDeckCover = useAppSelector<string | null>(state => state.cards.cardsData.packDeckCover)
@@ -70,7 +71,7 @@ export const Cards = () => {
 
   useEffect(() => {
     ;(async () => {
-      await dispatch(updateCardsQueryParamsTC({ ...allParams, cardsPack_id: id }))
+      await dispatch(setCardsQueryParams({ ...allParams, cardsPack_id: id }))
       setShowChildren(true)
     })()
   }, [id])
@@ -117,7 +118,7 @@ export const Cards = () => {
               </div>
             )}
           </div>
-          {isTableNotEmpty ? (
+          {isTableNotEmpty || tableStatus ? (
             <>
               <CardsTable
                 isMine={isItMyPack}

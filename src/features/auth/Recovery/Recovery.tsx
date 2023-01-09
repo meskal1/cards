@@ -1,10 +1,11 @@
 import { useFormik } from 'formik'
 import { Link, useNavigate } from 'react-router-dom'
 
+import { RequestStatusType } from '../../../app/appSlice'
 import { CustomButton } from '../../../common/components/CustomButton/CustomButton'
 import { CustomInput } from '../../../common/components/CustomInput/CustomInput'
 import { PATH } from '../../../constants/routePaths.enum'
-import { useAppDispatch } from '../../../hooks/reduxHooks'
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { validationSchemaForgotPassword } from '../../../utils/validationSchema'
 import { forgotPasswordTC } from '../authSlice'
 
@@ -13,6 +14,7 @@ import s from './Recovery.module.scss'
 export const Recovery = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+  const authStatus = useAppSelector<RequestStatusType>(state => state.auth.status)
 
   const { handleSubmit, getFieldProps, errors, touched } = useFormik({
     initialValues: {
@@ -20,9 +22,9 @@ export const Recovery = () => {
     },
     validationSchema: validationSchemaForgotPassword,
     onSubmit: async values => {
-      const isForgotPasswordSucceed = await dispatch(forgotPasswordTC(values.email))
+      const isForgotPasswordSucceeded = await dispatch(forgotPasswordTC(values.email))
 
-      if (isForgotPasswordSucceed) {
+      if (isForgotPasswordSucceeded.payload) {
         navigate(PATH.CHECK_EMAIL)
       }
     },
@@ -39,7 +41,7 @@ export const Recovery = () => {
           {...getFieldProps('email')}
         />
         <p className={s.help}>enter your email address and we will send you further instructions</p>
-        <CustomButton fullWidth>
+        <CustomButton disabled={authStatus === 'loading'} fullWidth>
           <p>send instructions</p>
         </CustomButton>
       </form>

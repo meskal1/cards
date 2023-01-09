@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, FC } from 'react'
 
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
@@ -6,8 +6,8 @@ import TableRow from '@mui/material/TableRow'
 import dayjs from 'dayjs'
 import { useNavigate } from 'react-router-dom'
 
-import { RequestStatusPayloadType } from '../../../../app/appSlice'
 import cover from '../../../../assets/img/cover.png'
+import { RequestStatusType } from '../../../../app/appSlice'
 import { HeadType } from '../../../../common/components/CustomTableHead/CustomTableHead'
 import { PATH } from '../../../../constants/routePaths.enum'
 import { useAppSelector } from '../../../../hooks/reduxHooks'
@@ -26,7 +26,7 @@ type PacksTableBodyType = {
   setDeleteData: (data: PackDeleteDataType) => void
 }
 
-export const PacksTableBody: React.FC<PacksTableBodyType> = ({
+export const PacksTableBody: FC<PacksTableBodyType> = ({
   heads,
   setEditData,
   openEditModal,
@@ -37,18 +37,18 @@ export const PacksTableBody: React.FC<PacksTableBodyType> = ({
   const userId = useAppSelector(state => state.profile.userData.id)
   const navigate = useNavigate()
 
-  const handleOpenCardPack = (id: string, requestStatus: RequestStatusPayloadType) => {
+  const handleOpenCardPack = (id: string, requestStatus: RequestStatusType) => {
     if (requestStatus === 'loading') return
     navigate(PATH.CARDS + `/${id}`)
   }
 
-  const handleStudyCardPack = async (id: string) => {
-    navigate(PATH.LEARN + `/${id}`)
-  }
+  const handleStudyCardPack = (id: string) => navigate(PATH.LEARN + `/${id}`)
+
   const handleEditCardPack = (data: UpdatePackDataType) => {
     setEditData(data)
     openEditModal()
   }
+
   const handleDeleteCardPack = (data: PackDeleteDataType) => {
     setDeleteData(data)
     openDeleteModal(true)

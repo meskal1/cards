@@ -1,19 +1,16 @@
 import { useLocation } from 'react-router-dom'
 
+const numberParams = ['max', 'min', 'page', 'pageCount']
+
 export const useGetSearchParams = (always?: string) => {
   const location = always ? useLocation() : null
   const props = always ? location?.search : window.location.toString()
-  const paramsArray = props?.split('?')[1]
-  let allParams = {} as any
-  //  | (PacksQueryParamsType & { cardQuestion?: string })
-  //  | URLSearchParamsInit
-  //  | ParamKeyValuePair[]
+  const params = new URLSearchParams(props?.split('?')[1])
+  const allParams = {} as any
 
-  if (paramsArray) {
-    allParams = Object.fromEntries(
-      paramsArray.split('&').map(el => [el.split('=')[0], decodeURIComponent(el.split('=')[1])])
-    )
-  }
+  params.forEach((value, key) => {
+    allParams[key] = numberParams.includes(key) ? Number(value) : value
+  })
 
   return allParams
 }

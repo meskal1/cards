@@ -26,8 +26,11 @@ export const PacksActionCell: FC<PacksActionCellPropsType> = ({
   onDelete,
 }) => {
   const handleSpanClick = (e: MouseEvent<HTMLSpanElement>) => e.stopPropagation()
+
   const handleStudyClick = () => onStudy()
+
   const handleEditClick = () => onEdit()
+
   const handleDeleteClick = () => onDelete()
 
   return (
