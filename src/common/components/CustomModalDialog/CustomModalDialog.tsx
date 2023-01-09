@@ -4,8 +4,7 @@ import { Close } from '@mui/icons-material'
 import Box from '@mui/material/Box'
 import Modal from '@mui/material/Modal'
 
-import { EditPack } from '../../../features/packs/Modals/EditPack/EditPack'
-import s from '../../../features/packs/PacksTable/PacksTable.module.scss'
+import s from './CustomModalDialog.module.scss'
 
 type CustomModalDialogType = {
   open: boolean

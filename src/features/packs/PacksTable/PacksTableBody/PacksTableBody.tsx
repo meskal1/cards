@@ -1,11 +1,8 @@
-import { useState, FC } from 'react'
+import { FC } from 'react'
 
-import Box from '@mui/material/Box'
-import Modal from '@mui/material/Modal'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
-import Typography from '@mui/material/Typography'
 import dayjs from 'dayjs'
 import { useNavigate } from 'react-router-dom'
 
@@ -23,7 +20,7 @@ import s from './PacksTableBody.module.scss'
 
 type PacksTableBodyType = {
   heads: HeadType<PacksOrderByType>[]
-  openEditModal: () => void
+  openEditModal: (state: boolean) => void
   setEditData: (data: UpdatePackDataType) => void
   openDeleteModal: (state: boolean) => void
   setDeleteData: (data: PackDeleteDataType) => void
@@ -49,7 +46,7 @@ export const PacksTableBody: FC<PacksTableBodyType> = ({
 
   const handleEditCardPack = (data: UpdatePackDataType) => {
     setEditData(data)
-    openEditModal()
+    openEditModal(true)
   }
 
   const handleDeleteCardPack = (data: PackDeleteDataType) => {
