@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography'
 import { useSearchParams } from 'react-router-dom'
 
 import { RequestStatusType } from '../../../app/appSlice'
+import { CustomModalDialog } from '../../../common/components/CustomModalDialog/CustomModalDialog'
 import { TableBodySkeleton } from '../../../common/components/CustomSkeletons/TableBodySkeleton/TableBodySkeleton'
 import {
   CustomTableHead,
@@ -17,7 +18,7 @@ import {
 } from '../../../common/components/CustomTableHead/CustomTableHead'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { useGetSearchParams } from '../../../hooks/useGetSearchParams'
-import { PackDeleteDataType } from '../Modals/DeletePack/DeletePack'
+import { DeletePack, PackDeleteDataType } from '../Modals/DeletePack/DeletePack'
 import { EditPack } from '../Modals/EditPack/EditPack'
 import { getPacksTC, setPacksQueryParams, SortValuesType, UpdatePackDataType } from '../packsSlice'
 
@@ -41,12 +42,7 @@ const heads: HeadType<PacksOrderByType>[] = [
   { id: 'user_name', label: 'Created by' },
 ]
 
-type PacksTablePropsType = {
-  openDeleteModal: (state: boolean) => void
-  setDeleteData: (data: PackDeleteDataType) => void
-}
-
-export const PacksTable: FC<PacksTablePropsType> = ({ openDeleteModal, setDeleteData }) => {
+export const PacksTable = () => {
   const status = useAppSelector<RequestStatusType>(state => state.app.tableStatus)
   const isDataNotEmpty = useAppSelector(state => state.packs.tableData).length
   const serverSort = useAppSelector<SortValuesType>(state => state.packs.queryParams.sortPacks)
@@ -56,6 +52,11 @@ export const PacksTable: FC<PacksTablePropsType> = ({ openDeleteModal, setDelete
   const [searchParams, setSearchParams] = useSearchParams()
   const [editData, setEditData] = useState<UpdatePackDataType>({ id: '', name: '', deckCover: '' })
   const [openEditModal, setOpenEditModal] = useState(false)
+  const [openDeleteModal, setOpenDeleteModal] = useState(false)
+  const [deleteData, setDeleteData] = useState<Omit<UpdatePackDataType, 'deckCover'>>({
+    id: '',
+    name: '',
+  })
   const handleOpen = () => setOpenEditModal(true)
   const handleClose = () => setOpenEditModal(false)
   const allParams = useGetSearchParams()
@@ -109,7 +110,7 @@ export const PacksTable: FC<PacksTablePropsType> = ({ openDeleteModal, setDelete
                     heads={heads}
                     openEditModal={handleOpenEditModal}
                     setEditData={setEditData}
-                    openDeleteModal={openDeleteModal}
+                    openDeleteModal={setOpenDeleteModal}
                     setDeleteData={setDeleteData}
                   />
                 )}
@@ -121,22 +122,14 @@ export const PacksTable: FC<PacksTablePropsType> = ({ openDeleteModal, setDelete
         <p className={s.emptyTable}>no packs found.</p>
       )}
       {openEditModal && (
-        <div>
-          <Modal
-            keepMounted
-            open={openEditModal}
-            onClose={handleClose}
-            aria-labelledby="keep-mounted-modal-title"
-            aria-describedby="keep-mounted-modal-description"
-          >
-            <Box className={s.ChildrenContainer}>
-              <div className={s.Close}>
-                <Close onClick={handleClose} />
-              </div>
-              <EditPack data={editData} activeModal={setOpenEditModal} />
-            </Box>
-          </Modal>
-        </div>
+        <CustomModalDialog closeModal={setOpenEditModal} open={openEditModal}>
+          <EditPack data={editData} activeModal={setOpenEditModal} />
+        </CustomModalDialog>
+      )}
+      {openDeleteModal && (
+        <CustomModalDialog closeModal={setOpenDeleteModal} open={openDeleteModal}>
+          <DeletePack packData={deleteData} activeModal={setOpenDeleteModal} />
+        </CustomModalDialog>
       )}
     </>
   )
