@@ -22,19 +22,12 @@ export const Packs = () => {
   const dispatch = useAppDispatch()
   const [showChildren, setShowChildren] = useState(false)
   const [addModal, setAddModal] = useState(false)
-  const [editModal, setEditModal] = useState(false)
   const [deleteModal, setDeleteModal] = useState(false)
   const [deleteData, setDeleteData] = useState<Omit<UpdatePackDataType, 'deckCover'>>({
     id: '',
     name: '',
   })
-  const [editData, setEditData] = useState<UpdatePackDataType>({ id: '', name: '', deckCover: '' })
   const allParams = useGetSearchParams()
-
-  const handleSetEditData = useCallback(
-    (data: UpdatePackDataType) => setEditData(data),
-    [setEditData]
-  )
 
   useEffect(() => {
     ;(async () => {
@@ -65,12 +58,7 @@ export const Packs = () => {
               <PacksResetFilter />
             </div>
           </div>
-          <PacksTable
-            setEditData={handleSetEditData}
-            openEditModal={setEditModal}
-            openDeleteModal={setDeleteModal}
-            setDeleteData={setDeleteData}
-          />
+          <PacksTable openDeleteModal={setDeleteModal} setDeleteData={setDeleteData} />
           <CustomPagination />
           {addModal ? (
             <CustomModalDialog active={addModal} setActive={setAddModal}>
@@ -79,13 +67,7 @@ export const Packs = () => {
           ) : (
             ''
           )}
-          {editModal ? (
-            <CustomModalDialog active={editModal} setActive={setEditModal}>
-              <EditPack data={editData} activeModal={setEditModal} />
-            </CustomModalDialog>
-          ) : (
-            ''
-          )}
+
           {deleteModal ? (
             <CustomModalDialog active={deleteModal} setActive={setDeleteModal}>
               <DeletePack packData={deleteData} activeModal={setDeleteModal} />
