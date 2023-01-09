@@ -73,7 +73,7 @@ export const PacksTableBody: React.FC<PacksTableBodyType> = ({
                         <img
                           src={row.deckCover ? row.deckCover : cover}
                           alt="deckCover"
-                          className={s.Image}
+                          className={s.image}
                           onError={({ currentTarget }) => {
                             currentTarget.onerror = null // prevents looping
                             currentTarget.src = cover

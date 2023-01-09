@@ -1,12 +1,6 @@
 @import "../../../../common/styles/mixins/mixinCommon";
 @include table_body_styles;
 
-.Image{
-  width: 80px;
-  height: 50px;
-  margin-left: 5px;
-}
-
 .CellContainer{
   -webkit-box-orient: horizontal !important;
   -webkit-align-content: center;
