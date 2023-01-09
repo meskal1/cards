@@ -1,32 +1,25 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
+import { CustomModalDialog } from '../../common/components/CustomModalDialog/CustomModalDialog'
 import { CustomPagination } from '../../common/components/CustomPagination/CustomPagination'
 import { CustomSearch } from '../../common/components/CustomSearch/CustomSearch'
 import { LoadingProgress } from '../../common/components/LoadingProgress/LoadingProgress'
-import { CustomModalDialog } from '../../common/components/ModalDialog/CustomModalDialog'
 import { PageTitleBlock } from '../../common/components/PageTitleBlock/PageTitleBlock'
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+import { useAppDispatch } from '../../hooks/reduxHooks'
 import { useGetSearchParams } from '../../hooks/useGetSearchParams'
 
 import { AddPack } from './Modals/AddPack/AddPack'
-import { DeletePack } from './Modals/DeletePack/DeletePack'
-import { EditPack } from './Modals/EditPack/EditPack'
 import { PackOwnerSwitcher } from './PackOwnerSwitcher/PackOwnerSwitcher'
 import s from './Packs.module.scss'
 import { PackSlider } from './PackSlider/PackSlider'
 import { PacksResetFilter } from './PacksResetFilter/PacksResetFilter'
-import { setPacksQueryParams, UpdatePackDataType } from './packsSlice'
+import { setPacksQueryParams } from './packsSlice'
 import { PacksTable } from './PacksTable/PacksTable'
 
 export const Packs = () => {
   const dispatch = useAppDispatch()
   const [showChildren, setShowChildren] = useState(false)
-  const [addModal, setAddModal] = useState(false)
-  const [deleteModal, setDeleteModal] = useState(false)
-  const [deleteData, setDeleteData] = useState<Omit<UpdatePackDataType, 'deckCover'>>({
-    id: '',
-    name: '',
-  })
+  const [openAddModal, setOpenAddModal] = useState(false)
   const allParams = useGetSearchParams()
 
   useEffect(() => {
@@ -37,7 +30,7 @@ export const Packs = () => {
   }, [])
 
   const handleOpenAddModal = () => {
-    setAddModal(true)
+    setOpenAddModal(true)
     document.body.style.overflow = 'hidden'
   }
 
@@ -58,19 +51,11 @@ export const Packs = () => {
               <PacksResetFilter />
             </div>
           </div>
-          <PacksTable openDeleteModal={setDeleteModal} setDeleteData={setDeleteData} />
+          <PacksTable />
           <CustomPagination />
-          {addModal ? (
-            <CustomModalDialog active={addModal} setActive={setAddModal}>
-              <AddPack activeModal={setAddModal}></AddPack>
-            </CustomModalDialog>
-          ) : (
-            ''
-          )}
-
-          {deleteModal ? (
-            <CustomModalDialog active={deleteModal} setActive={setDeleteModal}>
-              <DeletePack packData={deleteData} activeModal={setDeleteModal} />
+          {openAddModal ? (
+            <CustomModalDialog open={openAddModal} closeModal={setOpenAddModal}>
+              <AddPack activeModal={setOpenAddModal}></AddPack>
             </CustomModalDialog>
           ) : (
             ''
