@@ -21,6 +21,7 @@ const initialState = {
     packName: '',
     packUserId: '',
     cardsTotalCount: 0,
+    packDeckCover: null as string | null,
   },
   tableData: [] as AppCardType[],
   error: null as CardsErrorType,
@@ -105,8 +106,9 @@ export const getCardsTC =
       const packUserId = response.data.packUserId
       const packName = response.data.packName
       const cardsTotalCount = response.data.cardsTotalCount
+      const packDeckCover = response.data.packDeckCover
 
-      dispatch(setCardsData({ packName, packUserId, cardsTotalCount }))
+      dispatch(setCardsData({ packName, packUserId, cardsTotalCount, packDeckCover }))
       dispatch(setCardsTableData(response.data.cards))
     } catch (e) {
       // Подумать можно ли это вынести в handleServerNetworkError
@@ -209,6 +211,7 @@ type SetCardsDataPayloadType = {
   packName: string
   packUserId: string
   cardsTotalCount: number
+  packDeckCover: string | null
 }
 
 type CardsTablePayloadType = ServerCardType[]
