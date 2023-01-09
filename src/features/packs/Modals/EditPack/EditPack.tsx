@@ -4,6 +4,7 @@ import { TextField } from '@mui/material'
 import Button from '@mui/material/Button'
 import { useFormik } from 'formik'
 
+import cover from '../../../../assets/img/cover.png'
 import cs from '../../../../common/styles/modalStyles/ModalStyles.module.scss'
 import { useAppDispatch } from '../../../../hooks/reduxHooks'
 import { updatePackTC } from '../../packsSlice'
@@ -92,7 +93,15 @@ export const EditPack: React.FC<EditPackType> = ({ data, activeModal }) => {
           }
 
           <div className={cs.ImageContainer}>
-            <img src={image} alt="cover" className={cs.Image} />
+            <img
+              src={image}
+              alt="cover"
+              className={cs.Image}
+              onError={({ currentTarget }) => {
+                currentTarget.onerror = null // prevents looping
+                currentTarget.src = cover
+              }}
+            />
           </div>
 
           <label>

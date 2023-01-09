@@ -15,12 +15,13 @@ import s from './PageTitleBlock.module.scss'
 type PageTitleBlockType = {
   linkToPacks?: boolean
   button: string
+  packDeckCover?: string | null
   title: string
   buttonClick: () => void
 }
 
 export const PageTitleBlock: FC<PageTitleBlockType> = memo(
-  ({ linkToPacks, button, title, buttonClick }) => {
+  ({ linkToPacks, button, title, buttonClick, packDeckCover }) => {
     const { id } = useParams()
     const packUserId = useAppSelector(state => state.cards.cardsData.packUserId)
     const cardsTotalCount = useAppSelector(state => state.cards.cardsData.cardsTotalCount)
@@ -29,7 +30,11 @@ export const PageTitleBlock: FC<PageTitleBlockType> = memo(
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [openModals, setOpenModals] = useState<number[]>([0, 0])
     const showModals = openModals.reduce((a, b) => a + b, 0)
-    const sendData = { id: id as string, name: title }
+    const sendData = {
+      id: id as string,
+      name: title,
+      deckCover: packDeckCover ? packDeckCover : '',
+    }
     const menuSheet = isMenuOpen ? s.pageTitleBlock__menuSheet : ''
     const menuItemStyle = isMenuOpen ? s.pageTitleBlock__menuItemStyle : ''
     const listStyle = `${s.menuItem} ${menuItemStyle}`
@@ -49,6 +54,7 @@ export const PageTitleBlock: FC<PageTitleBlockType> = memo(
     const handleClose = () => {
       setIsMenuOpen(false)
       setOpenModals([0, 0])
+      document.body.style.overflow = 'unset'
     }
 
     const handleLearn = () => {
@@ -59,10 +65,12 @@ export const PageTitleBlock: FC<PageTitleBlockType> = memo(
 
     const handleEdit = () => {
       setOpenModals([1, 0])
+      document.body.style.overflow = 'hidden'
     }
 
     const handleDelete = () => {
       setOpenModals([0, 1])
+      document.body.style.overflow = 'hidden'
     }
 
     return (
@@ -96,15 +104,12 @@ export const PageTitleBlock: FC<PageTitleBlockType> = memo(
           </div>
         </div>
 
-        {/*
-          NEED TO DISCUSS SEEMS LIKE NEVER USED CODE!!!
-
         {isItMyPack && !!showModals && (
           <div className={showModals ? s.modalsContainer : ''}>
             {!!openModals[0] && <EditPack data={sendData} activeModal={handleClose} />}
             {!!openModals[1] && <DeletePack packData={sendData} activeModal={handleClose} />}
           </div>
-        )}*/}
+        )}
       </>
     )
   }

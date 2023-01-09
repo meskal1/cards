@@ -57,6 +57,7 @@ export const Cards = () => {
     id: '',
     answer: '',
     question: '',
+    questionImg: '',
   })
 
   const handleTitleButton = useCallback(() => {

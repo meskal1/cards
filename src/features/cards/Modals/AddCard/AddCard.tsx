@@ -3,6 +3,7 @@ import { FC, useEffect, useState } from 'react'
 import { FormControl, MenuItem, Select, SelectChangeEvent } from '@mui/material'
 
 import s from './AddCard.module.scss'
+import { PictureForm } from './PictureForm'
 import { TextForm } from './TextForm'
 
 type AddCardType = {
@@ -29,7 +30,7 @@ export const AddCard: FC<AddCardType> = ({ active, closeModal, cardsPack_id }) =
       form = <TextForm closeModal={closeModal} cardsPack_id={cardsPack_id} />
       break
     case 'Picture':
-      form = <p>Add picture</p>
+      form = <PictureForm closeModal={closeModal} cardsPack_id={cardsPack_id} />
       break
     default:
       form = ''
