@@ -46,6 +46,11 @@ export const Packs = () => {
     })()
   }, [])
 
+  const handleOpenAddModal = () => {
+    setAddModal(true)
+    document.body.style.overflow = 'hidden'
+  }
+
   return (
     <>
       {showChildren ? (
@@ -54,7 +59,7 @@ export const Packs = () => {
             <PageTitleBlock
               title={'packs list'}
               button={'add new pack'}
-              buttonClick={() => setAddModal(true)}
+              buttonClick={handleOpenAddModal}
             />
             <div className={s.packs__controlPanel}>
               <CustomSearch />

@@ -27,6 +27,11 @@ export const AddPack: React.FC<AddPackType> = ({ activeModal }) => {
 
   const dispatch = useAppDispatch()
 
+  const handleCloseModal = () => {
+    activeModal(false)
+    document.body.style.overflow = 'unset'
+  }
+
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -117,7 +122,7 @@ export const AddPack: React.FC<AddPackType> = ({ activeModal }) => {
           />
         </div>
         <div className={s.Submit}>
-          <Button onClick={() => activeModal(false)} type={'button'} variant="outlined">
+          <Button onClick={handleCloseModal} type={'button'} variant="outlined">
             Cancel
           </Button>
           <Button type={'submit'} variant="contained" disabled={isDisabled}>
