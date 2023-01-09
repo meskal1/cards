@@ -127,25 +127,6 @@ export const EditCard: FC<AddCardTextFormType> = ({ active, closeModal, cardsDat
             }
           </>
         )}
-
-        {/*<TextField
-          className={s.FormControl}
-          margin="dense"
-          size={'small'}
-          label={'question'}
-          {...formik.getFieldProps('question')}
-        />
-        {
-          <div
-            className={
-              formik.touched.question && formik.errors.question
-                ? `${s.Error} ${s.Error__active}`
-                : `${s.Error}`
-            }
-          >
-            {formik.errors.question}
-          </div>
-        }*/}
         <TextField
           className={s.FormControl}
           margin="dense"
