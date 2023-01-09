@@ -160,9 +160,10 @@ export const updateCardTC =
       const updatingCard = getState().cards.tableData.filter(card => data.id === card._id)
 
       await cardsAPI.updateCard({
-        ...updatingCard[0],
-        question: data.question,
+        _id: data.id,
+        question: data.question ? data.question : ' ',
         answer: data.answer,
+        questionImg: data.questionImg ? data.questionImg : '',
       })
       await dispatch(getCardsTC())
     } catch (e) {
@@ -218,8 +219,9 @@ type CardsTablePayloadType = ServerCardType[]
 
 export type UpdateCardType = {
   id: string
-  question: string
+  question?: string
   answer: string
+  questionImg?: string
 }
 
 type CardsErrorPayloadType = {

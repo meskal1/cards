@@ -33,6 +33,10 @@ const initialCard = {
   created: '',
   updated: '',
   __v: 0,
+  answerImg: '',
+  answerVideo: '',
+  questionImg: '',
+  questionVideo: '',
 }
 
 const grades = [
