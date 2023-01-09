@@ -30,7 +30,7 @@ export const DeletePack: FC<DeletePackType> = ({ packData, activeModal }) => {
   const handleCloseModal = () => activeModal(false)
 
   return (
-    <div>
+    <div className={s.MainContainer}>
       <p className={s.Message}>
         Are you sure you want to delete Pack: <b>{packData.name}</b> ?
         <br />
