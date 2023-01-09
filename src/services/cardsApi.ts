@@ -80,8 +80,6 @@ export type ServerCardType = {
 }
 type UpdateServerCardType = { _id: string } & Partial<Omit<ServerCardType, '_id'>>
 
-export type UpdateServerCardType = { _id: string } & Partial<Omit<ServerCardType, '_id'>>
-
 export type CreateCardType = {
   cardsPack_id: string
   question?: string

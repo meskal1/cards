@@ -50,7 +50,7 @@ export const Profile = () => {
         reader.onload = () => {
           const file64 = reader.result as string
 
-          dispatch(newUserDataTC({ avatar: file64 }))
+          dispatch(updateUserDataTC({ avatar: file64 }))
           console.log('IMAGE: ', file64)
         }
 

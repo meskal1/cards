@@ -56,6 +56,7 @@ export const AddPack: React.FC<AddPackType> = ({ activeModal }) => {
     onSubmit: async values => {
       await dispatch(addPackTC({ ...values, deckCover: image ? image : '' }))
       activeModal(false)
+      document.body.style.overflow = 'unset'
       formik.resetForm()
     },
   })
