@@ -1,14 +1,78 @@
 @import "../../../../common/styles/mixins/mixinCommon";
 @include table_body_styles;
 
-.CellContainer{
-  -webkit-box-orient: horizontal !important;
-  -webkit-align-content: center;
-}
-.PackName{
+.packImageWrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+
   display: flex;
-  justify-content: center;
   align-items: center;
-  margin-left: 5px;
-  padding-right: 50px;
+
+  height: 100%;
+  padding: 16px;
+
+  transition: 0.3s ease transform 0.3s;
+}
+
+.packName {
+  transform: rotateX(-90deg);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: 0.3s ease transform 0s;
+
+  //margin-left: 5px;
+  //padding-right: 50px;
+}
+
+.packImage {
+  width: 60px;
+  height: 55px;
+
+  object-fit: contain;
+  border: 1px solid;
+  border-radius: 50%;
+}
+
+.row {
+  &:hover {
+    .packImageWrapper {
+      transform: rotateX(90deg) !important;
+
+      transition: 0.3s ease transform 0s;
+
+      //animation: imageOpacity 0 forwards;
+      //animation-delay: 1s !important;
+    }
+
+    .packName {
+      transform: rotateX(0) !important;
+
+      transition: 0.3s ease transform 0.3s;
+    }
+  }
+}
+
+.cellContainer {
+  -webkit-align-content: center;
+
+  //perspective: 500px;
+
+  -webkit-box-orient: horizontal !important;
+}
+
+.tableCell {
+  position: relative;
+}
+@keyframes imageOpacity {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 0;
+  }
 }

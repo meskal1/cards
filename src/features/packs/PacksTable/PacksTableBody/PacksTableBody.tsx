@@ -13,9 +13,9 @@ import { RequestStatusType } from '../../../../app/appSlice'
 import cover from '../../../../assets/img/cover.png'
 import { HeadType } from '../../../../common/components/CustomTableHead/CustomTableHead'
 import { PATH } from '../../../../constants/routePaths.enum'
-import { useAppSelector } from '../../../../hooks/reduxHooks'
+import { useAppDispatch, useAppSelector } from '../../../../hooks/reduxHooks'
 import { PackDeleteDataType } from '../../Modals/DeletePack/DeletePack'
-import { AppPackType, UpdatePackDataType } from '../../packsSlice'
+import { AppPackType, setBrokenImages, UpdatePackDataType } from '../../packsSlice'
 import { PacksOrderByType } from '../PacksTable'
 
 import { PacksActionCell } from './PacksActionCell/PacksActionCell'
@@ -38,6 +38,8 @@ export const PacksTableBody: FC<PacksTableBodyType> = ({
 }) => {
   const tableData = useAppSelector<AppPackType[]>(state => state.packs.tableData)
   const userId = useAppSelector(state => state.profile.userData.id)
+  const brokenImages = useAppSelector(state => state.packs.brokenImages)
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
   const handleOpenCardPack = (id: string, requestStatus: RequestStatusType) => {
@@ -69,25 +71,34 @@ export const PacksTableBody: FC<PacksTableBodyType> = ({
           >
             {heads.map(h => {
               return (
-                <TableCell key={h.id}>
-                  <div className={`${s.CellContainer} ${s.tableCellText}`}>
-                    {h.id === 'name' && (
-                      <p>
-                        <img
-                          src={row.deckCover ? row.deckCover : cover}
-                          alt="deckCover"
-                          className={s.image}
-                          onError={({ currentTarget }) => {
-                            currentTarget.onerror = null // prevents looping
-                            currentTarget.src = cover
-                          }}
-                        />
-                      </p>
-                    )}
+                <TableCell className={s.tableCell} key={h.id}>
+                  <div className={`${s.cellContainer} ${s.tableCellText}`}>
+                    {h.id === 'name' &&
+                      !!row.deckCover &&
+                      !brokenImages.includes(row.deckCover) && (
+                        <div className={s.packImageWrapper}>
+                          <img
+                            src={row.deckCover ? row.deckCover : cover}
+                            alt="deckCover"
+                            className={s.packImage}
+                            onError={({}) => {
+                              dispatch(setBrokenImages(row.deckCover))
+                            }}
+                          />
+                        </div>
+                      )}
                     {h.id === 'updated' ? (
                       <p>{dayjs(row[h.id]).format('DD.MM.YYYY')}</p>
                     ) : (
-                      <p className={s.PackName}>{row[h.id]}</p>
+                      <p
+                        className={
+                          h.id === 'name' && row.deckCover && !brokenImages.includes(row.deckCover)
+                            ? s.packName
+                            : undefined
+                        }
+                      >
+                        {row[h.id]}
+                      </p>
                     )}
                   </div>
                 </TableCell>

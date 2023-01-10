@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AxiosError } from 'axios'
-import { boolean } from 'yup'
 
 import { RequestStatusType, setTableStatus } from '../../app/appSlice'
 import { RootStateType } from '../../app/store'
@@ -27,6 +26,7 @@ const initialState = {
   },
   dataResetToggle: false,
   tableData: [] as AppPackType[],
+  brokenImages: [] as Array<string | null>,
 }
 
 export const getPacksTC = createAsyncThunk(
@@ -129,6 +129,9 @@ const packsSlice = createSlice({
     toggleResetData(state) {
       state.dataResetToggle = !state.dataResetToggle
     },
+    setBrokenImages(state, action) {
+      state.brokenImages.push(action.payload)
+    },
   },
   extraReducers: builder => {
     builder.addCase(getPacksTC.fulfilled, (state, action) => {
@@ -161,7 +164,7 @@ const packsSlice = createSlice({
 export const packsReducer = packsSlice.reducer
 
 // ACTIONS
-export const { setPacksQueryParams, setPackRequestStatus, clearPacksQueryParams, toggleResetData } =
+export const { setPacksQueryParams, setBrokenImages, clearPacksQueryParams, toggleResetData } =
   packsSlice.actions
 
 // TYPES
