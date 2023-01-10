@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { useGetSearchParams } from '../../../hooks/useGetSearchParams'
-import { updatePacksQueryParamsTC } from '../packsSlice'
+import { setPacksQueryParams } from '../packsSlice'
 
 import { StyledSlider } from './CustomStyledSlider/CustomStyledSlider'
 import s from './PackSlider.module.scss'
@@ -28,7 +28,7 @@ export const PackSlider = () => {
   const handleMouseUp = () => {
     if (value[0] !== value[1]) {
       setSearchParams({ ...allParams, min: value[0] + '', max: value[1] + '' })
-      dispatch(updatePacksQueryParamsTC({ min: value[0], max: value[1] }))
+      dispatch(setPacksQueryParams({ min: value[0], max: value[1] }))
     }
   }
 

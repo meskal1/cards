@@ -33,6 +33,10 @@ const initialCard = {
   created: '',
   updated: '',
   __v: 0,
+  answerImg: '',
+  answerVideo: '',
+  questionImg: '',
+  questionVideo: '',
 }
 
 const grades = [
@@ -60,7 +64,7 @@ export const Learn = () => {
 
   const getData = async () => {
     if (packId) {
-      await dispatch(getCards({ cardsPack_id: packId }))
+      await dispatch(getCards(packId))
     }
     console.log('First useEffect')
 
@@ -103,7 +107,7 @@ export const Learn = () => {
 
   useEffect(() => {
     return () => {
-      dispatch(setInitialized({ initialized: false }))
+      dispatch(setInitialized(false))
     }
   }, [])
 
@@ -119,14 +123,15 @@ export const Learn = () => {
       if (!values.grade) {
         errors.grade = 'rate field is required'
       }
+
+      return errors
     },
     onSubmit: values => {
       handleShowAnswer()
       dispatch(gradeCard({ card_id: card._id, grade: +values.grade }))
+      formik.resetForm()
     },
   })
-
-  console.log('IS INITILIZED: ', isInitialized)
 
   return (
     <>
@@ -168,7 +173,11 @@ export const Learn = () => {
                     </RadioGroup>
                   </FormControl>
                   <div className={s.ButtonContainer}>
-                    <Button type={'submit'} variant={'contained'} disabled={!!formik.errors.grade}>
+                    <Button
+                      type={'submit'}
+                      variant={'contained'}
+                      disabled={formik.values.grade ? false : true}
+                    >
                       Next
                     </Button>
                   </div>

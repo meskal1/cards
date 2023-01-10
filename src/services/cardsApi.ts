@@ -16,7 +16,7 @@ export const cardsAPI = {
     return instance.delete<DeleteCardResponseType>('cards/card', { params: { id } })
   },
 
-  updateCard(data: ServerCardType) {
+  updateCard(data: UpdateServerCardType) {
     return instance.put<UpdateResponseType>('cards/card', { card: data })
   },
   gradeCard(data: GradeData) {
@@ -73,7 +73,12 @@ export type ServerCardType = {
   created: string
   updated: string
   __v: number
+  answerImg: string
+  answerVideo: string
+  questionImg: string
+  questionVideo: string
 }
+type UpdateServerCardType = { _id: string } & Partial<Omit<ServerCardType, '_id'>>
 
 export type CreateCardType = {
   cardsPack_id: string

@@ -8,7 +8,8 @@ import dayjs from 'dayjs'
 import { useNavigate } from 'react-router'
 import { useSearchParams } from 'react-router-dom'
 
-import { RequestStatusPayloadType } from '../../../../app/appSlice'
+import { RequestStatusType } from '../../../../app/appSlice'
+import cover from '../../../../assets/img/cover.png'
 import { HeadType } from '../../../../common/components/CustomTableHead/CustomTableHead'
 import { PATH } from '../../../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../../../hooks/reduxHooks'
@@ -39,7 +40,7 @@ export const CardsTableBody: FC<CardsTableBodyType> = ({
   const tableData = useAppSelector<AppCardType[]>(state => state.cards.tableData)
   const navigate = useNavigate()
 
-  const openCardHandler = (id: string, packId: string, requestStatus: RequestStatusPayloadType) => {
+  const openCardHandler = (id: string, packId: string, requestStatus: RequestStatusType) => {
     if (requestStatus === 'loading') return
 
     navigate(PATH.LEARN + `/${packId}`, { state: { cardId: id } })
@@ -67,6 +68,20 @@ export const CardsTableBody: FC<CardsTableBodyType> = ({
             {heads.map(h => {
               return (
                 <TableCell key={h.id}>
+                  {h.id === 'question' && row.questionImg && (
+                    <p>
+                      <img
+                        src={row.questionImg}
+                        alt="deckCover"
+                        className={s.image}
+                        onError={({ currentTarget }) => {
+                          currentTarget.onerror = null // prevents looping
+                          currentTarget.src = cover
+                        }}
+                      />
+                    </p>
+                  )}
+
                   {h.id === 'grade' ? (
                     <Rating value={row[h.id]} readOnly />
                   ) : (
@@ -81,7 +96,12 @@ export const CardsTableBody: FC<CardsTableBodyType> = ({
               <CardsActionCell
                 isAllDisabled={row.requestStatus === 'loading'}
                 onEdit={() =>
-                  handleEditCard({ id: row._id, question: row.question, answer: row.answer })
+                  handleEditCard({
+                    id: row._id,
+                    question: row.question,
+                    answer: row.answer,
+                    questionImg: row.questionImg,
+                  })
                 }
                 onDelete={() => handleDeleteCard(row._id)}
               />

@@ -6,7 +6,7 @@ import { useSearchParams } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { useGetSearchParams } from '../../../hooks/useGetSearchParams'
-import { updatePacksQueryParamsTC } from '../packsSlice'
+import { setPacksQueryParams } from '../packsSlice'
 
 import s from './PackOwnerSwitcher.module.scss'
 
@@ -23,7 +23,7 @@ export const PackOwnerSwitcher = () => {
     searchParams.delete('page')
     searchParams.delete('search')
     setSearchParams(searchParams)
-    dispatch(updatePacksQueryParamsTC({ isMyPacks: 'yes', min: 0, max: 0, page: 1, search: '' }))
+    dispatch(setPacksQueryParams({ isMyPacks: 'yes', min: 0, max: 0, page: 1, search: '' }))
   }
 
   const handleAllCards = () => {
@@ -33,7 +33,7 @@ export const PackOwnerSwitcher = () => {
     searchParams.delete('page')
     searchParams.delete('search')
     setSearchParams(searchParams)
-    dispatch(updatePacksQueryParamsTC({ isMyPacks: '', min: 0, max: 0, page: 1, search: '' }))
+    dispatch(setPacksQueryParams({ isMyPacks: '', min: 0, max: 0, page: 1, search: '' }))
   }
 
   useEffect(() => {

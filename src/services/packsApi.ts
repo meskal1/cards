@@ -61,7 +61,7 @@ export type ServerPackType = {
   __v: number
 }
 
-type UpdatePackType = Pick<ServerPackType, '_id' & 'name'>
+type UpdatePackType = Pick<ServerPackType, '_id' | 'name' | 'deckCover'>
 
 type AddPackResponseType = {
   newCardsPack: ServerPackType

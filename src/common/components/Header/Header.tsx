@@ -52,7 +52,7 @@ export const Header = () => {
               <div className={s.header__pic}>
                 <img
                   className={s.header__img}
-                  src={avatarLocal || avatar}
+                  src={avatar ? avatar : avatarLocal}
                   alt="avatar"
                   onClick={toggleMenu}
                 />

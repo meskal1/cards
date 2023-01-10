@@ -2,12 +2,15 @@ import { useCallback, useEffect, useState } from 'react'
 
 import { useNavigate, useParams } from 'react-router-dom'
 
+import { RequestStatusType } from '../../app/appSlice'
+import cover from '../../assets/img/cover.png'
 import { CustomButton } from '../../common/components/CustomButton/CustomButton'
 import { CustomPagination } from '../../common/components/CustomPagination/CustomPagination'
 import { CustomSearch } from '../../common/components/CustomSearch/CustomSearch'
 import { LoadingProgress } from '../../common/components/LoadingProgress/LoadingProgress'
 import { CustomModalDialog } from '../../common/components/ModalDialog/CustomModalDialog'
 import { PageTitleBlock } from '../../common/components/PageTitleBlock/PageTitleBlock'
+import cs from '../../common/styles/modalStyles/ModalStyles.module.scss'
 import { PATH } from '../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { useGetSearchParams } from '../../hooks/useGetSearchParams'
@@ -17,8 +20,9 @@ import {
   AppCardType,
   CardsErrorType,
   clearCardsQueryParams,
+  getCardsTC,
+  setCardsQueryParams,
   setError,
-  updateCardsQueryParamsTC,
   UpdateCardType,
 } from './cardsSlice'
 import { CardsTable } from './CardsTable/CardsTable'
@@ -33,6 +37,7 @@ export const Cards = () => {
   const tableData = useAppSelector<AppCardType[]>(state => state.cards.tableData)
   const cardsPack_id = useAppSelector(state => state.cards.queryParams.cardsPack_id)
   const packName = useAppSelector(state => state.cards.cardsData.packName)
+  const packDeckCover = useAppSelector<string | null>(state => state.cards.cardsData.packDeckCover)
   const packUserId = useAppSelector(state => state.cards.cardsData.packUserId)
   const myId = useAppSelector(state => state.profile.userData.id)
   const cardsError = useAppSelector<CardsErrorType>(state => state.cards.error)
@@ -53,6 +58,7 @@ export const Cards = () => {
     id: '',
     answer: '',
     question: '',
+    questionImg: '',
   })
 
   const handleTitleButton = useCallback(() => {
@@ -65,7 +71,8 @@ export const Cards = () => {
 
   useEffect(() => {
     ;(async () => {
-      await dispatch(updateCardsQueryParamsTC({ ...allParams, cardsPack_id: id }))
+      dispatch(setCardsQueryParams({ ...allParams, cardsPack_id: id }))
+      await dispatch(getCardsTC())
       setShowChildren(true)
     })()
   }, [id])
@@ -91,9 +98,21 @@ export const Cards = () => {
             <PageTitleBlock
               linkToPacks
               title={packName}
+              packDeckCover={packDeckCover}
               button={titleButtonName}
               buttonClick={isItMyPack ? handleTitleButton : handleLearnCards}
             />
+            <div className={`${cs.ImageContainer} ${s.ImageContainer}`}>
+              <img
+                src={packDeckCover ? packDeckCover : ''}
+                alt="cover"
+                className={cs.Image}
+                onError={({ currentTarget }) => {
+                  currentTarget.onerror = null // prevents looping
+                  currentTarget.src = cover
+                }}
+              />
+            </div>
             {(isTableNotEmpty || allParams.cardQuestion) && (
               <div className={s.cards__controlPanel}>
                 <CustomSearch cards />

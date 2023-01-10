@@ -11,11 +11,13 @@ type CustomModalDialogType = {
 }
 
 export const CustomModalDialog: FC<CustomModalDialogType> = ({ active, setActive, children }) => {
+  const handleCloseModal = () => {
+    setActive && setActive(false)
+    document.body.style.overflow = 'unset'
+  }
+
   return (
-    <div
-      className={active ? `${s.Modal__Active} ${s.Modal}` : s.Modal}
-      onClick={setActive ? () => setActive(false) : () => {}}
-    >
+    <div className={active ? `${s.Modal__Active} ${s.Modal}` : s.Modal} onClick={handleCloseModal}>
       <div
         className={active ? `${s.Content__Active} ${s.Content}` : s.Content}
         onClick={e => e.stopPropagation()}

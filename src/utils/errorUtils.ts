@@ -1,9 +1,9 @@
 import axios, { AxiosError } from 'axios'
+import { Dispatch } from 'redux'
 
 import { setAppAlertMessage, setAppStatus } from '../app/appSlice'
-import { AppDispatchType } from '../app/store'
 
-export const handleServerNetworkError = (dispatch: AppDispatchType, error: Error | AxiosError) => {
+export const handleServerNetworkError = (dispatch: Dispatch, error: Error | AxiosError) => {
   if (axios.isAxiosError(error)) {
     const err = error.response?.data
       ? (error.response.data as { error: 'string' }).error

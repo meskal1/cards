@@ -1,15 +1,21 @@
+import { useState, FC } from 'react'
+
+import Box from '@mui/material/Box'
+import Modal from '@mui/material/Modal'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
+import Typography from '@mui/material/Typography'
 import dayjs from 'dayjs'
 import { useNavigate } from 'react-router-dom'
 
-import { RequestStatusPayloadType } from '../../../../app/appSlice'
+import { RequestStatusType } from '../../../../app/appSlice'
+import cover from '../../../../assets/img/cover.png'
 import { HeadType } from '../../../../common/components/CustomTableHead/CustomTableHead'
 import { PATH } from '../../../../constants/routePaths.enum'
-import { useAppSelector } from '../../../../hooks/reduxHooks'
+import { useAppDispatch, useAppSelector } from '../../../../hooks/reduxHooks'
 import { PackDeleteDataType } from '../../Modals/DeletePack/DeletePack'
-import { AppPackType, UpdatePackDataType } from '../../packsSlice'
+import { AppPackType, setBrokenImages, UpdatePackDataType } from '../../packsSlice'
 import { PacksOrderByType } from '../PacksTable'
 
 import { PacksActionCell } from './PacksActionCell/PacksActionCell'
@@ -23,7 +29,7 @@ type PacksTableBodyType = {
   setDeleteData: (data: PackDeleteDataType) => void
 }
 
-export const PacksTableBody: React.FC<PacksTableBodyType> = ({
+export const PacksTableBody: FC<PacksTableBodyType> = ({
   heads,
   setEditData,
   openEditModal,
@@ -32,20 +38,22 @@ export const PacksTableBody: React.FC<PacksTableBodyType> = ({
 }) => {
   const tableData = useAppSelector<AppPackType[]>(state => state.packs.tableData)
   const userId = useAppSelector(state => state.profile.userData.id)
+  const brokenImages = useAppSelector(state => state.packs.brokenImages)
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
-  const handleOpenCardPack = (id: string, requestStatus: RequestStatusPayloadType) => {
+  const handleOpenCardPack = (id: string, requestStatus: RequestStatusType) => {
     if (requestStatus === 'loading') return
     navigate(PATH.CARDS + `/${id}`)
   }
 
-  const handleStudyCardPack = async (id: string) => {
-    navigate(PATH.LEARN + `/${id}`)
-  }
+  const handleStudyCardPack = (id: string) => navigate(PATH.LEARN + `/${id}`)
+
   const handleEditCardPack = (data: UpdatePackDataType) => {
     setEditData(data)
     openEditModal()
   }
+
   const handleDeleteCardPack = (data: PackDeleteDataType) => {
     setDeleteData(data)
     openDeleteModal(true)
@@ -63,10 +71,36 @@ export const PacksTableBody: React.FC<PacksTableBodyType> = ({
           >
             {heads.map(h => {
               return (
-                <TableCell key={h.id}>
-                  <p className={s.tableCellText}>
-                    {h.id === 'updated' ? dayjs(row[h.id]).format('DD.MM.YYYY') : row[h.id]}
-                  </p>
+                <TableCell className={s.tableCell} key={h.id}>
+                  <div className={`${s.cellContainer} ${s.tableCellText}`}>
+                    {h.id === 'name' &&
+                      !!row.deckCover &&
+                      !brokenImages.includes(row.deckCover) && (
+                        <div className={s.packImageWrapper}>
+                          <img
+                            src={row.deckCover ? row.deckCover : cover}
+                            alt="deckCover"
+                            className={s.packImage}
+                            onError={({}) => {
+                              dispatch(setBrokenImages(row.deckCover))
+                            }}
+                          />
+                        </div>
+                      )}
+                    {h.id === 'updated' ? (
+                      <p>{dayjs(row[h.id]).format('DD.MM.YYYY')}</p>
+                    ) : (
+                      <p
+                        className={
+                          h.id === 'name' && row.deckCover && !brokenImages.includes(row.deckCover)
+                            ? s.packName
+                            : undefined
+                        }
+                      >
+                        {row[h.id]}
+                      </p>
+                    )}
+                  </div>
                 </TableCell>
               )
             })}
@@ -75,7 +109,13 @@ export const PacksTableBody: React.FC<PacksTableBodyType> = ({
               isStudyDisabled={row.cardsCount === 0}
               isAllDisabled={row.requestStatus === 'loading'}
               onStudy={() => handleStudyCardPack(row._id)}
-              onEdit={() => handleEditCardPack({ id: row._id, name: row.name })}
+              onEdit={() =>
+                handleEditCardPack({
+                  id: row._id,
+                  name: row.name,
+                  deckCover: row.deckCover ? row.deckCover : '',
+                })
+              }
               onDelete={() => handleDeleteCardPack({ id: row._id, name: row.name })}
             />
           </TableRow>

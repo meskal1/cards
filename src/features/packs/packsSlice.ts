@@ -1,8 +1,8 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AxiosError } from 'axios'
 
-import { RequestStatusPayloadType, setAppStatus, setTableStatus } from '../../app/appSlice'
-import { AppDispatchType, RootStateType } from '../../app/store'
+import { RequestStatusType, setTableStatus } from '../../app/appSlice'
+import { RootStateType } from '../../app/store'
 import { CreatePackType, packsAPI, ServerPackType } from '../../services/packsApi'
 import { handleServerNetworkError } from '../../utils/errorUtils'
 import { setCardsData } from '../cards/cardsSlice'
@@ -26,7 +26,88 @@ const initialState = {
   },
   dataResetToggle: false,
   tableData: [] as AppPackType[],
+  brokenImages: [] as Array<string | null>,
 }
+
+export const getPacksTC = createAsyncThunk(
+  'packs/getPacks',
+  async (_, { dispatch, getState, rejectWithValue }) => {
+    try {
+      dispatch(setTableStatus('loading'))
+      const state = getState() as RootStateType
+      const { isMyPacks, page, pageCount, search, sortPacks, min, max } = state.packs.queryParams
+      const data = {
+        packName: search,
+        min,
+        max,
+        sortPacks,
+        page,
+        pageCount,
+        user_id: isMyPacks ? state.profile.userData.id : '',
+        // block,
+      }
+      const response = await packsAPI.getPacks(data)
+      const minCardsCount = response.data.minCardsCount
+      const maxCardsCount = response.data.maxCardsCount
+      const cardPacksTotalCount = response.data.cardPacksTotalCount
+
+      return {
+        tableData: response.data.cardPacks,
+        cardsCount: { minCardsCount, maxCardsCount, cardPacksTotalCount },
+      }
+    } catch (e) {
+      handleServerNetworkError(dispatch, e as Error | AxiosError)
+
+      return rejectWithValue(null)
+    } finally {
+      dispatch(setTableStatus('idle'))
+    }
+  }
+)
+
+export const deletePackTC = createAsyncThunk(
+  'packs/deletePack',
+  async (id: string, { dispatch, rejectWithValue }) => {
+    try {
+      await packsAPI.deletePack(id)
+      await dispatch(getPacksTC())
+    } catch (e) {
+      handleServerNetworkError(dispatch, e as Error | AxiosError)
+
+      return rejectWithValue({ packId: id, requestStatus: 'idle' })
+    }
+  }
+)
+
+export const addPackTC = createAsyncThunk(
+  'packs/addPack',
+  async (data: CreatePackType, { dispatch }) => {
+    try {
+      await packsAPI.addPack(data)
+      await dispatch(getPacksTC())
+    } catch (e) {
+      handleServerNetworkError(dispatch, e as Error | AxiosError)
+    }
+  }
+)
+
+export const updatePackTC = createAsyncThunk(
+  'packs/updatePack',
+  async (data: UpdatePackDataType, { dispatch, getState, rejectWithValue }) => {
+    try {
+      const state = getState() as RootStateType
+      const updateCardsData = state.cards.cardsData
+
+      await packsAPI.updatePack({ _id: data.id, name: data.name, deckCover: data.deckCover })
+      await dispatch(getPacksTC())
+      dispatch(setCardsData({ ...updateCardsData, packName: data.name }))
+    } catch (e) {
+      handleServerNetworkError(dispatch, e as Error | AxiosError)
+
+      return rejectWithValue(data.id)
+    }
+  }
+)
 
 const packsSlice = createSlice({
   name: 'packs',
@@ -34,12 +115,6 @@ const packsSlice = createSlice({
   reducers: {
     setPacksQueryParams(state, action: PayloadAction<PacksQueryParamsType>) {
       state.queryParams = { ...state.queryParams, ...action.payload }
-    },
-    setPacksTableData(state, action: PayloadAction<PacksTablePayloadType>) {
-      state.tableData = action.payload.map(p => ({ ...p, requestStatus: 'idle' }))
-    },
-    setCardsCount(state, action: PayloadAction<SetCardsCountPayloadType>) {
-      state.cardsCount = { ...action.payload }
     },
     setPackRequestStatus(state, action: PayloadAction<PackRequestStatusPayloadType>) {
       state.tableData.forEach(p => {
@@ -54,128 +129,47 @@ const packsSlice = createSlice({
     toggleResetData(state) {
       state.dataResetToggle = !state.dataResetToggle
     },
+    setBrokenImages(state, action) {
+      state.brokenImages.push(action.payload)
+    },
+  },
+  extraReducers: builder => {
+    builder.addCase(getPacksTC.fulfilled, (state, action) => {
+      state.tableData = action.payload.tableData.map(p => ({ ...p, requestStatus: 'idle' }))
+      state.cardsCount = { ...action.payload.cardsCount }
+    })
+
+    builder
+      .addCase(deletePackTC.pending, (state, action) => {
+        state.tableData.forEach(p =>
+          p._id === action.meta.arg ? (p.requestStatus = 'loading') : ''
+        )
+      })
+      .addCase(deletePackTC.rejected, (state, action) => {
+        state.tableData.forEach(p => (p._id === action.meta.arg ? (p.requestStatus = 'idle') : ''))
+      })
+
+    builder
+      .addCase(updatePackTC.pending, (state, action) => {
+        state.tableData.forEach(p =>
+          p._id === action.meta.arg.id ? (p.requestStatus = 'loading') : ''
+        )
+      })
+      .addCase(updatePackTC.rejected, (state, action) => {
+        state.tableData.forEach(p => (p._id === action.payload ? (p.requestStatus = 'idle') : ''))
+      })
   },
 })
 
 export const packsReducer = packsSlice.reducer
 
 // ACTIONS
-export const {
-  setPacksQueryParams,
-  setPackRequestStatus,
-  setPacksTableData,
-  setCardsCount,
-  clearPacksQueryParams,
-  toggleResetData,
-} = packsSlice.actions
-
-// THUNKS
-export const updatePacksQueryParamsTC =
-  (queryProps: PacksQueryParamsType) =>
-  async (dispatch: AppDispatchType, getState: () => RootStateType) => {
-    try {
-      dispatch(setTableStatus('loading'))
-
-      // THE TYPES BUG WAS FOUND, THIS IS THE FIX
-      const { max, min, page, pageCount } = queryProps
-      const stateQueryParams = getState().packs.queryParams
-
-      dispatch(
-        setPacksQueryParams({
-          ...queryProps,
-          max: max || max === 0 ? +max : stateQueryParams.max,
-          min: min || min === 0 ? +min : stateQueryParams.min,
-          page: page || page === 0 ? +page : stateQueryParams.page,
-          pageCount: pageCount || pageCount === 0 ? +pageCount : stateQueryParams.pageCount,
-        })
-      )
-      await dispatch(getPacksTC())
-
-      return true
-    } catch (e) {
-      handleServerNetworkError(dispatch, e as Error | AxiosError)
-    } finally {
-      dispatch(setTableStatus('idle'))
-    }
-  }
-
-export const getPacksTC =
-  () => async (dispatch: AppDispatchType, getState: () => RootStateType) => {
-    try {
-      const { isMyPacks, page, pageCount, search, sortPacks, min, max } =
-        getState().packs.queryParams
-      const data = {
-        packName: search,
-        min,
-        max,
-        sortPacks,
-        page,
-        pageCount,
-        user_id: isMyPacks ? getState().profile.userData.id : '',
-        // block,
-      }
-      const response = await packsAPI.getPacks(data)
-      const minCardsCount = response.data.minCardsCount
-      const maxCardsCount = response.data.maxCardsCount
-      const cardPacksTotalCount = response.data.cardPacksTotalCount
-
-      dispatch(setPacksTableData(response.data.cardPacks))
-      dispatch(setCardsCount({ minCardsCount, maxCardsCount, cardPacksTotalCount }))
-    } catch (e) {
-      handleServerNetworkError(dispatch, e as Error | AxiosError)
-    }
-  }
-
-export const deletePackTC = (id: string) => async (dispatch: AppDispatchType) => {
-  try {
-    dispatch(setAppStatus('loading'))
-    dispatch(setPackRequestStatus({ packId: id, requestStatus: 'loading' }))
-    await packsAPI.deletePack(id)
-    await dispatch(getPacksTC())
-  } catch (e) {
-    dispatch(setPackRequestStatus({ packId: id, requestStatus: 'idle' }))
-    handleServerNetworkError(dispatch, e as Error | AxiosError)
-  } finally {
-    dispatch(setAppStatus('idle'))
-  }
-}
-
-export const addPackTC = (data: CreatePackType) => async (dispatch: AppDispatchType) => {
-  try {
-    dispatch(setAppStatus('loading'))
-    dispatch(setTableStatus('loading'))
-    await packsAPI.addPack(data)
-    await dispatch(getPacksTC())
-  } catch (e) {
-    handleServerNetworkError(dispatch, e as Error | AxiosError)
-  } finally {
-    dispatch(setAppStatus('idle'))
-    dispatch(setTableStatus('idle'))
-  }
-}
-
-export const updatePackTC =
-  (data: UpdatePackDataType) =>
-  async (dispatch: AppDispatchType, getState: () => RootStateType) => {
-    try {
-      dispatch(setAppStatus('loading'))
-      dispatch(setPackRequestStatus({ packId: data.id, requestStatus: 'loading' }))
-      const updateCardsData = getState().cards.cardsData
-
-      await packsAPI.updatePack({ _id: data.id, name: data.name })
-      await dispatch(getPacksTC())
-      dispatch(setCardsData({ ...updateCardsData, packName: data.name }))
-    } catch (e) {
-      dispatch(setPackRequestStatus({ packId: data.id, requestStatus: 'idle' }))
-      handleServerNetworkError(dispatch, e as Error | AxiosError)
-    } finally {
-      dispatch(setAppStatus('idle'))
-    }
-  }
+export const { setPacksQueryParams, setBrokenImages, clearPacksQueryParams, toggleResetData } =
+  packsSlice.actions
 
 // TYPES
 export type PacksStateType = typeof initialState
-export type AppPackType = ServerPackType & { requestStatus: RequestStatusPayloadType }
+export type AppPackType = ServerPackType & { requestStatus: RequestStatusType }
 
 export type SortValuesType =
   | '0cardsCount'
@@ -187,17 +181,9 @@ export type SortValuesType =
   | '0user_name'
   | '1user_name'
 
-type PacksTablePayloadType = ServerPackType[]
-
 type PackRequestStatusPayloadType = {
   packId: string
-  requestStatus: RequestStatusPayloadType
-}
-
-type SetCardsCountPayloadType = {
-  minCardsCount: number
-  maxCardsCount: number
-  cardPacksTotalCount: number
+  requestStatus: RequestStatusType
 }
 
 type SetPacksQueryParamsPayloadType = {
@@ -215,4 +201,5 @@ export type PacksQueryParamsType = Partial<SetPacksQueryParamsPayloadType>
 export type UpdatePackDataType = {
   id: string
   name: string
+  deckCover: string
 }

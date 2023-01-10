@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 
 import { FormControlLabel } from '@mui/material'
 import Button from '@mui/material/Button'
@@ -6,6 +6,7 @@ import Checkbox from '@mui/material/Checkbox'
 import TextField from '@mui/material/TextField'
 import { useFormik } from 'formik'
 
+import cs from '../../../../common/styles/modalStyles/ModalStyles.module.scss'
 import { useAppDispatch } from '../../../../hooks/reduxHooks'
 import { addPackTC } from '../../packsSlice'
 
@@ -22,8 +23,14 @@ type FormikErrorType = {
 export const AddPack: React.FC<AddPackType> = ({ activeModal }) => {
   const [isDisabled, setIsDisabled] = useState(true)
   const [errors, setErrors] = useState<FormikErrorType>({ name: '' })
+  const [image, setImage] = useState('')
 
   const dispatch = useAppDispatch()
+
+  const handleCloseModal = () => {
+    activeModal(false)
+    document.body.style.overflow = 'unset'
+  }
 
   const formik = useFormik({
     initialValues: {
@@ -47,17 +54,44 @@ export const AddPack: React.FC<AddPackType> = ({ activeModal }) => {
       return errors
     },
     onSubmit: async values => {
-      await dispatch(addPackTC({ ...values }))
+      await dispatch(addPackTC({ ...values, deckCover: image ? image : '' }))
       activeModal(false)
+      document.body.style.overflow = 'unset'
       formik.resetForm()
     },
   })
+
+  //to be refactored as util function
+  const handleCoverInput = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length) {
+      const file = e.target.files[0]
+
+      if (file.size < 4000000 && file.type.includes('image')) {
+        const reader = new FileReader()
+
+        reader.onload = () => {
+          const file64 = reader.result as string
+
+          setImage(file64)
+        }
+
+        reader.readAsDataURL(file)
+      }
+    }
+  }
 
   return (
     <div className={s.Container}>
       <form onSubmit={formik.handleSubmit}>
         <h3 className={s.Title}>Add Pack</h3>
-        <TextField margin="dense" {...formik.getFieldProps('name')} size={'small'} label={'name'} />
+        <div className={s.FormFields}>
+          <TextField
+            margin="dense"
+            {...formik.getFieldProps('name')}
+            size={'small'}
+            label={'name'}
+          />
+        </div>
         {
           <div
             className={
@@ -67,6 +101,19 @@ export const AddPack: React.FC<AddPackType> = ({ activeModal }) => {
             {errors.name}
           </div>
         }
+        {image ? (
+          <div className={cs.ImageContainer}>
+            <img src={image} alt="cover" className={cs.Image} />
+          </div>
+        ) : (
+          ''
+        )}
+        <label>
+          <input type="file" hidden onChange={handleCoverInput} accept={'image/*'} />
+          <Button variant={'contained'} className={cs.FormFields} component={'span'}>
+            Add Pack Cover
+          </Button>
+        </label>
         <div>
           <FormControlLabel
             control={
@@ -76,7 +123,7 @@ export const AddPack: React.FC<AddPackType> = ({ activeModal }) => {
           />
         </div>
         <div className={s.Submit}>
-          <Button onClick={() => activeModal(false)} type={'button'} variant="outlined">
+          <Button onClick={handleCloseModal} type={'button'} variant="outlined">
             Cancel
           </Button>
           <Button type={'submit'} variant="contained" disabled={isDisabled}>
