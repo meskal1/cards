@@ -12,6 +12,8 @@
   }
 
   &__title {
+    display: flex;
+
     max-width: 50%;
 
     font-size: 22px;
