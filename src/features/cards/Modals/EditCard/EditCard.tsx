@@ -50,8 +50,6 @@ export const EditCard: FC<AddCardTextFormType> = ({ active, closeModal, cardsDat
         cardsData.answer !== answer ||
         cardsData.questionImg !== image
       ) {
-        debugger
-        console.log('Check: ', cardsData.questionImg === image)
         await dispatch(updateCardTC({ id: cardsData.id, question, answer, questionImg: image }))
       }
       closeModal(false)
