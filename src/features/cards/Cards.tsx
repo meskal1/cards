@@ -2,13 +2,12 @@ import { useCallback, useEffect, useState } from 'react'
 
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { RequestStatusType } from '../../app/appSlice'
 import cover from '../../assets/img/cover.png'
 import { CustomButton } from '../../common/components/CustomButton/CustomButton'
+import { CustomModalDialog } from '../../common/components/CustomModalDialog/CustomModalDialog'
 import { CustomPagination } from '../../common/components/CustomPagination/CustomPagination'
 import { CustomSearch } from '../../common/components/CustomSearch/CustomSearch'
 import { LoadingProgress } from '../../common/components/LoadingProgress/LoadingProgress'
-import { CustomModalDialog } from '../../common/components/ModalDialog/CustomModalDialog'
 import { PageTitleBlock } from '../../common/components/PageTitleBlock/PageTitleBlock'
 import cs from '../../common/styles/modalStyles/ModalStyles.module.scss'
 import { PATH } from '../../constants/routePaths.enum'
@@ -23,12 +22,9 @@ import {
   getCardsTC,
   setCardsQueryParams,
   setError,
-  UpdateCardType,
 } from './cardsSlice'
 import { CardsTable } from './CardsTable/CardsTable'
 import { AddCard } from './Modals/AddCard/AddCard'
-import { DeleteCard } from './Modals/DeleteCard/DeleteCard'
-import { EditCard } from './Modals/EditCard/EditCard'
 
 export const Cards = () => {
   const dispatch = useAppDispatch()
@@ -50,19 +46,10 @@ export const Cards = () => {
       ? `${isItMyPack ? 'add new card' : 'learn to pack'}`
       : ''
 
-  const [addCard, setAddCard] = useState(false)
-  const [deleteCard, setDeleteCard] = useState(false)
-  const [deleteData, setDeleteData] = useState('')
-  const [editCard, setEditCard] = useState(false)
-  const [editData, setEditData] = useState<UpdateCardType>({
-    id: '',
-    answer: '',
-    question: '',
-    questionImg: '',
-  })
+  const [openAddCard, setOpenAddCard] = useState(false)
 
   const handleTitleButton = useCallback(() => {
-    setAddCard(true)
+    setOpenAddCard(true)
   }, [])
 
   const handleLearnCards = () => {
@@ -121,13 +108,7 @@ export const Cards = () => {
           </div>
           {isTableNotEmpty ? (
             <>
-              <CardsTable
-                isMine={isItMyPack}
-                openEdit={setEditCard}
-                setEditData={setEditData}
-                setDeleteData={setDeleteData}
-                openDelete={setDeleteCard}
-              />
+              <CardsTable isMine={isItMyPack} />
               <CustomPagination cards />
             </>
           ) : (
@@ -143,25 +124,13 @@ export const Cards = () => {
             </div>
           )}
 
-          {addCard ? (
-            <CustomModalDialog active={addCard} setActive={setAddCard}>
-              <AddCard active={addCard} closeModal={setAddCard} cardsPack_id={cardsPack_id} />
-            </CustomModalDialog>
-          ) : (
-            ''
-          )}
-
-          {editCard ? (
-            <CustomModalDialog active={editCard} setActive={setEditCard}>
-              <EditCard closeModal={setEditCard} cardsData={editData} active={editCard} />
-            </CustomModalDialog>
-          ) : (
-            ''
-          )}
-
-          {deleteCard ? (
-            <CustomModalDialog active={deleteCard} setActive={setDeleteCard}>
-              <DeleteCard activeModal={setDeleteCard} id={deleteData} />
+          {openAddCard ? (
+            <CustomModalDialog open={openAddCard} closeModal={setOpenAddCard}>
+              <AddCard
+                active={openAddCard}
+                closeModal={setOpenAddCard}
+                cardsPack_id={cardsPack_id}
+              />
             </CustomModalDialog>
           ) : (
             ''
