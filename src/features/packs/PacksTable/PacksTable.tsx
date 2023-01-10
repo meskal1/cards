@@ -1,12 +1,9 @@
-import { FC, useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
-import { Close } from '@mui/icons-material'
 import Box from '@mui/material/Box'
-import Modal from '@mui/material/Modal'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
 import TableContainer from '@mui/material/TableContainer'
-import Typography from '@mui/material/Typography'
 import { useSearchParams } from 'react-router-dom'
 
 import { RequestStatusType } from '../../../app/appSlice'
@@ -58,7 +55,6 @@ export const PacksTable = () => {
     name: '',
   })
   const handleOpen = () => setOpenEditModal(true)
-  const handleClose = () => setOpenEditModal(false)
   const allParams = useGetSearchParams()
 
   // Check current order
@@ -75,19 +71,9 @@ export const PacksTable = () => {
     dispatch(setPacksQueryParams({ sortPacks: newServerOrder }))
   }
 
-  const handleOpenEditModal = useCallback(() => {
-    //openEditModal(true)
-    handleOpen()
-  }, [openEditModal])
-
   useEffect(() => {
     dispatch(getPacksTC())
   }, [queryParams])
-
-  const handleSetEditData = useCallback(
-    (data: UpdatePackDataType) => setEditData(data),
-    [setEditData]
-  )
 
   return (
     <>
@@ -108,7 +94,7 @@ export const PacksTable = () => {
                 ) : (
                   <PacksTableBody
                     heads={heads}
-                    openEditModal={handleOpenEditModal}
+                    openEditModal={setOpenEditModal}
                     setEditData={setEditData}
                     openDeleteModal={setOpenDeleteModal}
                     setDeleteData={setDeleteData}
