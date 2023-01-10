@@ -1,8 +1,5 @@
 import { ChangeEvent, useCallback, useEffect } from 'react'
 
-import { CameraAlt } from '@mui/icons-material'
-import { IconButton } from '@mui/material'
-
 import { setAppAlertMessage } from '../../app/appSlice'
 import avatarLocal from '../../assets/img/avatar.jpg'
 import { BackToPacks } from '../../common/components/BackToPacks/BackToPacks'
@@ -20,9 +17,7 @@ export const Profile = () => {
   const email = useAppSelector(state => state.profile.userData.email)
   const avatar = useAppSelector(state => state.profile.userData.avatar)
 
-  const onLogOutHandler = () => {
-    dispatch(logOutTC())
-  }
+  const onLogOutHandler = () => dispatch(logOutTC())
 
   const changeUserName = useCallback(
     (newName: string) => {
@@ -41,8 +36,6 @@ export const Profile = () => {
     if (e.target.files && e.target.files.length) {
       const file = e.target.files[0]
 
-      console.log('FILE: ', file)
-
       if (file.size < 4000000 && file.type.includes('image')) {
         const reader = new FileReader()
 
@@ -50,7 +43,6 @@ export const Profile = () => {
           const file64 = reader.result as string
 
           dispatch(updateUserDataTC({ avatar: file64 }))
-          console.log('IMAGE: ', file64)
         }
 
         reader.readAsDataURL(file)
@@ -79,17 +71,14 @@ export const Profile = () => {
                 onError={handleInputAvatarError}
               />
             </div>
-            <label className={s.profile__label}>
+            <label>
               <input
                 type="file"
                 onChange={handleUpload}
                 style={{ display: 'none' }}
                 accept={'image/*'}
               />
-              <IconButton component={'span'}>
-                {/* <CameraAlt className={s.profile__avatarIcon} /> */}
-                <div className={s.profile__avatarIcon} />
-              </IconButton>
+              <div className={s.profile__avatarIcon} />
             </label>
           </div>
           <div className={s.profile__userName}>

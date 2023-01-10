@@ -6,11 +6,12 @@
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  row-gap: 40px;
   align-self: flex-start;
 
   width: 100%;
   height: 100%;
-  padding: 60px 0px 0px 0px;
+  padding: 22px 0px 0px 0px;
 
   text-align: center;
 }
@@ -70,8 +71,6 @@
   }
 
   &__pic {
-    cursor: pointer;
-
     position: relative;
 
     overflow: hidden;
@@ -91,13 +90,6 @@
     height: 100%;
 
     object-fit: cover;
-  }
-
-  &__label {
-    display: flex;
-    justify-content: flex-end;
-
-    margin-top: -20px;
   }
 
   &__avatarIcon {
