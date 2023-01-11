@@ -6,13 +6,16 @@ import { HashRouter } from 'react-router-dom'
 
 import App from './app/App'
 import { store } from './app/store'
+import RouterUtils from './utils/routerUtils'
 
 const root = ReactDOMClient.createRoot(document.getElementById('root') as HTMLElement)
 
 root.render(
   <Provider store={store}>
     <HashRouter>
-      <App />
+      <RouterUtils>
+        <App />
+      </RouterUtils>
     </HashRouter>
   </Provider>
 )
