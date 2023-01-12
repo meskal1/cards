@@ -17,9 +17,9 @@ export const Profile = () => {
   const email = useAppSelector(state => state.profile.userData.email)
   const avatar = useAppSelector(state => state.profile.userData.avatar)
 
-  const onLogOutHandler = () => dispatch(logOutTC())
+  const handleOnLogOut = () => dispatch(logOutTC())
 
-  const changeUserName = useCallback(
+  const handleChangeUserName = useCallback(
     (newName: string) => {
       dispatch(updateUserDataTC({ name: newName }))
     },
@@ -32,7 +32,7 @@ export const Profile = () => {
     }
   }, [])
 
-  const handleUpload = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleUploadAvatar = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length) {
       const file = e.target.files[0]
 
@@ -74,7 +74,7 @@ export const Profile = () => {
             <label>
               <input
                 type="file"
-                onChange={handleUpload}
+                onChange={handleUploadAvatar}
                 style={{ display: 'none' }}
                 accept={'image/*'}
               />
@@ -82,10 +82,10 @@ export const Profile = () => {
             </label>
           </div>
           <div className={s.profile__userName}>
-            <EditableSpan changeName={changeUserName} />
+            <EditableSpan changeName={handleChangeUserName} />
           </div>
           <p className={s.profile__userEmail}>{email}</p>
-          <CustomButton className={s.profile__button} onClick={onLogOutHandler}>
+          <CustomButton className={s.profile__button} onClick={handleOnLogOut}>
             <p className={s.profile__buttonIcon}>log out</p>
           </CustomButton>
         </div>

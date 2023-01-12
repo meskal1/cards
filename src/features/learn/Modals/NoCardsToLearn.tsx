@@ -1,11 +1,9 @@
-import React from 'react'
-
 import Button from '@mui/material/Button'
 import { useNavigate } from 'react-router'
 
 import { PATH } from '../../../constants/routePaths.enum'
 import { useAppSelector } from '../../../hooks/reduxHooks'
-import { extractPacksQueryParams } from '../../../utils/extractPacksQueryParams'
+import { packsQueryString } from '../../../utils/packsQueryString'
 import { initialPacksQueryParams } from '../../packs/packsSlice'
 
 import s from './NoCardsToLearn.module.scss'
@@ -13,7 +11,7 @@ import s from './NoCardsToLearn.module.scss'
 export const NoCardsToLearn = () => {
   const navigate = useNavigate()
   const packsQueryParams = useAppSelector(state => state.packs.queryParams)
-  const queryString = '?' + extractPacksQueryParams(packsQueryParams, initialPacksQueryParams)
+  const queryString = '?' + packsQueryString(packsQueryParams, initialPacksQueryParams)
 
   const handleChooseNewPack = () => navigate(PATH.PACKS + queryString)
 

@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { PATH } from '../../../constants/routePaths.enum'
 import { initialPacksQueryParams } from '../../../features/packs/packsSlice'
 import { useAppSelector } from '../../../hooks/reduxHooks'
-import { extractPacksQueryParams } from '../../../utils/extractPacksQueryParams'
+import { packsQueryString } from '../../../utils/packsQueryString'
 
 import s from './BackToPacks.module.scss'
 
@@ -14,7 +14,7 @@ export const BackToPacks = () => {
   const queryString =
     location.pathname === '/profile'
       ? ''
-      : '?' + extractPacksQueryParams(packsQueryParams, initialPacksQueryParams)
+      : '?' + packsQueryString(packsQueryParams, initialPacksQueryParams)
 
   return (
     <>
