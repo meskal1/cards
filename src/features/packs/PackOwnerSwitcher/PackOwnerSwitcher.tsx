@@ -1,46 +1,18 @@
-import { useEffect } from 'react'
-
 import Button from '@mui/material/Button'
 import ButtonGroup from '@mui/material/ButtonGroup'
-import { useSearchParams } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
-import { useGetSearchParams } from '../../../hooks/useGetSearchParams'
-import { setPacksQueryParams } from '../packsSlice'
+import { initialPacksQueryParams as initParams, setPacksQueryParams } from '../packsSlice'
 
 import s from './PackOwnerSwitcher.module.scss'
 
 export const PackOwnerSwitcher = () => {
   const dispatch = useAppDispatch()
-  const [searchParams, setSearchParams] = useSearchParams()
-  const allParams = useGetSearchParams()
   const isMyPacks = useAppSelector(state => state.packs.queryParams.isMyPacks)
 
-  const handleMyCards = () => {
-    setSearchParams({ ...allParams, isMyPacks: 'yes' })
-    searchParams.delete('min')
-    searchParams.delete('max')
-    searchParams.delete('page')
-    searchParams.delete('search')
-    setSearchParams(searchParams)
-    dispatch(setPacksQueryParams({ isMyPacks: 'yes', min: 0, max: 0, page: 1, search: '' }))
-  }
+  const handleMyCards = () => dispatch(setPacksQueryParams({ ...initParams, isMyPacks: 'yes' }))
 
-  const handleAllCards = () => {
-    searchParams.delete('isMyPacks')
-    searchParams.delete('min')
-    searchParams.delete('max')
-    searchParams.delete('page')
-    searchParams.delete('search')
-    setSearchParams(searchParams)
-    dispatch(setPacksQueryParams({ isMyPacks: '', min: 0, max: 0, page: 1, search: '' }))
-  }
-
-  useEffect(() => {
-    if (isMyPacks && allParams.isMyPacks === undefined) {
-      setSearchParams({ ...allParams, isMyPacks: 'yes' })
-    }
-  }, [allParams])
+  const handleAllCards = () => dispatch(setPacksQueryParams(initParams))
 
   return (
     <>

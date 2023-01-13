@@ -1,9 +1,7 @@
-import { useState, useEffect } from 'react'
-
-import { useSearchParams } from 'react-router-dom'
+import { useState } from 'react'
 
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
-import { useGetSearchParams } from '../../../hooks/useGetSearchParams'
+import { useEffectAfterMount } from '../../../hooks/useEffectAfterMount'
 import { setPacksQueryParams } from '../packsSlice'
 
 import { StyledSlider } from './CustomStyledSlider/CustomStyledSlider'
@@ -11,36 +9,23 @@ import s from './PackSlider.module.scss'
 
 export const PackSlider = () => {
   const dispatch = useAppDispatch()
-  const [searchParams, setSearchParams] = useSearchParams()
-  const allParams = useGetSearchParams()
+  const min = useAppSelector(state => state.packs.queryParams.min)
+  const max = useAppSelector(state => state.packs.queryParams.max)
   const minCardsCount = useAppSelector(state => state.packs.cardsCount.minCardsCount)
   const maxCardsCount = useAppSelector(state => state.packs.cardsCount.maxCardsCount)
-  const dataResetToggle = useAppSelector(state => state.packs.dataResetToggle)
-  const [value, setValue] = useState<number[]>([
-    +allParams.min || minCardsCount,
-    +allParams.max || maxCardsCount,
-  ])
+  const [value, setValue] = useState<number[]>([min || minCardsCount, max || maxCardsCount])
 
-  const handleChange = (e: Event, newValue: number | number[]) => {
-    setValue(newValue as number[])
-  }
+  const handleChange = (e: Event, newValue: number | number[]) => setValue(newValue as number[])
 
   const handleMouseUp = () => {
     if (value[0] !== value[1]) {
-      setSearchParams({ ...allParams, min: value[0] + '', max: value[1] + '' })
       dispatch(setPacksQueryParams({ min: value[0], max: value[1] }))
     }
   }
 
-  useEffect(() => {
-    setValue([+allParams.min || minCardsCount, +allParams.max || maxCardsCount])
-  }, [minCardsCount, maxCardsCount])
-
-  useEffect(() => {
-    if (!+allParams.min) {
-      setValue([minCardsCount, maxCardsCount])
-    }
-  }, [dataResetToggle])
+  useEffectAfterMount(() => {
+    setValue([min || minCardsCount, max || maxCardsCount])
+  }, [minCardsCount, maxCardsCount, min, max])
 
   return (
     <>

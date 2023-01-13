@@ -1,10 +1,9 @@
-import { FC, useEffect } from 'react'
+import { FC } from 'react'
 
 import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
 import TableContainer from '@mui/material/TableContainer'
-import { useSearchParams } from 'react-router-dom'
 
 import { RequestStatusType } from '../../../app/appSlice'
 import { TableBodySkeleton } from '../../../common/components/CustomSkeletons/TableBodySkeleton/TableBodySkeleton'
@@ -13,9 +12,8 @@ import {
   HeadType,
 } from '../../../common/components/CustomTableHead/CustomTableHead'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
-import { useGetSearchParams } from '../../../hooks/useGetSearchParams'
 import { ServerOrderType, TableOrder, TableOrderType } from '../../packs/PacksTable/PacksTable'
-import { getCardsTC, setCardsQueryParams, SortValuesCardsType, UpdateCardType } from '../cardsSlice'
+import { setCardsQueryParams, SortValuesCardsType, UpdateCardType } from '../cardsSlice'
 
 import { CardsTableBody } from './CardsTableBody/CardsTableBody'
 
@@ -46,11 +44,7 @@ export const CardsTable: FC<CardsTablePropsType> = ({
   const status = useAppSelector<RequestStatusType>(state => state.app.tableStatus)
   const serverSort = useAppSelector<SortValuesCardsType>(state => state.cards.queryParams.sortCards)
   const pageCount = useAppSelector(state => state.cards.queryParams.pageCount)
-  const queryParams = useAppSelector(state => state.cards.queryParams)
   const dispatch = useAppDispatch()
-  const [searchParams, setSearchParams] = useSearchParams()
-  const allParams = useGetSearchParams()
-
   const serverOrder = serverSort.slice(0, 1) as ServerOrderType
   const tableOrderBy = serverSort.slice(1) as CardsOrderByType
   const tableOrder: TableOrderType = serverOrder === TableOrder.asc ? 'asc' : 'desc'
@@ -58,16 +52,10 @@ export const CardsTable: FC<CardsTablePropsType> = ({
   const handleSetSort = (property: CardsOrderByType) => {
     const isAsc = tableOrderBy === property && tableOrder === 'asc'
     const newOrder = isAsc ? 'desc' : 'asc'
-
     const newServerOrder: SortValuesCardsType = `${TableOrder[newOrder]}${property}`
 
-    setSearchParams({ ...allParams, sortCards: newServerOrder })
     dispatch(setCardsQueryParams({ sortCards: newServerOrder }))
   }
-
-  useEffect(() => {
-    dispatch(getCardsTC())
-  }, [queryParams])
 
   return (
     <Box>

@@ -24,7 +24,6 @@ const initialState = {
     maxCardsCount: 0,
     cardPacksTotalCount: 0,
   },
-  dataResetToggle: false,
   tableData: [] as AppPackType[],
   brokenImages: [] as Array<string | null>,
 }
@@ -126,9 +125,6 @@ const packsSlice = createSlice({
     clearPacksQueryParams(state) {
       state.queryParams = initialState.queryParams
     },
-    toggleResetData(state) {
-      state.dataResetToggle = !state.dataResetToggle
-    },
     setBrokenImages(state, action) {
       state.brokenImages.push(action.payload)
     },
@@ -164,8 +160,7 @@ const packsSlice = createSlice({
 export const packsReducer = packsSlice.reducer
 
 // ACTIONS
-export const { setPacksQueryParams, setBrokenImages, clearPacksQueryParams, toggleResetData } =
-  packsSlice.actions
+export const { setPacksQueryParams, setBrokenImages, clearPacksQueryParams } = packsSlice.actions
 
 // TYPES
 export type PacksStateType = typeof initialState

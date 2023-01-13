@@ -7,7 +7,7 @@ import { setPacksQueryParams } from '../../../features/packs/packsSlice'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { useDebounce } from '../../../hooks/useDebounce'
 import { useEffectAfterMount } from '../../../hooks/useEffectAfterMount'
-import { useGetQueryParams } from '../../../hooks/useGetQueryParams'
+import { getQueryParams } from '../../../utils/getQueryParams'
 
 import s from './CustomSearch.module.scss'
 
@@ -17,7 +17,7 @@ type CustomSearchType = {
 
 export const CustomSearch: FC<CustomSearchType> = ({ cards }) => {
   const dispatch = useAppDispatch()
-  const allParams = useGetQueryParams()
+  const allParams = getQueryParams()
   const search = useAppSelector(state => state.packs.queryParams.search)
   const cardQuestion = useAppSelector(state => state.cards.queryParams.cardQuestion)
   const [inputValue, setInputValue] = useState(allParams.search || allParams.cardQuestion || '')
@@ -27,7 +27,6 @@ export const CustomSearch: FC<CustomSearchType> = ({ cards }) => {
     setInputValue(e.currentTarget.value)
   }
 
-  console.log('RENDER SEARCH')
   useEffectAfterMount(() => {
     if (cards) {
       if (cardQuestion !== inputValue) {

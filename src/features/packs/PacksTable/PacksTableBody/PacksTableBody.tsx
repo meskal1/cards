@@ -1,19 +1,16 @@
-import { useState, FC } from 'react'
+import { FC } from 'react'
 
-import Box from '@mui/material/Box'
-import Modal from '@mui/material/Modal'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
-import Typography from '@mui/material/Typography'
 import dayjs from 'dayjs'
-import { useNavigate } from 'react-router-dom'
 
 import { RequestStatusType } from '../../../../app/appSlice'
 import cover from '../../../../assets/img/cover.png'
 import { HeadType } from '../../../../common/components/CustomTableHead/CustomTableHead'
 import { PATH } from '../../../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../../../hooks/reduxHooks'
+import { useNavigateNoUpdates } from '../../../../utils/routerUtils'
 import { PackDeleteDataType } from '../../Modals/DeletePack/DeletePack'
 import { AppPackType, setBrokenImages, UpdatePackDataType } from '../../packsSlice'
 import { PacksOrderByType } from '../PacksTable'
@@ -40,7 +37,7 @@ export const PacksTableBody: FC<PacksTableBodyType> = ({
   const userId = useAppSelector(state => state.profile.userData.id)
   const brokenImages = useAppSelector(state => state.packs.brokenImages)
   const dispatch = useAppDispatch()
-  const navigate = useNavigate()
+  const navigate = useNavigateNoUpdates()
 
   const handleOpenCardPack = (id: string, requestStatus: RequestStatusType) => {
     if (requestStatus === 'loading') return

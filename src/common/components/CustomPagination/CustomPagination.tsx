@@ -2,13 +2,12 @@ import { ChangeEvent, FC, useEffect } from 'react'
 
 import Pagination from '@mui/material/Pagination'
 import TablePagination from '@mui/material/TablePagination'
-import { useSearchParams } from 'react-router-dom'
 
 import { RequestStatusType } from '../../../app/appSlice'
 import { setCardsQueryParams } from '../../../features/cards/cardsSlice'
 import { setPacksQueryParams } from '../../../features/packs/packsSlice'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
-import { useGetSearchParams } from '../../../hooks/useGetSearchParams'
+import { getQueryParams } from '../../../utils/getQueryParams'
 
 import s from './CustomPagination.module.scss'
 
@@ -18,8 +17,7 @@ type CustomPaginationType = {
 
 export const CustomPagination: FC<CustomPaginationType> = ({ cards }) => {
   const dispatch = useAppDispatch()
-  const [searchParams, setSearchParams] = useSearchParams()
-  const allParams = useGetSearchParams()
+  const allParams = getQueryParams()
   const isDataLoading = useAppSelector<RequestStatusType>(state => state.app.tableStatus)
   const pagePacks = useAppSelector(state => state.packs.queryParams.page)
   const pageCards = useAppSelector(state => state.cards.queryParams.page)
@@ -42,21 +40,14 @@ export const CustomPagination: FC<CustomPaginationType> = ({ cards }) => {
     }
   }
 
-  const handleChangePage = (event: ChangeEvent<unknown>, page: number) => {
-    dispatchData({ page })
-
-    setSearchParams({ ...allParams, page: page + '' })
-  }
+  const handleChangePage = (event: ChangeEvent<unknown>, page: number) => dispatchData({ page })
 
   const handleChangeRowsPerPage = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     dispatchData({ pageCount: +e.target.value })
-
-    setSearchParams({ ...allParams, pageCount: e.target.value })
   }
 
   useEffect(() => {
     if (paginationCount && allParams.page > paginationCount) {
-      setSearchParams({ ...allParams, page: paginationCount })
       if (cards) {
         dispatch(setCardsQueryParams({ page: paginationCount }))
       } else {

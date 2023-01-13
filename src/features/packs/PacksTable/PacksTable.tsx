@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState } from 'react'
+import { FC, useCallback, useState } from 'react'
 
 import { Close } from '@mui/icons-material'
 import Box from '@mui/material/Box'
@@ -6,20 +6,18 @@ import Modal from '@mui/material/Modal'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
 import TableContainer from '@mui/material/TableContainer'
-import Typography from '@mui/material/Typography'
-import { useSearchParams } from 'react-router-dom'
 
 import { RequestStatusType } from '../../../app/appSlice'
+import { packsTableLength } from '../../../app/selectors'
 import { TableBodySkeleton } from '../../../common/components/CustomSkeletons/TableBodySkeleton/TableBodySkeleton'
 import {
   CustomTableHead,
   HeadType,
 } from '../../../common/components/CustomTableHead/CustomTableHead'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
-import { useGetSearchParams } from '../../../hooks/useGetSearchParams'
 import { PackDeleteDataType } from '../Modals/DeletePack/DeletePack'
 import { EditPack } from '../Modals/EditPack/EditPack'
-import { getPacksTC, setPacksQueryParams, SortValuesType, UpdatePackDataType } from '../packsSlice'
+import { setPacksQueryParams, SortValuesType, UpdatePackDataType } from '../packsSlice'
 
 import s from './PacksTable.module.scss'
 import { PacksTableBody } from './PacksTableBody/PacksTableBody'
@@ -48,17 +46,14 @@ type PacksTablePropsType = {
 
 export const PacksTable: FC<PacksTablePropsType> = ({ openDeleteModal, setDeleteData }) => {
   const status = useAppSelector<RequestStatusType>(state => state.app.tableStatus)
-  const isDataNotEmpty = useAppSelector(state => state.packs.tableData).length
+  const isDataNotEmpty = useAppSelector(packsTableLength)
   const serverSort = useAppSelector<SortValuesType>(state => state.packs.queryParams.sortPacks)
   const pageCount = useAppSelector(state => state.packs.queryParams.pageCount)
-  const queryParams = useAppSelector(state => state.packs.queryParams)
   const dispatch = useAppDispatch()
-  const [searchParams, setSearchParams] = useSearchParams()
   const [editData, setEditData] = useState<UpdatePackDataType>({ id: '', name: '', deckCover: '' })
   const [openEditModal, setOpenEditModal] = useState(false)
   const handleOpen = () => setOpenEditModal(true)
   const handleClose = () => setOpenEditModal(false)
-  const allParams = useGetSearchParams()
 
   // Check current order
   const serverOrder = serverSort.slice(0, 1) as ServerOrderType
@@ -70,23 +65,17 @@ export const PacksTable: FC<PacksTablePropsType> = ({ openDeleteModal, setDelete
     const newOrder = isAsc ? 'desc' : 'asc'
     const newServerOrder: SortValuesType = `${TableOrder[newOrder]}${property}`
 
-    setSearchParams({ ...allParams, sortPacks: newServerOrder })
     dispatch(setPacksQueryParams({ sortPacks: newServerOrder }))
   }
 
-  const handleOpenEditModal = useCallback(() => {
-    //openEditModal(true)
-    handleOpen()
-  }, [openEditModal])
-
-  useEffect(() => {
-    dispatch(getPacksTC())
-  }, [queryParams])
+  const handleOpenEditModal = useCallback(() => handleOpen(), [openEditModal])
 
   const handleSetEditData = useCallback(
     (data: UpdatePackDataType) => setEditData(data),
     [setEditData]
   )
+
+  console.log('RENDER TABLE isDataNotEmpty: ', isDataNotEmpty)
 
   return (
     <>

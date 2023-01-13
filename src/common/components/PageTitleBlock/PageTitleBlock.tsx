@@ -1,12 +1,14 @@
 import { FC, memo, useState } from 'react'
 
 import { Portal } from '@mui/base'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
+import { isMyPack } from '../../../app/selectors'
 import { PATH } from '../../../constants/routePaths.enum'
 import { DeletePack } from '../../../features/packs/Modals/DeletePack/DeletePack'
 import { EditPack } from '../../../features/packs/Modals/EditPack/EditPack'
 import { useAppSelector } from '../../../hooks/reduxHooks'
+import { useNavigateNoUpdates } from '../../../utils/routerUtils'
 import { BackToPacks } from '../BackToPacks/BackToPacks'
 import { CustomButton } from '../CustomButton/CustomButton'
 
@@ -23,10 +25,8 @@ type PageTitleBlockType = {
 export const PageTitleBlock: FC<PageTitleBlockType> = memo(
   ({ linkToPacks, button, title, buttonClick, packDeckCover }) => {
     const { id } = useParams()
-    const packUserId = useAppSelector(state => state.cards.cardsData.packUserId)
     const cardsTotalCount = useAppSelector(state => state.cards.cardsData.cardsTotalCount)
-    const myId = useAppSelector(state => state.profile.userData.id)
-    const isItMyPack = packUserId === myId
+    const isItMyPack = useAppSelector(isMyPack)
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [openModals, setOpenModals] = useState<number[]>([0, 0])
     const showModals = openModals.reduce((a, b) => a + b, 0)
@@ -40,8 +40,7 @@ export const PageTitleBlock: FC<PageTitleBlockType> = memo(
     const listStyle = `${s.menuItem} ${menuItemStyle}`
     const portalStyle = isMenuOpen ? s.portal : ''
     const portalStyleBg = showModals ? s.portalBgColor : ''
-
-    const navigate = useNavigate()
+    const navigate = useNavigateNoUpdates()
 
     const handleClickButton = () => buttonClick()
 
