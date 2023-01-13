@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom'
 import avatarLocal from '../../../assets/img/avatar.jpg'
 import { PATH } from '../../../constants/routePaths.enum'
 import { useAppSelector } from '../../../hooks/reduxHooks'
+import { DataSetAndRequestComponent } from '../../../utils/DataSetAndRequestComponent'
 import { Menu } from '../Header/Menu/Menu'
 
 import s from './Header.module.scss'
@@ -17,11 +18,9 @@ export const Header = () => {
   const avatar = useAppSelector(state => state.profile.userData.avatar)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen)
-  }
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
 
-  const onMouseDownOutOffMenu = (e: MouseEvent) => {
+  const handleMouseDownOutOffMenu = (e: MouseEvent) => {
     if ((e.target as Element).id === 'header' && isMenuOpen !== false) {
       setIsMenuOpen(false)
     }
@@ -29,10 +28,11 @@ export const Header = () => {
 
   return (
     <>
+      <DataSetAndRequestComponent />
       <AppBar
         id="header"
         className={`${s.headerContainer} ${isMenuOpen ? s.beforeElement : ''}`}
-        onMouseDown={onMouseDownOutOffMenu}
+        onMouseDown={handleMouseDownOutOffMenu}
       >
         <Container className={s.header}>
           <Toolbar disableGutters>

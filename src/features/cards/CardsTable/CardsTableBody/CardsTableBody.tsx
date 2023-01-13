@@ -5,16 +5,14 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 import dayjs from 'dayjs'
-import { useNavigate } from 'react-router'
-import { useSearchParams } from 'react-router-dom'
 
 import { RequestStatusType } from '../../../../app/appSlice'
 import cover from '../../../../assets/img/cover.png'
 import { HeadType } from '../../../../common/components/CustomTableHead/CustomTableHead'
 import { PATH } from '../../../../constants/routePaths.enum'
-import { useAppDispatch, useAppSelector } from '../../../../hooks/reduxHooks'
-import { useGetSearchParams } from '../../../../hooks/useGetSearchParams'
-import { AppCardType, deleteCardTC, setCardsQueryParams, UpdateCardType } from '../../cardsSlice'
+import { useAppSelector } from '../../../../hooks/reduxHooks'
+import { useNavigateNoUpdates } from '../../../../utils/routerUtils'
+import { AppCardType, UpdateCardType } from '../../cardsSlice'
 import { CardsOrderByType } from '../CardsTable'
 
 import { CardsActionCell } from './CardsActionCell/CardsActionCell'
@@ -38,11 +36,10 @@ export const CardsTableBody: FC<CardsTableBodyType> = ({
   setDeleteData,
 }) => {
   const tableData = useAppSelector<AppCardType[]>(state => state.cards.tableData)
-  const navigate = useNavigate()
+  const navigate = useNavigateNoUpdates()
 
-  const openCardHandler = (id: string, packId: string, requestStatus: RequestStatusType) => {
+  const handleOpenCard = (id: string, packId: string, requestStatus: RequestStatusType) => {
     if (requestStatus === 'loading') return
-
     navigate(PATH.LEARN + `/${packId}`, { state: { cardId: id } })
   }
 
@@ -63,7 +60,7 @@ export const CardsTableBody: FC<CardsTableBodyType> = ({
             key={row._id}
             hover={row.requestStatus === 'idle'}
             className={s.row}
-            onClick={() => openCardHandler(row._id, row.cardsPack_id, row.requestStatus)}
+            onClick={() => handleOpenCard(row._id, row.cardsPack_id, row.requestStatus)}
           >
             {heads.map(h => {
               return (

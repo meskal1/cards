@@ -1,24 +1,23 @@
 import { KeyboardBackspace } from '@mui/icons-material'
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import { PATH } from '../../../constants/routePaths.enum'
-import { initialPacksQueryParams } from '../../../features/packs/packsSlice'
+import { initialPacksQueryParams as initParams } from '../../../features/packs/packsSlice'
 import { useAppSelector } from '../../../hooks/reduxHooks'
-import { packsQueryString } from '../../../utils/packsQueryString'
+import { queryString } from '../../../utils/queryString'
+import { useLocationNoUpdates } from '../../../utils/routerUtils'
 
 import s from './BackToPacks.module.scss'
 
 export const BackToPacks = () => {
-  const location = useLocation()
+  const location = useLocationNoUpdates()
   const packsQueryParams = useAppSelector(state => state.packs.queryParams)
-  const queryString =
-    location.pathname === '/profile'
-      ? ''
-      : '?' + packsQueryString(packsQueryParams, initialPacksQueryParams)
+  const packsQueryString =
+    location.pathname === '/profile' ? '' : '?' + queryString(packsQueryParams, initParams)
 
   return (
     <>
-      <Link className={s.backToPacks__linkPacks} to={PATH.PACKS + queryString}>
+      <Link className={s.backToPacks__linkPacks} to={PATH.PACKS + packsQueryString}>
         <KeyboardBackspace className={s.backToPacks__arrow} />
         <p>back to packs list</p>
       </Link>

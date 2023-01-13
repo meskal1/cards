@@ -6,17 +6,17 @@ import { RootStateType } from '../../app/store'
 import { cardsAPI, CreateCardType, ServerCardType } from '../../services/cardsApi'
 import { handleServerNetworkError } from '../../utils/errorUtils'
 
+export const initialCardsQueryParams = {
+  min: 0,
+  max: 0,
+  page: 1,
+  pageCount: 8,
+  sortCards: '0grade' as SortValuesCardsType,
+  cardQuestion: '',
+}
+
 const initialState = {
-  queryParams: {
-    min: 0,
-    max: 0,
-    page: 1,
-    pageCount: 8,
-    sortCards: '0grade' as SortValuesCardsType,
-    cardsPack_id: '',
-    cardQuestion: '',
-    cardAnswer: '',
-  },
+  queryParams: { ...initialCardsQueryParams, cardsPack_id: '', cardAnswer: '' },
   cardsData: {
     packName: '',
     packUserId: '',
@@ -201,7 +201,7 @@ type SetCardsQueryParamsPayloadType = {
   cardAnswer: string
 }
 
-type CardsQueryParamsType = Partial<SetCardsQueryParamsPayloadType>
+export type CardsQueryParamsType = Partial<SetCardsQueryParamsPayloadType>
 
 type SetCardsDataPayloadType = {
   packName: string
@@ -209,8 +209,6 @@ type SetCardsDataPayloadType = {
   cardsTotalCount: number
   packDeckCover: string | null
 }
-
-type CardsTablePayloadType = ServerCardType[]
 
 export type UpdateCardType = {
   id: string
