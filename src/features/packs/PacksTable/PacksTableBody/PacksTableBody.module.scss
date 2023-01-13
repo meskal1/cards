@@ -1,4 +1,4 @@
-@import "../../../../common/styles/mixins/mixinCommon";
+@import '../../../../common/styles/mixins/mixinCommon';
 @include table_body_styles;
 
 .packImageWrapper {
@@ -12,7 +12,7 @@
   height: 100%;
   padding: 16px;
 
-  transition: 0.3s ease transform 0.3s;
+  transition: 0.2s ease transform 0.2s;
 }
 
 .packName {
@@ -22,19 +22,15 @@
   align-items: center;
   justify-content: center;
 
-  transition: 0.3s ease transform 0s;
-
-  //margin-left: 5px;
-  //padding-right: 50px;
+  transition: 0.2s ease transform 0s;
 }
 
 .packImage {
-  width: 60px;
+  width: 80px;
   height: 55px;
 
-  object-fit: contain;
-  border: 1px solid;
-  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid rgb(128 128 128 / 67.2%);
 }
 
 .row {
@@ -42,37 +38,26 @@
     .packImageWrapper {
       transform: rotateX(90deg) !important;
 
-      transition: 0.3s ease transform 0s;
-
-      //animation: imageOpacity 0 forwards;
-      //animation-delay: 1s !important;
+      transition: 0.2s ease transform 0s;
     }
 
     .packName {
       transform: rotateX(0) !important;
 
-      transition: 0.3s ease transform 0.3s;
+      transition: 0.2s ease transform 0.2s;
     }
   }
 }
 
 .cellContainer {
-  -webkit-align-content: center;
+  //   transform: perspective(500px);
 
-  //perspective: 500px;
+  -webkit-align-content: center;
+  align-content: center;
 
   -webkit-box-orient: horizontal !important;
 }
 
 .tableCell {
   position: relative;
-}
-@keyframes imageOpacity {
-  0% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 0;
-  }
 }
