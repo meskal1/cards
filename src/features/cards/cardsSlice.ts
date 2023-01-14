@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios, { AxiosError } from 'axios'
 
-import { RequestStatusType, setTableStatus } from '../../app/appSlice'
+import { RequestStatusType } from '../../app/appSlice'
 import { RootStateType } from '../../app/store'
 import { cardsAPI, CreateCardType, ServerCardType } from '../../services/cardsApi'
 import { handleServerNetworkError } from '../../utils/errorUtils'
@@ -11,7 +11,7 @@ export const initialCardsQueryParams = {
   max: 0,
   page: 1,
   pageCount: 8,
-  sortCards: '0grade' as SortValuesCardsType,
+  sortCards: '0grade' as CardsSortValuesType,
   cardQuestion: '',
 }
 
@@ -25,14 +25,13 @@ const initialState = {
   },
   tableData: [] as AppCardType[],
   error: null as CardsErrorType,
+  status: 'loading' as RequestStatusType,
 }
 
 export const getCardsTC = createAsyncThunk(
   'cards/getCards',
   async (_, { dispatch, getState, rejectWithValue }) => {
     try {
-      dispatch(setTableStatus('loading'))
-
       const state = getState() as RootStateType
       const data = state.cards.queryParams
       const response = await cardsAPI.getCards(data)
@@ -60,8 +59,6 @@ export const getCardsTC = createAsyncThunk(
       handleServerNetworkError(dispatch, e as Error | AxiosError)
 
       return rejectWithValue(null)
-    } finally {
-      dispatch(setTableStatus('idle'))
     }
   }
 )
@@ -104,8 +101,6 @@ export const updateCardTC = createAsyncThunk(
       handleServerNetworkError(dispatch, e as Error | AxiosError)
 
       return rejectWithValue(null)
-    } finally {
-      dispatch(setTableStatus('idle'))
     }
   }
 )
@@ -131,10 +126,18 @@ const cardsSlice = createSlice({
     },
   },
   extraReducers: builder => {
-    builder.addCase(getCardsTC.fulfilled, (state, action) => {
-      state.cardsData = action.payload.cardsData
-      state.tableData = action.payload.cardsTableData.map(c => ({ ...c, requestStatus: 'idle' }))
-    })
+    builder
+      .addCase(getCardsTC.pending, state => {
+        state.status = 'loading'
+      })
+      .addCase(getCardsTC.fulfilled, (state, action) => {
+        state.cardsData = action.payload.cardsData
+        state.tableData = action.payload.cardsTableData.map(c => ({ ...c, requestStatus: 'idle' }))
+        state.status = 'idle'
+      })
+      .addCase(getCardsTC.rejected, state => {
+        state.status = 'idle'
+      })
 
     builder
       .addCase(deleteCardTC.pending, (state, action) => {
@@ -178,7 +181,7 @@ export const {
 export type CardsStateType = typeof initialState
 export type AppCardType = ServerCardType & { requestStatus: RequestStatusType }
 
-export type SortValuesCardsType =
+export type CardsSortValuesType =
   | '0grade'
   | '1grade'
   | '0updated'
@@ -195,7 +198,7 @@ type SetCardsQueryParamsPayloadType = {
   max: number
   page: number
   pageCount: number
-  sortCards: SortValuesCardsType
+  sortCards: CardsSortValuesType
   cardsPack_id: string
   cardQuestion: string
   cardAnswer: string

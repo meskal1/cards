@@ -37,7 +37,6 @@ const initialState = {
     messageText: null as AppAlertMessageTextType,
   },
   isInitialized: false,
-  tableStatus: 'idle' as RequestStatusType,
 }
 
 const appSlice = createSlice({
@@ -50,16 +49,13 @@ const appSlice = createSlice({
     setAppAlertMessage(state, action: PayloadAction<SetAppMessagePayloadType>) {
       state.alertMessage = action.payload
     },
-    setTableStatus(state, action: PayloadAction<RequestStatusType>) {
-      state.tableStatus = action.payload
-    },
   },
   extraReducers: builder => {
     builder
       .addCase(initializeAppTC.fulfilled, state => {
         state.isInitialized = true
       })
-      .addCase(initializeAppTC.rejected, (state, action) => {
+      .addCase(initializeAppTC.rejected, state => {
         state.isInitialized = true
       })
   },
@@ -68,7 +64,7 @@ const appSlice = createSlice({
 export const appReducer = appSlice.reducer
 
 // ACTIONS
-export const { setAppStatus, setAppAlertMessage, setTableStatus } = appSlice.actions
+export const { setAppStatus, setAppAlertMessage } = appSlice.actions
 
 // TYPES
 export type AppStateType = typeof initialState

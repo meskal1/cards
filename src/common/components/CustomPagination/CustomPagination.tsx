@@ -18,7 +18,9 @@ type CustomPaginationType = {
 export const CustomPagination: FC<CustomPaginationType> = ({ cards }) => {
   const dispatch = useAppDispatch()
   const allParams = getQueryParams()
-  const isDataLoading = useAppSelector<RequestStatusType>(state => state.app.tableStatus)
+  const isDataLoading = useAppSelector<RequestStatusType>(state =>
+    cards ? state.cards.status : state.packs.status
+  )
   const pagePacks = useAppSelector(state => state.packs.queryParams.page)
   const pageCards = useAppSelector(state => state.cards.queryParams.page)
   const pageCountPacks = useAppSelector(state => state.packs.queryParams.pageCount)

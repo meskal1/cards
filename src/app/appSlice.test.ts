@@ -20,7 +20,6 @@ describe('app reducer tests', () => {
         messageText: null as AppAlertMessageTextType,
       },
       isInitialized: false,
-      tableStatus: 'idle' as RequestStatusType,
     }
   })
 

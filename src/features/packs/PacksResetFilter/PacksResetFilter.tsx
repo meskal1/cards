@@ -6,7 +6,7 @@ import s from './PacksResetFilter.module.scss'
 
 export const PacksResetFilter = () => {
   const dispatch = useAppDispatch()
-  const isDataLoading = useAppSelector<RequestStatusType>(state => state.app.tableStatus)
+  const isDataLoading = useAppSelector<RequestStatusType>(state => state.packs.status)
 
   const handleResetFilter = () => {
     if (isDataLoading === 'idle') {

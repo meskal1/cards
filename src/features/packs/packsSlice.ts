@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AxiosError } from 'axios'
 
-import { RequestStatusType, setTableStatus } from '../../app/appSlice'
+import { RequestStatusType } from '../../app/appSlice'
 import { RootStateType } from '../../app/store'
 import { CreatePackType, packsAPI, ServerPackType } from '../../services/packsApi'
 import { handleServerNetworkError } from '../../utils/errorUtils'
@@ -12,7 +12,7 @@ export const initialPacksQueryParams = {
   max: 0,
   page: 1,
   pageCount: 8,
-  sortPacks: '0updated' as SortValuesType,
+  sortPacks: '0updated' as PacksSortValuesType,
   search: '',
   isMyPacks: '' as 'yes' | '',
 }
@@ -26,13 +26,13 @@ const initialState = {
   },
   tableData: [] as AppPackType[],
   brokenImages: [] as Array<string | null>,
+  status: 'loading' as RequestStatusType,
 }
 
 export const getPacksTC = createAsyncThunk(
   'packs/getPacks',
   async (_, { dispatch, getState, rejectWithValue }) => {
     try {
-      dispatch(setTableStatus('loading'))
       const state = getState() as RootStateType
       const { isMyPacks, page, pageCount, search, sortPacks, min, max } = state.packs.queryParams
       const data = {
@@ -58,8 +58,6 @@ export const getPacksTC = createAsyncThunk(
       handleServerNetworkError(dispatch, e as Error | AxiosError)
 
       return rejectWithValue(null)
-    } finally {
-      dispatch(setTableStatus('idle'))
     }
   }
 )
@@ -129,11 +127,20 @@ const packsSlice = createSlice({
       state.brokenImages.push(action.payload)
     },
   },
+
   extraReducers: builder => {
-    builder.addCase(getPacksTC.fulfilled, (state, action) => {
-      state.tableData = action.payload.tableData.map(p => ({ ...p, requestStatus: 'idle' }))
-      state.cardsCount = { ...action.payload.cardsCount }
-    })
+    builder
+      .addCase(getPacksTC.pending, state => {
+        state.status = 'loading'
+      })
+      .addCase(getPacksTC.fulfilled, (state, action) => {
+        state.tableData = action.payload.tableData.map(p => ({ ...p, requestStatus: 'idle' }))
+        state.cardsCount = { ...action.payload.cardsCount }
+        state.status = 'idle'
+      })
+      .addCase(getPacksTC.rejected, state => {
+        state.status = 'idle'
+      })
 
     builder
       .addCase(deletePackTC.pending, (state, action) => {
@@ -166,7 +173,7 @@ export const { setPacksQueryParams, setBrokenImages, clearPacksQueryParams } = p
 export type PacksStateType = typeof initialState
 export type AppPackType = ServerPackType & { requestStatus: RequestStatusType }
 
-export type SortValuesType =
+export type PacksSortValuesType =
   | '0cardsCount'
   | '1cardsCount'
   | '0updated'
@@ -186,7 +193,7 @@ type SetPacksQueryParamsPayloadType = {
   max: number
   page: number
   pageCount: number
-  sortPacks: SortValuesType
+  sortPacks: PacksSortValuesType
   search: string
   isMyPacks: 'yes' | ''
 }

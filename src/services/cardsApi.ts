@@ -1,4 +1,4 @@
-import { SortValuesCardsType } from '../features/cards/cardsSlice'
+import { CardsSortValuesType } from '../features/cards/cardsSlice'
 
 import { instance } from './instance'
 
@@ -33,7 +33,7 @@ export type GradeData = {
 export type QueryCardParamsType = {
   min?: number
   max?: number
-  sortCards?: SortValuesCardsType
+  sortCards?: CardsSortValuesType
   page?: number
   pageCount?: number
   cardsPack_id?: string
