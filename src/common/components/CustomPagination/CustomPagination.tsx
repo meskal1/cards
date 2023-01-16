@@ -45,7 +45,7 @@ export const CustomPagination: FC<CustomPaginationType> = ({ cards }) => {
   const handleChangePage = (event: ChangeEvent<unknown>, page: number) => dispatchData({ page })
 
   const handleChangeRowsPerPage = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    dispatchData({ pageCount: +e.target.value })
+    dispatchData({ pageCount: +e.target.value, page: 1 })
   }
 
   useEffect(() => {
