@@ -111,7 +111,7 @@ const cardsSlice = createSlice({
   initialState,
   reducers: {
     setCardsQueryParams(state, action: PayloadAction<CardsQueryParamsType>) {
-      state.queryParams = { ...state.queryParams, ...action.payload }
+      Object.assign(state.queryParams, action.payload)
     },
     setCardsData(state, action: PayloadAction<SetCardsDataPayloadType>) {
       state.cardsData = action.payload

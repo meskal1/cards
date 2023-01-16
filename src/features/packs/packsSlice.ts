@@ -112,7 +112,7 @@ const packsSlice = createSlice({
   initialState,
   reducers: {
     setPacksQueryParams(state, action: PayloadAction<PacksQueryParamsType>) {
-      state.queryParams = { ...state.queryParams, ...action.payload }
+      Object.assign(state.queryParams, action.payload)
     },
     setPackRequestStatus(state, action: PayloadAction<PackRequestStatusPayloadType>) {
       state.tableData.forEach(p => {
