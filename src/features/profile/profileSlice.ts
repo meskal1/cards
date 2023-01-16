@@ -19,9 +19,9 @@ export const updateUserDataTC = createAsyncThunk(
   async (data: UserDataType, { dispatch, rejectWithValue }) => {
     try {
       const response = await authAPI.newUserData(data)
-      const { name, email, avatar } = response.data.updatedUser
+      const { _id, name, email, avatar } = response.data.updatedUser
 
-      return { name, email, avatar }
+      return { id: _id, name, email, avatar }
     } catch (e) {
       handleServerNetworkError(dispatch, e as Error | AxiosError)
 
