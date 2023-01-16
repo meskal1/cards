@@ -66,10 +66,17 @@ export const getCardsTC = createAsyncThunk(
 
 export const deleteCardTC = createAsyncThunk(
   'cards/deleteCard',
-  async (id: string, { dispatch, rejectWithValue }) => {
+  async (id: string, { dispatch, getState, rejectWithValue }) => {
     try {
+      const state = getState() as RootStateType
+
       await cardsAPI.deleteCard(id)
-      await dispatch(getCardsTC())
+
+      if (state.cards.tableData.length === 1 && state.cards.queryParams.page > 1) {
+        dispatch(setCardsQueryParams({ page: state.cards.queryParams.page - 1 }))
+      } else {
+        await dispatch(getCardsTC())
+      }
     } catch (e) {
       handleServerNetworkError(dispatch, e as Error | AxiosError)
 

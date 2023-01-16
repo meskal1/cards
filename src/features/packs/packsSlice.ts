@@ -65,10 +65,17 @@ export const getPacksTC = createAsyncThunk(
 
 export const deletePackTC = createAsyncThunk(
   'packs/deletePack',
-  async (id: string, { dispatch, rejectWithValue }) => {
+  async (id: string, { dispatch, getState, rejectWithValue }) => {
     try {
+      const state = getState() as RootStateType
+
       await packsAPI.deletePack(id)
-      await dispatch(getPacksTC())
+
+      if (state.packs.tableData.length === 1 && state.packs.queryParams.page > 1) {
+        dispatch(setPacksQueryParams({ page: state.packs.queryParams.page - 1 }))
+      } else {
+        await dispatch(getPacksTC())
+      }
     } catch (e) {
       handleServerNetworkError(dispatch, e as Error | AxiosError)
 

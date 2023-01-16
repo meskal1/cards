@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useEffect } from 'react'
+import { ChangeEvent, FC } from 'react'
 
 import Pagination from '@mui/material/Pagination'
 import TablePagination from '@mui/material/TablePagination'
@@ -7,7 +7,6 @@ import { RequestStatusType } from '../../../app/appSlice'
 import { setCardsQueryParams } from '../../../features/cards/cardsSlice'
 import { setPacksQueryParams } from '../../../features/packs/packsSlice'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
-import { getQueryParams } from '../../../utils/getQueryParams'
 
 import s from './CustomPagination.module.scss'
 
@@ -17,7 +16,6 @@ type CustomPaginationType = {
 
 export const CustomPagination: FC<CustomPaginationType> = ({ cards }) => {
   const dispatch = useAppDispatch()
-  const allParams = getQueryParams()
   const isDataLoading = useAppSelector<RequestStatusType>(state =>
     cards ? state.cards.status : state.packs.status
   )
@@ -47,16 +45,6 @@ export const CustomPagination: FC<CustomPaginationType> = ({ cards }) => {
   const handleChangeRowsPerPage = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     dispatchData({ pageCount: +e.target.value, page: 1 })
   }
-
-  useEffect(() => {
-    if (paginationCount && allParams.page > paginationCount) {
-      if (cards) {
-        dispatch(setCardsQueryParams({ page: paginationCount }))
-      } else {
-        dispatch(setPacksQueryParams({ page: paginationCount }))
-      }
-    }
-  }, [allParams])
 
   return (
     <div className={s.paginationContainer}>
