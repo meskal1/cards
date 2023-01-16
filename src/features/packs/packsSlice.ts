@@ -5,6 +5,7 @@ import { RequestStatusType } from '../../app/appSlice'
 import { RootStateType } from '../../app/store'
 import { CreatePackType, packsAPI, ServerPackType } from '../../services/packsApi'
 import { handleServerNetworkError } from '../../utils/errorUtils'
+import { logOutTC } from '../auth/authSlice'
 import { setCardsData } from '../cards/cardsSlice'
 
 export const initialPacksQueryParams = {
@@ -161,6 +162,10 @@ const packsSlice = createSlice({
       .addCase(updatePackTC.rejected, (state, action) => {
         state.tableData.forEach(p => (p._id === action.payload ? (p.requestStatus = 'idle') : ''))
       })
+
+    builder.addCase(logOutTC.fulfilled, () => {
+      return initialState
+    })
   },
 })
 

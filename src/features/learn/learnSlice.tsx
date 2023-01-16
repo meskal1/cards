@@ -4,6 +4,7 @@ import { AxiosError } from 'axios'
 import { RootStateType } from '../../app/store'
 import { cardsAPI, GradeData, ServerCardType } from '../../services/cardsApi'
 import { handleServerNetworkError } from '../../utils/errorUtils'
+import { logOutTC } from '../auth/authSlice'
 import { getCardsTC } from '../cards/cardsSlice'
 
 const initialState = {
@@ -68,6 +69,10 @@ export const learnSlice = createSlice({
 
     builder.addCase(gradeCard.fulfilled, (state, action) => {
       state.cards = state.cards.filter(card => card._id !== action.payload.card_id)
+    })
+
+    builder.addCase(logOutTC.fulfilled, () => {
+      return initialState
     })
   },
 })

@@ -3,6 +3,7 @@ import { AxiosError } from 'axios'
 
 import { authAPI } from '../../services/authApi'
 import { handleServerNetworkError } from '../../utils/errorUtils'
+import { logOutTC } from '../auth/authSlice'
 
 const initialState = {
   userData: {
@@ -40,6 +41,10 @@ export const profileSlice = createSlice({
   extraReducers: builder => {
     builder.addCase(updateUserDataTC.fulfilled, (state, action) => {
       state.userData = action.payload
+    })
+
+    builder.addCase(logOutTC.fulfilled, () => {
+      return initialState
     })
   },
 })

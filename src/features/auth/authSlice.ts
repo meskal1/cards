@@ -40,7 +40,6 @@ export const logOutTC = createAsyncThunk(
     try {
       dispatch(setAppStatus('loading'))
       await authAPI.logout()
-      dispatch(setUserData({ id: '', name: '', email: '', avatar: undefined }))
     } catch (e) {
       handleServerNetworkError(dispatch, e as Error | AxiosError)
 
@@ -137,8 +136,8 @@ const authSlice = createSlice({
         state.status = 'idle'
       })
 
-    builder.addCase(logOutTC.fulfilled, state => {
-      state.isLoggedIn = false
+    builder.addCase(logOutTC.fulfilled, () => {
+      return initialState
     })
 
     builder
