@@ -33,6 +33,7 @@ package-lock.json
 .vscode
 
 # My own
+/.history
 .stylelintrc.js
 .env
 .env.production
