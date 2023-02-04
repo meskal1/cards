@@ -1,0 +1,26 @@
+.conteiner {
+  position: relative;
+
+  display: flex;
+  justify-content: center;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.button {
+  cursor: pointer;
+
+  position: absolute;
+  top: -7px;
+  right: -5px;
+  transform: rotate(45deg);
+
+  width: 25px;
+  height: 25px;
+
+  background: url('../../../../assets/img/icons/addIcon.svg') 50% no-repeat;
+  border-radius: 30px;
+}
