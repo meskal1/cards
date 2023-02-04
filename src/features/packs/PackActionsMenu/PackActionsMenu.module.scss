@@ -1,0 +1,189 @@
+.menuContainer {
+  cursor: pointer;
+
+  min-width: 30px;
+  height: 30px;
+
+  background: url('../../../assets/img/icons/dotsMenu.svg') 50% no-repeat;
+  border-radius: 30px;
+}
+
+.menu {
+  position: relative;
+  top: 2px;
+}
+
+.openMenuRight,
+.openMenuLeft {
+  position: relative;
+  z-index: 3;
+
+  &::before {
+    content: '';
+
+    position: absolute;
+    z-index: 2;
+
+    width: 95px;
+    height: 30px;
+
+    background: white;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgb(0 0 0 / 20%);
+
+    animation: animateWidth 0.3s ease forwards;
+  }
+
+  &::after {
+    content: '';
+
+    position: absolute;
+    z-index: 2;
+    top: 10px;
+
+    width: 10px;
+    height: 10px;
+
+    background: white;
+    clip-path: polygon(0% 0%, 100% 100%, 0% 100%);
+    border-radius: 0 0 0 0.25em;
+  }
+}
+
+.openMenuRight {
+  &::before {
+    left: 30px;
+  }
+
+  &::after {
+    left: 26px;
+    transform: rotate(45deg);
+  }
+}
+
+.openMenuLeft {
+  &::before {
+    right: 30px;
+  }
+
+  &::after {
+    left: -6px;
+    transform: rotate(-135deg);
+  }
+}
+
+.openItemRight {
+  opacity: 0;
+
+  animation: openToRight 0.4s ease forwards;
+
+  &:nth-child(1) {
+    left: 35px;
+
+    background: url('../../../assets/img/icons/studyPack.svg') 50% no-repeat;
+
+    animation-delay: 0.3s;
+  }
+
+  &:nth-child(2) {
+    left: 65px;
+
+    background: url('../../../assets/img/icons/editPack.svg') 50% no-repeat;
+
+    animation-delay: 0.2s;
+  }
+
+  &:nth-child(3) {
+    left: 95px;
+
+    background: url('../../../assets/img/icons/deletePack.svg') 50% no-repeat;
+
+    animation-delay: 0.1s;
+  }
+}
+
+.openItemLeft {
+  opacity: 0;
+
+  animation: openToLeft 0.4s ease forwards;
+
+  &:nth-child(1) {
+    right: 95px;
+
+    background: url('../../../assets/img/icons/studyPack.svg') 50% no-repeat;
+
+    animation-delay: 0.1s;
+  }
+
+  &:nth-child(2) {
+    right: 65px;
+
+    background: url('../../../assets/img/icons/editPack.svg') 50% no-repeat;
+
+    animation-delay: 0.2s;
+  }
+
+  &:nth-child(3) {
+    right: 35px;
+
+    background: url('../../../assets/img/icons/deletePack.svg') 50% no-repeat;
+
+    animation-delay: 0.3s;
+  }
+}
+
+.disableLearn:nth-child(1) {
+  cursor: auto;
+
+  background: url('../../../assets/img/icons/studyPackDisabled.svg') 50% / auto auto no-repeat;
+}
+
+.menuItem {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+
+  width: 24px;
+  height: 24px;
+
+  border-radius: 30px;
+}
+@keyframes animateWidth {
+  0% {
+    max-width: 0vw;
+  }
+
+  100% {
+    max-width: 100px;
+  }
+}
+@keyframes openToRight {
+  0% {
+    z-index: 2;
+    transform: translate(-15px, 0px);
+
+    opacity: 0;
+  }
+
+  100% {
+    z-index: 2;
+    transform: translate(0, 0);
+
+    opacity: 1;
+  }
+}
+@keyframes openToLeft {
+  0% {
+    z-index: 2;
+    transform: translate(15px, 0px);
+
+    opacity: 0;
+  }
+
+  100% {
+    z-index: 2;
+    transform: translate(0, 0);
+
+    opacity: 1;
+  }
+}
