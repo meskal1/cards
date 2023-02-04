@@ -3,10 +3,13 @@
 .headerContainer {
   position: static !important;
   z-index: 1 !important;
+
+  background: #efefef !important;
 }
 
 .header {
   max-width: 1050px !important;
+  padding: 0 15px !important;
 
   &__logoContainer {
     display: flex;
@@ -22,7 +25,20 @@
   }
 
   &__logo {
+    display: flex;
+    align-items: center;
+
+    width: 60px;
+    height: 55px;
+    padding: 0 0 0 60px;
+
     font-size: 30px;
+    color: black;
+
+    background: url('../../../assets/img/icons/logo.svg') 50% no-repeat;
+    @media (max-width: 599px) {
+      font-size: 25px;
+    }
   }
 
   &__avatarContainer {
@@ -37,11 +53,19 @@
 
     cursor: pointer;
 
-    display: inline-flex;
+    overflow: hidden;
 
+    max-width: 370px;
     margin: 0px 15px 0px 0px;
 
+    color: black;
+    text-align: center;
     text-decoration: underline;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    @media (max-width: 599px) {
+      display: none;
+    }
   }
 
   &__pic {
@@ -66,17 +90,5 @@
     height: 100%;
 
     object-fit: cover;
-  }
-}
-
-.beforeElement {
-  &::before {
-    content: '';
-
-    position: absolute;
-    z-index: 2;
-
-    width: 100vw;
-    height: 100vh;
   }
 }
