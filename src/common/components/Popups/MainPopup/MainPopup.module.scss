@@ -1,0 +1,15 @@
+.container {
+  position: relative;
+  z-index: 10;
+
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
+
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+
+  background: white;
+  border-radius: 20px;
+}
