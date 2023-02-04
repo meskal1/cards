@@ -32,22 +32,22 @@ export const Recovery = () => {
 
   return (
     <div className={s.forgotPassword}>
-      <h2 className={s.title}>forgot your password?</h2>
+      <h2 className={s.title}>Forgot your password?</h2>
       <form className={s.form} onSubmit={handleSubmit}>
         <CustomInput
-          label={'email'}
+          label={'Email'}
           error={!!errors.email && touched.email}
           helperText={touched.email && errors.email}
           {...getFieldProps('email')}
         />
-        <p className={s.help}>enter your email address and we will send you further instructions</p>
+        <p className={s.help}>Enter your email address and we will send you further instructions</p>
         <CustomButton disabled={authStatus === 'loading'} fullWidth>
-          <p>send instructions</p>
+          <p>Send instructions</p>
         </CustomButton>
       </form>
-      <p className={s.forgotQuestion}>have you remembered your password?</p>
+      <p className={s.forgotQuestion}>Have you remembered your password?</p>
       <Link className={s.forgotLink} to={PATH.LOGIN}>
-        try logging in
+        Try logging in
       </Link>
     </div>
   )

@@ -15,26 +15,24 @@ export const PackOwnerSwitcher = () => {
   const handleAllCards = () => dispatch(setPacksQueryParams(initParams))
 
   return (
-    <>
-      <div className={s.switcherContainer}>
-        <p className={s.switcher__title}>show packs cards</p>
-        <ButtonGroup className={s.switcher__block} disableElevation variant="text">
-          <Button
-            disabled={!!isMyPacks}
-            className={`${s.switcher__blockItem} ${isMyPacks ? s.active : ''}`}
-            onClick={handleMyCards}
-          >
-            <p>my</p>
-          </Button>
-          <Button
-            disabled={!isMyPacks}
-            className={`${s.switcher__blockItem} ${isMyPacks ? '' : s.active}`}
-            onClick={handleAllCards}
-          >
-            <p>all</p>
-          </Button>
-        </ButtonGroup>
-      </div>
-    </>
+    <div className={s.switcherContainer}>
+      <p className={s.switcher__title}>Owner</p>
+      <ButtonGroup className={s.switcher__block} disableElevation variant="text">
+        <Button
+          disabled={!!isMyPacks}
+          className={`${s.switcher__blockItem} ${isMyPacks ? s.active : ''}`}
+          onClick={handleMyCards}
+        >
+          <p>My</p>
+        </Button>
+        <Button
+          disabled={!isMyPacks}
+          className={`${s.switcher__blockItem} ${isMyPacks ? '' : s.active}`}
+          onClick={handleAllCards}
+        >
+          <p>All</p>
+        </Button>
+      </ButtonGroup>
+    </div>
   )
 }

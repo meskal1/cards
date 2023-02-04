@@ -37,10 +37,10 @@ export const Registration = () => {
 
   return (
     <div className={s.registration}>
-      <h2 className={s.title}>sign up</h2>
+      <h2 className={s.title}>Sign up</h2>
       <form className={s.form} onSubmit={handleSubmit}>
         <CustomInput
-          label={'email'}
+          label={'Email'}
           fullWidth
           autoComplete={'new-password'}
           error={!!errors.email && touched.email}
@@ -48,26 +48,26 @@ export const Registration = () => {
           {...getFieldProps('email')}
         />
         <CustomPasswordInput
-          label={'password'}
+          label={'Password'}
           autoComplete={'new-password'}
           error={!!errors.password && touched.password}
           helperText={touched.password && errors.password}
           {...getFieldProps('password')}
         />
         <CustomPasswordInput
-          label={'confirm password'}
+          label={'Confirm password'}
           autoComplete={'new-password'}
           error={!!errors.confirmPassword && touched.confirmPassword}
           helperText={touched.confirmPassword && errors.confirmPassword}
           {...getFieldProps('confirmPassword')}
         />
         <CustomButton className={s.button} fullWidth disabled={authStatus === 'loading'}>
-          <p>sign up</p>
+          <p>Sign up</p>
         </CustomButton>
       </form>
-      <p className={s.signInQuestion}>already have an account?</p>
+      <p className={s.signInQuestion}>Already have an account?</p>
       <Link className={s.signInLink} to={PATH.LOGIN}>
-        sign in
+        Sign in
       </Link>
     </div>
   )
