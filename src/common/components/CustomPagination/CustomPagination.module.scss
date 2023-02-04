@@ -1,7 +1,11 @@
 .paginationContainer {
   display: flex;
-  gap: 10px;
+  flex-wrap: wrap;
+  column-gap: 10px;
   align-items: center;
+  @media (max-width: 599px) {
+    justify-content: center;
+  }
 }
 
 .paginationTable {
