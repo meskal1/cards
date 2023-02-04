@@ -2,13 +2,13 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AxiosError } from 'axios'
 
 import { RootStateType } from '../../app/store'
-import { cardsAPI, GradeData, ServerCardType } from '../../services/cardsApi'
+import { cardsAPI, CardsResponseType, GradeData } from '../../services/cardsApi'
 import { handleServerNetworkError } from '../../utils/errorUtils'
 import { logOutTC } from '../auth/authSlice'
 import { getCardsTC } from '../cards/cardsSlice'
 
 const initialState = {
-  cards: [] as ServerCardType[],
+  cardsData: {} as CardsResponseType,
   cardsTotalCount: 0,
   isInitialized: false,
 }
@@ -21,7 +21,7 @@ export const getCards = createAsyncThunk(
       const totalCardsCount = state.learn.cardsTotalCount
       const responseAllCards = await cardsAPI.getCards({ cardsPack_id, pageCount: totalCardsCount })
 
-      return responseAllCards.data.cards
+      return responseAllCards.data
     } catch (e) {
       handleServerNetworkError(dispatch, e as Error | AxiosError)
 
@@ -60,7 +60,7 @@ export const learnSlice = createSlice({
 
     builder
       .addCase(getCards.fulfilled, (state, action) => {
-        state.cards = action.payload
+        state.cardsData = action.payload
         state.isInitialized = true
       })
       .addCase(getCards.rejected, state => {
@@ -68,7 +68,9 @@ export const learnSlice = createSlice({
       })
 
     builder.addCase(gradeCard.fulfilled, (state, action) => {
-      state.cards = state.cards.filter(card => card._id !== action.payload.card_id)
+      state.cardsData.cards = state.cardsData.cards.filter(
+        card => card._id !== action.payload.card_id
+      )
     })
 
     builder.addCase(logOutTC.fulfilled, () => {
