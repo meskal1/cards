@@ -1,24 +1,24 @@
+@import '../../common/styles/mixins/mixinAdaptive';
+
 .cardsContainer {
+  @include adaptiveValue('padding-bottom', 26, 10, 599, 320, 1);
+  @include adaptiveValue('row-gap', 22, 10, 599, 320, 1);
+
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  row-gap: 22px;
 
   width: 100%;
-  padding: 26px 0px;
+  padding-top: 10px;
 }
 
 .cards {
   &__controlBlock {
+    @include adaptiveValue('row-gap', 22, 10, 599, 320, 1);
+
     display: flex;
     flex-direction: column;
     row-gap: 22px;
-  }
-
-  &__controlPanel {
-    display: flex;
-    column-gap: 30px;
-    align-items: flex-end;
   }
 
   &__table {
@@ -27,21 +27,30 @@
 
     border: 1px solid green;
   }
+}
 
-  &__emptyBlock {
-    margin: 86px auto 0;
+.imgContainer {
+  position: relative;
 
-    text-align: center;
-  }
+  overflow: hidden;
 
-  &__emptyTitle {
-    margin: 0px 0px 32px 0px;
+  width: 290px;
+  height: 190px;
 
-    font-weight: 500;
-    color: grey;
+  border: 1px solid black;
+  border-radius: 10px;
+  @media (max-width: 599px) {
+    align-self: center;
   }
 }
 
-.ImageContainer {
-  justify-content: flex-start;
+.img {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
 }

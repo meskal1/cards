@@ -1,23 +1,22 @@
+@import '../../common/styles/mixins/mixinAdaptive';
+
 .packsContainer {
+  @include adaptiveValue('padding-top', 26, 10, 599, 320, 1);
+  @include adaptiveValue('padding-bottom', 26, 10, 599, 320, 1);
+  @include adaptiveValue('row-gap', 22, 10, 599, 320, 1);
+
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  row-gap: 22px;
 
   width: 100%;
-  padding: 26px 0px;
 }
 
 .packs {
   &__controlBlock {
+    @include adaptiveValue('row-gap', 22, 10, 599, 320, 1);
+
     display: flex;
     flex-direction: column;
-    row-gap: 22px;
-  }
-
-  &__controlPanel {
-    display: flex;
-    column-gap: 30px;
-    align-items: flex-end;
   }
 }
