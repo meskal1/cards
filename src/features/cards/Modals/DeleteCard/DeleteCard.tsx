@@ -1,41 +1,36 @@
-import React from 'react'
+import { FC } from 'react'
 
-import Button from '@mui/material/Button'
-
+import { Dialog } from '../../../../common/components/Popups/Dialog/Dialog'
 import { useAppDispatch } from '../../../../hooks/reduxHooks'
+import { useEnterKey } from '../../../../hooks/useEnterKey'
 import { deleteCardTC } from '../../cardsSlice'
-
-import s from './DeleteCard.module.scss'
 
 type DeleteCardType = {
   id: string
-  activeModal: (state: boolean) => void
+  isOpened: boolean
+  onClose: () => void
 }
 
-export const DeleteCard: React.FC<DeleteCardType> = ({ id, activeModal }) => {
+export const DeleteCard: FC<DeleteCardType> = ({ id, isOpened, onClose }) => {
   const dispatch = useAppDispatch()
 
-  const handleCloseModal = () => activeModal(false)
-
-  const handleDeletePacK = async () => {
-    await dispatch(deleteCardTC(id))
-    activeModal(false)
+  const handleDeleteCard = () => {
+    dispatch(deleteCardTC(id))
+    onClose()
   }
 
+  useEnterKey(handleDeleteCard)
+
   return (
-    <div>
-      <p className={s.Message}>
-        Are you sure you want to delete current Card?
-        <br />
-      </p>
-      <div className={s.ButtonContainer}>
-        <Button onClick={handleCloseModal} type={'button'} variant="outlined">
-          Cancel
-        </Button>
-        <Button type={'button'} variant="contained" onClick={handleDeletePacK} color={'error'}>
-          Delete
-        </Button>
-      </div>
-    </div>
+    <Dialog
+      title={'Delete card'}
+      primaryColor={'red'}
+      onOkButtonText={'Delete'}
+      onOk={handleDeleteCard}
+      isOpened={isOpened}
+      onClose={onClose}
+    >
+      Are you sure you want to delete current card? Confirm deletion
+    </Dialog>
   )
 }
