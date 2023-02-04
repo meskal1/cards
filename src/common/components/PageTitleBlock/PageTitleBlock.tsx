@@ -1,111 +1,78 @@
-import { FC, memo, useState } from 'react'
-
-import { Portal } from '@mui/base'
-import { useParams } from 'react-router-dom'
+import { FC, memo, useState, useRef, MutableRefObject } from 'react'
 
 import { isMyPack } from '../../../app/selectors'
-import { PATH } from '../../../constants/routePaths.enum'
-import { DeletePack } from '../../../features/packs/Modals/DeletePack/DeletePack'
-import { EditPack } from '../../../features/packs/Modals/EditPack/EditPack'
+import { PackActionsMenu } from '../../../features/packs/PackActionsMenu/PackActionsMenu'
 import { useAppSelector } from '../../../hooks/reduxHooks'
-import { useNavigateNoUpdates } from '../../../utils/routerUtils'
+import { useLocationNoUpdates } from '../../../utils/routerUtils'
 import { BackToPacks } from '../BackToPacks/BackToPacks'
 import { CustomButton } from '../CustomButton/CustomButton'
+import { FiltersComponent } from '../FiltersComponent/FiltersComponent'
 
 import s from './PageTitleBlock.module.scss'
 
 type PageTitleBlockType = {
   linkToPacks?: boolean
-  button: string
-  packDeckCover?: string | null
-  title: string
+  hasButtons?: boolean
+  title?: string
   buttonClick: () => void
 }
 
 export const PageTitleBlock: FC<PageTitleBlockType> = memo(
-  ({ linkToPacks, button, title, buttonClick, packDeckCover }) => {
-    const { id } = useParams()
-    const cardsTotalCount = useAppSelector(state => state.cards.cardsData.cardsTotalCount)
+  ({ linkToPacks = false, hasButtons = true, title = 'Packs list', buttonClick }) => {
+    const location = useLocationNoUpdates()
+    const packID = location.pathname.split('/cards/')[1]
+    const isTableNotEmpty = useAppSelector(state => state.cards.cardsData.cardsTotalCount)
     const isItMyPack = useAppSelector(isMyPack)
-    const [isMenuOpen, setIsMenuOpen] = useState(false)
-    const [openModals, setOpenModals] = useState<number[]>([0, 0])
-    const showModals = openModals.reduce((a, b) => a + b, 0)
-    const sendData = {
-      id: id as string,
-      name: title,
-      deckCover: packDeckCover ? packDeckCover : '',
-    }
-    const menuSheet = isMenuOpen ? s.pageTitleBlock__menuSheet : ''
-    const menuItemStyle = isMenuOpen ? s.pageTitleBlock__menuItemStyle : ''
-    const listStyle = `${s.menuItem} ${menuItemStyle}`
-    const portalStyle = isMenuOpen ? s.portal : ''
-    const portalStyleBg = showModals ? s.portalBgColor : ''
-    const navigate = useNavigateNoUpdates()
+    const [isFilterOpen, setIsFilterOpen] = useState(false)
+    const isCards = new RegExp('/cards').test(location.pathname)
+    const menuRef = useRef() as MutableRefObject<HTMLDivElement>
+    const buttonName = isCards ? `${isItMyPack ? 'Add new card' : 'Learn to pack'}` : 'Add new pack'
 
-    const handleClickButton = () => buttonClick()
-
-    const handleToogleMenu = () => setIsMenuOpen(!isMenuOpen)
-
-    const handleClose = () => {
-      setIsMenuOpen(false)
-      setOpenModals([0, 0])
-      document.body.style.overflow = 'unset'
-    }
-
-    const handleLearn = () => {
-      if (cardsTotalCount) {
-        navigate(PATH.LEARN + `/${id}`)
-      }
-    }
-
-    const handleEdit = () => {
-      setOpenModals([1, 0])
-      document.body.style.overflow = 'hidden'
-    }
-
-    const handleDelete = () => {
-      setOpenModals([0, 1])
-      document.body.style.overflow = 'hidden'
-    }
+    const handleToggleFilter = () => setIsFilterOpen(prevState => !prevState)
 
     return (
-      <>
-        <Portal>
-          <div className={portalStyle || portalStyleBg} onClick={handleClose}></div>
-        </Portal>
-
-        <div className={s.pageTitleBlockContainer}>
-          {linkToPacks && <BackToPacks />}
+      <div className={s.pageTitleBlockContainer}>
+        {linkToPacks && <BackToPacks />}
+        <div className={s.pageTitleBlock__content}>
           <div className={s.pageTitleBlock__titleBlock}>
             <h2 className={s.pageTitleBlock__title}>{title}</h2>
-            {isItMyPack && linkToPacks && (
-              <div className={`${s.pageTitleBlock__menuContainer} ${menuSheet}`}>
-                <ul className={s.pageTitleBlock__menu} onClick={handleToogleMenu}>
-                  <li
-                    className={`${listStyle} ${cardsTotalCount ? '' : s.disabled}`}
-                    onClick={handleLearn}
-                  ></li>
-                  <li className={listStyle} onClick={handleEdit}></li>
-                  <li className={listStyle} onClick={handleDelete}></li>
-                </ul>
+
+            {isItMyPack && (
+              <PackActionsMenu
+                packID={packID as string}
+                packName={title}
+                packIsEmpty={!!isTableNotEmpty}
+              />
+            )}
+          </div>
+
+          {hasButtons && (
+            <>
+              <div className={s.filterButtonContainer}>
+                <div ref={menuRef}>
+                  {isFilterOpen && (
+                    <FiltersComponent
+                      parentRef={menuRef}
+                      closeMenu={handleToggleFilter}
+                      forCards={linkToPacks}
+                    />
+                  )}
+                  <CustomButton className={s.filterButton} onClick={handleToggleFilter}>
+                    <p>Add filter</p>
+                  </CustomButton>
+                </div>
               </div>
-            )}
 
-            {button && (
-              <CustomButton onClick={handleClickButton}>
-                <p>{button}</p>
+              <CustomButton
+                className={buttonName === 'Learn to pack' ? s.learnButton : s.addButton}
+                onClick={buttonClick}
+              >
+                <p>{buttonName}</p>
               </CustomButton>
-            )}
-          </div>
+            </>
+          )}
         </div>
-
-        {isItMyPack && !!showModals && (
-          <div className={showModals ? s.modalsContainer : ''}>
-            {!!openModals[0] && <EditPack data={sendData} activeModal={handleClose} />}
-            {!!openModals[1] && <DeletePack packData={sendData} activeModal={handleClose} />}
-          </div>
-        )}
-      </>
+      </div>
     )
   }
 )
