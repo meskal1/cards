@@ -3,7 +3,12 @@ import axios, { AxiosError } from 'axios'
 
 import { RequestStatusType } from '../../app/appSlice'
 import { RootStateType } from '../../app/store'
-import { cardsAPI, CreateCardType, ServerCardType } from '../../services/cardsApi'
+import {
+  cardsAPI,
+  CardsResponseType,
+  CreateCardType,
+  ServerCardType,
+} from '../../services/cardsApi'
 import { handleServerNetworkError } from '../../utils/errorUtils'
 import { logOutTC } from '../auth/authSlice'
 
@@ -16,17 +21,19 @@ export const initialCardsQueryParams = {
   cardQuestion: '',
 }
 
+const intialCardsData = {
+  packName: '',
+  packUserId: '',
+  cardsTotalCount: 0,
+  packDeckCover: '',
+}
+
 const initialState = {
   queryParams: { ...initialCardsQueryParams, cardsPack_id: '', cardAnswer: '' },
-  cardsData: {
-    packName: '',
-    packUserId: '',
-    cardsTotalCount: 0,
-    packDeckCover: null as string | null,
-  },
+  cardsData: intialCardsData as SetCardsDataPayloadType,
   tableData: [] as AppCardType[],
   error: null as CardsErrorType,
-  status: 'loading' as RequestStatusType,
+  status: 'idle' as RequestStatusType,
 }
 
 export const getCardsTC = createAsyncThunk(
@@ -36,14 +43,11 @@ export const getCardsTC = createAsyncThunk(
       const state = getState() as RootStateType
       const data = state.cards.queryParams
       const response = await cardsAPI.getCards(data)
-      const packUserId = response.data.packUserId
-      const packName = response.data.packName
-      const cardsTotalCount = response.data.cardsTotalCount
-      const packDeckCover = response.data.packDeckCover
+      const { cards, ...restData } = response.data
 
       return {
-        cardsData: { packName, packUserId, cardsTotalCount, packDeckCover },
-        cardsTableData: response.data.cards,
+        cardsData: { ...restData },
+        cardsTableData: cards,
       }
     } catch (e) {
       // Подумать можно ли это вынести в handleServerNetworkError
@@ -149,9 +153,13 @@ const cardsSlice = createSlice({
 
     builder
       .addCase(deleteCardTC.pending, (state, action) => {
+        state.status = 'loading'
         state.tableData.forEach(c =>
           c._id === action.meta.arg ? (c.requestStatus = 'loading') : null
         )
+      })
+      .addCase(deleteCardTC.fulfilled, state => {
+        state.status = 'idle'
       })
       .addCase(deleteCardTC.rejected, (state, action) => {
         state.tableData.forEach(c => (c._id === action.payload ? (c.requestStatus = 'idle') : null))
@@ -191,6 +199,7 @@ export const {
 
 // TYPES
 export type CardsStateType = typeof initialState
+
 export type AppCardType = ServerCardType & { requestStatus: RequestStatusType }
 
 export type CardsSortValuesType =
@@ -218,12 +227,7 @@ type SetCardsQueryParamsPayloadType = {
 
 export type CardsQueryParamsType = Partial<SetCardsQueryParamsPayloadType>
 
-type SetCardsDataPayloadType = {
-  packName: string
-  packUserId: string
-  cardsTotalCount: number
-  packDeckCover: string | null
-}
+type SetCardsDataPayloadType = Omit<CardsResponseType, 'cards'>
 
 export type UpdateCardType = {
   id: string
