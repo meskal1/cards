@@ -7,13 +7,11 @@ import s from './CustomButton.module.scss'
 type ButtonCustomType = ButtonProps
 
 export const CustomButton: FC<ButtonCustomType> = ({ className, ...props }) => {
-  const finalClass = `${s.button} ${className ? className : ''}`
+  const finalClass = `${s.button} ${className || ''}`
 
   return (
-    <>
-      <Button type={'submit'} variant="contained" className={finalClass} {...props}>
-        {props.children}
-      </Button>
-    </>
+    <Button type={'submit'} variant="contained" className={finalClass} {...props}>
+      {props.children}
+    </Button>
   )
 }

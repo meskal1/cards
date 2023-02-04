@@ -28,17 +28,15 @@ export const CheckEmail = () => {
   }, [])
 
   return (
-    <>
-      <div className={s.checkEmailContainer}>
-        <h2 className={s.checkEmail__title}>check email</h2>
-        <img className={s.checkEmail__img} src={emailIcon} alt="emailIcon" />
-        <p className={s.checkEmail__text}>
-          {`we've sent an Email with instructions to ${recoveryEmail}`}
-        </p>
-        <CustomButton onClick={onClickNavigate}>
-          <p>back to login</p>
-        </CustomButton>
-      </div>
-    </>
+    <div className={s.checkEmailContainer}>
+      <h2 className={s.checkEmail__title}>Check email</h2>
+      <img className={s.checkEmail__img} src={emailIcon} alt="emailIcon" />
+      <p className={s.checkEmail__text}>
+        {`We've sent an Email with instructions to ${recoveryEmail}`}
+      </p>
+      <CustomButton onClick={onClickNavigate}>
+        <p>Back to login</p>
+      </CustomButton>
+    </div>
   )
 }
