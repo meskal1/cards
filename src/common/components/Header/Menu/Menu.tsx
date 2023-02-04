@@ -1,20 +1,24 @@
-import { FC } from 'react'
+import { FC, MutableRefObject, useRef } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 
 import { PATH } from '../../../../constants/routePaths.enum'
 import { logOutTC } from '../../../../features/auth/authSlice'
 import { useAppDispatch } from '../../../../hooks/reduxHooks'
+import { useEscapeKey } from '../../../../hooks/useEscapeKey'
+import { useOnClickOutside } from '../../../../hooks/useOnClickOutside'
 
 import s from './Menu.module.scss'
 
 type MenuType = {
+  parentRef: MutableRefObject<HTMLDivElement>
   closeMenu: () => void
 }
 
-export const Menu: FC<MenuType> = ({ closeMenu }) => {
+export const Menu: FC<MenuType> = ({ parentRef, closeMenu }) => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
+  const navRef = useRef() as MutableRefObject<HTMLDivElement>
 
   const onClickLogOut = () => {
     closeMenu()
@@ -26,22 +30,27 @@ export const Menu: FC<MenuType> = ({ closeMenu }) => {
     navigate(PATH.PROFILE)
   }
 
+  useOnClickOutside(closeMenu, navRef, parentRef)
+  useEscapeKey(closeMenu)
+
   return (
-    <>
-      <nav className={s.menu__nav}>
-        <ul className={s.menu__itemsList}>
-          <li
-            className={s.menu__item}
-            onClick={onClickNavigate}
-            style={{ animationDelay: '0.275s' }}
-          >
-            <p className={s.menu__itemProfile}>profile</p>
-          </li>
-          <li className={s.menu__item} onClick={onClickLogOut} style={{ animationDelay: '0.2s' }}>
-            <p className={s.menu__itemLogOut}>log out</p>
-          </li>
-        </ul>
-      </nav>
-    </>
+    <nav ref={navRef} className={s.menu__nav}>
+      <ul className={s.menu__itemsList}>
+        <li
+          className={s.menu__item}
+          onMouseDown={onClickNavigate}
+          style={{ animationDelay: '0.25s' }}
+        >
+          <p className={s.menu__itemProfile}>Profile</p>
+        </li>
+        <li
+          className={s.menu__item}
+          onMouseDown={onClickLogOut}
+          style={{ animationDelay: '0.15s' }}
+        >
+          <p className={s.menu__itemLogOut}>Log out</p>
+        </li>
+      </ul>
+    </nav>
   )
 }
