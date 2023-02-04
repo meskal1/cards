@@ -1,0 +1,96 @@
+@import '../../../common/styles/mixins/mixinCommon';
+
+.select {
+  @include user_select_none;
+
+  cursor: pointer;
+
+  position: relative;
+
+  width: 100%;
+  min-width: 210px;
+  height: 35px;
+
+  text-align: left;
+
+  border-radius: 30px;
+}
+
+.selected {
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+
+  height: 100%;
+  padding: 0 35px 0 15px;
+
+  font-size: 14px;
+  font-weight: 500;
+  color: black;
+  text-align: left;
+
+  background: #d9d8d8;
+  border-radius: 30px;
+
+  &::after {
+    content: '';
+
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-75%) rotate(45deg);
+
+    width: 8px;
+    height: 8px;
+
+    border-right: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+
+    transition: all 0.2s ease;
+  }
+
+  &:hover {
+    background: #d2d1d1;
+  }
+}
+
+.opened {
+  &::after {
+    transform: translateY(-25%) rotate(225deg);
+
+    transition: all 0.2s ease;
+  }
+}
+
+.options,
+.optionsLeft {
+  position: absolute;
+  z-index: 1;
+  top: 40px;
+
+  overflow: hidden;
+
+  background: #d9d8d8;
+  border: white 1px solid;
+  border-radius: 4px;
+}
+
+.options {
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+
+.optionsLeft {
+  width: 100%;
+}
+
+.option {
+  padding: 4px 10px;
+
+  white-space: nowrap;
+
+  &:hover {
+    background: #1d7ccb;
+  }
+}
