@@ -12,52 +12,6 @@
 @mixin table_body_styles {
   .row {
     cursor: pointer;
-
-    &:nth-child(5) {
-      // width: 50px !important;
-    }
-  }
-
-  td {
-    //  width: 100px !important;
-
-    &:nth-child(2) {
-      width: 100px;
-
-      div > p {
-        width: 65%;
-
-        text-align: center;
-      }
-    }
-
-    &:nth-child(3) {
-      width: 174px;
-
-      div > p {
-        width: 80%;
-
-        text-align: center;
-      }
-    }
-
-    &:nth-child(4) {
-      width: 320px;
-      // padding-right: 5px;
-
-      // text-align: center;
-    }
-
-    &:nth-child(5) {
-      width: 117px;
-      padding-right: 5px;
-
-      // text-align: center;
-    }
-
-    &:last-child {
-      // text-align: right !important;
-    }
   }
 
   .image {
@@ -70,8 +24,6 @@
     overflow: hidden;
     display: -webkit-box;
 
-    //  width: 100%;
-    //  max-width: 200px;
     max-height: 100px;
 
     font-size: 13px;
