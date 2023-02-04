@@ -1,6 +1,3 @@
-@import '../../../../common/styles/mixins/mixinCommon';
-@include table_body_styles;
-
 .packImageWrapper {
   position: absolute;
   top: 0;
@@ -10,54 +7,215 @@
   align-items: center;
 
   height: 100%;
-  padding: 16px;
+  padding: 0 10px;
 
   transition: 0.2s ease transform 0.2s;
+  @media (max-width: 599px) {
+    z-index: 1;
+
+    width: 100%;
+    padding: unset;
+  }
 }
 
 .packName {
   transform: rotateX(-90deg);
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
   transition: 0.2s ease transform 0s;
+}
+
+.packNameAdaptive {
+  z-index: 2;
 }
 
 .packImage {
   width: 80px;
-  height: 55px;
+  height: 64px;
 
   object-fit: cover;
   border: 1px solid rgb(128 128 128 / 67.2%);
+  @media (max-width: 599px) {
+    width: 100%;
+    height: 100%;
+
+    opacity: 0.25;
+    border: none;
+  }
 }
 
-.row {
+.tablePacks__body {
+  @media (max-width: 599px) {
+    display: block;
+
+    width: 100%;
+
+    font-weight: 600;
+  }
+}
+
+.tablePacks__bodyRow {
+  height: 70px;
+
+  background: white;
+
+  &:not(:last-child) {
+    border-bottom: 2px solid #efefef;
+  }
+
   &:hover {
+    background: #f5f5f5;
+
     .packImageWrapper {
-      transform: rotateX(90deg) !important;
+      transform: rotateX(90deg);
 
       transition: 0.2s ease transform 0s;
     }
 
     .packName {
-      transform: rotateX(0) !important;
+      transform: rotateX(0);
 
       transition: 0.2s ease transform 0.2s;
+    }
+    @media (max-width: 599px) {
+      .packImageWrapper {
+        transform: unset;
+      }
+    }
+  }
+  @media (max-width: 599px) {
+    position: relative;
+
+    overflow: hidden;
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    border: 1px solid rgb(189 188 188);
+    border-radius: 15px;
+
+    &:not(:last-child) {
+      margin: 0px 0px 15px 0px;
+
+      border-bottom: 1px solid rgb(189 188 188);
     }
   }
 }
 
-.cellContainer {
-  //   transform: perspective(500px);
+.tablePacks__bodyCell {
+  position: relative;
 
-  -webkit-align-content: center;
-  align-content: center;
+  line-height: 18px;
 
-  -webkit-box-orient: horizontal !important;
+  &:not(:last-child) {
+    cursor: pointer;
+
+    padding: 5px 10px;
+  }
+
+  &:nth-child(1) {
+    @media (max-width: 599px) {
+      background: rgb(221 221 221 / 54.9%);
+
+      .packNameAdaptive {
+        display: none;
+      }
+
+      .tablePacks__bodyCellTitle {
+        overflow: hidden;
+
+        width: 80%;
+
+        text-align: center;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .tablePacks__bodyCellContent {
+        justify-content: center;
+      }
+    }
+  }
+
+  &:nth-child(1),
+  &:nth-child(2) {
+    div p {
+      overflow: hidden;
+
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  &:nth-child(3),
+  &:nth-child(4) {
+    text-align: center;
+    @media (max-width: 599px) {
+      text-align: unset;
+    }
+  }
+
+  &:nth-child(5) {
+    padding: 5px 10px 5px 0px;
+
+    text-align: center;
+    @media (max-width: 599px) {
+      position: absolute;
+      z-index: 2;
+      top: 0;
+      right: 0;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 40px;
+      height: 45px;
+    }
+  }
+  @media (max-width: 599px) {
+    position: unset;
+
+    display: block;
+
+    line-height: 35px;
+  }
 }
 
-.tableCell {
-  position: relative;
+.tablePacks__bodyCellContent {
+  @media (max-width: 599px) {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+  }
+}
+
+.tablePacks__bodyCellTitle {
+  display: none;
+  @media (max-width: 599px) {
+    z-index: 2;
+
+    display: unset;
+
+    white-space: nowrap;
+  }
+}
+
+.linkToLearnActive,
+.linkToLearnDisabled {
+  display: inline-block;
+
+  width: 20px;
+  height: 20px;
+}
+
+.linkToLearnActive {
+  background: url('../../../../assets/img/icons/studyPack.svg') 50% 50% no-repeat;
+}
+
+.linkToLearnDisabled {
+  pointer-events: none;
+  cursor: auto;
+
+  background: url('../../../../assets/img/icons/studyPackDisabled.svg') 50% 50% no-repeat;
 }

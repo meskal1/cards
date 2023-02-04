@@ -12,7 +12,7 @@ type EditableSpanType = {
 export const EditableSpan: FC<EditableSpanType> = memo(({ changeName }) => {
   const name = useAppSelector(state => state.profile.userData.name)
   const [inputValue, setInputValue] = useState(name ? name : '')
-  const [isInEditMode, setIsInEditMode] = useState(false)
+  const [editMode, setEditMode] = useState(false)
   const [errorEmptyField, setErrorEmptyField] = useState(false)
   const [errorStyleButton, setErrorStyleButton] = useState('')
 
@@ -26,18 +26,18 @@ export const EditableSpan: FC<EditableSpanType> = memo(({ changeName }) => {
 
   const handleEditMode = () => {
     setInputValue(inputValue.trim())
-    setIsInEditMode(true)
+    setEditMode(true)
   }
 
   const handleSetNewName = (e?: MouseEvent<HTMLDivElement>) => {
     e?.preventDefault()
-    if (inputValue.trim() === '') {
+    if (inputValue.trim() === '' || inputValue.length > 50) {
       setErrorEmptyField(true)
       setErrorStyleButton(s.errorButton)
 
       return
     } else {
-      setIsInEditMode(false)
+      setEditMode(false)
     }
 
     if (inputValue.trim() !== name) {
@@ -55,7 +55,7 @@ export const EditableSpan: FC<EditableSpanType> = memo(({ changeName }) => {
 
   const onBlurInput = () => {
     setInputValue(name ? name : '')
-    setIsInEditMode(false)
+    setEditMode(false)
     setErrorEmptyField(false)
   }
 
@@ -71,7 +71,7 @@ export const EditableSpan: FC<EditableSpanType> = memo(({ changeName }) => {
 
   return (
     <>
-      {isInEditMode ? (
+      {editMode ? (
         <div className={s.inputContainer}>
           <CustomInput
             value={inputValue}
@@ -80,7 +80,8 @@ export const EditableSpan: FC<EditableSpanType> = memo(({ changeName }) => {
             onChange={onChangeInputHandler}
             autoFocus={true}
             autoComplete={'new-password'}
-            error={errorEmptyField}
+            error={errorEmptyField || inputValue.length > 50}
+            helperText={inputValue.length > 50 ? 'Name should be less then 50 characters' : ''}
             InputProps={{
               inputProps: { style: { textAlign: 'center' } },
             }}

@@ -1,0 +1,94 @@
+.selectContainer {
+  z-index: 2;
+
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
+}
+
+.addImageBlock {
+  cursor: pointer;
+
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 200px;
+  margin: 0px 0px 18px 0px;
+
+  background: rgb(128 128 128 / 10%);
+  border: 1px black dashed;
+  border-radius: 20px;
+  @media (max-height: 599px) {
+    height: 150px;
+  }
+}
+
+.dargOver {
+  background: rgb(128 128 128 / 30%);
+}
+
+.addImageBlockTitle {
+  position: absolute;
+  z-index: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+
+  line-height: 20px;
+  text-align: center;
+
+  border-radius: 20px;
+}
+
+.hidden {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+
+  border-radius: 30px !important;
+
+  div {
+    visibility: hidden;
+  }
+
+  p {
+    pointer-events: none;
+
+    position: absolute;
+    bottom: -18px;
+
+    align-self: flex-start;
+  }
+}
+
+.imageContainer {
+  position: relative;
+
+  overflow: hidden;
+
+  width: 100%;
+  height: 100%;
+
+  border-radius: 20px;
+}
+
+.image {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}

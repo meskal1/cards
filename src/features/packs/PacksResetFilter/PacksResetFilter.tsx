@@ -15,8 +15,8 @@ export const PacksResetFilter = () => {
   }
 
   return (
-    <>
-      <div className={s.packsResetFilter} onClick={handleResetFilter} />
-    </>
+    <div className={s.packsResetFilter} onClick={handleResetFilter}>
+      Reset
+    </div>
   )
 }

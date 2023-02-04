@@ -14,14 +14,12 @@ export const Page404 = () => {
   }
 
   return (
-    <>
-      <div className={s.page404Container}>
-        <img className={s.page404__img} src={image404} alt="error404" />
-        <h1 className={s.page404__title}>page not found!</h1>
-        <CustomButton className={s.button} onClick={onClickNavigate}>
-          <p>back to home page</p>
-        </CustomButton>
-      </div>
-    </>
+    <div className={s.page404Container}>
+      <img className={s.page404__img} src={image404} alt="error404" />
+      <h1 className={s.page404__title}>Page not found!</h1>
+      <CustomButton className={s.button} onClick={onClickNavigate}>
+        <p>Back to home page</p>
+      </CustomButton>
+    </div>
   )
 }

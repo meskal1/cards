@@ -87,31 +87,29 @@ const AuthRoutes = () => {
 
 export const AppRoutes = () => {
   return (
-    <>
-      <Routes>
-        <Route element={<PrivateRoutes />}>
-          <Route path="/" element={<Navigate to={PATH.PACKS} replace />} />
-          <Route path={PATH.PACKS} element={<Packs />} />
-          <Route path={PATH.CARDS} element={<Cards />}>
-            <Route path={PATH.CARDS_ID} element={<Cards />} />
-          </Route>
-          <Route path={PATH.LEARN} element={<Learn />}>
-            <Route path={PATH.LEARN_PACK_ID} element={<Learn />} />
-          </Route>
-          <Route path={PATH.PROFILE} element={<Profile />} />
+    <Routes>
+      <Route element={<PrivateRoutes />}>
+        <Route path="/" element={<Navigate to={PATH.PACKS} replace />} />
+        <Route path={PATH.PACKS} element={<Packs />} />
+        <Route path={PATH.CARDS} element={<Cards />}>
+          <Route path={PATH.CARDS_ID} element={<Cards />} />
         </Route>
-
-        <Route element={<AuthRoutes />}>
-          <Route path={PATH.LOGIN} element={<LogInApp />} />
-          <Route path={PATH.RECOVERY} element={<Recovery />} />
-          <Route path={PATH.CHECK_EMAIL} element={<CheckEmail />} />
-          <Route path={PATH.REGISTRATION} element={<Registration />} />
-          <Route path={PATH.NEW_PASSWORD_TOKEN} element={<NewPassword />} />
+        <Route path={PATH.LEARN} element={<Learn />}>
+          <Route path={PATH.LEARN_PACK_ID} element={<Learn />} />
         </Route>
+        <Route path={PATH.PROFILE} element={<Profile />} />
+      </Route>
 
-        <Route path={PATH.PAGE_NOT_FOUND} element={<Page404 />} />
-        <Route path="*" element={<Page404 />} />
-      </Routes>
-    </>
+      <Route element={<AuthRoutes />}>
+        <Route path={PATH.LOGIN} element={<LogInApp />} />
+        <Route path={PATH.RECOVERY} element={<Recovery />} />
+        <Route path={PATH.CHECK_EMAIL} element={<CheckEmail />} />
+        <Route path={PATH.REGISTRATION} element={<Registration />} />
+        <Route path={PATH.NEW_PASSWORD_TOKEN} element={<NewPassword />} />
+      </Route>
+
+      <Route path={PATH.PAGE_NOT_FOUND} element={<Page404 />} />
+      <Route path="*" element={<Page404 />} />
+    </Routes>
   )
 }

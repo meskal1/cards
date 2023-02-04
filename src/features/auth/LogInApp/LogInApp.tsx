@@ -38,58 +38,56 @@ export const LogInApp = () => {
   })
 
   return (
-    <>
-      <div className={s.loginContainer}>
-        <h2 className={s.login__title}>sign in</h2>
-        <form className={s.login__form} onSubmit={formik.handleSubmit}>
-          <CustomInput
-            label="email"
-            error={formik.touched.email && !!formik.errors.email}
-            helperText={formik.touched.email && formik.errors.email}
-            {...formik.getFieldProps('email')}
+    <div className={s.loginContainer}>
+      <h2 className={s.login__title}>Sign in</h2>
+      <form className={s.login__form} onSubmit={formik.handleSubmit}>
+        <CustomInput
+          label="Email"
+          error={formik.touched.email && !!formik.errors.email}
+          helperText={formik.touched.email && formik.errors.email}
+          {...formik.getFieldProps('email')}
+        />
+
+        <CustomPasswordInput
+          label="Password"
+          error={formik.touched.password && !!formik.errors.password}
+          helperText={formik.touched.password && formik.errors.password}
+          {...formik.getFieldProps('password')}
+        />
+
+        <div className={s.login__blockRemember}>
+          <FormControlLabel
+            className={s.login__checkBoxBlock}
+            label={<Typography className={s.login__typography}>Remember me</Typography>}
+            control={
+              <Checkbox
+                {...formik.getFieldProps('rememberMe')}
+                className={s.checkbox}
+                checked={formik.values.rememberMe}
+                size="medium"
+                style={formik.values.rememberMe ? { color: '#1B79CE ' } : { color: 'grey ' }}
+                icon={<RadioButtonUncheckedIcon />}
+                checkedIcon={<TaskAltIcon />}
+              />
+            }
           />
 
-          <CustomPasswordInput
-            label="password"
-            error={formik.touched.password && !!formik.errors.password}
-            helperText={formik.touched.password && formik.errors.password}
-            {...formik.getFieldProps('password')}
-          />
-
-          <div className={s.login__blockRemember}>
-            <FormControlLabel
-              className={s.login__checkBoxBlock}
-              label={<Typography className={s.login__typography}>remember me</Typography>}
-              control={
-                <Checkbox
-                  {...formik.getFieldProps('rememberMe')}
-                  className={s.checkbox}
-                  checked={formik.values.rememberMe}
-                  size="medium"
-                  style={formik.values.rememberMe ? { color: '#1B79CE ' } : { color: 'grey ' }}
-                  icon={<RadioButtonUncheckedIcon />}
-                  checkedIcon={<TaskAltIcon />}
-                />
-              }
-            />
-
-            <Link className={s.login__forgotPassword} to={PATH.RECOVERY}>
-              forgot password?
-            </Link>
-          </div>
-
-          <CustomButton disabled={authStatus === 'loading'}>
-            <p>sign in</p>
-          </CustomButton>
-        </form>
-
-        <div className={s.login__signUpBlock}>
-          <p className={s.login__text}>already have an account?</p>
-          <Link className={s.login__signUp} to={PATH.REGISTRATION}>
-            sign up
+          <Link className={s.login__forgotPassword} to={PATH.RECOVERY}>
+            Forgot password?
           </Link>
         </div>
+
+        <CustomButton disabled={authStatus === 'loading'}>
+          <p>Sign in</p>
+        </CustomButton>
+      </form>
+
+      <div className={s.login__signUpBlock}>
+        <p className={s.login__text}>Already have an account?</p>
+        <Link className={s.login__signUp} to={PATH.REGISTRATION}>
+          Sign up
+        </Link>
       </div>
-    </>
+    </div>
   )
 }

@@ -1,71 +1,75 @@
 import { FC, memo } from 'react'
 
-import Box from '@mui/material/Box'
-import Paper from '@mui/material/Paper'
-import Table from '@mui/material/Table'
-import TableContainer from '@mui/material/TableContainer'
-
 import { RequestStatusType } from '../../../app/appSlice'
+import { CustomButton } from '../../../common/components/CustomButton/CustomButton'
 import { TableBodySkeleton } from '../../../common/components/CustomSkeletons/TableBodySkeleton/TableBodySkeleton'
 import {
   CustomTableHead,
-  HeadType,
+  TableHeadType,
 } from '../../../common/components/CustomTableHead/CustomTableHead'
+import { LoadingProgress } from '../../../common/components/LoadingProgress/LoadingProgress'
 import { useAppSelector } from '../../../hooks/reduxHooks'
-import { UpdateCardType } from '../cardsSlice'
 
+import s from './CardsTable.module.scss'
 import { CardsTableBody } from './CardsTableBody/CardsTableBody'
 
 export type CardsOrderByType = 'question' | 'answer' | 'updated' | 'grade'
 
-const heads: HeadType<CardsOrderByType>[] = [
+const heads: TableHeadType<CardsOrderByType>[] = [
   { id: 'question', label: 'Question' },
   { id: 'answer', label: 'Answer' },
-  { id: 'updated', label: 'Last updated' },
   { id: 'grade', label: 'Grade' },
+  { id: 'updated', label: 'Last updated' },
 ]
 
 type CardsTablePropsType = {
   isMine: boolean
-  openEdit: (state: boolean) => void
-  setEditData: (data: UpdateCardType) => void
-  openDelete: (state: boolean) => void
-  setDeleteData: (id: string) => void
+  showButton: boolean
+  handleTitleButton: () => void
 }
 
 export const CardsTable: FC<CardsTablePropsType> = memo(
-  ({ isMine, openEdit, setEditData, openDelete, setDeleteData }) => {
+  ({ isMine, showButton, handleTitleButton }) => {
     const status = useAppSelector<RequestStatusType>(state => state.cards.status)
+    const isTableNotEmpty = useAppSelector(state => state.cards.cardsData.cardsTotalCount)
     const pageCount = useAppSelector(state => state.cards.queryParams.pageCount)
 
-    console.log('Render CARDS TABLE')
-
     return (
-      <Box>
-        <Paper>
-          <TableContainer>
-            <Table>
-              <CustomTableHead heads={heads} cards withActions={isMine} />
-              {status === 'loading' ? (
-                <TableBodySkeleton
-                  columnsCount={heads.length}
-                  rowsCount={pageCount}
-                  withActions={isMine}
-                />
-              ) : (
-                <CardsTableBody
-                  heads={heads}
-                  isMine={isMine}
-                  openEdit={openEdit}
-                  setEditData={setEditData}
-                  openDelete={openDelete}
-                  setDeleteData={setDeleteData}
-                />
-              )}
-            </Table>
-          </TableContainer>
-        </Paper>
-      </Box>
+      <>
+        {isTableNotEmpty ? (
+          <table className={s.tableCards}>
+            <CustomTableHead heads={heads} forCards withActions={isMine} />
+            {status === 'loading' ? (
+              <TableBodySkeleton
+                columnsCount={heads.length}
+                rowsCount={pageCount}
+                withActions={isMine}
+              />
+            ) : (
+              <CardsTableBody heads={heads} isMine={isMine} />
+            )}
+          </table>
+        ) : (
+          <>
+            {status === 'loading' ? (
+              <LoadingProgress />
+            ) : (
+              <div className={s.cards__emptyBlock}>
+                <h3 className={s.cards__emptyTitle}>
+                  No cards found.{' '}
+                  {isMine && !showButton ? 'Click add new card to fill this pack' : ''}
+                </h3>
+
+                {isMine && !showButton && (
+                  <CustomButton className={s.addButton} onClick={handleTitleButton}>
+                    <p>Add new card</p>
+                  </CustomButton>
+                )}
+              </div>
+            )}
+          </>
+        )}
+      </>
     )
   }
 )

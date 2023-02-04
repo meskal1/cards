@@ -28,7 +28,8 @@ export const DataSetAndRequestComponent = () => {
   const cardsQueryString = queryString(cardsQueryParams, initialCardsQueryParams)
   const dispatch = useAppDispatch()
   const location = useLocation()
-  const isCards = new RegExp('/cards', 'gi').test(location.pathname)
+  const isCards = new RegExp('/cards').test(location.pathname)
+  const isLearn = new RegExp('/learn').test(location.pathname)
   const navigate = useNavigateNoUpdates()
   const allParams = getQueryParams()
   const cardsPack_id = useAppSelector(state => state.cards.queryParams.cardsPack_id)
@@ -68,7 +69,9 @@ export const DataSetAndRequestComponent = () => {
       navigate(PATH.PACKS + '?' + packsQueryString)
     }
 
-    dispatch(getPacksTC())
+    if (!isLearn) {
+      dispatch(getPacksTC())
+    }
   }, [packsQueryParams])
 
   useEffectAfterMount(() => {

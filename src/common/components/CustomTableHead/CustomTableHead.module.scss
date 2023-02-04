@@ -1,11 +1,97 @@
-.tableHead {
-  background-color: #efefef;
+.headCellTitle {
+  position: relative;
 
-  th {
+  display: inline-block;
+}
+
+.tablePacks {
+  &__head {
+    height: 54px;
+    @media (max-width: 599px) {
+      display: none;
+    }
+  }
+
+  &__headRow {
     font-size: 16px;
 
-    &:last-child {
-      text-align: right;
+    background: #efefef;
+  }
+
+  &__headCell {
+    padding: 0 10px;
+
+    font-weight: 500;
+
+    &:nth-child(1),
+    &:nth-child(2) {
+      text-align: start;
+
+      .headCellContainer {
+        min-width: 100px;
+      }
     }
+
+    &:nth-child(3) {
+      width: 100px;
+    }
+
+    &:nth-child(4) {
+      width: 150px;
+
+      .headCellContainer {
+        min-width: 120px;
+      }
+    }
+
+    &:nth-child(5) {
+      width: 40px;
+      min-width: 40px;
+    }
+  }
+  @media (max-width: 599px) {
+    display: block;
+  }
+}
+
+.actionCell {
+  width: 0px;
+  padding: 0 5px;
+
+  font-weight: 500;
+  @media (max-width: 599px) {
+    display: block;
+  }
+}
+
+.gradeCell {
+  width: 130px;
+  padding: 0 10px;
+
+  font-weight: 500;
+  @media (max-width: 599px) {
+    display: block;
+  }
+}
+
+.sortArrowUp,
+.sortArrowDown {
+  &::before {
+    content: '';
+
+    position: absolute;
+    top: -2px;
+    right: -20px;
+
+    width: 18px;
+    height: 18px;
+
+    background: url('../../../assets/img/icons/sortArrow.svg');
+  }
+}
+
+.sortArrowDown {
+  &::before {
+    transform: rotate(180deg);
   }
 }

@@ -51,7 +51,7 @@ export type ServerPackType = {
   path: string
   grade: number
   shots: number
-  deckCover: string | null
+  deckCover: string
   cardsCount: number
   type: string
   rating: number
@@ -61,7 +61,7 @@ export type ServerPackType = {
   __v: number
 }
 
-type UpdatePackType = Pick<ServerPackType, '_id' | 'name' | 'deckCover'>
+type UpdatePackType = Pick<ServerPackType, '_id' | 'name' | 'private'> | { deckCover?: string }
 
 type AddPackResponseType = {
   newCardsPack: ServerPackType

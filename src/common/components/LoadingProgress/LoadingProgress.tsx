@@ -4,10 +4,8 @@ import s from './LoadingProgress.module.scss'
 
 export const LoadingProgress = () => {
   return (
-    <>
-      <Box className={s.circularProgress}>
-        <CircularProgress />
-      </Box>
-    </>
+    <Box className={s.circularProgress}>
+      <CircularProgress />
+    </Box>
   )
 }

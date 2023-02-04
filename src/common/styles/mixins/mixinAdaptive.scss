@@ -29,12 +29,12 @@ $containerWidth: $maxWidthContainer + $containerPadding;
 
 // REM
 @function rem($px) {
-  $result: math.div($px, 16) + rem;
+  $result: math.div($px, 14) + rem;
   @return $result;
 }
 
 // EM
-@function em($px, $current: 16) {
+@function em($px, $current: 14) {
   $result: math.div($px, $current) + em;
   @return $result;
 }

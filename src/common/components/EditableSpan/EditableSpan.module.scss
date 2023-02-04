@@ -20,7 +20,12 @@
 }
 
 .userName {
-  text-transform: capitalize;
+  overflow: hidden;
+
+  max-width: 260px;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .marker {

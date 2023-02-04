@@ -1,9 +1,10 @@
-import { useState, MouseEvent } from 'react'
+import { useState, useRef, MutableRefObject } from 'react'
 
 import { Toolbar } from '@mui/material'
 import AppBar from '@mui/material/AppBar'
 import { Container } from '@mui/system'
 import { Link } from 'react-router-dom'
+import { ref } from 'yup'
 
 import avatarLocal from '../../../assets/img/avatar.jpg'
 import { PATH } from '../../../constants/routePaths.enum'
@@ -17,44 +18,35 @@ export const Header = () => {
   const name = useAppSelector(state => state.profile.userData.name)
   const avatar = useAppSelector(state => state.profile.userData.avatar)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const menuRef = useRef() as MutableRefObject<HTMLDivElement>
 
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
-
-  const handleMouseDownOutOffMenu = (e: MouseEvent) => {
-    if ((e.target as Element).id === 'header' && isMenuOpen !== false) {
-      setIsMenuOpen(false)
-    }
-  }
+  const handleToggleMenu = () => setIsMenuOpen(!isMenuOpen)
 
   return (
     <>
       <DataSetAndRequestComponent />
-      <AppBar
-        id="header"
-        className={`${s.headerContainer} ${isMenuOpen ? s.beforeElement : ''}`}
-        onMouseDown={handleMouseDownOutOffMenu}
-      >
+      <AppBar id="header" className={s.headerContainer}>
         <Container className={s.header}>
           <Toolbar disableGutters>
             <div className={s.header__logoContainer}>
               <Link className={s.header__logo} to={PATH.PROFILE}>
-                LOGO
+                Cards
               </Link>
             </div>
 
-            <div className={s.header__avatarContainer}>
-              <div className={s.header__userName} onClick={toggleMenu}>
-                {name ? name : ''}
+            <div ref={menuRef} className={s.header__avatarContainer}>
+              <div className={s.header__userName} onClick={handleToggleMenu}>
+                {name || ''}
               </div>
 
-              {isMenuOpen && <Menu closeMenu={toggleMenu} />}
+              {isMenuOpen && <Menu parentRef={menuRef} closeMenu={handleToggleMenu} />}
 
               <div className={s.header__pic}>
                 <img
                   className={s.header__img}
-                  src={avatar ? avatar : avatarLocal}
+                  src={avatar || avatarLocal}
                   alt="avatar"
-                  onClick={toggleMenu}
+                  onClick={handleToggleMenu}
                 />
               </div>
             </div>

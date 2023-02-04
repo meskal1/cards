@@ -1,10 +1,20 @@
+@import '../../../common/styles/mixins/mixinCommon';
+
 .packsResetFilter {
+  @include user_select_none;
+
   cursor: pointer;
 
-  width: 40px;
-  height: 36px;
+  padding: 6px 10px;
 
-  background: white url('../../../assets/img/icons/filter.svg') center no-repeat;
-  border: 1px solid #c4c4c4;
-  border-radius: 5px;
+  color: white;
+
+  background: #1d7ccb;
+  border-radius: 30px;
+
+  transition: all 0.4s ease;
+
+  &:hover {
+    background: #1668bd;
+  }
 }

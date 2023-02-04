@@ -19,6 +19,7 @@ export const cardsAPI = {
   updateCard(data: UpdateServerCardType) {
     return instance.put<UpdateResponseType>('cards/card', { card: data })
   },
+
   gradeCard(data: GradeData) {
     return instance.put<GradeCardResponseType>('cards/grade', data)
   },
@@ -78,6 +79,7 @@ export type ServerCardType = {
   questionImg: string
   questionVideo: string
 }
+
 type UpdateServerCardType = { _id: string } & Partial<Omit<ServerCardType, '_id'>>
 
 export type CreateCardType = {
@@ -113,7 +115,8 @@ type UpdateResponseType = {
 type GradeCardResponseType = {
   updatedGrade: upgradedCardType
   token: string
-  tokenDeathTime: 1672361003260
+  tokenDeathTime: number
+  //   tokenDeathTime: 1672361003260
 }
 
 export type upgradedCardType = {

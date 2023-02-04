@@ -37,24 +37,22 @@ export const NewPassword = () => {
   }, [passwordIsChanged])
 
   return (
-    <>
-      <div className={s.setPasswordContainer}>
-        <h2 className={s.setPassword__title}>create new password</h2>
-        <form className={s.setPassword__form} onSubmit={formik.handleSubmit}>
-          <CustomPasswordInput
-            label="password"
-            error={formik.touched.password && !!formik.errors.password}
-            helperText={formik.touched.password && formik.errors.password}
-            {...formik.getFieldProps('password')}
-          />
-          <p className={s.setPassword__text}>
-            create new password and we will send you further instructions to email
-          </p>
-          <CustomButton>
-            <p>create new password</p>
-          </CustomButton>
-        </form>
-      </div>
-    </>
+    <div className={s.setPasswordContainer}>
+      <h2 className={s.setPassword__title}>Create new password</h2>
+      <form className={s.setPassword__form} onSubmit={formik.handleSubmit}>
+        <CustomPasswordInput
+          label="Password"
+          error={formik.touched.password && !!formik.errors.password}
+          helperText={formik.touched.password && formik.errors.password}
+          {...formik.getFieldProps('password')}
+        />
+        <p className={s.setPassword__text}>
+          Create new password and we will send you further instructions to email
+        </p>
+        <CustomButton>
+          <p>Create new password</p>
+        </CustomButton>
+      </form>
+    </div>
   )
 }

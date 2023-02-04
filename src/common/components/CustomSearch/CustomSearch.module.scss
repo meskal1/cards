@@ -1,20 +1,43 @@
+@import '../../../common/styles/mixins/mixinCommon';
+
 .searchContainer {
+  position: relative;
+
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  gap: 12px;
 
-  max-width: 50%;
+  max-width: 570px;
 }
 
 .search {
-  &__title {
-    font-weight: 600;
+  &__placeholder {
+    @include user_select_none;
+
+    cursor: text;
+
+    position: absolute;
+    z-index: 1;
+    top: 12px;
+    left: 35px;
+
+    font-weight: 500;
+    color: rgb(153 153 153 / 54.4%);
+
+    transition: all ease 0.25s;
+  }
+
+  &__placeholderAnimate {
+    transform: translate(50px, 0px);
+
+    opacity: 0;
   }
 
   &__input {
     & > div {
       overflow: hidden;
+
+      border-radius: 30px;
 
       & > input {
         z-index: 1;

@@ -9,16 +9,19 @@
   &__itemsList {
     position: relative;
 
+    overflow: hidden;
     display: flex;
     flex-direction: column;
+    justify-content: center;
 
     min-width: 111px;
     padding: 5px 0;
 
     background: white;
     border-radius: 5px;
+    box-shadow: 0px 5px 6px rgb(0 0 0 / 20%);
 
-    animation: animateHeight 2s ease forwards;
+    animation: animateHeight 0.2s ease forwards;
 
     &::before {
       content: '';
@@ -48,6 +51,7 @@
 
     padding: 10px 15px;
 
+    line-height: 15px;
     color: black;
     white-space: nowrap;
 
@@ -92,6 +96,6 @@
   }
 
   100% {
-    max-height: 100vh;
+    max-height: 78px;
   }
 }

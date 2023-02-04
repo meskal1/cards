@@ -31,13 +31,4 @@ describe('auth reducer tests', () => {
     initialState.isLoggedIn = true
     expect(authReducer(initialState, logOutTC.fulfilled(undefined, '')).isLoggedIn).toBeFalsy()
   })
-
-  // test('should set status to loading', () => {
-  //   expect(authReducer(initialState, setAuthStatus({ status: 'loading' })).status).toBe('loading')
-  // })
-  //
-  // test('should set status to idle', () => {
-  //   initialState.status = 'loading'
-  //   expect(authReducer(initialState, setAuthStatus({ status: 'idle' })).status).toBe('idle')
-  // })
 })

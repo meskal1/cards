@@ -12,10 +12,10 @@ import { getQueryParams } from '../../../utils/getQueryParams'
 import s from './CustomSearch.module.scss'
 
 type CustomSearchType = {
-  cards?: boolean
+  forCards?: boolean
 }
 
-export const CustomSearch: FC<CustomSearchType> = ({ cards }) => {
+export const CustomSearch: FC<CustomSearchType> = ({ forCards = false }) => {
   const dispatch = useAppDispatch()
   const allParams = getQueryParams()
   const search = useAppSelector(state => state.packs.queryParams.search)
@@ -28,7 +28,7 @@ export const CustomSearch: FC<CustomSearchType> = ({ cards }) => {
   }
 
   useEffectAfterMount(() => {
-    if (cards) {
+    if (forCards) {
       if (cardQuestion !== inputValue) {
         dispatch(setCardsQueryParams({ cardQuestion: inputValue }))
       }
@@ -48,18 +48,18 @@ export const CustomSearch: FC<CustomSearchType> = ({ cards }) => {
   }, [search])
 
   return (
-    <>
-      <div className={s.searchContainer}>
-        <p className={s.search__title}>search</p>
-        <TextField
-          className={s.search__input}
-          value={inputValue}
-          variant={'outlined'}
-          type={'search'}
-          autoComplete="off"
-          onChange={handleChangeInput}
-        />
-      </div>
-    </>
+    <label className={s.searchContainer}>
+      <p className={`${s.search__placeholder} ${inputValue ? s.search__placeholderAnimate : ''}`}>
+        {forCards ? 'Search by question' : 'Search by name'}
+      </p>
+      <TextField
+        className={s.search__input}
+        value={inputValue}
+        variant={'outlined'}
+        type={'search'}
+        autoComplete="off"
+        onChange={handleChangeInput}
+      />
+    </label>
   )
 }

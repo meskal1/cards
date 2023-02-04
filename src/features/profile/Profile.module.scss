@@ -1,4 +1,5 @@
 @import '../../common/styles/mixins/mixinCommon';
+@import '../../common/styles/mixins/mixinAdaptive';
 
 .profileContainer {
   position: relative;
@@ -7,45 +8,31 @@
   flex-direction: column;
   flex-grow: 1;
   row-gap: 40px;
-  align-self: flex-start;
 
   width: 100%;
   height: 100%;
-  padding: 22px 0px 0px 0px;
+  padding: 10px 0px 0px 0px;
 
   text-align: center;
 }
 
 .profile {
   &__content {
+    @include adaptiveValue('padding-top', 30, 20, 408, 320, 1);
+    @include adaptiveValue('padding-bottom', 30, 20, 408, 320, 1);
+
     display: flex;
     flex-direction: column;
     align-items: center;
     align-self: center;
 
-    padding: 30px 40px;
+    width: 100%;
+    max-width: 378px;
+    padding-right: 10px;
+    padding-left: 10px;
 
     background: rgb(240 240 240);
     border-radius: 20px;
-  }
-
-  &__linkPacks {
-    position: absolute;
-    top: 24px;
-    left: 0;
-
-    display: flex;
-    align-items: center;
-
-    font-weight: 500;
-    line-height: 24px;
-    color: inherit;
-
-    transition: all 0.2s ease;
-
-    &:hover {
-      color: white;
-    }
   }
 
   &__arrow {
@@ -53,9 +40,9 @@
   }
 
   &__title {
-    margin: 0px 0px 30px 0px;
+    @include adaptiveValue('font-size', 26, 21, 408, 280, 1);
+    @include adaptiveValue('margin-bottom', 30, 15, 408, 320, 1);
 
-    font-size: 26px;
     font-weight: 600;
   }
 
@@ -99,22 +86,20 @@
     right: 0;
     bottom: 0;
 
-    width: 30px !important;
-    height: 30px !important;
-    padding: 4px;
+    width: 30px;
+    height: 30px;
 
-    background: white url('../../assets/img/icons/camera.svg') 50%/80% no-repeat;
+    background: white url('../../assets/img/icons/camera.svg') 2px 1px/85% no-repeat;
     border: 1px solid grey;
-    border-radius: 30px !important;
+    border-radius: 30px;
   }
 
   &__userName {
     @include user_select_none;
+    @include adaptiveValue('height', 68, 50, 408, 320, 1);
 
     display: flex;
     align-items: center;
-
-    height: 68.42px;
 
     font-size: 20px;
     font-weight: 500;
@@ -131,8 +116,7 @@
 
   &__userEmail {
     @include user_select_none;
-
-    margin: 0px 0px 20px 0px;
+    @include adaptiveValue('margin-bottom', 20, 15, 408, 320, 1);
 
     color: grey;
   }
@@ -145,6 +129,10 @@
     color: black !important;
 
     background: white !important;
+
+    &:hover {
+      background: rgb(245 245 245) !important;
+    }
   }
 
   &__buttonIcon {

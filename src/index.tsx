@@ -1,4 +1,5 @@
 import './index.scss'
+import './analytics/analytics'
 
 import * as ReactDOMClient from 'react-dom/client'
 import { Provider } from 'react-redux'

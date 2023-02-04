@@ -7,33 +7,37 @@ import { RequestStatusType } from '../../../app/appSlice'
 import { setCardsQueryParams } from '../../../features/cards/cardsSlice'
 import { setPacksQueryParams } from '../../../features/packs/packsSlice'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
+import { useMediaQuery } from '../../../hooks/useMediaQuery'
 
 import s from './CustomPagination.module.scss'
 
 type CustomPaginationType = {
-  cards?: boolean
+  forCards?: boolean
 }
 
-export const CustomPagination: FC<CustomPaginationType> = ({ cards }) => {
+export const CustomPagination: FC<CustomPaginationType> = ({ forCards = false }) => {
   const dispatch = useAppDispatch()
   const isDataLoading = useAppSelector<RequestStatusType>(state =>
-    cards ? state.cards.status : state.packs.status
+    forCards ? state.cards.status : state.packs.status
   )
   const pagePacks = useAppSelector(state => state.packs.queryParams.page)
   const pageCards = useAppSelector(state => state.cards.queryParams.page)
   const pageCountPacks = useAppSelector(state => state.packs.queryParams.pageCount)
   const pageCountCards = useAppSelector(state => state.cards.queryParams.pageCount)
   const cardsTotalCount = useAppSelector(state => state.cards.cardsData.cardsTotalCount)
-  const packsTotalCount = useAppSelector(state => state.packs.cardsCount.cardPacksTotalCount)
-  const page = cards ? pageCards : pagePacks
-  const rowsPerPage = cards ? pageCountCards : pageCountPacks
+  const packsTotalCount = useAppSelector(state => state.packs.packsData.cardPacksTotalCount)
+  const page = forCards ? pageCards : pagePacks
+  const rowsPerPage = forCards ? pageCountCards : pageCountPacks
   const paginationCount = Math.ceil(
-    cards ? cardsTotalCount / pageCountCards : packsTotalCount / pageCountPacks
+    forCards ? cardsTotalCount / pageCountCards : packsTotalCount / pageCountPacks
   )
-  const showTablePagination = cards ? cardsTotalCount > 4 : packsTotalCount > 4
+  const showTablePagination = forCards ? cardsTotalCount > 4 : packsTotalCount > 4
+  const matches599 = useMediaQuery('(max-width: 599px)')
+  const matches472 = useMediaQuery('(max-width: 472px)')
+  const matches374 = useMediaQuery('(max-width: 374px)')
 
   const dispatchData = (data: { [key: string]: number }) => {
-    if (cards) {
+    if (forCards) {
       dispatch(setCardsQueryParams(data))
     } else {
       dispatch(setPacksQueryParams(data))
@@ -52,18 +56,21 @@ export const CustomPagination: FC<CustomPaginationType> = ({ cards }) => {
         <Pagination
           disabled={isDataLoading === 'loading'}
           count={paginationCount}
-          shape="rounded"
+          shape="circular"
           color="primary"
           onChange={handleChangePage}
           page={page}
+          size={matches374 ? 'small' : 'medium'}
+          hidePrevButton={matches599}
+          hideNextButton={matches599}
         />
       )}
       {showTablePagination ? (
         <TablePagination
           className={s.paginationTable}
           component="div"
-          labelRowsPerPage={'show'}
-          labelDisplayedRows={() => `${cards ? 'cards' : 'packs'} per page`}
+          labelRowsPerPage={matches472 ? '' : 'Rows per page'}
+          labelDisplayedRows={() => ``}
           count={101}
           page={page === -1 ? 0 : 1}
           onPageChange={() => {}}

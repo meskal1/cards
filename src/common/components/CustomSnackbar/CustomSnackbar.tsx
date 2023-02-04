@@ -20,19 +20,17 @@ export const CustomSnackbar = () => {
   }
 
   return (
-    <>
-      <Box position={'absolute'}>
-        <Snackbar open={isOpen} autoHideDuration={6000} onClose={handleClose}>
-          {/* Condition is required to get rid of showing empty alert before snackbar finish closing */}
-          {alertMessage.messageText ? (
-            <Alert onClose={handleClose} severity={alertMessage.messageType}>
-              {alertMessage.messageText}
-            </Alert>
-          ) : (
-            <div></div>
-          )}
-        </Snackbar>
-      </Box>
-    </>
+    <Box position={'absolute'}>
+      <Snackbar open={isOpen} autoHideDuration={5000} onClose={handleClose}>
+        {/* Condition is required to get rid of showing empty alert before snackbar finish closing */}
+        {alertMessage.messageText ? (
+          <Alert onClose={handleClose} severity={alertMessage.messageType}>
+            {alertMessage.messageText}
+          </Alert>
+        ) : (
+          <div></div>
+        )}
+      </Snackbar>
+    </Box>
   )
 }

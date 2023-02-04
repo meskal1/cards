@@ -1,62 +1,45 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
+import isBase64 from 'is-base64'
 import { useParams } from 'react-router-dom'
 
-import { cardsTableLength, isMyPack } from '../../app/selectors'
-import cover from '../../assets/img/cover.png'
-import { CustomButton } from '../../common/components/CustomButton/CustomButton'
+import { isMyPack } from '../../app/selectors'
 import { CustomPagination } from '../../common/components/CustomPagination/CustomPagination'
 import { CustomSearch } from '../../common/components/CustomSearch/CustomSearch'
-import { CustomModalDialog } from '../../common/components/ModalDialog/CustomModalDialog'
+import { LoadingProgress } from '../../common/components/LoadingProgress/LoadingProgress'
 import { PageTitleBlock } from '../../common/components/PageTitleBlock/PageTitleBlock'
-import cs from '../../common/styles/modalStyles/ModalStyles.module.scss'
 import { PATH } from '../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { getQueryParams } from '../../utils/getQueryParams'
 import { useNavigateNoUpdates } from '../../utils/routerUtils'
 
 import s from './Cards.module.scss'
-import {
-  CardsErrorType,
-  clearCardsQueryParams,
-  setCardsQueryParams,
-  setError,
-  UpdateCardType,
-} from './cardsSlice'
+import { CardsErrorType, clearCardsState, setCardsQueryParams, setError } from './cardsSlice'
 import { CardsTable } from './CardsTable/CardsTable'
-import { AddCard } from './Modals/AddCard/AddCard'
-import { DeleteCard } from './Modals/DeleteCard/DeleteCard'
-import { EditCard } from './Modals/EditCard/EditCard'
+import { AddEditCard } from './Modals/AddEditCard/AddEditCard'
 
 export const Cards = () => {
   const { id } = useParams()
   const dispatch = useAppDispatch()
   const allParams = getQueryParams()
-  const isTableNotEmpty = useAppSelector(cardsTableLength)
+  const isTableNotEmpty = useAppSelector(state => state.cards.cardsData.cardsTotalCount)
   const isItMyPack = useAppSelector(isMyPack)
   const packName = useAppSelector(state => state.cards.cardsData.packName)
-  const packDeckCover = useAppSelector<string | null>(state => state.cards.cardsData.packDeckCover)
+  const packDeckCover = useAppSelector(state => state.cards.cardsData.packDeckCover)
   const cardsError = useAppSelector<CardsErrorType>(state => state.cards.error)
   const navigate = useNavigateNoUpdates()
-  const titleButtonName =
-    isTableNotEmpty || allParams.cardQuestion
-      ? `${isItMyPack ? 'add new card' : 'learn to pack'}`
-      : ''
+  const [openModal, setOpenModal] = useState(false)
+  const validImg = isBase64(packDeckCover, { mimeRequired: true })
+  const cardQuestion = allParams.cardQuestion ? 1 : 0
+  const showElement = useRef(isTableNotEmpty || cardQuestion || 0) // Spike fix for wrong cardsTotalCount coming from backend
 
-  const [addCard, setAddCard] = useState(false)
-  const [deleteCard, setDeleteCard] = useState(false)
-  const [deleteData, setDeleteData] = useState('')
-  const [editCard, setEditCard] = useState(false)
-  const [editData, setEditData] = useState<UpdateCardType>({
-    id: '',
-    answer: '',
-    question: '',
-    questionImg: '',
-  })
+  if (isTableNotEmpty && !showElement.current) {
+    showElement.current++
+  }
 
-  const handleTitleButton = useCallback(() => setAddCard(true), [])
+  const handleToggleModal = useCallback(() => setOpenModal(!openModal), [openModal])
 
-  const handleLearnCards = () => navigate(PATH.LEARN + `/${id}`)
+  const handleLearnCards = useCallback(() => navigate(PATH.LEARN + `/${id}`), [])
 
   useEffect(() => {
     if (cardsError === 'WRONG_ID') {
@@ -69,84 +52,45 @@ export const Cards = () => {
     dispatch(setCardsQueryParams({ ...allParams, cardsPack_id: id }))
 
     return () => {
-      dispatch(clearCardsQueryParams())
+      dispatch(clearCardsState())
     }
   }, [])
 
   return (
-    <div className={s.cardsContainer}>
-      <div className={s.cards__controlBlock}>
-        <PageTitleBlock
-          linkToPacks
-          title={packName}
-          packDeckCover={packDeckCover}
-          button={titleButtonName}
-          buttonClick={isItMyPack ? handleTitleButton : handleLearnCards}
-        />
-        <div className={`${cs.ImageContainer} ${s.ImageContainer}`}>
-          <img
-            src={packDeckCover ? packDeckCover : ''}
-            alt="cover"
-            className={cs.Image}
-            onError={({ currentTarget }) => {
-              currentTarget.onerror = null // prevents looping
-              currentTarget.src = cover
-            }}
-          />
-        </div>
-        {(isTableNotEmpty || allParams.cardQuestion) && (
-          <div className={s.cards__controlPanel}>
-            <CustomSearch cards />
+    <>
+      {packName ? (
+        <div className={s.cardsContainer}>
+          <div className={s.cards__controlBlock}>
+            <PageTitleBlock
+              linkToPacks
+              title={packName}
+              hasButtons={!!showElement.current}
+              buttonClick={isItMyPack ? handleToggleModal : handleLearnCards}
+            />
+
+            {validImg && (
+              <div className={s.imgContainer}>
+                <img src={packDeckCover} alt="cover" className={s.img} />
+              </div>
+            )}
+
+            {!!showElement.current && <CustomSearch forCards />}
           </div>
-        )}
-      </div>
-      {isTableNotEmpty ? (
-        <>
+
           <CardsTable
             isMine={isItMyPack}
-            openEdit={setEditCard}
-            setEditData={setEditData}
-            setDeleteData={setDeleteData}
-            openDelete={setDeleteCard}
+            showButton={!!showElement.current}
+            handleTitleButton={handleToggleModal}
           />
-          <CustomPagination cards />
-        </>
-      ) : (
-        <div className={s.cards__emptyBlock}>
-          <h3 className={s.cards__emptyTitle}>
-            {`no cards found. ${isItMyPack ? 'Click add new card to fill this pack' : ''}`}
-          </h3>
-          {isItMyPack && (
-            <CustomButton onClick={handleTitleButton}>
-              <p>add new card</p>
-            </CustomButton>
+          <CustomPagination forCards />
+
+          {openModal && (
+            <AddEditCard isOpened={openModal} onClose={handleToggleModal} cardsPack_id={id || ''} />
           )}
         </div>
-      )}
-
-      {addCard ? (
-        <CustomModalDialog active={addCard} setActive={setAddCard}>
-          <AddCard active={addCard} closeModal={setAddCard} cardsPack_id={id ? id : ''} />
-        </CustomModalDialog>
       ) : (
-        ''
+        <LoadingProgress />
       )}
-
-      {editCard ? (
-        <CustomModalDialog active={editCard} setActive={setEditCard}>
-          <EditCard closeModal={setEditCard} cardsData={editData} active={editCard} />
-        </CustomModalDialog>
-      ) : (
-        ''
-      )}
-
-      {deleteCard ? (
-        <CustomModalDialog active={deleteCard} setActive={setDeleteCard}>
-          <DeleteCard activeModal={setDeleteCard} id={deleteData} />
-        </CustomModalDialog>
-      ) : (
-        ''
-      )}
-    </div>
+    </>
   )
 }
