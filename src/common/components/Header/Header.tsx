@@ -4,7 +4,6 @@ import { Toolbar } from '@mui/material'
 import AppBar from '@mui/material/AppBar'
 import { Container } from '@mui/system'
 import { Link } from 'react-router-dom'
-import { ref } from 'yup'
 
 import avatarLocal from '../../../assets/img/avatar.jpg'
 import { PATH } from '../../../constants/routePaths.enum'
