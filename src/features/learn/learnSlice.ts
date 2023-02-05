@@ -17,9 +17,10 @@ export const getCards = createAsyncThunk(
   'learn/getCards',
   async (cardsPack_id: string, { dispatch, rejectWithValue, getState }) => {
     try {
-      const state = getState() as RootStateType
-      const totalCardsCount = state.learn.cardsTotalCount
-      const responseAllCards = await cardsAPI.getCards({ cardsPack_id, pageCount: totalCardsCount })
+      // const state = getState() as RootStateType
+      // const totalCardsCount = state.learn.cardsTotalCount
+
+      const responseAllCards = await cardsAPI.getCards({ cardsPack_id, pageCount: 10000 })
 
       return responseAllCards.data
     } catch (e) {
