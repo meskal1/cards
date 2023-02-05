@@ -99,7 +99,8 @@ code {
 
 // Preload images
 body::after {
-  content: url('./assets/img/icons/logo.svg');
+  content: url('./assets/img/icons/logo.svg') url('./assets/img/icons/exclamationPoint.svg')
+    url('./assets/img/icons/questionMark.svg');
 
   position: absolute;
   z-index: -1;
