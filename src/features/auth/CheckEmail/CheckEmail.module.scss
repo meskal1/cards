@@ -1,4 +1,8 @@
+@import '../../../common/styles/mixins/mixinAdaptive';
+
 .checkEmailContainer {
+  @include adaptiveValue('padding', 30, 20, 430, 300, 1);
+
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -6,7 +10,6 @@
 
   width: 100%;
   max-width: 400px;
-  padding: 30px;
 
   text-align: center;
 
