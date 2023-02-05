@@ -77,16 +77,26 @@ export const LogInApp = () => {
           </Link>
         </div>
 
-        <CustomButton disabled={authStatus === 'loading'}>
-          <p>Sign in</p>
-        </CustomButton>
+        <div className={s.login__buttonsBlock}>
+          <CustomButton className={s.login__buttonSignIn} disabled={authStatus === 'loading'}>
+            <p>Sign in</p>
+          </CustomButton>
+          <Link className={s.login__signUp} to={PATH.REGISTRATION}>
+            Sign up
+          </Link>
+        </div>
       </form>
 
       <div className={s.login__signUpBlock}>
-        <p className={s.login__text}>Already have an account?</p>
-        <Link className={s.login__signUp} to={PATH.REGISTRATION}>
-          Sign up
-        </Link>
+        <p className={s.login__text}>
+          To log in, get registered or use common test account credentials:
+        </p>
+        <p className={s.login__textEmail}>
+          Email: <span className={s.credentialsColor}>testsetcards2022@gmail.com</span>
+        </p>
+        <p className={s.login__textPassword}>
+          Password: <span className={s.credentialsColor}>testsetcards</span>
+        </p>
       </div>
     </div>
   )

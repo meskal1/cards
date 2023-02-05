@@ -1,13 +1,15 @@
 @import '../../../common/styles/mixins/mixinCommon';
+@import '../../../common/styles/mixins/mixinAdaptive';
 
 .loginContainer {
+  @include adaptiveValue('padding', 30, 20, 430, 300, 1);
+
   display: flex;
   flex-direction: column;
   align-self: center;
 
   width: 100%;
   max-width: 400px;
-  padding: 30px;
 
   text-align: center;
 
@@ -24,7 +26,7 @@
     display: flex;
     flex-direction: column;
 
-    margin: 0px 0px 25px 0px;
+    margin: 0px 0px 15px 0px;
   }
 
   &__blockRemember {
@@ -61,23 +63,75 @@
   &__signUpBlock {
     display: flex;
     flex-direction: column;
-    gap: 10px;
   }
 
   &__text {
+    margin: 0px 0px 10px 0px;
+
     font-weight: 500;
+    line-height: 18px;
     color: grey;
   }
 
+  &__textEmail {
+    margin: 0px 0px 5px 0px;
+
+    font-weight: 500;
+    line-height: 18px;
+    color: grey;
+    text-align: start;
+  }
+
+  &__textPassword {
+    font-weight: 500;
+    line-height: 18px;
+    color: grey;
+    text-align: start;
+  }
+
+  &__buttonsBlock {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__buttonSignIn {
+    @include adaptiveValueImportant('padding-left', 30, 20, 430, 300, 1);
+    @include adaptiveValueImportant('padding-right', 30, 20, 430, 300, 1);
+  }
+
   &__signUp {
+    @include adaptiveValue('padding-left', 30, 20, 430, 300, 1);
+    @include adaptiveValue('padding-right', 30, 20, 430, 300, 1);
+
+    display: flex;
+    align-items: center;
+
+    height: 38px;
+    padding: 5px 30px;
+
     font-size: 16px;
     font-weight: 500;
-    color: blue;
-    text-decoration: underline;
+    color: black;
+
+    background: white;
+    border-radius: 30px;
+    box-shadow: 0px 4px 6px rgb(0 0 0 / 20%);
+
+    transition: 0.2s all ease;
+
+    &:hover {
+      background: rgb(237 237 237);
+    }
   }
 }
 
 .checkbox {
   margin: 0 9px 0 0 !important;
   padding: 0 !important;
+}
+
+.credentialsColor {
+  font-weight: 600;
+  color: blue;
 }
