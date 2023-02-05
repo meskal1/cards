@@ -61,32 +61,58 @@
   }
 
   &__signUpBlock {
+    position: relative;
+
     display: flex;
     flex-direction: column;
+    gap: 5px;
   }
 
   &__text {
-    margin: 0px 0px 10px 0px;
-
-    font-weight: 500;
-    line-height: 18px;
-    color: grey;
-  }
-
-  &__textEmail {
     margin: 0px 0px 5px 0px;
 
     font-weight: 500;
     line-height: 18px;
     color: grey;
-    text-align: start;
   }
 
-  &__textPassword {
+  &__textEmail,
+  &__textPassword,
+  &__notes {
     font-weight: 500;
     line-height: 18px;
     color: grey;
     text-align: start;
+  }
+
+  &__notesContainer {
+    display: flex;
+  }
+
+  &__notes {
+    @include user_select_none;
+
+    cursor: pointer;
+
+    color: blue;
+    text-decoration: underline;
+  }
+
+  &__notesText {
+    @include user_select_none;
+
+    position: absolute;
+    top: -40px;
+
+    padding: 10px;
+
+    font-weight: 500;
+    line-height: 22px;
+    text-align: start;
+
+    background: white;
+    border: 1px solid black;
+    border-radius: 20px;
   }
 
   &__buttonsBlock {

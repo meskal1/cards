@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked'
 import TaskAltIcon from '@mui/icons-material/TaskAlt'
 import { FormControlLabel, Typography } from '@mui/material'
@@ -20,6 +22,7 @@ export const LogInApp = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const authStatus = useAppSelector<RequestStatusType>(state => state.auth.status)
+  const [showNote, setShowNote] = useState(false)
 
   const formik = useFormik({
     initialValues: {
@@ -36,6 +39,8 @@ export const LogInApp = () => {
       }
     },
   })
+
+  const handleShowNote = () => setShowNote(prevState => !prevState)
 
   return (
     <div className={s.loginContainer}>
@@ -91,11 +96,26 @@ export const LogInApp = () => {
         <p className={s.login__text}>
           To log in, get registered or use common test account credentials:
         </p>
+
         <p className={s.login__textEmail}>
           Email: <span className={s.credentialsColor}>testsetcards2022@gmail.com</span>
         </p>
+
         <p className={s.login__textPassword}>
           Password: <span className={s.credentialsColor}>testsetcards</span>
+        </p>
+
+        <p className={s.login__notesContainer}>
+          <span className={s.login__notes} onClick={handleShowNote}>
+            Read important notes
+          </span>
+
+          {showNote && (
+            <span className={s.login__notesText}>
+              If you are using test account, you should know, if several people use test account at
+              the same time, then you will be kicked out of the application.
+            </span>
+          )}
         </p>
       </div>
     </div>
