@@ -1,0 +1,165 @@
+.container {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 15px;
+
+  //   -webkit-perspective: 240px;
+  //   perspective: 240px;
+}
+
+.content {
+  position: relative;
+
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+
+  height: 94px;
+
+  animation: dropDownAnimation 1.3s ease 1, widthAnimation 1.5s ease 1.3s forwards;
+}
+
+.logoContainer {
+  position: relative;
+
+  display: flex;
+  justify-content: center;
+
+  animation: paddingAnimation 0.5s ease 1.7s forwards;
+  //   animation: paddingAnimation 0.5s ease 2.4s forwards;
+}
+
+.questionMark {
+  position: relative;
+  z-index: 2;
+  transform-origin: bottom left;
+
+  width: 56px;
+  height: 70px;
+
+  animation: questionMark 0.9s ease 1.9s forwards;
+  //   animation: questionMark 0.9s ease 2.6s forwards;
+}
+
+.exclamationPoint {
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  transform-origin: bottom right;
+
+  width: 56px;
+  height: 70px;
+  margin: 0 auto;
+
+  animation: exclamationPoint 0.9s ease 1.9s forwards;
+  //   animation: exclamationPoint 0.9s ease 2.6s forwards;
+}
+
+.logoText {
+  position: absolute;
+  right: 0;
+
+  display: flex;
+  align-items: center;
+
+  height: 55px;
+
+  font-size: 50px;
+  font-weight: 700;
+  color: black;
+}
+@keyframes questionMark {
+  0% {
+    transform: rotate(0deg) translate3d(0px, 0px, 0);
+  }
+
+  100% {
+    transform: rotate(-15deg) translate3d(-3px, 12px, 0);
+  }
+}
+@keyframes exclamationPoint {
+  0% {
+    transform: rotate(0deg) translate3d(0px, 0px, 0);
+  }
+
+  100% {
+    transform: rotate(15deg) translate3d(20px, -5px, 0);
+  }
+}
+@keyframes widthAnimation {
+  0% {
+    width: 56px;
+  }
+
+  100% {
+    width: 270px;
+  }
+}
+@keyframes paddingAnimation {
+  0% {
+    padding: 0 0px;
+  }
+
+  100% {
+    padding: 0 19px;
+  }
+}
+// @keyframes rotationAnimation {
+//   0% {
+//     transform: rotateX(100deg);
+//     transform-origin: top center;
+//   }
+
+//   30% {
+//     transform: rotateX(-70deg);
+//   }
+
+//   50% {
+//     transform: rotateX(40deg);
+//   }
+
+//   70% {
+//     transform: rotateX(-20deg);
+//   }
+
+//   90% {
+//     transform: rotateX(10deg);
+//   }
+
+//   95% {
+//     transform: rotateX(-5deg);
+//   }
+
+//   98% {
+//     transform: rotateX(2deg);
+//   }
+
+//   99% {
+//     transform: rotateX(-1deg);
+//   }
+
+//   100% {
+//     transform: rotateX(0deg);
+//     transform-origin: top center;
+//   }
+// }
+@keyframes dropDownAnimation {
+  0% {
+    transform: translate3d(0, -550px, 0);
+  }
+
+  33% {
+    transform: translate3d(0, 100px, 0);
+  }
+
+  66% {
+    transform: translate3d(0, -30px, 0);
+  }
+
+  100% {
+    transform: translate3d(0, 0px, 0);
+  }
+}
