@@ -18,9 +18,10 @@ export const BackToPacks = () => {
   const packsQueryParams = useAppSelector(state => state.packs.queryParams)
   const packsQueryString =
     location.pathname === '/profile' ? '' : '?' + queryString(packsQueryParams, initParams)
+  const isMyPacks = new RegExp('isMyPacks=yes').test(queryString(packsQueryParams, initParams))
 
   const handleLink = () => {
-    if (location.pathname === '/cards/' + cardsPack_id) {
+    if (location.pathname === '/cards/' + cardsPack_id && isMyPacks) {
       dispatch(getPacksTC())
     }
   }
