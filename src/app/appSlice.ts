@@ -22,7 +22,7 @@ export const initializeAppTC = createAsyncThunk(
           ? (error.response.data as { error: 'string' }).error
           : error.message
 
-        console.log(err)
+        // console.log(err)
       }
 
       return rejectWithValue(null)

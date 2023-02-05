@@ -1,5 +1,26 @@
 @import '../../styles/mixins/mixinCommon';
 
+// Preload images
+.headerContainer::before {
+  content: url('../../../assets/img/icons/logout.svg') url('../../../assets/img/icons/user.svg')
+    url('../../../assets/img/icons/studyPackWhite.svg')
+    url('../../../assets/img/icons/studyPackDisabled.svg')
+    url('../../../assets/img/icons/studyPack.svg') url('../../../assets/img/icons/editPack.svg')
+    url('../../../assets/img/icons/dropDounArrow.svg') url('../../../assets/img/icons/dotsMenu.svg')
+    url('../../../assets/img/icons/deletePack.svg') url('../../../assets/img/icons/camera.svg')
+    url('../../../assets/img/icons/backForwardWhite.svg')
+    url('../../../assets/img/icons/addIcon.svg') url('../../../assets/img/icons/addIconWhite.svg')
+    url('../../../assets/img/icons/filterIcon.svg');
+
+  position: absolute;
+  z-index: -1;
+
+  overflow: hidden;
+
+  width: 0;
+  height: 0;
+}
+
 .headerContainer {
   position: static !important;
   z-index: 1 !important;

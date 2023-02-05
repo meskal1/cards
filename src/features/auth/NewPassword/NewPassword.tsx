@@ -24,7 +24,7 @@ export const NewPassword = () => {
     },
     validationSchema: validationSchemaNewPassword,
     onSubmit: values => {
-      console.log(token)
+      // console.log(token)
       dispatch(createPasswordTC({ password: values.password, resetPasswordToken: token! }))
     },
   })

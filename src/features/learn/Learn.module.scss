@@ -13,6 +13,8 @@
 }
 
 .learnContent {
+  position: relative;
+
   display: flex;
   flex-direction: column;
   row-gap: 10px;
@@ -117,5 +119,15 @@
 
 .text {
   font-size: 16px;
+  line-height: 19px;
+}
+
+.textAttempts {
+  position: absolute;
+  bottom: -25px;
+  left: 0px;
+
+  font-size: 16px;
+  font-weight: 500;
   line-height: 19px;
 }

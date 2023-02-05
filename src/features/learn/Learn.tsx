@@ -120,8 +120,6 @@ export const Learn = () => {
               )}
             </div>
 
-            <span className={s.text}>Number of attempts: {card.shots}</span>
-
             {showAnswer && (
               <div className={s.answerContainer}>
                 <span className={s.text}>
@@ -153,6 +151,8 @@ export const Learn = () => {
             >
               {showAnswer ? 'Next card' : 'Show answer'}
             </CustomButton>
+
+            <span className={s.textAttempts}>Attempts: {card.shots}</span>
           </div>
 
           {openModal && <NoCardsToLearn />}

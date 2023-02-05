@@ -50,23 +50,23 @@
 }
 
 .hidden {
-  position: absolute;
-  bottom: 0;
-  left: 0;
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 0 !important;
 
   border-radius: 30px !important;
 
   div {
-    visibility: hidden;
+    visibility: hidden !important;
   }
 
   p {
-    pointer-events: none;
+    pointer-events: none !important;
 
-    position: absolute;
-    bottom: -18px;
+    position: absolute !important;
+    bottom: -18px !important;
 
-    align-self: flex-start;
+    align-self: flex-start !important;
   }
 }
 
@@ -91,4 +91,5 @@
   height: 100%;
 
   object-fit: cover;
+  background: white;
 }

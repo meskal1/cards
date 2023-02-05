@@ -96,3 +96,16 @@ code {
 
   min-height: 100%;
 }
+
+// Preload images
+body::after {
+  content: url('./assets/img/icons/logo.svg');
+
+  position: absolute;
+  z-index: -1;
+
+  overflow: hidden;
+
+  width: 0;
+  height: 0;
+}

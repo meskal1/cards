@@ -1,10 +1,10 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { LinearProgress } from '@mui/material'
 
 import { CustomSnackbar } from '../common/components/CustomSnackbar/CustomSnackbar'
 import { Header } from '../common/components/Header/Header'
-import { LoadingProgress } from '../common/components/LoadingProgress/LoadingProgress'
+import { IntroAnimation } from '../common/components/IntroAnimation/IntroAnimation'
 import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks'
 import { AppRoutes } from '../routes/routes'
 
@@ -12,10 +12,12 @@ import s from './App.module.scss'
 import { initializeAppTC, RequestStatusType } from './appSlice'
 
 function App() {
-  const status = useAppSelector<RequestStatusType>(state => state.app.status)
-  const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
-  const isInitialized = useAppSelector(state => state.app.isInitialized)
   const dispatch = useAppDispatch()
+  const status = useAppSelector<RequestStatusType>(state => state.app.status)
+  const [isInitialized, setIsInitialized] = useState(false)
+  const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
+
+  const handleAnimationLoaded = () => setIsInitialized(true)
 
   useEffect(() => {
     dispatch(initializeAppTC())
@@ -35,7 +37,7 @@ function App() {
           <CustomSnackbar />
         </>
       ) : (
-        <LoadingProgress />
+        <IntroAnimation isAnimationLoaded={handleAnimationLoaded} />
       )}
     </>
   )

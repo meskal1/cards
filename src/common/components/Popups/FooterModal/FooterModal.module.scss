@@ -9,12 +9,12 @@
   @include adaptiveValueImportant('padding-left', 30, 5, 430, 300, 1);
   @include adaptiveValueImportant('padding-right', 30, 5, 430, 300, 1);
 
-  color: black;
+  color: black !important;
 
-  background: white;
+  background: white !important;
 
   &:hover {
-    background: rgb(236 236 236);
+    background: rgb(236 236 236) !important;
   }
 }
 
@@ -22,12 +22,12 @@
   @include adaptiveValueImportant('padding-left', 30, 10, 430, 319, 1);
   @include adaptiveValueImportant('padding-right', 30, 10, 430, 319, 1);
 
-  color: white;
+  color: white !important;
 
-  background: #1b79ce;
+  background: #1b79ce !important;
 
   &:hover {
-    background: #1668bd;
+    background: #1668bd !important;
   }
 }
 
@@ -35,12 +35,12 @@
   @include adaptiveValueImportant('padding-left', 30, 10, 430, 319, 1);
   @include adaptiveValueImportant('padding-right', 30, 10, 430, 319, 1);
 
-  color: white;
+  color: white !important;
 
-  background: rgb(234 0 0);
+  background: rgb(234 0 0) !important;
 
   &:hover {
-    background: rgb(182 0 0);
+    background: rgb(182 0 0) !important;
   }
 }
 
