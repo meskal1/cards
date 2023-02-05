@@ -45,16 +45,16 @@
 
 .tablePacks__body {
   @media (max-width: 599px) {
-    display: block;
+    display: block !important;
 
-    width: 100%;
+    width: 100% !important;
 
     font-weight: 600;
   }
 }
 
 .tablePacks__bodyRow {
-  height: 70px;
+  height: 70px !important;
 
   background: white;
 
@@ -83,19 +83,19 @@
     }
   }
   @media (max-width: 599px) {
-    position: relative;
+    position: relative !important;
 
-    overflow: hidden;
-    display: block;
+    overflow: hidden !important;
+    display: block !important;
 
-    width: 100%;
-    height: 100%;
+    width: 100% !important;
+    height: 100% !important;
 
     border: 1px solid rgb(189 188 188);
     border-radius: 15px;
 
     &:not(:last-child) {
-      margin: 0px 0px 15px 0px;
+      margin: 0px 0px 15px 0px !important;
 
       border-bottom: 1px solid rgb(189 188 188);
     }
@@ -103,7 +103,7 @@
 }
 
 .tablePacks__bodyCell {
-  position: relative;
+  position: relative !important;
 
   line-height: 18px;
 
@@ -160,12 +160,12 @@
 
     text-align: center;
     @media (max-width: 599px) {
-      position: absolute;
+      position: absolute !important;
       z-index: 2;
       top: 0;
       right: 0;
 
-      display: flex;
+      display: flex !important;
       align-items: center;
       justify-content: center;
 
@@ -174,9 +174,9 @@
     }
   }
   @media (max-width: 599px) {
-    position: unset;
+    position: unset !important;
 
-    display: block;
+    display: block !important;
 
     line-height: 35px;
   }
