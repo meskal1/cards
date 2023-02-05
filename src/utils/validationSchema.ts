@@ -40,7 +40,7 @@ export const validationSchemaNewCardText = yup.object({ question, answer })
 export const validationSchemaNewPackText = yup.object({ name: packName })
 
 export const validateImage = (imgData: ValidateImageType) => {
-  const formats = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/webp']
+  const formats = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/webp', 'image/svg']
   const error: { questionImg?: string; deckCover?: string } = {}
 
   if (imgData.selectedItem && !imgData.size && !imgData.isImageExist) {

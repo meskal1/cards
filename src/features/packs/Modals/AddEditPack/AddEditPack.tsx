@@ -149,7 +149,7 @@ export const AddEditPack: FC<AddEditPackType> = memo(({ isOpened, onClose, packD
           </p>
           <CustomInput
             type={'file'}
-            inputProps={{ accept: '.jpg,.jpeg,.gif,.png,.webp' }}
+            inputProps={{ accept: '.jpg,.jpeg,.gif,.png,.webp,.svg' }}
             className={s.hidden}
             error={formik.touched.deckCover && !!formik.errors.deckCover}
             helperText={formik.touched.deckCover && formik.errors.deckCover}

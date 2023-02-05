@@ -171,7 +171,7 @@ export const AddEditCard: FC<AddEditCardType> = memo(
               </p>
               <CustomInput
                 type={'file'}
-                inputProps={{ accept: '.jpg,.jpeg,.gif,.png,.webp' }}
+                inputProps={{ accept: '.jpg,.jpeg,.gif,.png,.webp,.svg' }}
                 className={s.hidden}
                 error={formik.touched.questionImg && !!formik.errors.questionImg}
                 helperText={formik.touched.questionImg && formik.errors.questionImg}
