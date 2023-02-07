@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import axios, { AxiosError } from 'axios'
+import { AxiosError } from 'axios'
 
 import { RequestStatusType } from '../../app/appSlice'
 import { RootStateType } from '../../app/store'
@@ -50,17 +50,6 @@ export const getCardsTC = createAsyncThunk(
         cardsTableData: cards,
       }
     } catch (e) {
-      // Подумать можно ли это вынести в handleServerNetworkError
-      if (axios.isAxiosError<{ in: string; error: string }>(e)) {
-        if (
-          e.response?.data.in === 'getCards/CardsPack.findById' ||
-          e.response?.data.error === 'CardsPack id not valid /ᐠ-ꞈ-ᐟ\\'
-        ) {
-          dispatch(setError({ error: 'WRONG_ID' }))
-
-          return rejectWithValue(null)
-        }
-      }
       handleServerNetworkError(dispatch, e as Error | AxiosError)
 
       return rejectWithValue(null)
