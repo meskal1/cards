@@ -75,12 +75,14 @@ export const DataSetAndRequestComponent = () => {
   }, [packsQueryParams])
 
   useEffectAfterMount(() => {
-    if (Object.keys(cardsQueryString).length !== 0) {
-      navigate(PATH.CARDS + `/${cardsPack_id}` + '?' + cardsQueryString)
-    }
+    if (search !== cardsQueryString) {
+      if (Object.keys(cardsQueryString).length !== 0) {
+        navigate(PATH.CARDS + `/${cardsPack_id}` + '?' + cardsQueryString)
+      }
 
-    if (isCards && Object.keys(cardsQueryString).length === 0 && search !== '') {
-      navigate(PATH.CARDS + `/${cardsPack_id}`)
+      if (isCards && Object.keys(cardsQueryString).length === 0 && search !== '') {
+        navigate(PATH.CARDS + `/${cardsPack_id}`)
+      }
     }
 
     if (cardsPack_id) {
