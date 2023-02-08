@@ -12,10 +12,19 @@ export const handleServerNetworkError = async (dispatch: Dispatch, error: Error 
       const is401Fake = await checkFake401Error()
 
       if (is401Fake) {
-        return
+        console.error('Too many requests')
+      } else {
+        dispatch(setIsLoggedIn({ isLoggedIn: false }))
       }
 
-      dispatch(setIsLoggedIn({ isLoggedIn: false }))
+      dispatch(
+        setAppAlertMessage({
+          messageType: 'error',
+          messageText: 'Too many request or your session expired',
+        })
+      )
+
+      return
     }
     let err = error.response?.data
       ? (error.response.data as { error: 'string' }).error
