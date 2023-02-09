@@ -10,7 +10,7 @@ type CustomInputPropsType = TextFieldProps & {
 
 export const CustomInput: FC<CustomInputPropsType> = ({ className, helperText, ...props }) => {
   const finalClass = `${s.input} ${className ? className : ''}`
-  const errorText = helperText ? helperText : ' '
+  const errorText = helperText || ' '
 
   return (
     <TextField

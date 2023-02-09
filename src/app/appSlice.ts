@@ -5,6 +5,15 @@ import { setIsLoggedIn } from '../features/auth/authSlice'
 import { setUserData } from '../features/profile/profileSlice'
 import { authAPI } from '../services/authApi'
 
+const initialState = {
+  status: 'idle' as RequestStatusType,
+  alertMessage: {
+    messageType: 'error' as AlertMessageType,
+    messageText: null as AppAlertMessageTextType,
+  },
+  isInitialized: false,
+}
+
 export const initializeAppTC = createAsyncThunk(
   'app/initializeApp',
   async (_, { dispatch, rejectWithValue }) => {
@@ -29,15 +38,6 @@ export const initializeAppTC = createAsyncThunk(
     }
   }
 )
-
-const initialState = {
-  status: 'idle' as RequestStatusType,
-  alertMessage: {
-    messageType: 'error' as AlertMessageType,
-    messageText: null as AppAlertMessageTextType,
-  },
-  isInitialized: false,
-}
 
 const appSlice = createSlice({
   name: 'app',

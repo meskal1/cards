@@ -1,15 +1,8 @@
-import axios from 'axios'
-
 import { PATH } from '../constants/routePaths.enum'
 
 import { instance } from './instance'
 
 // API
-const onlyProdInstance = axios.create({
-  baseURL: 'https://neko-back.herokuapp.com/2.0/',
-  withCredentials: true,
-})
-
 export const authAPI = {
   login(data: LoginParamsType) {
     return instance.post<ResponseType>('auth/login', data)
@@ -27,7 +20,7 @@ export const authAPI = {
     return instance.post<CreatePasswordResponseType>('auth/set-new-password', data)
   },
   forgot(email: string) {
-    return onlyProdInstance.post<{ info: string }>('auth/forgot', {
+    return instance.post<{ info: string }>('auth/forgot', {
       email,
       message: `<div style="background-color: lime; padding: 15px">
                     password recovery link: 
