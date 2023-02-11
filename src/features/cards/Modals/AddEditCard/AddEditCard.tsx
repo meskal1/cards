@@ -19,7 +19,7 @@ import { CustomSelect } from '../../../../common/components/CustomSelect/CustomS
 import { MainPopup } from '../../../../common/components/Popups/MainPopup/MainPopup'
 import { useAppDispatch } from '../../../../hooks/reduxHooks'
 import { base64Converter } from '../../../../utils/base64Converter'
-import { validateImage, validationSchemaNewCardText } from '../../../../utils/validationSchema'
+import { newCardText, validateImage } from '../../../../utils/validationSchema'
 import { addCardTC, updateCardTC, UpdateCardType } from '../../cardsSlice'
 
 import s from './AddEditCard.module.scss'
@@ -61,7 +61,7 @@ export const AddEditCard: FC<AddEditCardType> = memo(
 
     const formik = useFormik({
       initialValues,
-      validationSchema: validationSchemaNewCardText,
+      validationSchema: newCardText,
       validate: () => validateImage(validateData),
       onSubmit: values => {
         const question = isOptionText ? '' : values.question

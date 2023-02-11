@@ -13,7 +13,7 @@ import { CustomInput } from '../../../common/components/CustomInput/CustomInput'
 import { CustomPasswordInput } from '../../../common/components/CustomPasswordInput/CustomPasswordInput'
 import { PATH } from '../../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
-import { validationSchemaLogin } from '../../../utils/validationSchema'
+import { login } from '../../../utils/validationSchema'
 import { logInTC } from '../authSlice'
 
 import s from './LogInApp.module.scss'
@@ -30,7 +30,7 @@ export const LogInApp = () => {
       password: '',
       rememberMe: false,
     },
-    validationSchema: validationSchemaLogin,
+    validationSchema: login,
     onSubmit: async values => {
       const isLoginSucceed = await dispatch(logInTC(values))
 

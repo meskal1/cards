@@ -7,7 +7,7 @@ import { CustomButton } from '../../../common/components/CustomButton/CustomButt
 import { CustomPasswordInput } from '../../../common/components/CustomPasswordInput/CustomPasswordInput'
 import { PATH } from '../../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
-import { validationSchemaNewPassword } from '../../../utils/validationSchema'
+import { newPassword } from '../../../utils/validationSchema'
 import { createPasswordTC } from '../authSlice'
 
 import s from './NewPassword.module.scss'
@@ -22,7 +22,7 @@ export const NewPassword = () => {
     initialValues: {
       password: '',
     },
-    validationSchema: validationSchemaNewPassword,
+    validationSchema: newPassword,
     onSubmit: values => {
       // console.log(token)
       dispatch(createPasswordTC({ password: values.password, resetPasswordToken: token! }))

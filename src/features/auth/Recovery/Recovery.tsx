@@ -6,7 +6,7 @@ import { CustomButton } from '../../../common/components/CustomButton/CustomButt
 import { CustomInput } from '../../../common/components/CustomInput/CustomInput'
 import { PATH } from '../../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
-import { validationSchemaForgotPassword } from '../../../utils/validationSchema'
+import { forgotPassword } from '../../../utils/validationSchema'
 import { forgotPasswordTC } from '../authSlice'
 
 import s from './Recovery.module.scss'
@@ -20,7 +20,7 @@ export const Recovery = () => {
     initialValues: {
       email: '',
     },
-    validationSchema: validationSchemaForgotPassword,
+    validationSchema: forgotPassword,
     onSubmit: async values => {
       const isForgotPasswordSucceeded = await dispatch(forgotPasswordTC(values.email))
 

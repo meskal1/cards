@@ -1,7 +1,5 @@
 import * as yup from 'yup'
 
-const name = yup.string().required('Required')
-const avatar = name
 const email = yup.string().email('Enter a valid email').required('Email is required')
 const password = yup
   .string()
@@ -25,19 +23,17 @@ const packName = yup
   .max(100, 'Name should be less then 100 characters')
   .required('Pack name is required')
 
-export const validationSchemaLogin = yup.object({ email, password, rememberMe })
+export const login = yup.object({ email, password, rememberMe })
 
-export const validationSchemaRegistration = yup.object({ email, password, confirmPassword })
+export const registration = yup.object({ email, password, confirmPassword })
 
-export const validationSchemaProfile = yup.object({ name, avatar })
+export const newPassword = yup.object({ password })
 
-export const validationSchemaNewPassword = yup.object({ password })
+export const forgotPassword = yup.object({ email })
 
-export const validationSchemaForgotPassword = yup.object({ email })
+export const newCardText = yup.object({ question, answer })
 
-export const validationSchemaNewCardText = yup.object({ question, answer })
-
-export const validationSchemaNewPackText = yup.object({ name: packName })
+export const newPackText = yup.object({ name: packName })
 
 export const validateImage = (imgData: ValidateImageType) => {
   const formats = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/webp', 'image/svg']

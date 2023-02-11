@@ -7,7 +7,7 @@ import { CustomInput } from '../../../common/components/CustomInput/CustomInput'
 import { CustomPasswordInput } from '../../../common/components/CustomPasswordInput/CustomPasswordInput'
 import { PATH } from '../../../constants/routePaths.enum'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
-import { validationSchemaRegistration } from '../../../utils/validationSchema'
+import { registration } from '../../../utils/validationSchema'
 import { registerTC } from '../authSlice'
 
 import s from './Registration.module.scss'
@@ -23,7 +23,7 @@ export const Registration = () => {
       password: '',
       confirmPassword: '',
     },
-    validationSchema: validationSchemaRegistration,
+    validationSchema: registration,
     onSubmit: async values => {
       const isRegisterSucceed = await dispatch(
         registerTC({ email: values.email, password: values.password })

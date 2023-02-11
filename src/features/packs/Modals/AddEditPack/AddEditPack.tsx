@@ -21,7 +21,7 @@ import { MainPopup } from '../../../../common/components/Popups/MainPopup/MainPo
 import { useAppDispatch, useAppSelector } from '../../../../hooks/reduxHooks'
 import { base64Converter } from '../../../../utils/base64Converter'
 import { useLocationNoUpdates } from '../../../../utils/routerUtils'
-import { validateImage, validationSchemaNewPackText } from '../../../../utils/validationSchema'
+import { newPackText, validateImage } from '../../../../utils/validationSchema'
 import { setCardsData } from '../../../cards/cardsSlice'
 import { addPackTC, UpdatePackDataType, updatePackTC } from '../../packsSlice'
 
@@ -57,7 +57,7 @@ export const AddEditPack: FC<AddEditPackType> = memo(({ isOpened, onClose, packD
 
   const formik = useFormik({
     initialValues,
-    validationSchema: validationSchemaNewPackText,
+    validationSchema: newPackText,
     validate: () => validateImage(validateData),
     onSubmit: values => {
       const deckCover = fileImage || base64image ? base64image : ' '
