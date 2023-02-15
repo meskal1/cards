@@ -1,0 +1,13 @@
+.alertContainer {
+  display: flex;
+  align-items: center;
+
+  border-radius: 10px;
+
+  div {
+    &:nth-child(3) {
+      padding-top: 0px !important;
+      padding-left: 8px !important;
+    }
+  }
+}

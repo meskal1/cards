@@ -6,6 +6,8 @@ import { setAppAlertMessage } from '../../../app/appSlice'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { useAppSelector } from '../../../hooks/useAppSelector'
 
+import s from './CustomSnackbar.module.scss'
+
 export const CustomSnackbar = () => {
   const alertMessage = useAppSelector(state => state.app.alertMessage)
   const isOpen = alertMessage.messageText !== null
@@ -25,7 +27,11 @@ export const CustomSnackbar = () => {
       <Snackbar open={isOpen} autoHideDuration={5000} onClose={handleClose}>
         {/* Condition is required to get rid of showing empty alert before snackbar finish closing */}
         {alertMessage.messageText ? (
-          <Alert onClose={handleClose} severity={alertMessage.messageType}>
+          <Alert
+            className={s.alertContainer}
+            onClose={handleClose}
+            severity={alertMessage.messageType}
+          >
             {alertMessage.messageText}
           </Alert>
         ) : (
