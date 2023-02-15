@@ -1,6 +1,7 @@
 import { memo, useState, MouseEvent, ChangeEvent, KeyboardEvent, FC } from 'react'
 
 import { useAppSelector } from '../../../hooks/useAppSelector'
+import { cutSpaces } from '../../../utils/cutSpaces'
 import { CustomInput } from '../CustomInput/CustomInput'
 
 import s from './EditableSpan.module.scss'
@@ -25,13 +26,13 @@ export const EditableSpan: FC<EditableSpanType> = memo(({ changeName }) => {
   }
 
   const handleEditMode = () => {
-    setInputValue(inputValue.trim())
+    setInputValue(cutSpaces(inputValue))
     setEditMode(true)
   }
 
   const handleSetNewName = (e?: MouseEvent<HTMLDivElement>) => {
     e?.preventDefault()
-    if (inputValue.trim() === '' || inputValue.length > 50) {
+    if (cutSpaces(inputValue) === '' || inputValue.length > 50) {
       setErrorEmptyField(true)
       setErrorStyleButton(s.errorButton)
 
@@ -40,13 +41,13 @@ export const EditableSpan: FC<EditableSpanType> = memo(({ changeName }) => {
       setEditMode(false)
     }
 
-    if (inputValue.trim() !== name) {
-      changeName(inputValue.trim())
+    if (cutSpaces(inputValue) !== name) {
+      changeName(cutSpaces(inputValue))
     }
   }
 
   const onChangeInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.currentTarget.value.trim() !== '') {
+    if (cutSpaces(e.currentTarget.value) !== '') {
       setErrorEmptyField(false)
     }
 

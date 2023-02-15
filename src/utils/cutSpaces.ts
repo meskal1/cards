@@ -1,3 +1,6 @@
 export const cutSpaces = (string: string) => {
-  return string.trim()
+  return string
+    .split(' ')
+    .filter(el => el !== '')
+    .join(' ')
 }

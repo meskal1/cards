@@ -19,6 +19,7 @@ import { CustomSelect } from '../../../../common/components/CustomSelect/CustomS
 import { MainPopup } from '../../../../common/components/Popups/MainPopup/MainPopup'
 import { useAppDispatch } from '../../../../hooks/useAppDispatch'
 import { base64Converter } from '../../../../utils/base64Converter'
+import { cutSpaces } from '../../../../utils/cutSpaces'
 import { newCardText, validateImage } from '../../../../utils/validationSchema'
 import { addCardTC, updateCardTC, UpdateCardType } from '../../cardsSlice'
 
@@ -70,11 +71,25 @@ export const AddEditCard: FC<AddEditCardType> = memo(
         const questionChanged = values.question !== initialValues.question
 
         if (cardsData && (fileImage || answerChanged || questionChanged)) {
-          dispatch(updateCardTC({ ...values, id: cardsData?.id || '', questionImg }))
+          dispatch(
+            updateCardTC({
+              answer: cutSpaces(values.answer),
+              question: cutSpaces(values.question),
+              id: cardsData?.id || '',
+              questionImg,
+            })
+          )
         }
 
         if (!cardsData) {
-          dispatch(addCardTC({ ...values, question, questionImg: base64image, cardsPack_id }))
+          dispatch(
+            addCardTC({
+              answer: cutSpaces(values.answer),
+              question: cutSpaces(question),
+              questionImg: base64image,
+              cardsPack_id,
+            })
+          )
         }
         onClose()
       },

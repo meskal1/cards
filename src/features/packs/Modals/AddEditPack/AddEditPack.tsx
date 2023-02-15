@@ -22,6 +22,7 @@ import { useAppDispatch } from '../../../../hooks/useAppDispatch'
 import { useAppSelector } from '../../../../hooks/useAppSelector'
 import { useEffectAfterMount } from '../../../../hooks/useEffectAfterMount'
 import { base64Converter } from '../../../../utils/base64Converter'
+import { cutSpaces } from '../../../../utils/cutSpaces'
 import { useLocationNoUpdates } from '../../../../utils/routerUtils'
 import { newPackText, validateImage } from '../../../../utils/validationSchema'
 import { setCardsData } from '../../../cards/cardsSlice'
@@ -71,11 +72,18 @@ export const AddEditPack: FC<AddEditPackType> = memo(({ isOpened, onClose, packD
         if (isCards) {
           dispatch(setCardsData(data))
         }
-        dispatch(updatePackTC({ ...values, id: packData?.id || '', deckCover }))
+        dispatch(
+          updatePackTC({
+            ...values,
+            name: cutSpaces(values.name),
+            id: packData?.id || '',
+            deckCover,
+          })
+        )
       }
 
       if (!packData) {
-        dispatch(addPackTC({ ...values, deckCover: base64image }))
+        dispatch(addPackTC({ ...values, name: cutSpaces(values.name), deckCover: base64image }))
       }
       onClose()
     },
