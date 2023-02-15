@@ -12,6 +12,7 @@ import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { useAppSelector } from '../../hooks/useAppSelector'
 import { useEffectAfterMount } from '../../hooks/useEffectAfterMount'
 import { ServerCardType } from '../../services/cardsApi'
+import { cutSpaces } from '../../utils/cutSpaces'
 import { useLocationNoUpdates } from '../../utils/routerUtils'
 import { getCard } from '../../utils/showCardsSmartRandom'
 
@@ -107,7 +108,7 @@ export const Learn = () => {
       {isInitialized ? (
         <div className={s.learnContainer}>
           <BackToPacks />
-          <h2 className={s.learnTitle}>{packName}</h2>
+          <h2 className={s.learnTitle}>{cutSpaces(packName)}</h2>
           <div className={s.learnContent}>
             <div className={s.questionContainer}>
               <span className={s.text}>

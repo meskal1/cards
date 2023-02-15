@@ -3,6 +3,7 @@ import { FC, memo, useState, useRef, MutableRefObject } from 'react'
 import { isMyPack } from '../../../app/selectors'
 import { PackActionsMenu } from '../../../features/packs/PackActionsMenu/PackActionsMenu'
 import { useAppSelector } from '../../../hooks/useAppSelector'
+import { cutSpaces } from '../../../utils/cutSpaces'
 import { useLocationNoUpdates } from '../../../utils/routerUtils'
 import { BackToPacks } from '../BackToPacks/BackToPacks'
 import { CustomButton } from '../CustomButton/CustomButton'
@@ -19,6 +20,7 @@ type PageTitleBlockType = {
 
 export const PageTitleBlock: FC<PageTitleBlockType> = memo(
   ({ linkToPacks = false, hasButtons = true, title = 'All Packs', buttonClick }) => {
+    const titleCutedSpaces = cutSpaces(title)
     const location = useLocationNoUpdates()
     const packID = location.pathname.split('/cards/')[1]
     const isTableNotEmpty = useAppSelector(state => state.cards.cardsData.cardsTotalCount)
@@ -37,12 +39,12 @@ export const PageTitleBlock: FC<PageTitleBlockType> = memo(
         {linkToPacks && <BackToPacks />}
         <div className={s.pageTitleBlock__content}>
           <div className={s.pageTitleBlock__titleBlock}>
-            <h2 className={s.pageTitleBlock__title}>{isMyPacks ? 'My Packs' : title}</h2>
+            <h2 className={s.pageTitleBlock__title}>{isMyPacks ? 'My Packs' : titleCutedSpaces}</h2>
 
             {isItMyPack && (
               <PackActionsMenu
                 packID={packID as string}
-                packName={title}
+                packName={titleCutedSpaces}
                 packIsEmpty={!!isTableNotEmpty}
               />
             )}

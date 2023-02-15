@@ -8,6 +8,7 @@ import { RequestStatusType } from '../../../../app/appSlice'
 import { TableHeadType } from '../../../../common/components/CustomTableHead/CustomTableHead'
 import { PATH } from '../../../../constants/routePaths.enum'
 import { useAppSelector } from '../../../../hooks/useAppSelector'
+import { cutSpaces } from '../../../../utils/cutSpaces'
 import { useNavigateNoUpdates } from '../../../../utils/routerUtils'
 import { PackActionsMenu } from '../../PackActionsMenu/PackActionsMenu'
 import { AppPackType } from '../../packsSlice'
@@ -60,7 +61,9 @@ export const PacksTableBody: FC<PacksTableBodyType> = ({ heads }) => {
                         h.id === 'name' && validImg ? s.packName : ''
                       }`}
                     >
-                      {h.id === 'updated' ? dayjs(row[h.id]).format('DD.MM.YYYY') : row[h.id]}
+                      {h.id === 'updated'
+                        ? dayjs(row[h.id]).format('DD.MM.YYYY')
+                        : cutSpaces(row[h.id] + '')}
                     </p>
                   </div>
                 </td>

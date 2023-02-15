@@ -8,6 +8,7 @@ import { RequestStatusType } from '../../../../app/appSlice'
 import { TableHeadType } from '../../../../common/components/CustomTableHead/CustomTableHead'
 import { PATH } from '../../../../constants/routePaths.enum'
 import { useAppSelector } from '../../../../hooks/useAppSelector'
+import { cutSpaces } from '../../../../utils/cutSpaces'
 import { useNavigateNoUpdates } from '../../../../utils/routerUtils'
 import { CardActionsMenu } from '../../CardActionsMenu/CardActionsMenu'
 import { AppCardType } from '../../cardsSlice'
@@ -63,7 +64,9 @@ export const CardsTableBody: FC<CardsTableBodyType> = ({ heads, isMine }) => {
                           h.id === 'question' && validImg ? s.cardName : ''
                         }`}
                       >
-                        {h.id === 'updated' ? dayjs(row[h.id]).format('DD.MM.YYYY') : row[h.id]}
+                        {h.id === 'updated'
+                          ? dayjs(row[h.id]).format('DD.MM.YYYY')
+                          : cutSpaces(row[h.id] + '')}
                       </p>
                     )}
                   </div>
