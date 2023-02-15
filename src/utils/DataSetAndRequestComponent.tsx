@@ -35,7 +35,7 @@ export const DataSetAndRequestComponent = () => {
   const allParams = getQueryParams()
   const cardsPack_id = useAppSelector(state => state.cards.queryParams.cardsPack_id)
   const locationSearch = location.search.split('?')[1]
-  const search = locationSearch ? locationSearch : ''
+  const search = locationSearch || ''
   const locationPath = location.pathname
 
   useEffectAfterMount(() => {
