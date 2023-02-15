@@ -25,4 +25,4 @@ You can create your own decks of card packs on different topics, as well upload 
 	<img src="/src/assets/img/readmePictures/pic12.jpg" height="100%" alt="Quiz memory game"> 
 	<img src="/src/assets/img/readmePictures/pic7.jpg" height="100%" alt="Quiz memory game">
 </div>
-<img  align="center" src="/src/assets/img/readmePictures/pic6.jpg" height="100%" alt="Quiz memory game">
+<div align="center"><img src="/src/assets/img/readmePictures/pic6.jpg" height="100%" alt="Quiz memory game"></div>
