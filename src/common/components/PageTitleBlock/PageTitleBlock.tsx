@@ -18,13 +18,15 @@ type PageTitleBlockType = {
 }
 
 export const PageTitleBlock: FC<PageTitleBlockType> = memo(
-  ({ linkToPacks = false, hasButtons = true, title = 'Packs list', buttonClick }) => {
+  ({ linkToPacks = false, hasButtons = true, title = 'All Packs', buttonClick }) => {
     const location = useLocationNoUpdates()
     const packID = location.pathname.split('/cards/')[1]
     const isTableNotEmpty = useAppSelector(state => state.cards.cardsData.cardsTotalCount)
+    const packsQueryParams = useAppSelector(state => state.packs.queryParams.isMyPacks)
     const isItMyPack = useAppSelector(isMyPack)
     const [isFilterOpen, setIsFilterOpen] = useState(false)
     const isCards = new RegExp('/cards').test(location.pathname)
+    const isMyPacks = packsQueryParams !== '' && !isCards
     const menuRef = useRef() as MutableRefObject<HTMLDivElement>
     const buttonName = isCards ? `${isItMyPack ? 'Add new card' : 'Learn to pack'}` : 'Add new pack'
 
@@ -35,7 +37,7 @@ export const PageTitleBlock: FC<PageTitleBlockType> = memo(
         {linkToPacks && <BackToPacks />}
         <div className={s.pageTitleBlock__content}>
           <div className={s.pageTitleBlock__titleBlock}>
-            <h2 className={s.pageTitleBlock__title}>{title}</h2>
+            <h2 className={s.pageTitleBlock__title}>{isMyPacks ? 'My Packs' : title}</h2>
 
             {isItMyPack && (
               <PackActionsMenu
