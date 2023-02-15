@@ -5,7 +5,7 @@
 ## Description
 
 Research shows that cards self-examination is more effective than rereading notes. Find ready-made cards created by your peers and teachers, or create your own instantly.
-You can create your own decks of card packs on different topics, as well upload pictures as a question. The application has decks of packs of other participants, according to which you can also learn. The app is also available on mobile.
+You can create your own packs on different topics, as well upload pictures as a question. The application has packs with cards of other participants, according to which you can also learn. The app is also available on mobile.
 
 ##
 
