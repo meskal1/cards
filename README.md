@@ -13,8 +13,8 @@ You can create your own decks of card packs on different topics, as well upload 
 <img src="/src/assets/img/readmePictures/pic3.jpg" width="100%" alt="Quiz memory game">
 <img src="/src/assets/img/readmePictures/pic5.jpg" width="100%" alt="Quiz memory game">
 <img src="/src/assets/img/readmePictures/pic4.jpg" width="100%" alt="Quiz memory game">
-<div align="center" style=" margin: 0 300px 0 0;">
-	<img style="display: inline-block; margin: 0 100px;" src="/src/assets/img/readmePictures/pic11.jpg" height="100%" alt="Quiz memory game"> 
+<div align="center">
+	<img style="margin: 0 100px;" src="/src/assets/img/readmePictures/pic11.jpg" height="100%" alt="Quiz memory game"> 
 	<img src="/src/assets/img/readmePictures/pic10.jpg" height="100%" alt="Quiz memory game">
 </div>
 <div align="center">
