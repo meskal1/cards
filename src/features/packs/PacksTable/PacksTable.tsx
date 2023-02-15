@@ -1,5 +1,4 @@
 import { RequestStatusType } from '../../../app/appSlice'
-import { packsTableLength } from '../../../app/selectors'
 import { TableBodySkeleton } from '../../../common/components/CustomSkeletons/TableBodySkeleton/TableBodySkeleton'
 import {
   CustomTableHead,
@@ -21,7 +20,7 @@ const heads: TableHeadType<PacksOrderByType>[] = [
 
 export const PacksTable = () => {
   const status = useAppSelector<RequestStatusType>(state => state.packs.status)
-  const isTableNotEmpty = useAppSelector(packsTableLength)
+  const isTableNotEmpty = useAppSelector(state => state.packs.tableData.length > 0)
   const pageCount = useAppSelector(state => state.packs.queryParams.pageCount)
 
   return (
