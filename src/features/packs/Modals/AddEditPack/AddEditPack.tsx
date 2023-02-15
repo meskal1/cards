@@ -20,6 +20,7 @@ import { CustomInput } from '../../../../common/components/CustomInput/CustomInp
 import { MainPopup } from '../../../../common/components/Popups/MainPopup/MainPopup'
 import { useAppDispatch } from '../../../../hooks/useAppDispatch'
 import { useAppSelector } from '../../../../hooks/useAppSelector'
+import { useEffectAfterMount } from '../../../../hooks/useEffectAfterMount'
 import { base64Converter } from '../../../../utils/base64Converter'
 import { useLocationNoUpdates } from '../../../../utils/routerUtils'
 import { newPackText, validateImage } from '../../../../utils/validationSchema'
@@ -114,6 +115,12 @@ export const AddEditPack: FC<AddEditPackType> = memo(({ isOpened, onClose, packD
     setFileImage(null)
   }
 
+  const handleKeyDown = (e: KeyboardEvent<HTMLButtonElement>) => {
+    if (e.key === 'Enter') {
+      formik.setFieldValue('private', !formik.getFieldProps('private').value)
+    }
+  }
+
   useEffect(() => {
     setTimeout(() => nameRef?.current?.focus(), 50)
   }, [])
@@ -169,6 +176,7 @@ export const AddEditPack: FC<AddEditPackType> = memo(({ isOpened, onClose, packD
           <label className={s.checkbox}>
             <Checkbox
               size="medium"
+              onKeyDown={handleKeyDown}
               style={formik.values.private ? { color: '#1B79CE ' } : { color: 'grey ' }}
               checked={formik.values.private}
               icon={<RadioButtonUncheckedIcon />}
