@@ -43,7 +43,7 @@ export const handleServerNetworkError = async (dispatch: Dispatch, error: Error 
       error.response?.data.error === 'user not found /ᐠ-ꞈ-ᐟ\\' ||
       error.response?.data.error === 'not correct password /ᐠ-ꞈ-ᐟ\\'
     ) {
-      err = 'User login or password is not valid'
+      err = 'Wrong email or password'
     }
     dispatch(setAppAlertMessage({ messageType: 'error', messageText: err }))
   }
