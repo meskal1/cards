@@ -1,6 +1,6 @@
 import { Dialog } from '../../../common/components/Popups/Dialog/Dialog'
 import { PATH } from '../../../constants/routePaths.enum'
-import { useAppSelector } from '../../../hooks/reduxHooks'
+import { useAppSelector } from '../../../hooks/useAppSelector'
 import { queryString } from '../../../utils/queryString'
 import { useNavigateNoUpdates } from '../../../utils/routerUtils'
 import { initialPacksQueryParams as initParams } from '../../packs/packsSlice'

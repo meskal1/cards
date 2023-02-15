@@ -6,7 +6,8 @@ import { CustomButton } from '../../../common/components/CustomButton/CustomButt
 import { CustomInput } from '../../../common/components/CustomInput/CustomInput'
 import { CustomPasswordInput } from '../../../common/components/CustomPasswordInput/CustomPasswordInput'
 import { PATH } from '../../../constants/routePaths.enum'
-import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
+import { useAppDispatch } from '../../../hooks/useAppDispatch'
+import { useAppSelector } from '../../../hooks/useAppSelector'
 import { registration } from '../../../utils/validationSchema'
 import { registerTC } from '../authSlice'
 

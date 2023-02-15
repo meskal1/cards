@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 
 import avatarLocal from '../../../assets/img/avatar.jpg'
 import { PATH } from '../../../constants/routePaths.enum'
-import { useAppSelector } from '../../../hooks/reduxHooks'
+import { useAppSelector } from '../../../hooks/useAppSelector'
 import { DataSetAndRequestComponent } from '../../../utils/DataSetAndRequestComponent'
 import { Menu } from '../Header/Menu/Menu'
 

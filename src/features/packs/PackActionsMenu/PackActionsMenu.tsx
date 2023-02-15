@@ -1,7 +1,7 @@
 import { FC, useState, MutableRefObject, useRef } from 'react'
 
 import { PATH } from '../../../constants/routePaths.enum'
-import { useAppSelector } from '../../../hooks/reduxHooks'
+import { useAppSelector } from '../../../hooks/useAppSelector'
 import { useNavigateNoUpdates } from '../../../utils/routerUtils'
 import { AddEditPack } from '../Modals/AddEditPack/AddEditPack'
 import { DeletePack } from '../Modals/DeletePack/DeletePack'

@@ -1,7 +1,7 @@
 import { FC } from 'react'
 
 import { Dialog } from '../../../../common/components/Popups/Dialog/Dialog'
-import { useAppDispatch } from '../../../../hooks/reduxHooks'
+import { useAppDispatch } from '../../../../hooks/useAppDispatch'
 import { useEnterKey } from '../../../../hooks/useEnterKey'
 import { deleteCardTC } from '../../cardsSlice'
 

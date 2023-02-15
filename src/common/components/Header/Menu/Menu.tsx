@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { PATH } from '../../../../constants/routePaths.enum'
 import { logOutTC } from '../../../../features/auth/authSlice'
-import { useAppDispatch } from '../../../../hooks/reduxHooks'
+import { useAppDispatch } from '../../../../hooks/useAppDispatch'
 import { useEscapeKey } from '../../../../hooks/useEscapeKey'
 import { useOnClickOutside } from '../../../../hooks/useOnClickOutside'
 

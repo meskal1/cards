@@ -14,7 +14,8 @@ import {
   initialPacksQueryParams,
   setPacksQueryParams,
 } from '../features/packs/packsSlice'
-import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks'
+import { useAppDispatch } from '../hooks/useAppDispatch'
+import { useAppSelector } from '../hooks/useAppSelector'
 import { useEffectAfterMount } from '../hooks/useEffectAfterMount'
 
 import { getQueryParams } from './getQueryParams'

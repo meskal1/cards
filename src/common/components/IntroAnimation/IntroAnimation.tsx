@@ -2,7 +2,7 @@ import { FC, AnimationEvent, useState, useEffect } from 'react'
 
 import exclamationPoint from '../../../assets/img/icons/exclamationPoint.svg'
 import questionMark from '../../../assets/img/icons/questionMark.svg'
-import { useAppSelector } from '../../../hooks/reduxHooks'
+import { useAppSelector } from '../../../hooks/useAppSelector'
 import { useImagePreloader } from '../../../hooks/useImagePreloader'
 
 import s from './IntroAnimation.module.scss'

@@ -1,5 +1,6 @@
 import { RequestStatusType } from '../../../app/appSlice'
-import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
+import { useAppDispatch } from '../../../hooks/useAppDispatch'
+import { useAppSelector } from '../../../hooks/useAppSelector'
 import { clearPacksQueryParams } from '../packsSlice'
 
 import s from './PacksResetFilter.module.scss'

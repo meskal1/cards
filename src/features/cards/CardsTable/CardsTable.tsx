@@ -8,7 +8,7 @@ import {
   TableHeadType,
 } from '../../../common/components/CustomTableHead/CustomTableHead'
 import { LoadingProgress } from '../../../common/components/LoadingProgress/LoadingProgress'
-import { useAppSelector } from '../../../hooks/reduxHooks'
+import { useAppSelector } from '../../../hooks/useAppSelector'
 
 import s from './CardsTable.module.scss'
 import { CardsTableBody } from './CardsTableBody/CardsTableBody'

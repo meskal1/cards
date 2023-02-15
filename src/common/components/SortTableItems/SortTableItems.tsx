@@ -6,7 +6,8 @@ import {
   PacksSortValuesType,
   setPacksQueryParams,
 } from '../../../features/packs/packsSlice'
-import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
+import { useAppDispatch } from '../../../hooks/useAppDispatch'
+import { useAppSelector } from '../../../hooks/useAppSelector'
 import { queryString } from '../../../utils/queryString'
 import { CustomSelect } from '../CustomSelect/CustomSelect'
 

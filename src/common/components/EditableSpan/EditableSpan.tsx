@@ -1,6 +1,6 @@
 import { memo, useState, MouseEvent, ChangeEvent, KeyboardEvent, FC } from 'react'
 
-import { useAppSelector } from '../../../hooks/reduxHooks'
+import { useAppSelector } from '../../../hooks/useAppSelector'
 import { CustomInput } from '../CustomInput/CustomInput'
 
 import s from './EditableSpan.module.scss'

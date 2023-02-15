@@ -5,7 +5,7 @@ import {
   CustomTableHead,
   TableHeadType,
 } from '../../../common/components/CustomTableHead/CustomTableHead'
-import { useAppSelector } from '../../../hooks/reduxHooks'
+import { useAppSelector } from '../../../hooks/useAppSelector'
 
 import s from './PacksTable.module.scss'
 import { PacksTableBody } from './PacksTableBody/PacksTableBody'

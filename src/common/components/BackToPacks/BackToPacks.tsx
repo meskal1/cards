@@ -5,7 +5,8 @@ import {
   getPacksTC,
   initialPacksQueryParams as initParams,
 } from '../../../features/packs/packsSlice'
-import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
+import { useAppDispatch } from '../../../hooks/useAppDispatch'
+import { useAppSelector } from '../../../hooks/useAppSelector'
 import { queryString } from '../../../utils/queryString'
 import { useLocationNoUpdates } from '../../../utils/routerUtils'
 

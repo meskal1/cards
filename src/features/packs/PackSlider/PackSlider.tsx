@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
-import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
+import { useAppDispatch } from '../../../hooks/useAppDispatch'
+import { useAppSelector } from '../../../hooks/useAppSelector'
 import { useEffectAfterMount } from '../../../hooks/useEffectAfterMount'
 import { setPacksQueryParams } from '../packsSlice'
 

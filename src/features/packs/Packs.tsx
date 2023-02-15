@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { CustomPagination } from '../../common/components/CustomPagination/CustomPagination'
 import { CustomSearch } from '../../common/components/CustomSearch/CustomSearch'
 import { PageTitleBlock } from '../../common/components/PageTitleBlock/PageTitleBlock'
-import { useAppDispatch } from '../../hooks/reduxHooks'
+import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { getQueryParams } from '../../utils/getQueryParams'
 
 import { AddEditPack } from './Modals/AddEditPack/AddEditPack'

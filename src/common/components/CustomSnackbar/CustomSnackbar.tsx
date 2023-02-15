@@ -3,7 +3,8 @@ import { SyntheticEvent } from 'react'
 import { Alert, Box, Snackbar } from '@mui/material'
 
 import { setAppAlertMessage } from '../../../app/appSlice'
-import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
+import { useAppDispatch } from '../../../hooks/useAppDispatch'
+import { useAppSelector } from '../../../hooks/useAppSelector'
 
 export const CustomSnackbar = () => {
   const alertMessage = useAppSelector(state => state.app.alertMessage)

@@ -2,7 +2,7 @@ import { FC } from 'react'
 
 import { CardsOrderByType } from '../../../features/cards/CardsTable/CardsTable'
 import { PacksOrderByType } from '../../../features/packs/PacksTable/PacksTable'
-import { useAppSelector } from '../../../hooks/reduxHooks'
+import { useAppSelector } from '../../../hooks/useAppSelector'
 import { SortValuesType } from '../SortTableItems/SortTableItems'
 
 import s from './CustomTableHead.module.scss'

@@ -1,7 +1,8 @@
 import Button from '@mui/material/Button'
 import ButtonGroup from '@mui/material/ButtonGroup'
 
-import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
+import { useAppDispatch } from '../../../hooks/useAppDispatch'
+import { useAppSelector } from '../../../hooks/useAppSelector'
 import { initialPacksQueryParams as initParams, setPacksQueryParams } from '../packsSlice'
 
 import s from './PackOwnerSwitcher.module.scss'

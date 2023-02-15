@@ -5,7 +5,7 @@ import { Navigate, Outlet, Route, Routes, useLocation } from 'react-router-dom'
 import { LoadingProgress } from '../common/components/LoadingProgress/LoadingProgress'
 import { PATH } from '../constants/routePaths.enum'
 import { Page404 } from '../features/404/Page404'
-import { useAppSelector } from '../hooks/reduxHooks'
+import { useAppSelector } from '../hooks/useAppSelector'
 
 const CheckEmail = lazy(() =>
   import('../features/auth/CheckEmail/CheckEmail').then(module => ({ default: module.CheckEmail }))

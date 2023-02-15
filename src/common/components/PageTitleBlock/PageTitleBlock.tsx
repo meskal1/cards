@@ -2,7 +2,7 @@ import { FC, memo, useState, useRef, MutableRefObject } from 'react'
 
 import { isMyPack } from '../../../app/selectors'
 import { PackActionsMenu } from '../../../features/packs/PackActionsMenu/PackActionsMenu'
-import { useAppSelector } from '../../../hooks/reduxHooks'
+import { useAppSelector } from '../../../hooks/useAppSelector'
 import { useLocationNoUpdates } from '../../../utils/routerUtils'
 import { BackToPacks } from '../BackToPacks/BackToPacks'
 import { CustomButton } from '../CustomButton/CustomButton'

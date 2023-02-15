@@ -1,7 +1,7 @@
 import { FC } from 'react'
 
 import { RequestStatusType } from '../../../../app/appSlice'
-import { useAppSelector } from '../../../../hooks/reduxHooks'
+import { useAppSelector } from '../../../../hooks/useAppSelector'
 import { CustomButton } from '../../CustomButton/CustomButton'
 
 import s from './FooterModal.module.scss'
