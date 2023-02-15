@@ -1,7 +1,6 @@
 # Quiz memory game
 
-![Quiz memory game](/src/assets/img/readmePictures/logo.jpg)
-<img src="/src/assets/img/readmePictures/logo.jpg" width="100%" >
+<img src="/src/assets/img/readmePictures/logo.jpg" width="100%" alt="Quiz memory game">
 
 ## Description
 
@@ -9,6 +8,8 @@ You can create your own decks of card packs on different topics, as well upload 
 
 ##
 
-![Quiz memory game](/src/assets/img/readmePictures/logo.jpg)
-![Quiz memory game](/src/assets/img/readmePictures/logo.jpg)
-![Quiz memory game](/src/assets/img/readmePictures/logo.jpg)
+<img src="/src/assets/img/readmePictures/pic1.jpg" width="100%" alt="Quiz memory game">
+<img src="/src/assets/img/readmePictures/pic2.jpg" width="100%" alt="Quiz memory game">
+<img src="/src/assets/img/readmePictures/pic3.jpg" width="100%" alt="Quiz memory game">
+<img src="/src/assets/img/readmePictures/pic5.jpg" width="100%" alt="Quiz memory game">
+<img src="/src/assets/img/readmePictures/pic4.jpg" width="100%" alt="Quiz memory game">
