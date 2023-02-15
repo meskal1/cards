@@ -51,7 +51,7 @@ export const FooterModal: FC<FooterModalType> = ({
       </CustomButton>
       <CustomButton
         disabled={disableButtons}
-        className={primaryButtonColor}
+        className={disableButtons ? '' : primaryButtonColor}
         onClick={primaryButtonOnClick}
       >
         {primaryButtonText}
