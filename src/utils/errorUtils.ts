@@ -26,6 +26,7 @@ export const handleServerNetworkError = async (dispatch: Dispatch, error: Error 
 
       return
     }
+
     let err = error.response?.data
       ? (error.response.data as { error: 'string' }).error
       : error.message
@@ -38,8 +39,15 @@ export const handleServerNetworkError = async (dispatch: Dispatch, error: Error 
       err = 'CardsPack id is not valid'
     }
 
+    if (
+      error.response?.data.error === 'user not found /ᐠ-ꞈ-ᐟ\\' ||
+      error.response?.data.error === 'not correct password /ᐠ-ꞈ-ᐟ\\'
+    ) {
+      err = 'User login or password is not valid'
+    }
     dispatch(setAppAlertMessage({ messageType: 'error', messageText: err }))
   }
+
   dispatch(setAppStatus('idle'))
 }
 
