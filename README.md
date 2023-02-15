@@ -1,6 +1,7 @@
 # Quiz memory game
 
 ![Quiz memory game](/src/assets/img/readmePictures/logo.jpg)
+<img src="/src/assets/img/readmePictures/logo.jpg" width="100%" >
 
 ## Description
 
