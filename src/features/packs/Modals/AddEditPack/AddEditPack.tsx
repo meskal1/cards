@@ -123,7 +123,7 @@ export const AddEditPack: FC<AddEditPackType> = memo(({ isOpened, onClose, packD
     setFileImage(null)
   }
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLButtonElement>) => {
+  const handleCheckBoxKeyDown = (e: KeyboardEvent<HTMLButtonElement>) => {
     if (e.key === 'Enter') {
       formik.setFieldValue('private', !formik.getFieldProps('private').value)
     }
@@ -184,7 +184,7 @@ export const AddEditPack: FC<AddEditPackType> = memo(({ isOpened, onClose, packD
           <label className={s.checkbox}>
             <Checkbox
               size="medium"
-              onKeyDown={handleKeyDown}
+              onKeyDown={handleCheckBoxKeyDown}
               style={formik.values.private ? { color: '#1B79CE ' } : { color: 'grey ' }}
               checked={formik.values.private}
               icon={<RadioButtonUncheckedIcon />}
