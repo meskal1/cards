@@ -2,12 +2,14 @@
   position: relative;
   z-index: 10;
 
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   row-gap: 25px;
 
   width: 100%;
   max-width: 400px;
+  max-height: 100vh;
   padding: 20px;
 
   font-size: 16px;
