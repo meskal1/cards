@@ -1,10 +1,11 @@
-import { FC } from 'react'
+import { FC, MouseEvent } from 'react'
 
 import Rating from '@mui/material/Rating'
 import dayjs from 'dayjs'
 import isBase64 from 'is-base64'
 
 import { RequestStatusType } from '../../../../app/appSlice'
+import { ClickableImage } from '../../../../common/components/ClickableImage/ClickableImage'
 import { TableHeadType } from '../../../../common/components/CustomTableHead/CustomTableHead'
 import { PATH } from '../../../../constants/routePaths.enum'
 import { useAppSelector } from '../../../../hooks/useAppSelector'
@@ -29,6 +30,8 @@ export const CardsTableBody: FC<CardsTableBodyType> = ({ heads, isMine }) => {
     if (requestStatus === 'loading') return
     navigate(PATH.LEARN + `/${packId}`, { state: { cardId: id } })
   }
+
+  const handleStopPropagationOnImg = (e: MouseEvent<HTMLDivElement>) => e.stopPropagation()
 
   return (
     <tbody className={s.tableCards__body}>
