@@ -1,0 +1,14 @@
+.smallImg {
+  cursor: zoom-in;
+
+  z-index: 1;
+}
+
+.fullSizedImg {
+  z-index: 11;
+
+  max-width: 80vw;
+  max-height: 80vh;
+
+  background: #fff;
+}
