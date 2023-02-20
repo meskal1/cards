@@ -1,5 +1,6 @@
 import './index.scss'
 import './analytics/analytics'
+import './utils/setWindowHeight'
 
 import * as ReactDOMClient from 'react-dom/client'
 import { Provider } from 'react-redux'
