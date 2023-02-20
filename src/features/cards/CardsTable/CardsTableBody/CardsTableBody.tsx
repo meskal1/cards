@@ -55,7 +55,6 @@ export const CardsTableBody: FC<CardsTableBodyType> = ({ heads, isMine }) => {
 
                     {h.id === 'question' && validImg && (
                       <div className={s.cardImageWrapper} onClick={handleStopPropagationOnImg}>
-                        {/*<img src={row.questionImg} alt="deckCover" className={s.cardImage} />*/}
                         <ClickableImage
                           src={row.questionImg}
                           alt="deckCover"
