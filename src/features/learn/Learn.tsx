@@ -6,6 +6,7 @@ import isBase64 from 'is-base64'
 import { useParams } from 'react-router'
 
 import { BackToPacks } from '../../common/components/BackToPacks/BackToPacks'
+import { ClickableImage } from '../../common/components/ClickableImage/ClickableImage'
 import { CustomButton } from '../../common/components/CustomButton/CustomButton'
 import { LoadingProgress } from '../../common/components/LoadingProgress/LoadingProgress'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
@@ -117,7 +118,7 @@ export const Learn = () => {
 
               {validImg && (
                 <div className={s.imgContainer}>
-                  <img src={card.questionImg} alt="cover" className={s.img} />
+                  <ClickableImage src={card.questionImg} alt="cover" className={s.img} />
                 </div>
               )}
             </div>

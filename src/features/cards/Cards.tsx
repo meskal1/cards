@@ -4,6 +4,7 @@ import isBase64 from 'is-base64'
 import { useParams } from 'react-router-dom'
 
 import { isMyPack } from '../../app/selectors'
+import { ClickableImage } from '../../common/components/ClickableImage/ClickableImage'
 import { CustomPagination } from '../../common/components/CustomPagination/CustomPagination'
 import { CustomSearch } from '../../common/components/CustomSearch/CustomSearch'
 import { LoadingProgress } from '../../common/components/LoadingProgress/LoadingProgress'
@@ -71,7 +72,7 @@ export const Cards = () => {
 
             {validImg && (
               <div className={s.imgContainer}>
-                <img src={packDeckCover} alt="cover" className={s.img} />
+                <ClickableImage src={packDeckCover} alt={'cover'} className={s.img} />
               </div>
             )}
 
