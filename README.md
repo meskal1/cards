@@ -12,6 +12,7 @@ You can create your own packs on different topics, as well upload pictures as a 
 <img src="/src/assets/img/readmePictures/pic1.jpg" width="100%" alt="Quiz memory game">
 <img src="/src/assets/img/readmePictures/pic2.jpg" width="100%" alt="Quiz memory game">
 <img src="/src/assets/img/readmePictures/pic3.jpg" width="100%" alt="Quiz memory game">
+<img src="/src/assets/img/readmePictures/pic13.jpg" width="100%" alt="Quiz memory game">
 <img src="/src/assets/img/readmePictures/pic5.jpg" width="100%" alt="Quiz memory game">
 <img src="/src/assets/img/readmePictures/pic4.jpg" width="100%" alt="Quiz memory game">
 <div align="center">

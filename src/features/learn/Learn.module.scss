@@ -2,7 +2,7 @@
 
 .learnContainer {
   @include adaptiveValue('padding-top', 10, 10, 599, 320, 1);
-  @include adaptiveValue('padding-bottom', 26, 10, 599, 320, 1);
+  @include adaptiveValue('padding-bottom', 40, 10, 599, 320, 1);
 
   display: flex;
   flex-direction: column;

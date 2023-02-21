@@ -2,12 +2,14 @@
   position: relative;
   z-index: 10;
 
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   row-gap: 15px;
 
   width: 100%;
   max-width: 400px;
+  max-height: 90%;
   padding: 20px;
 
   background: white;
