@@ -4,11 +4,29 @@
   z-index: 1;
 }
 
+.fullSizedImgWrapper {
+  position: relative;
+}
+
 .fullSizedImg {
+  position: relative;
   z-index: 11;
 
   max-width: 80vw;
   max-height: 80vh;
 
   background: #fff;
+}
+
+.closeImg {
+  cursor: pointer;
+
+  position: absolute;
+  z-index: 10;
+  top: -30px;
+  right: -30px;
+  transform: rotate(45deg);
+
+  width: 30px;
+  height: 30px;
 }

@@ -1,5 +1,6 @@
 import React, { FC, ImgHTMLAttributes, useState } from 'react'
 
+import closeIcon from '../../../assets/img/icons/addIconWhite.svg'
 import { OverlayingPopup } from '../Popups/OverlayingPopup/OverlayingPopup'
 
 import s from './ClickableImage.module.scss'
@@ -25,9 +26,13 @@ export const ClickableImage: FC<PropsType> = ({ className, ...props }) => {
         onError={handleImageError}
         {...props}
       />
+
       {!isImageBroken && (
         <OverlayingPopup isOpened={isOpen} onClose={handleImageClose}>
-          <img className={s.fullSizedImg} src={props.src} />
+          <div className={s.fullSizedImgWrapper}>
+            <img className={s.fullSizedImg} src={props.src} />
+            <img className={s.closeImg} src={closeIcon} onClick={handleImageClose} />
+          </div>
         </OverlayingPopup>
       )}
     </>
